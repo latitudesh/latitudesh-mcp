@@ -1,0 +1,13 @@
+workflowVersion: 1.0.0
+speakeasyVersion: latest
+sources:
+    Latitudesh-OAS:
+        inputs:
+            - location: registry.speakeasyapi.dev/latitude/latitude/latitudesh-oas:main
+        output: .speakeasy/out.openapi.yaml
+        registry:
+            location: registry.speakeasyapi.dev/latitude/latitude/latitudesh-oas
+targets:
+    latitudesh:
+        target: mcp-typescript
+        source: Latitudesh-OAS
