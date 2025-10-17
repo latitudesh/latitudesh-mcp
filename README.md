@@ -20,8 +20,6 @@ Model Context Protocol (MCP) Server for the *latitudesh* API.
 
 
 <br /><br />
-> [!IMPORTANT]
-> This MCP Server is not yet ready for production use. To complete setup please follow the steps outlined in your [workspace](https://app.speakeasy.com/org/latitude/latitude). Delete this notice before publishing to a package manager.
 
 <!-- Start Summary [summary] -->
 ## Summary
@@ -42,8 +40,10 @@ Latitude.sh API: The Latitude.sh API is a RESTful API to manage your Latitude.sh
 <!-- Start Installation [installation] -->
 ## Installation
 
-> [!TIP]
-> To finish publishing your MCP Server to npm and others you must [run your first generation action](https://www.speakeasy.com/docs/github-setup#step-by-step-guide).
+> [!NOTE]
+> You'll need your Latitude.sh API bearer token. Get it from your [Latitude.sh dashboard](https://latitude.sh).
+>
+> The `--bearer` flag is **required**. The `--server-index` and `--latitude-api-key` flags are optional.
 <details>
 <summary>DXT (Desktop Extension)</summary>
 
@@ -61,14 +61,10 @@ The DXT package includes the MCP server and all necessary configuration. Once in
 <details>
 <summary>Cursor</summary>
 
-[![Install MCP Server](https://cursor.com/deeplink/mcp-install-dark.svg)](https://cursor.com/install-mcp?name=Latitudesh&config=eyJtY3BTZXJ2ZXJzIjp7IkxhdGl0dWRlc2giOnsiY29tbWFuZCI6Im5weCIsImFyZ3MiOlsibGF0aXR1ZGVzaCIsInN0YXJ0IiwiLS1zZXJ2ZXItaW5kZXgiLCIuLi4iLCItLWxhdGl0dWRlLWFwaS1rZXkiLCIuLi4iLCItLWJlYXJlciIsIi4uLiJdfX19)
-
-Or manually:
-
 1. Open Cursor Settings
 2. Select Tools and Integrations
 3. Select New MCP Server
-4. If the configuration file is empty paste the following JSON into the MCP Server Configuration:
+4. Paste the following JSON into the MCP Server Configuration:
 
 ```json
 {
@@ -78,17 +74,15 @@ Or manually:
       "args": [
         "latitudesh",
         "start",
-        "--server-index",
-        "...",
-        "--latitude-api-key",
-        "...",
         "--bearer",
-        "..."
+        "YOUR_LATITUDE_API_TOKEN"
       ]
     }
   }
 }
 ```
+
+**Note:** Replace `YOUR_LATITUDE_API_TOKEN` with your actual Latitude.sh bearer token.
 
 </details>
 
@@ -96,8 +90,10 @@ Or manually:
 <summary>Claude Code CLI</summary>
 
 ```bash
-claude mcp add latitudesh npx latitudesh start -- --server-index ... --latitude-api-key ... --bearer ...
+claude mcp add latitudesh npx latitudesh start -- --bearer YOUR_LATITUDE_API_TOKEN
 ```
+
+**Note:** Replace `YOUR_LATITUDE_API_TOKEN` with your actual Latitude.sh bearer token.
 
 </details>
 <details>
@@ -109,67 +105,7 @@ Refer to [Official Windsurf documentation](https://docs.windsurf.com/windsurf/ca
 2. Select Cascade on left side menu
 3. Click on `Manage MCPs`. (To Manage MCPs you should be signed in with a Windsurf Account)
 4. Click on `View raw config` to open up the mcp configuration file.
-5. If the configuration file is empty paste the full json
-```
-{
-  "mcpServers": {
-    "Latitudesh": {
-      "command": "npx",
-      "args": [
-        "latitudesh",
-        "start",
-        "--server-index",
-        "...",
-        "--latitude-api-key",
-        "...",
-        "--bearer",
-        "..."
-      ]
-    }
-  }
-}
-```
-</details>
-<details>
-<summary>VS Code</summary>
-
-Refer to [Official VS Code documentation](https://code.visualstudio.com/api/extension-guides/ai/mcp) for latest information
-
-1. Open [Command Palette](https://code.visualstudio.com/docs/getstarted/userinterface#_command-palette)
-1. Search and open `MCP: Open User Configuration`. This should open mcp.json file
-2. If the configuration file is empty paste the full json
-```
-{
-  "mcpServers": {
-    "Latitudesh": {
-      "command": "npx",
-      "args": [
-        "latitudesh",
-        "start",
-        "--server-index",
-        "...",
-        "--latitude-api-key",
-        "...",
-        "--bearer",
-        "..."
-      ]
-    }
-  }
-}
-```
-
-</details>
-<details>
-<summary>Claude Desktop</summary>
-Claude Desktop doesn't yet support SSE/remote MCP servers.
-
-You need to do the following
-1. Open claude Desktop
-2. Open left hand side pane, then click on your Username
-3. Go to `Settings`
-4. Go to `Developer` tab (on the left hand side)
-5. Click on `Edit Config`
-Paste the following config in the configuration
+5. Paste the configuration:
 
 ```json
 {
@@ -179,32 +115,103 @@ Paste the following config in the configuration
       "args": [
         "latitudesh",
         "start",
-        "--server-index",
-        "...",
-        "--latitude-api-key",
-        "...",
         "--bearer",
-        "..."
+        "YOUR_LATITUDE_API_TOKEN"
       ]
     }
   }
 }
 ```
 
+**Note:** Replace `YOUR_LATITUDE_API_TOKEN` with your actual Latitude.sh bearer token.
+
+</details>
+<details>
+<summary>VS Code</summary>
+
+Refer to [Official VS Code documentation](https://code.visualstudio.com/docs/copilot/chat/mcp-servers) for latest information
+
+1. Open [Command Palette](https://code.visualstudio.com/docs/getstarted/userinterface#_command-palette) (`Cmd+Shift+P` / `Ctrl+Shift+P`)
+2. Search and open `MCP: Open User Configuration` to open the mcp.json file
+3. Add the configuration:
+
+```json
+{
+  "servers": {
+    "Latitudesh": {
+      "type": "stdio",
+      "command": "npx",
+      "args": [
+        "latitudesh",
+        "start",
+        "--bearer",
+        "YOUR_LATITUDE_API_TOKEN"
+      ]
+    }
+  }
+}
+```
+
+4. Save the file and restart VS Code
+5. Open Copilot Chat (`Cmd+Alt+I` / `Ctrl+Alt+I`) and enable **Agent mode**
+6. The Latitudesh tools will be available automatically
+
+**Note:** Replace `YOUR_LATITUDE_API_TOKEN` with your actual Latitude.sh bearer token.
+
+**Tips for using with VS Code:**
+- Be explicit in your prompts: "List my servers from Latitude.sh" instead of just "list servers"
+- Mention "Latitude.sh" or "MCP" to avoid Copilot searching local files
+
+</details>
+<details>
+<summary>Claude Desktop</summary>
+
+1. Open Claude Desktop
+2. Click on your Username in the left sidebar
+3. Go to `Settings` → `Developer` tab
+4. Click `Edit Config`
+5. Add the configuration:
+
+```json
+{
+  "mcpServers": {
+    "Latitudesh": {
+      "command": "npx",
+      "args": [
+        "latitudesh",
+        "start",
+        "--bearer",
+        "YOUR_LATITUDE_API_TOKEN"
+      ]
+    }
+  }
+}
+```
+
+6. Save and restart Claude Desktop
+
+**Note:** Replace `YOUR_LATITUDE_API_TOKEN` with your actual Latitude.sh bearer token.
+
 </details>
 
 
 <details>
-<summary> Stdio installation via npm </summary>
-To start the MCP server, run:
+<summary>Standalone CLI Usage</summary>
+
+To start the MCP server directly:
 
 ```bash
-npx latitudesh start --server-index ... --latitude-api-key ... --bearer ...
+npx latitudesh start --bearer YOUR_LATITUDE_API_TOKEN
 ```
 
-For a full list of server arguments, run:
+**Optional flags:**
+- `--server-index <0|1>` - Select server (0=https://api.latitude.sh, 1=http://api.latitude.sh) [default: 0]
+- `--latitude-api-key <key>` - API key for URL templating
+- `--log-level <level>` - Log level (debug|warning|info|error) [default: info]
 
-```
+For a full list of server arguments:
+
+```bash
 npx latitudesh --help
 ```
 
@@ -216,11 +223,43 @@ npx latitudesh --help
 ## Development
 
 Run locally without a published npm package:
+
 1. Clone this repository
-2. Run `npm install`
-3. Run `npm run build`
-4. Run `node ./bin/mcp-server.js start --server-index ... --latitude-api-key ... --bearer ...`
-To use this local version with Cursor, Claude or other MCP Clients, you'll need to add the following config:
+2. Install dependencies:
+   ```bash
+   npm install
+   ```
+3. Build the server:
+   ```bash
+   npm run build
+   ```
+4. Run the server:
+   ```bash
+   node ./bin/mcp-server.js start --bearer YOUR_LATITUDE_API_TOKEN
+   ```
+
+### Using Local Version with MCP Clients
+
+For **VS Code**, use this configuration in `mcp.json`:
+
+```json
+{
+  "servers": {
+    "Latitudesh": {
+      "type": "stdio",
+      "command": "node",
+      "args": [
+        "/absolute/path/to/latitudesh-mcp/bin/mcp-server.js",
+        "start",
+        "--bearer",
+        "YOUR_LATITUDE_API_TOKEN"
+      ]
+    }
+  }
+}
+```
+
+For **Cursor, Claude Desktop, Windsurf**, use:
 
 ```json
 {
@@ -228,25 +267,25 @@ To use this local version with Cursor, Claude or other MCP Clients, you'll need 
     "Latitudesh": {
       "command": "node",
       "args": [
-        "./bin/mcp-server.js",
+        "/absolute/path/to/latitudesh-mcp/bin/mcp-server.js",
         "start",
-        "--server-index",
-        "...",
-        "--latitude-api-key",
-        "...",
         "--bearer",
-        "..."
+        "YOUR_LATITUDE_API_TOKEN"
       ]
     }
   }
 }
 ```
 
-Or to debug the MCP server locally, use the official MCP Inspector: 
+### Debugging with MCP Inspector
+
+To debug the MCP server locally:
 
 ```bash
-npx @modelcontextprotocol/inspector node ./bin/mcp-server.js start --server-index ... --latitude-api-key ... --bearer ...
+npx @modelcontextprotocol/inspector node ./bin/mcp-server.js start --bearer YOUR_LATITUDE_API_TOKEN
 ```
+
+This will open a web interface at `http://localhost:6274` where you can test all 112 tools interactively.
 
 
 
