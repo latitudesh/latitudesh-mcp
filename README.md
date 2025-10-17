@@ -37,7 +37,7 @@ The DXT package includes the MCP server and all necessary configuration. Once in
 1. Open Cursor Settings
 2. Select Tools and Integrations
 3. Select New MCP Server
-4. If the configuration file is empty paste the following JSON into the MCP Server Configuration:
+4. Paste the following JSON into the MCP Server Configuration:
 
 ```json
 {
@@ -55,14 +55,18 @@ The DXT package includes the MCP server and all necessary configuration. Once in
 }
 ```
 
+**Note:** Replace `YOUR_LATITUDE_API_TOKEN` with your actual Latitude.sh bearer token.
+
 </details>
 
 <details>
 <summary>Claude Code CLI</summary>
 
 ```bash
-claude mcp add latitudesh npx latitudesh start -- --server-index ... --latitude-api-key ... --bearer ...
+claude mcp add latitudesh npx latitudesh start -- --bearer YOUR_LATITUDE_API_TOKEN
 ```
+
+**Note:** Replace `YOUR_LATITUDE_API_TOKEN` with your actual Latitude.sh bearer token.
 
 </details>
 <details>
@@ -144,19 +148,94 @@ Paste the following config in the configuration
 }
 ```
 
+**Note:** Replace `YOUR_LATITUDE_API_TOKEN` with your actual Latitude.sh bearer token.
+
+</details>
+<details>
+<summary>VS Code</summary>
+
+Refer to [Official VS Code documentation](https://code.visualstudio.com/docs/copilot/chat/mcp-servers) for latest information
+
+1. Open [Command Palette](https://code.visualstudio.com/docs/getstarted/userinterface#_command-palette) (`Cmd+Shift+P` / `Ctrl+Shift+P`)
+2. Search and open `MCP: Open User Configuration` to open the mcp.json file
+3. Add the configuration:
+
+```json
+{
+  "servers": {
+    "Latitudesh": {
+      "type": "stdio",
+      "command": "npx",
+      "args": [
+        "latitudesh",
+        "start",
+        "--bearer",
+        "YOUR_LATITUDE_API_TOKEN"
+      ]
+    }
+  }
+}
+```
+
+4. Save the file and restart VS Code
+5. Open Copilot Chat (`Cmd+Alt+I` / `Ctrl+Alt+I`) and enable **Agent mode**
+6. The Latitudesh tools will be available automatically
+
+**Note:** Replace `YOUR_LATITUDE_API_TOKEN` with your actual Latitude.sh bearer token.
+
+**Tips for using with VS Code:**
+- Be explicit in your prompts: "List my servers from Latitude.sh" instead of just "list servers"
+- Mention "Latitude.sh" or "MCP" to avoid Copilot searching local files
+
+</details>
+<details>
+<summary>Claude Desktop</summary>
+
+1. Open Claude Desktop
+2. Click on your Username in the left sidebar
+3. Go to `Settings` → `Developer` tab
+4. Click `Edit Config`
+5. Add the configuration:
+
+```json
+{
+  "mcpServers": {
+    "Latitudesh": {
+      "command": "npx",
+      "args": [
+        "latitudesh",
+        "start",
+        "--bearer",
+        "YOUR_LATITUDE_API_TOKEN"
+      ]
+    }
+  }
+}
+```
+
+6. Save and restart Claude Desktop
+
+**Note:** Replace `YOUR_LATITUDE_API_TOKEN` with your actual Latitude.sh bearer token.
+
 </details>
 
 <details>
-<summary> Stdio installation via npm </summary>
-To start the MCP server, run:
+<summary>Standalone CLI Usage</summary>
+
+To start the MCP server directly:
 
 ```bash
-npx latitudesh start --server-index ... --latitude-api-key ... --bearer ...
+npx latitudesh start --bearer YOUR_LATITUDE_API_TOKEN
 ```
 
-For a full list of server arguments, run:
+**Optional flags:**
+- `--server-index <0|1>` - Select server (0=https://api.latitude.sh, 1=http://api.latitude.sh) [default: 0]
+- `--latitude-api-key <key>` - API key for URL templating
+- `--log-level <level>` - Log level (debug|warning|info|error) [default: info]
 
-```
+For a full list of server arguments:
+
+```bash
 npx latitudesh --help
 ```
 
@@ -179,7 +258,7 @@ To use this local version with MCP Clients, you'll need to add the following con
     "Latitudesh": {
       "command": "node",
       "args": [
-        "./bin/mcp-server.js",
+        "/absolute/path/to/latitudesh-mcp/bin/mcp-server.js",
         "start",
         "--bearer",
         "<YOUR_API_KEY>"
