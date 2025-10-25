@@ -20,6 +20,35 @@ export const TeamBilling$zodSchema: z.ZodType<
   id: z.string().optional(),
 });
 
+/**
+ * Resource limits for the team. Null values indicate limits are not yet implemented/enforced.
+ */
+export type TeamLimits = {
+  bare_metal?: number | null | undefined;
+  bare_metal_gpu?: number | undefined;
+  virtual_machine?: number | null | undefined;
+  virtual_machine_gpu?: number | undefined;
+  database?: number | null | undefined;
+  filesystem?: number | null | undefined;
+  block_storage?: number | null | undefined;
+};
+
+export const TeamLimits$zodSchema: z.ZodType<
+  TeamLimits,
+  z.ZodTypeDef,
+  unknown
+> = z.object({
+  bare_metal: z.number().int().nullable().optional(),
+  bare_metal_gpu: z.number().int().default(1),
+  block_storage: z.number().int().nullable().optional(),
+  database: z.number().int().nullable().optional(),
+  filesystem: z.number().int().nullable().optional(),
+  virtual_machine: z.number().int().nullable().optional(),
+  virtual_machine_gpu: z.number().int().default(0),
+}).describe(
+  "Resource limits for the team. Null values indicate limits are not yet implemented/enforced.",
+);
+
 export type TeamAttributes = {
   name?: string | undefined;
   slug?: string | undefined;
@@ -34,6 +63,7 @@ export type TeamAttributes = {
   owner?: UserInclude | undefined;
   billing?: TeamBilling | undefined;
   feature_flags?: Array<string> | undefined;
+  limits?: TeamLimits | undefined;
 };
 
 export const TeamAttributes$zodSchema: z.ZodType<
@@ -48,6 +78,7 @@ export const TeamAttributes$zodSchema: z.ZodType<
   description: z.string().optional(),
   enforce_mfa: z.boolean().optional(),
   feature_flags: z.array(z.string()).optional(),
+  limits: z.lazy(() => TeamLimits$zodSchema).optional(),
   name: z.string().optional(),
   owner: UserInclude$zodSchema.optional(),
   projects: z.array(ProjectInclude$zodSchema).optional(),

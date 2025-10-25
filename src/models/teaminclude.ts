@@ -9,6 +9,30 @@ export type Currency = {};
 export const Currency$zodSchema: z.ZodType<Currency, z.ZodTypeDef, unknown> = z
   .object({});
 
+export type TeamIncludeLimits = {
+  bare_metal?: number | null | undefined;
+  bare_metal_gpu?: number | undefined;
+  virtual_machine?: number | null | undefined;
+  virtual_machine_gpu?: number | undefined;
+  database?: number | null | undefined;
+  filesystem?: number | null | undefined;
+  block_storage?: number | null | undefined;
+};
+
+export const TeamIncludeLimits$zodSchema: z.ZodType<
+  TeamIncludeLimits,
+  z.ZodTypeDef,
+  unknown
+> = z.object({
+  bare_metal: z.number().int().nullable().optional(),
+  bare_metal_gpu: z.number().int().optional(),
+  block_storage: z.number().int().nullable().optional(),
+  database: z.number().int().nullable().optional(),
+  filesystem: z.number().int().nullable().optional(),
+  virtual_machine: z.number().int().nullable().optional(),
+  virtual_machine_gpu: z.number().int().optional(),
+});
+
 export type TeamInclude = {
   id?: string | undefined;
   name?: string | undefined;
@@ -18,6 +42,7 @@ export type TeamInclude = {
   currency?: Currency | undefined;
   status?: string | undefined;
   feature_flags?: Array<string> | undefined;
+  limits?: TeamIncludeLimits | undefined;
 };
 
 export const TeamInclude$zodSchema: z.ZodType<
@@ -30,6 +55,7 @@ export const TeamInclude$zodSchema: z.ZodType<
   description: z.string().optional(),
   feature_flags: z.array(z.string()).optional(),
   id: z.string().optional(),
+  limits: z.lazy(() => TeamIncludeLimits$zodSchema).optional(),
   name: z.string().optional(),
   slug: z.string().optional(),
   status: z.string().optional(),
