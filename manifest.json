@@ -1,7 +1,7 @@
 {
   "dxt_version": "0.1",
   "name": "latitudesh",
-  "version": "0.0.2",
+  "version": "0.1.0",
   "description": "",
   "long_description": "Latitude.sh API: The Latitude.sh API is a RESTful API to manage your Latitude.sh account. It allows you to perform the same actions as the Latitude.sh dashboard.",
   "author": {
