@@ -3,6 +3,7 @@
  */
 
 import * as z from "zod";
+import { ProjectInclude, ProjectInclude$zodSchema } from "./projectinclude.js";
 
 export const VirtualNetworkDataType$zodSchema = z.enum([
   "virtual_networks",
@@ -46,13 +47,29 @@ export const VirtualNetworkDataRegion$zodSchema: z.ZodType<
   site: z.lazy(() => VirtualNetworkDataSite$zodSchema).optional(),
 });
 
+export type Tag = {
+  id?: string | undefined;
+  name?: string | undefined;
+  description?: string | undefined;
+  color?: string | undefined;
+};
+
+export const Tag$zodSchema: z.ZodType<Tag, z.ZodTypeDef, unknown> = z.object({
+  color: z.string().optional(),
+  description: z.string().optional(),
+  id: z.string().optional(),
+  name: z.string().optional(),
+});
+
 export type VirtualNetworkDataAttributes = {
   vid?: number | undefined;
   name?: string | undefined;
   description?: string | undefined;
+  project?: ProjectInclude | undefined;
   region?: VirtualNetworkDataRegion | undefined;
   created_at?: string | undefined;
   assignments_count?: number | undefined;
+  tags?: Array<Tag> | undefined;
 };
 
 export const VirtualNetworkDataAttributes$zodSchema: z.ZodType<
@@ -64,7 +81,9 @@ export const VirtualNetworkDataAttributes$zodSchema: z.ZodType<
   created_at: z.string().datetime({ offset: true }).optional(),
   description: z.string().optional(),
   name: z.string().optional(),
+  project: ProjectInclude$zodSchema.optional(),
   region: z.lazy(() => VirtualNetworkDataRegion$zodSchema).optional(),
+  tags: z.array(z.lazy(() => Tag$zodSchema)).optional(),
   vid: z.number().int().optional(),
 });
 

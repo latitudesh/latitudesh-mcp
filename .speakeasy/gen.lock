@@ -1,23 +1,25 @@
 lockVersion: 2.0.0
 id: 14ad660b-1b20-4e74-9900-f561baa97606
 management:
-  docChecksum: 1b8e178454366605ee9bbd0d81e35a93
+  docChecksum: 2d5ec1c6a1173c1c2e5647d028e4e6c5
   docVersion: "2023-06-01"
-  speakeasyVersion: 1.636.3
-  generationVersion: 2.723.11
-  releaseVersion: 0.0.2
-  configChecksum: 59d94dada6ab732b8a748239adee16f9
+  speakeasyVersion: 1.645.1
+  generationVersion: 2.735.1
+  releaseVersion: 0.1.0
+  configChecksum: d0065fdccd3deff89b379a47015e1e22
+  repoURL: https://github.com/latitudesh/latitudesh-mcp.git
+  published: true
 features:
   mcp-typescript:
     additionalDependencies: 0.1.0
     constsAndDefaults: 0.1.0
-    core: 0.6.0
+    core: 0.7.1
     defaultEnabledRetries: 0.1.0
     deprecations: 0.1.0
     enumUnions: 0.1.0
     globalSecurity: 0.1.1
     globalSecurityCallbacks: 0.0.0
-    globalServerURLs: 0.1.0
+    globalServerURLs: 0.1.1
     nameOverrides: 0.1.0
     responseFormat: 0.1.0
     retries: 0.1.0
@@ -485,3 +487,9 @@ generatedFiles:
   - src/types/streams.ts
   - tsconfig.json
 examplesVersion: 1.0.2
+releaseNotes: |
+  ## Mcp-typescript SDK Changes Detected:
+  * `Latitudesh.privateNetworks.list()`:  `response.data.[].attributes` **Changed**
+  * `Latitudesh.privateNetworks.create()`:  `response.data.attributes` **Changed**
+  * `Latitudesh.privateNetworks.get()`:  `response.data.data.attributes` **Changed**
+  * `Latitudesh.privateNetworks.update()`:  `response.data.attributes` **Changed**
