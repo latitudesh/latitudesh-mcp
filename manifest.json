@@ -1,7 +1,7 @@
 {
   "dxt_version": "0.1",
   "name": "latitudesh",
-  "version": "0.0.2",
+  "version": "0.1.0",
   "description": "",
   "long_description": "Latitude.sh API: The Latitude.sh API is a RESTful API to manage your Latitude.sh account. It allows you to perform the same actions as the Latitude.sh dashboard.",
   "author": {
@@ -347,16 +347,16 @@
       "description": "Create volume\n\nAllows you to add persistent storage to a project. These volumes can be used to store data across your servers."
     },
     {
-      "name": "storage-post-storage-volumes-mount",
-      "description": "Mount volume\n\nMounts volume storage by adding the client to an allowed list"
-    },
-    {
       "name": "storage-get-storage-volume",
       "description": "Get volume\n\nShows details of a specific volume storage."
     },
     {
       "name": "storage-delete-storage-volumes",
       "description": "Delete volume\n\nAllows you to remove persistent storage from a project."
+    },
+    {
+      "name": "storage-post-storage-volumes-mount",
+      "description": "Mount volume\n\nMounts volume storage by adding the client to an allowed list"
     },
     {
       "name": "tags-list",

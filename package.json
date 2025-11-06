@@ -1,17 +1,13 @@
 {
   "name": "latitudesh",
-  "version": "0.0.2",
-  "description": "Model Context Protocol (MCP) Server for the Latitude.sh API",
-  "author": "Latitude.sh <support@latitude.sh>",
-  "license": "MIT",
-  "keywords": ["mcp", "latitude", "latitudesh", "model-context-protocol", "ai", "llm"],
+  "version": "0.1.0",
+  "author": "Speakeasy",
+  "type": "module",
+  "sideEffects": false,
   "repository": {
     "type": "git",
     "url": "https://github.com/latitudesh/latitudesh-mcp.git"
   },
-  "homepage": "https://github.com/latitudesh/latitudesh-mcp#readme",
-  "type": "module",
-  "sideEffects": false,
   "bin": {
     "latitudesh": "bin/mcp-server.js",
     "mcp": "bin/mcp-server.js"
