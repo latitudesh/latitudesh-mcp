@@ -135,6 +135,9 @@ export const VirtualMachinePlansRegion$zodSchema: z.ZodType<
  */
 export const VirtualMachinePlansStockLevel$zodSchema = z.enum([
   "low",
+  "unavailable",
+  "medium",
+  "high",
 ]).describe("The stock level of the plan");
 
 export type VirtualMachinePlansStockLevel = z.infer<

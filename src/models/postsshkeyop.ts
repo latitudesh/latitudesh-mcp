@@ -13,6 +13,7 @@ export type PostSshKeyType2 = z.infer<typeof PostSshKeyType2$zodSchema>;
 
 export type PostSshKeyAttributes2 = {
   name?: string | undefined;
+  project?: string | undefined;
   public_key?: string | undefined;
 };
 
@@ -22,6 +23,7 @@ export const PostSshKeyAttributes2$zodSchema: z.ZodType<
   unknown
 > = z.object({
   name: z.string().optional(),
+  project: z.string().optional(),
   public_key: z.string().optional(),
 });
 

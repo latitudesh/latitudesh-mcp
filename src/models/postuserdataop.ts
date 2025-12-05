@@ -11,7 +11,11 @@ export const PostUserDataType2$zodSchema = z.enum([
 
 export type PostUserDataType2 = z.infer<typeof PostUserDataType2$zodSchema>;
 
-export type PostUserDataAttributes2 = { description: string; content: string };
+export type PostUserDataAttributes2 = {
+  description: string;
+  project?: string | undefined;
+  content: string;
+};
 
 export const PostUserDataAttributes2$zodSchema: z.ZodType<
   PostUserDataAttributes2,
@@ -20,6 +24,7 @@ export const PostUserDataAttributes2$zodSchema: z.ZodType<
 > = z.object({
   content: z.string(),
   description: z.string(),
+  project: z.string().optional(),
 });
 
 export type PostUserDataData2 = {

@@ -19,12 +19,15 @@ generation:
     hoistGlobalSecurity: true
   inferSSEOverload: true
   sdkHooksConfigAccess: true
+  schemas:
+    allOfMergeStrategy: shallowMerge
+  requestBodyFieldName: ""
   tests:
     generateTests: false
     generateNewTests: true
     skipResponseBodyAssertions: false
 mcp-typescript:
-  version: 0.0.2
+  version: 0.1.0
   additionalDependencies:
     dependencies: {}
     devDependencies: {}
@@ -34,7 +37,11 @@ mcp-typescript:
   cloudflareEnabled: false
   defaultErrorName: LatitudeshDefaultError
   envVarPrefix: LATITUDESH
+  formStringArrayEncodeMode: encoded-string
+  inferUnionDiscriminators: false
   inputModelSuffix: input
   maxMethodParams: 0
+  multipartArrayFormat: legacy
   outputModelSuffix: output
   packageName: latitudesh
+  responseFormat: envelope

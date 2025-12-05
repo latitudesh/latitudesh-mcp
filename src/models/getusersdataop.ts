@@ -5,7 +5,10 @@
 import * as z from "zod";
 import { UserData, UserData$zodSchema } from "./userdata.js";
 
-export type GetUsersDataRequest = { extraFieldsUserData?: string | undefined };
+export type GetUsersDataRequest = {
+  filterProject?: string | undefined;
+  extraFieldsUserData?: string | undefined;
+};
 
 export const GetUsersDataRequest$zodSchema: z.ZodType<
   GetUsersDataRequest,
@@ -15,6 +18,7 @@ export const GetUsersDataRequest$zodSchema: z.ZodType<
   extraFieldsUserData: z.string().default("decoded_content").describe(
     "The `decoded_content` is provided as an extra attribute that shows content in decoded form.",
   ),
+  filterProject: z.string().describe("Project ID or slug").optional(),
 });
 
 /**

@@ -23,7 +23,7 @@ export type VolumeDataAttributes = {
   name?: string | undefined;
   size_in_gb?: number | undefined;
   created_at?: string | undefined;
-  namespace_id?: number | undefined;
+  namespace_id?: string | null | undefined;
   connector_id?: string | undefined;
   initiators?: Array<Initiator> | undefined;
   project?: ProjectInclude | undefined;
@@ -39,7 +39,7 @@ export const VolumeDataAttributes$zodSchema: z.ZodType<
   created_at: z.string().datetime({ offset: true }).optional(),
   initiators: z.array(z.lazy(() => Initiator$zodSchema)).optional(),
   name: z.string().optional(),
-  namespace_id: z.number().int().optional(),
+  namespace_id: z.string().nullable().optional(),
   project: ProjectInclude$zodSchema.optional(),
   size_in_gb: z.number().int().optional(),
   team: TeamInclude$zodSchema.optional(),

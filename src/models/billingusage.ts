@@ -129,8 +129,9 @@ export const Product$zodSchema: z.ZodType<Product, z.ZodTypeDef, unknown> = z
 export type BillingUsageAttributes = {
   project?: BillingUsageProject | undefined;
   period?: Period | undefined;
+  available_credit_balance?: number | undefined;
   price?: number | undefined;
-  threshold?: number | undefined;
+  threshold?: number | null | undefined;
   products?: Array<Product> | undefined;
 };
 
@@ -139,11 +140,12 @@ export const BillingUsageAttributes$zodSchema: z.ZodType<
   z.ZodTypeDef,
   unknown
 > = z.object({
+  available_credit_balance: z.number().int().optional(),
   period: z.lazy(() => Period$zodSchema).optional(),
   price: z.number().optional(),
   products: z.array(z.lazy(() => Product$zodSchema)).optional(),
   project: z.lazy(() => BillingUsageProject$zodSchema).optional(),
-  threshold: z.number().optional(),
+  threshold: z.number().nullable().optional(),
 });
 
 export type BillingUsageData = {

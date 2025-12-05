@@ -89,6 +89,7 @@ async function $do(
   const path$ = pathToFunc("/user_data")();
   const query$ = encodeFormQuery({
     "extra_fields[user_data]": payload$?.extraFieldsUserData,
+    "filter[project]": payload$?.filterProject,
   });
 
   const headers$ = new Headers(compactMap({
