@@ -3,15 +3,19 @@
  */
 
 import * as z from "zod";
-import { UserData, UserData$zodSchema } from "./userdata.js";
+import { ClosedEnum } from "../types/enums.js";
+import { UserDataObject, UserDataObject$zodSchema } from "./userdataobject.js";
+
+export const PutProjectUserDataType2 = {
+  UserData: "user_data",
+} as const;
+export type PutProjectUserDataType2 = ClosedEnum<
+  typeof PutProjectUserDataType2
+>;
 
 export const PutProjectUserDataType2$zodSchema = z.enum([
   "user_data",
 ]);
-
-export type PutProjectUserDataType2 = z.infer<
-  typeof PutProjectUserDataType2$zodSchema
->;
 
 export type PutProjectUserDataAttributes2 = {
   description?: string | undefined;
@@ -19,9 +23,7 @@ export type PutProjectUserDataAttributes2 = {
 };
 
 export const PutProjectUserDataAttributes2$zodSchema: z.ZodType<
-  PutProjectUserDataAttributes2,
-  z.ZodTypeDef,
-  unknown
+  PutProjectUserDataAttributes2
 > = z.object({
   content: z.string().optional(),
   description: z.string().optional(),
@@ -34,9 +36,7 @@ export type PutProjectUserDataData2 = {
 };
 
 export const PutProjectUserDataData2$zodSchema: z.ZodType<
-  PutProjectUserDataData2,
-  z.ZodTypeDef,
-  unknown
+  PutProjectUserDataData2
 > = z.object({
   attributes: z.lazy(() => PutProjectUserDataAttributes2$zodSchema).optional(),
   id: z.string(),
@@ -46,9 +46,7 @@ export const PutProjectUserDataData2$zodSchema: z.ZodType<
 export type PutProjectUserDataRequestBody2 = { data: PutProjectUserDataData2 };
 
 export const PutProjectUserDataRequestBody2$zodSchema: z.ZodType<
-  PutProjectUserDataRequestBody2,
-  z.ZodTypeDef,
-  unknown
+  PutProjectUserDataRequestBody2
 > = z.object({
   data: z.lazy(() => PutProjectUserDataData2$zodSchema),
 });
@@ -60,9 +58,7 @@ export type PutProjectUserDataRequest = {
 };
 
 export const PutProjectUserDataRequest$zodSchema: z.ZodType<
-  PutProjectUserDataRequest,
-  z.ZodTypeDef,
-  unknown
+  PutProjectUserDataRequest
 > = z.object({
   RequestBody: z.lazy(() => PutProjectUserDataRequestBody2$zodSchema)
     .optional(),
@@ -74,16 +70,14 @@ export type PutProjectUserDataResponse = {
   ContentType: string;
   StatusCode: number;
   RawResponse: Response;
-  user_data?: UserData | undefined;
+  user_data_object?: UserDataObject | undefined;
 };
 
 export const PutProjectUserDataResponse$zodSchema: z.ZodType<
-  PutProjectUserDataResponse,
-  z.ZodTypeDef,
-  unknown
+  PutProjectUserDataResponse
 > = z.object({
   ContentType: z.string(),
-  RawResponse: z.instanceof(Response),
-  StatusCode: z.number().int(),
-  user_data: UserData$zodSchema.optional(),
+  RawResponse: z.custom<Response>(x => x instanceof Response),
+  StatusCode: z.int(),
+  user_data_object: UserDataObject$zodSchema.optional(),
 });

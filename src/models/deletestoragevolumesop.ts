@@ -7,9 +7,7 @@ import * as z from "zod";
 export type DeleteStorageVolumesRequest = { id: string };
 
 export const DeleteStorageVolumesRequest$zodSchema: z.ZodType<
-  DeleteStorageVolumesRequest,
-  z.ZodTypeDef,
-  unknown
+  DeleteStorageVolumesRequest
 > = z.object({
   id: z.string(),
 });
@@ -21,11 +19,9 @@ export type DeleteStorageVolumesResponse = {
 };
 
 export const DeleteStorageVolumesResponse$zodSchema: z.ZodType<
-  DeleteStorageVolumesResponse,
-  z.ZodTypeDef,
-  unknown
+  DeleteStorageVolumesResponse
 > = z.object({
   ContentType: z.string(),
-  RawResponse: z.instanceof(Response),
-  StatusCode: z.number().int(),
+  RawResponse: z.custom<Response>(x => x instanceof Response),
+  StatusCode: z.int(),
 });

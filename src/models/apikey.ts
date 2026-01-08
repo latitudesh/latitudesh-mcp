@@ -3,12 +3,16 @@
  */
 
 import * as z from "zod";
+import { ClosedEnum } from "../types/enums.js";
+
+export const ApiKeyType = {
+  ApiKeys: "api_keys",
+} as const;
+export type ApiKeyType = ClosedEnum<typeof ApiKeyType>;
 
 export const ApiKeyType$zodSchema = z.enum([
   "api_keys",
 ]);
-
-export type ApiKeyType = z.infer<typeof ApiKeyType$zodSchema>;
 
 /**
  * The owner of the API Key
@@ -18,11 +22,7 @@ export type ApiKeyUser = {
   email?: string | undefined;
 };
 
-export const ApiKeyUser$zodSchema: z.ZodType<
-  ApiKeyUser,
-  z.ZodTypeDef,
-  unknown
-> = z.object({
+export const ApiKeyUser$zodSchema: z.ZodType<ApiKeyUser> = z.object({
   email: z.string().optional(),
   id: z.string().optional(),
 }).describe("The owner of the API Key");
@@ -37,19 +37,17 @@ export type ApiKeyAttributes = {
   updated_at?: string | undefined;
 };
 
-export const ApiKeyAttributes$zodSchema: z.ZodType<
-  ApiKeyAttributes,
-  z.ZodTypeDef,
-  unknown
-> = z.object({
-  api_version: z.string().optional(),
-  created_at: z.string().datetime({ offset: true }).optional(),
-  last_used_at: z.string().datetime({ offset: true }).optional(),
-  name: z.string().optional(),
-  token_last_slice: z.string().optional(),
-  updated_at: z.string().datetime({ offset: true }).optional(),
-  user: z.lazy(() => ApiKeyUser$zodSchema).optional(),
-});
+export const ApiKeyAttributes$zodSchema: z.ZodType<ApiKeyAttributes> = z.object(
+  {
+    api_version: z.string().optional(),
+    created_at: z.iso.datetime({ offset: true }).optional(),
+    last_used_at: z.iso.datetime({ offset: true }).optional(),
+    name: z.string().optional(),
+    token_last_slice: z.string().optional(),
+    updated_at: z.iso.datetime({ offset: true }).optional(),
+    user: z.lazy(() => ApiKeyUser$zodSchema).optional(),
+  },
+);
 
 export type ApiKey = {
   id?: string | undefined;
@@ -57,9 +55,8 @@ export type ApiKey = {
   attributes?: ApiKeyAttributes | undefined;
 };
 
-export const ApiKey$zodSchema: z.ZodType<ApiKey, z.ZodTypeDef, unknown> = z
-  .object({
-    attributes: z.lazy(() => ApiKeyAttributes$zodSchema).optional(),
-    id: z.string().optional(),
-    type: ApiKeyType$zodSchema.optional(),
-  });
+export const ApiKey$zodSchema: z.ZodType<ApiKey> = z.object({
+  attributes: z.lazy(() => ApiKeyAttributes$zodSchema).optional(),
+  id: z.string().optional(),
+  type: ApiKeyType$zodSchema.optional(),
+});

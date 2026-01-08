@@ -6,18 +6,12 @@ import * as z from "zod";
 
 export type ServerRescueMeta = {};
 
-export const ServerRescueMeta$zodSchema: z.ZodType<
-  ServerRescueMeta,
-  z.ZodTypeDef,
-  unknown
-> = z.object({});
+export const ServerRescueMeta$zodSchema: z.ZodType<ServerRescueMeta> = z.object(
+  {},
+);
 
 export type ServerRescue = { meta?: ServerRescueMeta | undefined };
 
-export const ServerRescue$zodSchema: z.ZodType<
-  ServerRescue,
-  z.ZodTypeDef,
-  unknown
-> = z.object({
+export const ServerRescue$zodSchema: z.ZodType<ServerRescue> = z.object({
   meta: z.lazy(() => ServerRescueMeta$zodSchema).optional(),
 });

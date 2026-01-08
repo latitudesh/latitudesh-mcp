@@ -17,32 +17,30 @@ export type GetProjectsRequest = {
   pageNumber?: number | undefined;
 };
 
-export const GetProjectsRequest$zodSchema: z.ZodType<
-  GetProjectsRequest,
-  z.ZodTypeDef,
-  unknown
-> = z.object({
-  extraFieldsProjects: z.string().describe(
-    "The `last_renewal_date` and `next_renewal_date` are provided as extra attributes that show previous and future billing cycle dates. To request it, just set `extra_fields[projects]=last_renewal_date,next_renewal_date` in the query string.",
-  ).optional(),
-  filterBillingType: z.string().describe("The billing type to filter by")
-    .optional(),
-  filterDescription: z.string().describe("The project description to filter by")
-    .optional(),
-  filterEnvironment: z.string().describe("The environment to filter by")
-    .optional(),
-  filterName: z.string().describe("The project name to filter by").optional(),
-  filterSlug: z.string().describe("The project slug to filter by").optional(),
-  filterTags: z.string().describe(
-    "The tags ids to filter by, separated by comma, e.g. `filter[tags]=tag_1,tag_2`will return projects with `tag_1` AND `tag_2`",
-  ).optional(),
-  pageNumber: z.number().int().default(1).describe(
-    "Page number to return (starts at 1)",
-  ),
-  pageSize: z.number().int().default(20).describe(
-    "Number of items to return per page",
-  ),
-});
+export const GetProjectsRequest$zodSchema: z.ZodType<GetProjectsRequest> = z
+  .object({
+    extraFieldsProjects: z.string().describe(
+      "The `last_renewal_date` and `next_renewal_date` are provided as extra attributes that show previous and future billing cycle dates. To request it, just set `extra_fields[projects]=last_renewal_date,next_renewal_date` in the query string.",
+    ).optional(),
+    filterBillingType: z.string().describe("The billing type to filter by")
+      .optional(),
+    filterDescription: z.string().describe(
+      "The project description to filter by",
+    ).optional(),
+    filterEnvironment: z.string().describe("The environment to filter by")
+      .optional(),
+    filterName: z.string().describe("The project name to filter by").optional(),
+    filterSlug: z.string().describe("The project slug to filter by").optional(),
+    filterTags: z.string().describe(
+      "The tags ids to filter by, separated by comma, e.g. `filter[tags]=tag_1,tag_2`will return projects with `tag_1` AND `tag_2`",
+    ).optional(),
+    pageNumber: z.int().default(1).describe(
+      "Page number to return (starts at 1)",
+    ),
+    pageSize: z.int().default(20).describe(
+      "Number of items to return per page",
+    ),
+  });
 
 export type GetProjectsResponse = {
   ContentType: string;
@@ -51,13 +49,10 @@ export type GetProjectsResponse = {
   projects?: Projects | undefined;
 };
 
-export const GetProjectsResponse$zodSchema: z.ZodType<
-  GetProjectsResponse,
-  z.ZodTypeDef,
-  unknown
-> = z.object({
-  ContentType: z.string(),
-  RawResponse: z.instanceof(Response),
-  StatusCode: z.number().int(),
-  projects: Projects$zodSchema.optional(),
-});
+export const GetProjectsResponse$zodSchema: z.ZodType<GetProjectsResponse> = z
+  .object({
+    ContentType: z.string(),
+    RawResponse: z.custom<Response>(x => x instanceof Response),
+    StatusCode: z.int(),
+    projects: Projects$zodSchema.optional(),
+  });

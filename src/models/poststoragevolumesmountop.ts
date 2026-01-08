@@ -3,21 +3,23 @@
  */
 
 import * as z from "zod";
+import { ClosedEnum } from "../types/enums.js";
+
+export const PostStorageVolumesMountType = {
+  Volumes: "volumes",
+} as const;
+export type PostStorageVolumesMountType = ClosedEnum<
+  typeof PostStorageVolumesMountType
+>;
 
 export const PostStorageVolumesMountType$zodSchema = z.enum([
   "volumes",
 ]);
 
-export type PostStorageVolumesMountType = z.infer<
-  typeof PostStorageVolumesMountType$zodSchema
->;
-
 export type PostStorageVolumesMountAttributes = { nqn: string };
 
 export const PostStorageVolumesMountAttributes$zodSchema: z.ZodType<
-  PostStorageVolumesMountAttributes,
-  z.ZodTypeDef,
-  unknown
+  PostStorageVolumesMountAttributes
 > = z.object({
   nqn: z.string(),
 });
@@ -28,9 +30,7 @@ export type PostStorageVolumesMountData = {
 };
 
 export const PostStorageVolumesMountData$zodSchema: z.ZodType<
-  PostStorageVolumesMountData,
-  z.ZodTypeDef,
-  unknown
+  PostStorageVolumesMountData
 > = z.object({
   attributes: z.lazy(() => PostStorageVolumesMountAttributes$zodSchema),
   type: PostStorageVolumesMountType$zodSchema,
@@ -41,9 +41,7 @@ export type PostStorageVolumesMountRequestBody = {
 };
 
 export const PostStorageVolumesMountRequestBody$zodSchema: z.ZodType<
-  PostStorageVolumesMountRequestBody,
-  z.ZodTypeDef,
-  unknown
+  PostStorageVolumesMountRequestBody
 > = z.object({
   data: z.lazy(() => PostStorageVolumesMountData$zodSchema),
 });
@@ -54,9 +52,7 @@ export type PostStorageVolumesMountRequest = {
 };
 
 export const PostStorageVolumesMountRequest$zodSchema: z.ZodType<
-  PostStorageVolumesMountRequest,
-  z.ZodTypeDef,
-  unknown
+  PostStorageVolumesMountRequest
 > = z.object({
   RequestBody: z.lazy(() => PostStorageVolumesMountRequestBody$zodSchema),
   id: z.string().describe("Volume storage ID"),
@@ -69,11 +65,9 @@ export type PostStorageVolumesMountResponse = {
 };
 
 export const PostStorageVolumesMountResponse$zodSchema: z.ZodType<
-  PostStorageVolumesMountResponse,
-  z.ZodTypeDef,
-  unknown
+  PostStorageVolumesMountResponse
 > = z.object({
   ContentType: z.string(),
-  RawResponse: z.instanceof(Response),
-  StatusCode: z.number().int(),
+  RawResponse: z.custom<Response>(x => x instanceof Response),
+  StatusCode: z.int(),
 });

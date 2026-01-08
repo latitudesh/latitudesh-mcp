@@ -165,7 +165,7 @@ async function $do(
   >(
     M.json(200, PatchUserDataResponse$zodSchema, {
       ctype: "application/vnd.api+json",
-      key: "user_data",
+      key: "user_data_object",
     }),
   )(response, req$, { extraFields: responseFields$ });
 

@@ -3,22 +3,24 @@
  */
 
 import * as z from "zod";
+import { ClosedEnum } from "../types/enums.js";
 import { FirewallServer, FirewallServer$zodSchema } from "./firewallserver.js";
+
+export const CreateFirewallAssignmentType2 = {
+  FirewallAssignments: "firewall_assignments",
+} as const;
+export type CreateFirewallAssignmentType2 = ClosedEnum<
+  typeof CreateFirewallAssignmentType2
+>;
 
 export const CreateFirewallAssignmentType2$zodSchema = z.enum([
   "firewall_assignments",
 ]);
 
-export type CreateFirewallAssignmentType2 = z.infer<
-  typeof CreateFirewallAssignmentType2$zodSchema
->;
-
 export type CreateFirewallAssignmentAttributes2 = { server_id: string };
 
 export const CreateFirewallAssignmentAttributes2$zodSchema: z.ZodType<
-  CreateFirewallAssignmentAttributes2,
-  z.ZodTypeDef,
-  unknown
+  CreateFirewallAssignmentAttributes2
 > = z.object({
   server_id: z.string(),
 });
@@ -29,9 +31,7 @@ export type CreateFirewallAssignmentData2 = {
 };
 
 export const CreateFirewallAssignmentData2$zodSchema: z.ZodType<
-  CreateFirewallAssignmentData2,
-  z.ZodTypeDef,
-  unknown
+  CreateFirewallAssignmentData2
 > = z.object({
   attributes: z.lazy(() => CreateFirewallAssignmentAttributes2$zodSchema)
     .optional(),
@@ -43,9 +43,7 @@ export type CreateFirewallAssignmentRequestBody2 = {
 };
 
 export const CreateFirewallAssignmentRequestBody2$zodSchema: z.ZodType<
-  CreateFirewallAssignmentRequestBody2,
-  z.ZodTypeDef,
-  unknown
+  CreateFirewallAssignmentRequestBody2
 > = z.object({
   data: z.lazy(() => CreateFirewallAssignmentData2$zodSchema),
 });
@@ -56,9 +54,7 @@ export type CreateFirewallAssignmentRequest = {
 };
 
 export const CreateFirewallAssignmentRequest$zodSchema: z.ZodType<
-  CreateFirewallAssignmentRequest,
-  z.ZodTypeDef,
-  unknown
+  CreateFirewallAssignmentRequest
 > = z.object({
   RequestBody: z.lazy(() => CreateFirewallAssignmentRequestBody2$zodSchema),
   firewall_id: z.string().describe("The Firewall ID"),
@@ -72,12 +68,10 @@ export type CreateFirewallAssignmentResponse = {
 };
 
 export const CreateFirewallAssignmentResponse$zodSchema: z.ZodType<
-  CreateFirewallAssignmentResponse,
-  z.ZodTypeDef,
-  unknown
+  CreateFirewallAssignmentResponse
 > = z.object({
   ContentType: z.string(),
-  RawResponse: z.instanceof(Response),
-  StatusCode: z.number().int(),
+  RawResponse: z.custom<Response>(x => x instanceof Response),
+  StatusCode: z.int(),
   firewall_server: FirewallServer$zodSchema.optional(),
 });

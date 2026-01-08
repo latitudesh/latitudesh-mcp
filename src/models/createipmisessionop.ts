@@ -8,9 +8,7 @@ import { IpmiSession, IpmiSession$zodSchema } from "./ipmisession.js";
 export type CreateIpmiSessionRequest = { server_id: string };
 
 export const CreateIpmiSessionRequest$zodSchema: z.ZodType<
-  CreateIpmiSessionRequest,
-  z.ZodTypeDef,
-  unknown
+  CreateIpmiSessionRequest
 > = z.object({
   server_id: z.string(),
 });
@@ -23,12 +21,10 @@ export type CreateIpmiSessionResponse = {
 };
 
 export const CreateIpmiSessionResponse$zodSchema: z.ZodType<
-  CreateIpmiSessionResponse,
-  z.ZodTypeDef,
-  unknown
+  CreateIpmiSessionResponse
 > = z.object({
   ContentType: z.string(),
-  RawResponse: z.instanceof(Response),
-  StatusCode: z.number().int(),
+  RawResponse: z.custom<Response>(x => x instanceof Response),
+  StatusCode: z.int(),
   ipmi_session: IpmiSession$zodSchema.optional(),
 });

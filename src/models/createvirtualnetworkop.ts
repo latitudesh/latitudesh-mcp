@@ -3,19 +3,51 @@
  */
 
 import * as z from "zod";
+import { ClosedEnum } from "../types/enums.js";
 import { VirtualNetwork, VirtualNetwork$zodSchema } from "./virtualnetwork.js";
+
+export const CreateVirtualNetworkType2 = {
+  VirtualNetwork: "virtual_network",
+} as const;
+export type CreateVirtualNetworkType2 = ClosedEnum<
+  typeof CreateVirtualNetworkType2
+>;
 
 export const CreateVirtualNetworkType2$zodSchema = z.enum([
   "virtual_network",
 ]);
 
-export type CreateVirtualNetworkType2 = z.infer<
-  typeof CreateVirtualNetworkType2$zodSchema
->;
-
 /**
  * Site ID or slug
  */
+export const CreateVirtualNetworkSite2 = {
+  Ash: "ASH",
+  Bgt: "BGT",
+  Bue: "BUE",
+  Chi: "CHI",
+  Dal: "DAL",
+  Fra: "FRA",
+  Lax: "LAX",
+  Lon: "LON",
+  Mex: "MEX",
+  Mex2: "MEX2",
+  Mia: "MIA",
+  Mia2: "MIA2",
+  Nyc: "NYC",
+  San: "SAN",
+  Sao: "SAO",
+  Sao2: "SAO2",
+  Syd: "SYD",
+  Tyo: "TYO",
+  Tyo4: "TYO4",
+} as const;
+/**
+ * Site ID or slug
+ */
+export type CreateVirtualNetworkSite2 = ClosedEnum<
+  typeof CreateVirtualNetworkSite2
+>;
+
 export const CreateVirtualNetworkSite2$zodSchema = z.enum([
   "ASH",
   "BGT",
@@ -35,12 +67,8 @@ export const CreateVirtualNetworkSite2$zodSchema = z.enum([
   "SAO2",
   "SYD",
   "TYO",
-  "TYO2",
+  "TYO4",
 ]).describe("Site ID or slug");
-
-export type CreateVirtualNetworkSite2 = z.infer<
-  typeof CreateVirtualNetworkSite2$zodSchema
->;
 
 export type CreateVirtualNetworkAttributes2 = {
   description: string;
@@ -49,9 +77,7 @@ export type CreateVirtualNetworkAttributes2 = {
 };
 
 export const CreateVirtualNetworkAttributes2$zodSchema: z.ZodType<
-  CreateVirtualNetworkAttributes2,
-  z.ZodTypeDef,
-  unknown
+  CreateVirtualNetworkAttributes2
 > = z.object({
   description: z.string(),
   project: z.string(),
@@ -64,9 +90,7 @@ export type CreateVirtualNetworkData2 = {
 };
 
 export const CreateVirtualNetworkData2$zodSchema: z.ZodType<
-  CreateVirtualNetworkData2,
-  z.ZodTypeDef,
-  unknown
+  CreateVirtualNetworkData2
 > = z.object({
   attributes: z.lazy(() => CreateVirtualNetworkAttributes2$zodSchema),
   type: CreateVirtualNetworkType2$zodSchema,
@@ -75,9 +99,7 @@ export const CreateVirtualNetworkData2$zodSchema: z.ZodType<
 export type CreateVirtualNetworkRequest = { data: CreateVirtualNetworkData2 };
 
 export const CreateVirtualNetworkRequest$zodSchema: z.ZodType<
-  CreateVirtualNetworkRequest,
-  z.ZodTypeDef,
-  unknown
+  CreateVirtualNetworkRequest
 > = z.object({
   data: z.lazy(() => CreateVirtualNetworkData2$zodSchema),
 });
@@ -90,12 +112,10 @@ export type CreateVirtualNetworkResponse = {
 };
 
 export const CreateVirtualNetworkResponse$zodSchema: z.ZodType<
-  CreateVirtualNetworkResponse,
-  z.ZodTypeDef,
-  unknown
+  CreateVirtualNetworkResponse
 > = z.object({
   ContentType: z.string(),
-  RawResponse: z.instanceof(Response),
-  StatusCode: z.number().int(),
+  RawResponse: z.custom<Response>(x => x instanceof Response),
+  StatusCode: z.int(),
   virtual_network: VirtualNetwork$zodSchema.optional(),
 });

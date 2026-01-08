@@ -3,33 +3,49 @@
  */
 
 import * as z from "zod";
+import { ClosedEnum } from "../types/enums.js";
 import { Project, Project$zodSchema } from "./project.js";
+
+export const CreateProjectType2 = {
+  Projects: "projects",
+} as const;
+export type CreateProjectType2 = ClosedEnum<typeof CreateProjectType2>;
 
 export const CreateProjectType2$zodSchema = z.enum([
   "projects",
 ]);
 
-export type CreateProjectType2 = z.infer<typeof CreateProjectType2$zodSchema>;
-
 /**
  * The provisioning type of the project. Default: on_demand
  */
+export const ProvisioningType2 = {
+  Reserved: "reserved",
+  OnDemand: "on_demand",
+} as const;
+/**
+ * The provisioning type of the project. Default: on_demand
+ */
+export type ProvisioningType2 = ClosedEnum<typeof ProvisioningType2>;
+
 export const ProvisioningType2$zodSchema = z.enum([
   "reserved",
   "on_demand",
 ]).describe("The provisioning type of the project. Default: on_demand");
 
-export type ProvisioningType2 = z.infer<typeof ProvisioningType2$zodSchema>;
+export const CreateProjectEnvironment2 = {
+  Development: "Development",
+  Staging: "Staging",
+  Production: "Production",
+} as const;
+export type CreateProjectEnvironment2 = ClosedEnum<
+  typeof CreateProjectEnvironment2
+>;
 
 export const CreateProjectEnvironment2$zodSchema = z.enum([
   "Development",
   "Staging",
   "Production",
 ]);
-
-export type CreateProjectEnvironment2 = z.infer<
-  typeof CreateProjectEnvironment2$zodSchema
->;
 
 export type CreateProjectAttributes2 = {
   name: string;
@@ -39,9 +55,7 @@ export type CreateProjectAttributes2 = {
 };
 
 export const CreateProjectAttributes2$zodSchema: z.ZodType<
-  CreateProjectAttributes2,
-  z.ZodTypeDef,
-  unknown
+  CreateProjectAttributes2
 > = z.object({
   description: z.string().optional(),
   environment: CreateProjectEnvironment2$zodSchema.optional(),
@@ -54,24 +68,18 @@ export type CreateProjectData2 = {
   attributes?: CreateProjectAttributes2 | undefined;
 };
 
-export const CreateProjectData2$zodSchema: z.ZodType<
-  CreateProjectData2,
-  z.ZodTypeDef,
-  unknown
-> = z.object({
-  attributes: z.lazy(() => CreateProjectAttributes2$zodSchema).optional(),
-  type: CreateProjectType2$zodSchema,
-});
+export const CreateProjectData2$zodSchema: z.ZodType<CreateProjectData2> = z
+  .object({
+    attributes: z.lazy(() => CreateProjectAttributes2$zodSchema).optional(),
+    type: CreateProjectType2$zodSchema,
+  });
 
 export type CreateProjectRequest = { data?: CreateProjectData2 | undefined };
 
-export const CreateProjectRequest$zodSchema: z.ZodType<
-  CreateProjectRequest,
-  z.ZodTypeDef,
-  unknown
-> = z.object({
-  data: z.lazy(() => CreateProjectData2$zodSchema).optional(),
-});
+export const CreateProjectRequest$zodSchema: z.ZodType<CreateProjectRequest> = z
+  .object({
+    data: z.lazy(() => CreateProjectData2$zodSchema).optional(),
+  });
 
 /**
  * Created
@@ -79,9 +87,7 @@ export const CreateProjectRequest$zodSchema: z.ZodType<
 export type CreateProjectResponseBody = { data?: Project | undefined };
 
 export const CreateProjectResponseBody$zodSchema: z.ZodType<
-  CreateProjectResponseBody,
-  z.ZodTypeDef,
-  unknown
+  CreateProjectResponseBody
 > = z.object({
   data: Project$zodSchema.optional(),
 }).describe("Created");
@@ -93,13 +99,10 @@ export type CreateProjectResponse = {
   object?: CreateProjectResponseBody | undefined;
 };
 
-export const CreateProjectResponse$zodSchema: z.ZodType<
-  CreateProjectResponse,
-  z.ZodTypeDef,
-  unknown
-> = z.object({
-  ContentType: z.string(),
-  RawResponse: z.instanceof(Response),
-  StatusCode: z.number().int(),
-  object: z.lazy(() => CreateProjectResponseBody$zodSchema).optional(),
-});
+export const CreateProjectResponse$zodSchema: z.ZodType<CreateProjectResponse> =
+  z.object({
+    ContentType: z.string(),
+    RawResponse: z.custom<Response>(x => x instanceof Response),
+    StatusCode: z.int(),
+    object: z.lazy(() => CreateProjectResponseBody$zodSchema).optional(),
+  });

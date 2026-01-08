@@ -10,18 +10,15 @@ export type GetRegionsRequest = {
   pageNumber?: number | undefined;
 };
 
-export const GetRegionsRequest$zodSchema: z.ZodType<
-  GetRegionsRequest,
-  z.ZodTypeDef,
-  unknown
-> = z.object({
-  pageNumber: z.number().int().default(1).describe(
-    "Page number to return (starts at 1)",
-  ),
-  pageSize: z.number().int().default(20).describe(
-    "Number of items to return per page",
-  ),
-});
+export const GetRegionsRequest$zodSchema: z.ZodType<GetRegionsRequest> = z
+  .object({
+    pageNumber: z.int().default(1).describe(
+      "Page number to return (starts at 1)",
+    ),
+    pageSize: z.int().default(20).describe(
+      "Number of items to return per page",
+    ),
+  });
 
 export type GetRegionsResponse = {
   ContentType: string;
@@ -30,13 +27,10 @@ export type GetRegionsResponse = {
   regions?: Regions | undefined;
 };
 
-export const GetRegionsResponse$zodSchema: z.ZodType<
-  GetRegionsResponse,
-  z.ZodTypeDef,
-  unknown
-> = z.object({
-  ContentType: z.string(),
-  RawResponse: z.instanceof(Response),
-  StatusCode: z.number().int(),
-  regions: Regions$zodSchema.optional(),
-});
+export const GetRegionsResponse$zodSchema: z.ZodType<GetRegionsResponse> = z
+  .object({
+    ContentType: z.string(),
+    RawResponse: z.custom<Response>(x => x instanceof Response),
+    StatusCode: z.int(),
+    regions: Regions$zodSchema.optional(),
+  });

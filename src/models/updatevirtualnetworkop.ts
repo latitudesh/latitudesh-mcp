@@ -3,15 +3,19 @@
  */
 
 import * as z from "zod";
+import { ClosedEnum } from "../types/enums.js";
 import { VirtualNetwork, VirtualNetwork$zodSchema } from "./virtualnetwork.js";
+
+export const UpdateVirtualNetworkType2 = {
+  VirtualNetworks: "virtual_networks",
+} as const;
+export type UpdateVirtualNetworkType2 = ClosedEnum<
+  typeof UpdateVirtualNetworkType2
+>;
 
 export const UpdateVirtualNetworkType2$zodSchema = z.enum([
   "virtual_networks",
 ]);
-
-export type UpdateVirtualNetworkType2 = z.infer<
-  typeof UpdateVirtualNetworkType2$zodSchema
->;
 
 export type UpdateVirtualNetworkAttributes2 = {
   tags?: Array<string> | undefined;
@@ -19,9 +23,7 @@ export type UpdateVirtualNetworkAttributes2 = {
 };
 
 export const UpdateVirtualNetworkAttributes2$zodSchema: z.ZodType<
-  UpdateVirtualNetworkAttributes2,
-  z.ZodTypeDef,
-  unknown
+  UpdateVirtualNetworkAttributes2
 > = z.object({
   description: z.string().default("Test virtual network update"),
   tags: z.array(z.string()).optional(),
@@ -34,9 +36,7 @@ export type UpdateVirtualNetworkData2 = {
 };
 
 export const UpdateVirtualNetworkData2$zodSchema: z.ZodType<
-  UpdateVirtualNetworkData2,
-  z.ZodTypeDef,
-  unknown
+  UpdateVirtualNetworkData2
 > = z.object({
   attributes: z.lazy(() => UpdateVirtualNetworkAttributes2$zodSchema)
     .optional(),
@@ -49,9 +49,7 @@ export type UpdateVirtualNetworkRequestBody2 = {
 };
 
 export const UpdateVirtualNetworkRequestBody2$zodSchema: z.ZodType<
-  UpdateVirtualNetworkRequestBody2,
-  z.ZodTypeDef,
-  unknown
+  UpdateVirtualNetworkRequestBody2
 > = z.object({
   data: z.lazy(() => UpdateVirtualNetworkData2$zodSchema),
 });
@@ -62,9 +60,7 @@ export type UpdateVirtualNetworkRequest = {
 };
 
 export const UpdateVirtualNetworkRequest$zodSchema: z.ZodType<
-  UpdateVirtualNetworkRequest,
-  z.ZodTypeDef,
-  unknown
+  UpdateVirtualNetworkRequest
 > = z.object({
   RequestBody: z.lazy(() => UpdateVirtualNetworkRequestBody2$zodSchema),
   vlan_id: z.string().describe("The Virtual Network ID"),
@@ -78,12 +74,10 @@ export type UpdateVirtualNetworkResponse = {
 };
 
 export const UpdateVirtualNetworkResponse$zodSchema: z.ZodType<
-  UpdateVirtualNetworkResponse,
-  z.ZodTypeDef,
-  unknown
+  UpdateVirtualNetworkResponse
 > = z.object({
   ContentType: z.string(),
-  RawResponse: z.instanceof(Response),
-  StatusCode: z.number().int(),
+  RawResponse: z.custom<Response>(x => x instanceof Response),
+  StatusCode: z.int(),
   virtual_network: VirtualNetwork$zodSchema.optional(),
 });

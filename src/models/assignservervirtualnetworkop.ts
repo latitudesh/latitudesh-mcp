@@ -3,18 +3,22 @@
  */
 
 import * as z from "zod";
+import { ClosedEnum } from "../types/enums.js";
 import {
   VirtualNetworkAssignment,
   VirtualNetworkAssignment$zodSchema,
 } from "./virtualnetworkassignment.js";
 
+export const AssignServerVirtualNetworkType2 = {
+  VirtualNetworkAssignment: "virtual_network_assignment",
+} as const;
+export type AssignServerVirtualNetworkType2 = ClosedEnum<
+  typeof AssignServerVirtualNetworkType2
+>;
+
 export const AssignServerVirtualNetworkType2$zodSchema = z.enum([
   "virtual_network_assignment",
 ]);
-
-export type AssignServerVirtualNetworkType2 = z.infer<
-  typeof AssignServerVirtualNetworkType2$zodSchema
->;
 
 export type AssignServerVirtualNetworkAttributes2 = {
   server_id: string;
@@ -22,9 +26,7 @@ export type AssignServerVirtualNetworkAttributes2 = {
 };
 
 export const AssignServerVirtualNetworkAttributes2$zodSchema: z.ZodType<
-  AssignServerVirtualNetworkAttributes2,
-  z.ZodTypeDef,
-  unknown
+  AssignServerVirtualNetworkAttributes2
 > = z.object({
   server_id: z.string(),
   virtual_network_id: z.string(),
@@ -36,9 +38,7 @@ export type AssignServerVirtualNetworkData2 = {
 };
 
 export const AssignServerVirtualNetworkData2$zodSchema: z.ZodType<
-  AssignServerVirtualNetworkData2,
-  z.ZodTypeDef,
-  unknown
+  AssignServerVirtualNetworkData2
 > = z.object({
   attributes: z.lazy(() => AssignServerVirtualNetworkAttributes2$zodSchema)
     .optional(),
@@ -50,9 +50,7 @@ export type AssignServerVirtualNetworkRequest = {
 };
 
 export const AssignServerVirtualNetworkRequest$zodSchema: z.ZodType<
-  AssignServerVirtualNetworkRequest,
-  z.ZodTypeDef,
-  unknown
+  AssignServerVirtualNetworkRequest
 > = z.object({
   data: z.lazy(() => AssignServerVirtualNetworkData2$zodSchema).optional(),
 });
@@ -65,12 +63,10 @@ export type AssignServerVirtualNetworkResponse = {
 };
 
 export const AssignServerVirtualNetworkResponse$zodSchema: z.ZodType<
-  AssignServerVirtualNetworkResponse,
-  z.ZodTypeDef,
-  unknown
+  AssignServerVirtualNetworkResponse
 > = z.object({
   ContentType: z.string(),
-  RawResponse: z.instanceof(Response),
-  StatusCode: z.number().int(),
+  RawResponse: z.custom<Response>(x => x instanceof Response),
+  StatusCode: z.int(),
   virtual_network_assignment: VirtualNetworkAssignment$zodSchema.optional(),
 });

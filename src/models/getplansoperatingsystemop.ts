@@ -14,16 +14,12 @@ export type GetPlansOperatingSystemRequest = {
 };
 
 export const GetPlansOperatingSystemRequest$zodSchema: z.ZodType<
-  GetPlansOperatingSystemRequest,
-  z.ZodTypeDef,
-  unknown
+  GetPlansOperatingSystemRequest
 > = z.object({
-  pageNumber: z.number().int().default(1).describe(
+  pageNumber: z.int().default(1).describe(
     "Page number to return (starts at 1)",
   ),
-  pageSize: z.number().int().default(20).describe(
-    "Number of items to return per page",
-  ),
+  pageSize: z.int().default(20).describe("Number of items to return per page"),
 });
 
 /**
@@ -34,9 +30,7 @@ export type GetPlansOperatingSystemResponseBody = {
 };
 
 export const GetPlansOperatingSystemResponseBody$zodSchema: z.ZodType<
-  GetPlansOperatingSystemResponseBody,
-  z.ZodTypeDef,
-  unknown
+  GetPlansOperatingSystemResponseBody
 > = z.object({
   data: z.array(OperatingSystems$zodSchema).optional(),
 }).describe("Success");
@@ -49,13 +43,11 @@ export type GetPlansOperatingSystemResponse = {
 };
 
 export const GetPlansOperatingSystemResponse$zodSchema: z.ZodType<
-  GetPlansOperatingSystemResponse,
-  z.ZodTypeDef,
-  unknown
+  GetPlansOperatingSystemResponse
 > = z.object({
   ContentType: z.string(),
-  RawResponse: z.instanceof(Response),
-  StatusCode: z.number().int(),
+  RawResponse: z.custom<Response>(x => x instanceof Response),
+  StatusCode: z.int(),
   object: z.lazy(() => GetPlansOperatingSystemResponseBody$zodSchema)
     .optional(),
 });

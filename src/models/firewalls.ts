@@ -7,19 +7,14 @@ import { FirewallData, FirewallData$zodSchema } from "./firewalldata.js";
 
 export type FirewallsMeta = {};
 
-export const FirewallsMeta$zodSchema: z.ZodType<
-  FirewallsMeta,
-  z.ZodTypeDef,
-  unknown
-> = z.object({});
+export const FirewallsMeta$zodSchema: z.ZodType<FirewallsMeta> = z.object({});
 
 export type Firewalls = {
   data?: Array<FirewallData> | undefined;
   meta?: FirewallsMeta | undefined;
 };
 
-export const Firewalls$zodSchema: z.ZodType<Firewalls, z.ZodTypeDef, unknown> =
-  z.object({
-    data: z.array(FirewallData$zodSchema).optional(),
-    meta: z.lazy(() => FirewallsMeta$zodSchema).optional(),
-  });
+export const Firewalls$zodSchema: z.ZodType<Firewalls> = z.object({
+  data: z.array(FirewallData$zodSchema).optional(),
+  meta: z.lazy(() => FirewallsMeta$zodSchema).optional(),
+});

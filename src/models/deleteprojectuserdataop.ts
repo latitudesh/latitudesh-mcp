@@ -10,9 +10,7 @@ export type DeleteProjectUserDataRequest = {
 };
 
 export const DeleteProjectUserDataRequest$zodSchema: z.ZodType<
-  DeleteProjectUserDataRequest,
-  z.ZodTypeDef,
-  unknown
+  DeleteProjectUserDataRequest
 > = z.object({
   project_id: z.string().describe("Project ID or Slug"),
   user_data_id: z.string(),
@@ -25,11 +23,9 @@ export type DeleteProjectUserDataResponse = {
 };
 
 export const DeleteProjectUserDataResponse$zodSchema: z.ZodType<
-  DeleteProjectUserDataResponse,
-  z.ZodTypeDef,
-  unknown
+  DeleteProjectUserDataResponse
 > = z.object({
   ContentType: z.string(),
-  RawResponse: z.instanceof(Response),
-  StatusCode: z.number().int(),
+  RawResponse: z.custom<Response>(x => x instanceof Response),
+  StatusCode: z.int(),
 });

@@ -12,13 +12,10 @@ export type GetApiKeysResponse = {
   api_key?: ApiKey | undefined;
 };
 
-export const GetApiKeysResponse$zodSchema: z.ZodType<
-  GetApiKeysResponse,
-  z.ZodTypeDef,
-  unknown
-> = z.object({
-  ContentType: z.string(),
-  RawResponse: z.instanceof(Response),
-  StatusCode: z.number().int(),
-  api_key: ApiKey$zodSchema.optional(),
-});
+export const GetApiKeysResponse$zodSchema: z.ZodType<GetApiKeysResponse> = z
+  .object({
+    ContentType: z.string(),
+    RawResponse: z.custom<Response>(x => x instanceof Response),
+    StatusCode: z.int(),
+    api_key: ApiKey$zodSchema.optional(),
+  });

@@ -11,9 +11,7 @@ export type GetProjectSshKeyRequest = {
 };
 
 export const GetProjectSshKeyRequest$zodSchema: z.ZodType<
-  GetProjectSshKeyRequest,
-  z.ZodTypeDef,
-  unknown
+  GetProjectSshKeyRequest
 > = z.object({
   project_id: z.string().describe("Project ID or Slug"),
   ssh_key_id: z.string(),
@@ -25,9 +23,7 @@ export const GetProjectSshKeyRequest$zodSchema: z.ZodType<
 export type GetProjectSshKeyResponseBody = { data?: SshKeyData | undefined };
 
 export const GetProjectSshKeyResponseBody$zodSchema: z.ZodType<
-  GetProjectSshKeyResponseBody,
-  z.ZodTypeDef,
-  unknown
+  GetProjectSshKeyResponseBody
 > = z.object({
   data: SshKeyData$zodSchema.optional(),
 }).describe("Success");
@@ -40,12 +36,10 @@ export type GetProjectSshKeyResponse = {
 };
 
 export const GetProjectSshKeyResponse$zodSchema: z.ZodType<
-  GetProjectSshKeyResponse,
-  z.ZodTypeDef,
-  unknown
+  GetProjectSshKeyResponse
 > = z.object({
   ContentType: z.string(),
-  RawResponse: z.instanceof(Response),
-  StatusCode: z.number().int(),
+  RawResponse: z.custom<Response>(x => x instanceof Response),
+  StatusCode: z.int(),
   object: z.lazy(() => GetProjectSshKeyResponseBody$zodSchema).optional(),
 });

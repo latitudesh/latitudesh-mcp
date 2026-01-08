@@ -3,26 +3,28 @@
  */
 
 import * as z from "zod";
+import { ClosedEnum } from "../types/enums.js";
 import { FilesystemData, FilesystemData$zodSchema } from "./filesystemdata.js";
+
+export const PatchStorageFilesystemsType2 = {
+  Filesystems: "filesystems",
+} as const;
+export type PatchStorageFilesystemsType2 = ClosedEnum<
+  typeof PatchStorageFilesystemsType2
+>;
 
 export const PatchStorageFilesystemsType2$zodSchema = z.enum([
   "filesystems",
 ]);
-
-export type PatchStorageFilesystemsType2 = z.infer<
-  typeof PatchStorageFilesystemsType2$zodSchema
->;
 
 export type PatchStorageFilesystemsAttributes2 = {
   size_in_gb?: number | undefined;
 };
 
 export const PatchStorageFilesystemsAttributes2$zodSchema: z.ZodType<
-  PatchStorageFilesystemsAttributes2,
-  z.ZodTypeDef,
-  unknown
+  PatchStorageFilesystemsAttributes2
 > = z.object({
-  size_in_gb: z.number().int().default(1500),
+  size_in_gb: z.int().default(1500),
 });
 
 export type PatchStorageFilesystemsData2 = {
@@ -32,9 +34,7 @@ export type PatchStorageFilesystemsData2 = {
 };
 
 export const PatchStorageFilesystemsData2$zodSchema: z.ZodType<
-  PatchStorageFilesystemsData2,
-  z.ZodTypeDef,
-  unknown
+  PatchStorageFilesystemsData2
 > = z.object({
   attributes: z.lazy(() => PatchStorageFilesystemsAttributes2$zodSchema),
   id: z.string(),
@@ -46,9 +46,7 @@ export type PatchStorageFilesystemsRequestBody2 = {
 };
 
 export const PatchStorageFilesystemsRequestBody2$zodSchema: z.ZodType<
-  PatchStorageFilesystemsRequestBody2,
-  z.ZodTypeDef,
-  unknown
+  PatchStorageFilesystemsRequestBody2
 > = z.object({
   data: z.lazy(() => PatchStorageFilesystemsData2$zodSchema),
 });
@@ -59,9 +57,7 @@ export type PatchStorageFilesystemsRequest = {
 };
 
 export const PatchStorageFilesystemsRequest$zodSchema: z.ZodType<
-  PatchStorageFilesystemsRequest,
-  z.ZodTypeDef,
-  unknown
+  PatchStorageFilesystemsRequest
 > = z.object({
   RequestBody: z.lazy(() => PatchStorageFilesystemsRequestBody2$zodSchema),
   filesystem_id: z.string(),
@@ -75,9 +71,7 @@ export type PatchStorageFilesystemsResponseBody = {
 };
 
 export const PatchStorageFilesystemsResponseBody$zodSchema: z.ZodType<
-  PatchStorageFilesystemsResponseBody,
-  z.ZodTypeDef,
-  unknown
+  PatchStorageFilesystemsResponseBody
 > = z.object({
   data: FilesystemData$zodSchema.optional(),
 }).describe("Success");
@@ -90,13 +84,11 @@ export type PatchStorageFilesystemsResponse = {
 };
 
 export const PatchStorageFilesystemsResponse$zodSchema: z.ZodType<
-  PatchStorageFilesystemsResponse,
-  z.ZodTypeDef,
-  unknown
+  PatchStorageFilesystemsResponse
 > = z.object({
   ContentType: z.string(),
-  RawResponse: z.instanceof(Response),
-  StatusCode: z.number().int(),
+  RawResponse: z.custom<Response>(x => x instanceof Response),
+  StatusCode: z.int(),
   object: z.lazy(() => PatchStorageFilesystemsResponseBody$zodSchema)
     .optional(),
 });

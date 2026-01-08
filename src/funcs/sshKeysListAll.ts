@@ -88,6 +88,8 @@ async function $do(
   const body$ = null;
   const path$ = pathToFunc("/ssh_keys")();
   const query$ = encodeFormQuery({
+    "filter[project]": payload$?.filterProject,
+    "filter[scope]": payload$?.filterScope,
     "filter[tags]": payload$?.filterTags,
   });
 

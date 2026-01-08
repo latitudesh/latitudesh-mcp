@@ -6,13 +6,10 @@ import * as z from "zod";
 
 export type DeleteSshKeyRequest = { ssh_key_id: string };
 
-export const DeleteSshKeyRequest$zodSchema: z.ZodType<
-  DeleteSshKeyRequest,
-  z.ZodTypeDef,
-  unknown
-> = z.object({
-  ssh_key_id: z.string(),
-});
+export const DeleteSshKeyRequest$zodSchema: z.ZodType<DeleteSshKeyRequest> = z
+  .object({
+    ssh_key_id: z.string(),
+  });
 
 export type DeleteSshKeyResponse = {
   ContentType: string;
@@ -20,12 +17,9 @@ export type DeleteSshKeyResponse = {
   RawResponse: Response;
 };
 
-export const DeleteSshKeyResponse$zodSchema: z.ZodType<
-  DeleteSshKeyResponse,
-  z.ZodTypeDef,
-  unknown
-> = z.object({
-  ContentType: z.string(),
-  RawResponse: z.instanceof(Response),
-  StatusCode: z.number().int(),
-});
+export const DeleteSshKeyResponse$zodSchema: z.ZodType<DeleteSshKeyResponse> = z
+  .object({
+    ContentType: z.string(),
+    RawResponse: z.custom<Response>(x => x instanceof Response),
+    StatusCode: z.int(),
+  });

@@ -3,12 +3,16 @@
  */
 
 import * as z from "zod";
+import { ClosedEnum } from "../types/enums.js";
+
+export const FirewallServerType = {
+  FirewallServers: "firewall_servers",
+} as const;
+export type FirewallServerType = ClosedEnum<typeof FirewallServerType>;
 
 export const FirewallServerType$zodSchema = z.enum([
   "firewall_servers",
 ]);
-
-export type FirewallServerType = z.infer<typeof FirewallServerType$zodSchema>;
 
 export type FirewallServerAttributes = {
   server_id?: string | undefined;
@@ -16,9 +20,7 @@ export type FirewallServerAttributes = {
 };
 
 export const FirewallServerAttributes$zodSchema: z.ZodType<
-  FirewallServerAttributes,
-  z.ZodTypeDef,
-  unknown
+  FirewallServerAttributes
 > = z.object({
   firewall_id: z.string().optional(),
   server_id: z.string().optional(),
@@ -30,11 +32,7 @@ export type FirewallServer = {
   attributes?: FirewallServerAttributes | undefined;
 };
 
-export const FirewallServer$zodSchema: z.ZodType<
-  FirewallServer,
-  z.ZodTypeDef,
-  unknown
-> = z.object({
+export const FirewallServer$zodSchema: z.ZodType<FirewallServer> = z.object({
   attributes: z.lazy(() => FirewallServerAttributes$zodSchema).optional(),
   id: z.string().optional(),
   type: FirewallServerType$zodSchema.optional(),

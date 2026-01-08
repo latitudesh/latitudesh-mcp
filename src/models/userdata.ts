@@ -10,19 +10,14 @@ import {
 
 export type UserDataMeta = {};
 
-export const UserDataMeta$zodSchema: z.ZodType<
-  UserDataMeta,
-  z.ZodTypeDef,
-  unknown
-> = z.object({});
+export const UserDataMeta$zodSchema: z.ZodType<UserDataMeta> = z.object({});
 
 export type UserData = {
   data?: UserDataProperties | undefined;
   meta?: UserDataMeta | undefined;
 };
 
-export const UserData$zodSchema: z.ZodType<UserData, z.ZodTypeDef, unknown> = z
-  .object({
-    data: UserDataProperties$zodSchema.optional(),
-    meta: z.lazy(() => UserDataMeta$zodSchema).optional(),
-  });
+export const UserData$zodSchema: z.ZodType<UserData> = z.object({
+  data: UserDataProperties$zodSchema.optional(),
+  meta: z.lazy(() => UserDataMeta$zodSchema).optional(),
+});

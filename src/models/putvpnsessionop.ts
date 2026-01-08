@@ -10,13 +10,10 @@ import {
 
 export type PutVpnSessionRequest = { vpn_session_id: string };
 
-export const PutVpnSessionRequest$zodSchema: z.ZodType<
-  PutVpnSessionRequest,
-  z.ZodTypeDef,
-  unknown
-> = z.object({
-  vpn_session_id: z.string(),
-});
+export const PutVpnSessionRequest$zodSchema: z.ZodType<PutVpnSessionRequest> = z
+  .object({
+    vpn_session_id: z.string(),
+  });
 
 export type PutVpnSessionResponse = {
   ContentType: string;
@@ -25,13 +22,10 @@ export type PutVpnSessionResponse = {
   vpn_session_with_password?: VpnSessionWithPassword | undefined;
 };
 
-export const PutVpnSessionResponse$zodSchema: z.ZodType<
-  PutVpnSessionResponse,
-  z.ZodTypeDef,
-  unknown
-> = z.object({
-  ContentType: z.string(),
-  RawResponse: z.instanceof(Response),
-  StatusCode: z.number().int(),
-  vpn_session_with_password: VpnSessionWithPassword$zodSchema.optional(),
-});
+export const PutVpnSessionResponse$zodSchema: z.ZodType<PutVpnSessionResponse> =
+  z.object({
+    ContentType: z.string(),
+    RawResponse: z.custom<Response>(x => x instanceof Response),
+    StatusCode: z.int(),
+    vpn_session_with_password: VpnSessionWithPassword$zodSchema.optional(),
+  });

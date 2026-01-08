@@ -11,9 +11,7 @@ import { User, User$zodSchema } from "./user.js";
 export type GetUserProfileResponseBody = { data?: User | undefined };
 
 export const GetUserProfileResponseBody$zodSchema: z.ZodType<
-  GetUserProfileResponseBody,
-  z.ZodTypeDef,
-  unknown
+  GetUserProfileResponseBody
 > = z.object({
   data: User$zodSchema.optional(),
 }).describe("Success");
@@ -26,12 +24,10 @@ export type GetUserProfileResponse = {
 };
 
 export const GetUserProfileResponse$zodSchema: z.ZodType<
-  GetUserProfileResponse,
-  z.ZodTypeDef,
-  unknown
+  GetUserProfileResponse
 > = z.object({
   ContentType: z.string(),
-  RawResponse: z.instanceof(Response),
-  StatusCode: z.number().int(),
+  RawResponse: z.custom<Response>(x => x instanceof Response),
+  StatusCode: z.int(),
   object: z.lazy(() => GetUserProfileResponseBody$zodSchema).optional(),
 });

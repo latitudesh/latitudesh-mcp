@@ -6,13 +6,10 @@ import * as z from "zod";
 
 export type DeleteApiKeyRequest = { api_key_id: string };
 
-export const DeleteApiKeyRequest$zodSchema: z.ZodType<
-  DeleteApiKeyRequest,
-  z.ZodTypeDef,
-  unknown
-> = z.object({
-  api_key_id: z.string(),
-});
+export const DeleteApiKeyRequest$zodSchema: z.ZodType<DeleteApiKeyRequest> = z
+  .object({
+    api_key_id: z.string(),
+  });
 
 export type DeleteApiKeyResponse = {
   ContentType: string;
@@ -20,12 +17,9 @@ export type DeleteApiKeyResponse = {
   RawResponse: Response;
 };
 
-export const DeleteApiKeyResponse$zodSchema: z.ZodType<
-  DeleteApiKeyResponse,
-  z.ZodTypeDef,
-  unknown
-> = z.object({
-  ContentType: z.string(),
-  RawResponse: z.instanceof(Response),
-  StatusCode: z.number().int(),
-});
+export const DeleteApiKeyResponse$zodSchema: z.ZodType<DeleteApiKeyResponse> = z
+  .object({
+    ContentType: z.string(),
+    RawResponse: z.custom<Response>(x => x instanceof Response),
+    StatusCode: z.int(),
+  });

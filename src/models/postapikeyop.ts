@@ -11,9 +11,7 @@ import { ApiKey, ApiKey$zodSchema } from "./apikey.js";
 export type PostApiKeyResponseBody = { data?: ApiKey | undefined };
 
 export const PostApiKeyResponseBody$zodSchema: z.ZodType<
-  PostApiKeyResponseBody,
-  z.ZodTypeDef,
-  unknown
+  PostApiKeyResponseBody
 > = z.object({
   data: ApiKey$zodSchema.optional(),
 }).describe("Created");
@@ -25,13 +23,10 @@ export type PostApiKeyResponse = {
   object?: PostApiKeyResponseBody | undefined;
 };
 
-export const PostApiKeyResponse$zodSchema: z.ZodType<
-  PostApiKeyResponse,
-  z.ZodTypeDef,
-  unknown
-> = z.object({
-  ContentType: z.string(),
-  RawResponse: z.instanceof(Response),
-  StatusCode: z.number().int(),
-  object: z.lazy(() => PostApiKeyResponseBody$zodSchema).optional(),
-});
+export const PostApiKeyResponse$zodSchema: z.ZodType<PostApiKeyResponse> = z
+  .object({
+    ContentType: z.string(),
+    RawResponse: z.custom<Response>(x => x instanceof Response),
+    StatusCode: z.int(),
+    object: z.lazy(() => PostApiKeyResponseBody$zodSchema).optional(),
+  });

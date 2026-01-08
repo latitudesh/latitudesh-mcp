@@ -10,22 +10,15 @@ import {
 
 export type VirtualNetworkMeta = {};
 
-export const VirtualNetworkMeta$zodSchema: z.ZodType<
-  VirtualNetworkMeta,
-  z.ZodTypeDef,
-  unknown
-> = z.object({});
+export const VirtualNetworkMeta$zodSchema: z.ZodType<VirtualNetworkMeta> = z
+  .object({});
 
 export type VirtualNetwork = {
   data?: VirtualNetworkData | undefined;
   meta?: VirtualNetworkMeta | undefined;
 };
 
-export const VirtualNetwork$zodSchema: z.ZodType<
-  VirtualNetwork,
-  z.ZodTypeDef,
-  unknown
-> = z.object({
+export const VirtualNetwork$zodSchema: z.ZodType<VirtualNetwork> = z.object({
   data: VirtualNetworkData$zodSchema.optional(),
   meta: z.lazy(() => VirtualNetworkMeta$zodSchema).optional(),
 });

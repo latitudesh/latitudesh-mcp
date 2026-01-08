@@ -13,12 +13,10 @@ export type GetStoragePlansResponse = {
 };
 
 export const GetStoragePlansResponse$zodSchema: z.ZodType<
-  GetStoragePlansResponse,
-  z.ZodTypeDef,
-  unknown
+  GetStoragePlansResponse
 > = z.object({
   ContentType: z.string(),
-  RawResponse: z.instanceof(Response),
-  StatusCode: z.number().int(),
+  RawResponse: z.custom<Response>(x => x instanceof Response),
+  StatusCode: z.int(),
   storage_plans: StoragePlans$zodSchema.optional(),
 });

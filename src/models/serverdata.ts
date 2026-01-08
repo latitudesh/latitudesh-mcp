@@ -3,6 +3,7 @@
  */
 
 import * as z from "zod";
+import { ClosedEnum } from "../types/enums.js";
 import { ProjectInclude, ProjectInclude$zodSchema } from "./projectinclude.js";
 import {
   ServerRegionResourceData,
@@ -22,6 +23,30 @@ import { TeamInclude, TeamInclude$zodSchema } from "./teaminclude.js";
  * `deploying` - The server is in the last reinstalling stage and is `deploying`
  * `failed_deployment` - The server has failed deployment in reinstall
  */
+export const ServerDataStatus = {
+  On: "on",
+  Off: "off",
+  Unknown: "unknown",
+  Ready: "ready",
+  DiskErasing: "disk_erasing",
+  FailedDiskErasing: "failed_disk_erasing",
+  Deploying: "deploying",
+  FailedDeployment: "failed_deployment",
+} as const;
+/**
+ * `on` - The server is powered ON
+ *
+ * @remarks
+ * `off` - The server is powered OFF
+ * `unknown` - The server power status is unknown
+ * `ready` - The server is in reinstalling state `ready` and should start `disk_erasing` shortly
+ * `disk_erasing` - The server is in reinstalling state `disk_erasing`
+ * `failed_disk_erasing` - The server has failed disk erasing in reinstall
+ * `deploying` - The server is in the last reinstalling stage and is `deploying`
+ * `failed_deployment` - The server has failed deployment in reinstall
+ */
+export type ServerDataStatus = ClosedEnum<typeof ServerDataStatus>;
+
 export const ServerDataStatus$zodSchema = z.enum([
   "on",
   "off",
@@ -32,26 +57,21 @@ export const ServerDataStatus$zodSchema = z.enum([
   "deploying",
   "failed_deployment",
 ]).describe(
-  "`on` - The server is powered ON\n"
-    + "`off` - The server is powered OFF\n"
-    + "`unknown` - The server power status is unknown\n"
-    + "`ready` - The server is in reinstalling state `ready` and should start `disk_erasing` shortly\n"
-    + "`disk_erasing` - The server is in reinstalling state `disk_erasing`\n"
-    + "`failed_disk_erasing` - The server has failed disk erasing in reinstall\n"
-    + "`deploying` - The server is in the last reinstalling stage and is `deploying`\n"
-    + "`failed_deployment` - The server has failed deployment in reinstall\n"
-    + "",
+  "`on` - The server is powered ON\n`off` - The server is powered OFF\n`unknown` - The server power status is unknown\n`ready` - The server is in reinstalling state `ready` and should start `disk_erasing` shortly\n`disk_erasing` - The server is in reinstalling state `disk_erasing`\n`failed_disk_erasing` - The server has failed disk erasing in reinstall\n`deploying` - The server is in the last reinstalling stage and is `deploying`\n`failed_deployment` - The server has failed deployment in reinstall\n",
 );
 
-export type ServerDataStatus = z.infer<typeof ServerDataStatus$zodSchema>;
+export const IpmiStatus = {
+  Unavailable: "Unavailable",
+  Intermittent: "Intermittent",
+  Normal: "Normal",
+} as const;
+export type IpmiStatus = ClosedEnum<typeof IpmiStatus>;
 
 export const IpmiStatus$zodSchema = z.enum([
   "Unavailable",
   "Intermittent",
   "Normal",
 ]);
-
-export type IpmiStatus = z.infer<typeof IpmiStatus$zodSchema>;
 
 export type ServerDataPlan = {
   id?: string | undefined;
@@ -60,11 +80,7 @@ export type ServerDataPlan = {
   billing?: string | undefined;
 };
 
-export const ServerDataPlan$zodSchema: z.ZodType<
-  ServerDataPlan,
-  z.ZodTypeDef,
-  unknown
-> = z.object({
+export const ServerDataPlan$zodSchema: z.ZodType<ServerDataPlan> = z.object({
   billing: z.string().optional(),
   id: z.string().optional(),
   name: z.string().optional(),
@@ -77,15 +93,12 @@ export type ServerDataFeatures = {
   user_data?: boolean | undefined;
 };
 
-export const ServerDataFeatures$zodSchema: z.ZodType<
-  ServerDataFeatures,
-  z.ZodTypeDef,
-  unknown
-> = z.object({
-  raid: z.boolean().optional(),
-  ssh_keys: z.boolean().optional(),
-  user_data: z.boolean().optional(),
-});
+export const ServerDataFeatures$zodSchema: z.ZodType<ServerDataFeatures> = z
+  .object({
+    raid: z.boolean().optional(),
+    ssh_keys: z.boolean().optional(),
+    user_data: z.boolean().optional(),
+  });
 
 export type Distro = {
   name?: string | undefined;
@@ -93,12 +106,11 @@ export type Distro = {
   series?: string | undefined;
 };
 
-export const Distro$zodSchema: z.ZodType<Distro, z.ZodTypeDef, unknown> = z
-  .object({
-    name: z.string().optional(),
-    series: z.string().optional(),
-    slug: z.string().optional(),
-  });
+export const Distro$zodSchema: z.ZodType<Distro> = z.object({
+  name: z.string().optional(),
+  series: z.string().optional(),
+  slug: z.string().optional(),
+});
 
 export type OperatingSystem = {
   name?: string | undefined;
@@ -108,11 +120,7 @@ export type OperatingSystem = {
   distro?: Distro | undefined;
 };
 
-export const OperatingSystem$zodSchema: z.ZodType<
-  OperatingSystem,
-  z.ZodTypeDef,
-  unknown
-> = z.object({
+export const OperatingSystem$zodSchema: z.ZodType<OperatingSystem> = z.object({
   distro: z.lazy(() => Distro$zodSchema).optional(),
   features: z.lazy(() => ServerDataFeatures$zodSchema).optional(),
   name: z.string().optional(),
@@ -128,17 +136,21 @@ export type ServerDataSpecs = {
   gpu?: string | undefined;
 };
 
-export const ServerDataSpecs$zodSchema: z.ZodType<
-  ServerDataSpecs,
-  z.ZodTypeDef,
-  unknown
-> = z.object({
+export const ServerDataSpecs$zodSchema: z.ZodType<ServerDataSpecs> = z.object({
   cpu: z.string().optional(),
   disk: z.string().optional(),
   gpu: z.string().optional(),
   nic: z.string().optional(),
   ram: z.string().optional(),
 });
+
+export const ServerDataRole = {
+  External: "external",
+  Internal: "internal",
+  Ipmi: "ipmi",
+  Unknown: "unknown",
+} as const;
+export type ServerDataRole = ClosedEnum<typeof ServerDataRole>;
 
 export const ServerDataRole$zodSchema = z.enum([
   "external",
@@ -147,8 +159,6 @@ export const ServerDataRole$zodSchema = z.enum([
   "unknown",
 ]);
 
-export type ServerDataRole = z.infer<typeof ServerDataRole$zodSchema>;
-
 export type Interface = {
   role?: ServerDataRole | undefined;
   name?: string | undefined;
@@ -156,13 +166,12 @@ export type Interface = {
   description?: string | undefined;
 };
 
-export const Interface$zodSchema: z.ZodType<Interface, z.ZodTypeDef, unknown> =
-  z.object({
-    description: z.string().optional(),
-    mac_address: z.string().optional(),
-    name: z.string().optional(),
-    role: ServerDataRole$zodSchema.optional(),
-  });
+export const Interface$zodSchema: z.ZodType<Interface> = z.object({
+  description: z.string().optional(),
+  mac_address: z.string().optional(),
+  name: z.string().optional(),
+  role: ServerDataRole$zodSchema.optional(),
+});
 
 export type ServerDataAttributes = {
   hostname?: string | undefined;
@@ -186,31 +195,28 @@ export type ServerDataAttributes = {
   team?: TeamInclude | undefined;
 };
 
-export const ServerDataAttributes$zodSchema: z.ZodType<
-  ServerDataAttributes,
-  z.ZodTypeDef,
-  unknown
-> = z.object({
-  created_at: z.string().optional(),
-  hostname: z.string().optional(),
-  interfaces: z.array(z.lazy(() => Interface$zodSchema)).optional(),
-  ipmi_status: IpmiStatus$zodSchema.optional(),
-  label: z.string().optional(),
-  locked: z.boolean().optional(),
-  operating_system: z.lazy(() => OperatingSystem$zodSchema).optional(),
-  plan: z.lazy(() => ServerDataPlan$zodSchema).optional(),
-  primary_ipv4: z.string().optional(),
-  primary_ipv6: z.string().optional(),
-  project: ProjectInclude$zodSchema.optional(),
-  region: ServerRegionResourceData$zodSchema.optional(),
-  rescue: z.boolean().optional(),
-  role: z.string().optional(),
-  scheduled_deletion_at: z.string().optional(),
-  site: z.string().optional(),
-  specs: z.lazy(() => ServerDataSpecs$zodSchema).optional(),
-  status: ServerDataStatus$zodSchema.optional(),
-  team: TeamInclude$zodSchema.optional(),
-});
+export const ServerDataAttributes$zodSchema: z.ZodType<ServerDataAttributes> = z
+  .object({
+    created_at: z.string().optional(),
+    hostname: z.string().optional(),
+    interfaces: z.array(z.lazy(() => Interface$zodSchema)).optional(),
+    ipmi_status: IpmiStatus$zodSchema.optional(),
+    label: z.string().optional(),
+    locked: z.boolean().optional(),
+    operating_system: z.lazy(() => OperatingSystem$zodSchema).optional(),
+    plan: z.lazy(() => ServerDataPlan$zodSchema).optional(),
+    primary_ipv4: z.string().optional(),
+    primary_ipv6: z.string().optional(),
+    project: ProjectInclude$zodSchema.optional(),
+    region: ServerRegionResourceData$zodSchema.optional(),
+    rescue: z.boolean().optional(),
+    role: z.string().optional(),
+    scheduled_deletion_at: z.string().optional(),
+    site: z.string().optional(),
+    specs: z.lazy(() => ServerDataSpecs$zodSchema).optional(),
+    status: ServerDataStatus$zodSchema.optional(),
+    team: TeamInclude$zodSchema.optional(),
+  });
 
 export type ServerData = {
   id?: string | undefined;
@@ -218,11 +224,7 @@ export type ServerData = {
   attributes?: ServerDataAttributes | undefined;
 };
 
-export const ServerData$zodSchema: z.ZodType<
-  ServerData,
-  z.ZodTypeDef,
-  unknown
-> = z.object({
+export const ServerData$zodSchema: z.ZodType<ServerData> = z.object({
   attributes: z.lazy(() => ServerDataAttributes$zodSchema).optional(),
   id: z.string().optional(),
   type: z.string().optional(),

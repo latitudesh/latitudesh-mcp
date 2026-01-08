@@ -3,12 +3,16 @@
  */
 
 import * as z from "zod";
+import { ClosedEnum } from "../types/enums.js";
+
+export const TrafficQuotaType = {
+  TrafficQuota: "traffic_quota",
+} as const;
+export type TrafficQuotaType = ClosedEnum<typeof TrafficQuotaType>;
 
 export const TrafficQuotaType$zodSchema = z.enum([
   "traffic_quota",
 ]);
-
-export type TrafficQuotaType = z.infer<typeof TrafficQuotaType$zodSchema>;
 
 export type QuotaInTb = {
   granted?: number | undefined;
@@ -16,12 +20,11 @@ export type QuotaInTb = {
   total?: number | undefined;
 };
 
-export const QuotaInTb$zodSchema: z.ZodType<QuotaInTb, z.ZodTypeDef, unknown> =
-  z.object({
-    additional: z.number().int().optional(),
-    granted: z.number().int().optional(),
-    total: z.number().int().optional(),
-  });
+export const QuotaInTb$zodSchema: z.ZodType<QuotaInTb> = z.object({
+  additional: z.int().optional(),
+  granted: z.int().optional(),
+  total: z.int().optional(),
+});
 
 export type QuotaInMbps = {
   granted?: number | undefined;
@@ -29,14 +32,10 @@ export type QuotaInMbps = {
   total?: number | undefined;
 };
 
-export const QuotaInMbps$zodSchema: z.ZodType<
-  QuotaInMbps,
-  z.ZodTypeDef,
-  unknown
-> = z.object({
-  additional: z.number().int().optional(),
-  granted: z.number().int().optional(),
-  total: z.number().int().optional(),
+export const QuotaInMbps$zodSchema: z.ZodType<QuotaInMbps> = z.object({
+  additional: z.int().optional(),
+  granted: z.int().optional(),
+  total: z.int().optional(),
 });
 
 export type QuotaPerRegion = {
@@ -46,11 +45,7 @@ export type QuotaPerRegion = {
   quota_in_mbps?: QuotaInMbps | undefined;
 };
 
-export const QuotaPerRegion$zodSchema: z.ZodType<
-  QuotaPerRegion,
-  z.ZodTypeDef,
-  unknown
-> = z.object({
+export const QuotaPerRegion$zodSchema: z.ZodType<QuotaPerRegion> = z.object({
   quota_in_mbps: z.lazy(() => QuotaInMbps$zodSchema).optional(),
   quota_in_tb: z.lazy(() => QuotaInTb$zodSchema).optional(),
   region_id: z.string().optional(),
@@ -65,13 +60,9 @@ export type QuotaPerProject = {
   quota_per_region?: Array<QuotaPerRegion> | undefined;
 };
 
-export const QuotaPerProject$zodSchema: z.ZodType<
-  QuotaPerProject,
-  z.ZodTypeDef,
-  unknown
-> = z.object({
+export const QuotaPerProject$zodSchema: z.ZodType<QuotaPerProject> = z.object({
   billing_method: z.string().optional(),
-  price: z.number().int().optional(),
+  price: z.int().optional(),
   project_id: z.string().optional(),
   project_slug: z.string().optional(),
   quota_per_region: z.array(z.lazy(() => QuotaPerRegion$zodSchema)).optional(),
@@ -82,9 +73,7 @@ export type TrafficQuotaAttributes = {
 };
 
 export const TrafficQuotaAttributes$zodSchema: z.ZodType<
-  TrafficQuotaAttributes,
-  z.ZodTypeDef,
-  unknown
+  TrafficQuotaAttributes
 > = z.object({
   quota_per_project: z.array(z.lazy(() => QuotaPerProject$zodSchema))
     .optional(),
@@ -96,22 +85,16 @@ export type TrafficQuotaData = {
   attributes?: TrafficQuotaAttributes | undefined;
 };
 
-export const TrafficQuotaData$zodSchema: z.ZodType<
-  TrafficQuotaData,
-  z.ZodTypeDef,
-  unknown
-> = z.object({
-  attributes: z.lazy(() => TrafficQuotaAttributes$zodSchema).optional(),
-  id: z.string().optional(),
-  type: TrafficQuotaType$zodSchema.optional(),
-});
+export const TrafficQuotaData$zodSchema: z.ZodType<TrafficQuotaData> = z.object(
+  {
+    attributes: z.lazy(() => TrafficQuotaAttributes$zodSchema).optional(),
+    id: z.string().optional(),
+    type: TrafficQuotaType$zodSchema.optional(),
+  },
+);
 
 export type TrafficQuota = { data?: TrafficQuotaData | undefined };
 
-export const TrafficQuota$zodSchema: z.ZodType<
-  TrafficQuota,
-  z.ZodTypeDef,
-  unknown
-> = z.object({
+export const TrafficQuota$zodSchema: z.ZodType<TrafficQuota> = z.object({
   data: z.lazy(() => TrafficQuotaData$zodSchema).optional(),
 });

@@ -3,13 +3,17 @@
  */
 
 import * as z from "zod";
+import { ClosedEnum } from "../types/enums.js";
 import { CustomTag, CustomTag$zodSchema } from "./customtag.js";
+
+export const CreateTagType2 = {
+  Tags: "tags",
+} as const;
+export type CreateTagType2 = ClosedEnum<typeof CreateTagType2>;
 
 export const CreateTagType2$zodSchema = z.enum([
   "tags",
 ]);
-
-export type CreateTagType2 = z.infer<typeof CreateTagType2$zodSchema>;
 
 export type CreateTagAttributes2 = {
   name?: string | undefined;
@@ -17,39 +21,30 @@ export type CreateTagAttributes2 = {
   color?: string | undefined;
 };
 
-export const CreateTagAttributes2$zodSchema: z.ZodType<
-  CreateTagAttributes2,
-  z.ZodTypeDef,
-  unknown
-> = z.object({
-  color: z.string().default("#ffffff"),
-  description: z.string().optional(),
-  name: z.string().optional(),
-});
+export const CreateTagAttributes2$zodSchema: z.ZodType<CreateTagAttributes2> = z
+  .object({
+    color: z.string().default("#ffffff"),
+    description: z.string().optional(),
+    name: z.string().optional(),
+  });
 
 export type CreateTagData2 = {
   type?: CreateTagType2 | undefined;
   attributes?: CreateTagAttributes2 | undefined;
 };
 
-export const CreateTagData2$zodSchema: z.ZodType<
-  CreateTagData2,
-  z.ZodTypeDef,
-  unknown
-> = z.object({
+export const CreateTagData2$zodSchema: z.ZodType<CreateTagData2> = z.object({
   attributes: z.lazy(() => CreateTagAttributes2$zodSchema).optional(),
   type: CreateTagType2$zodSchema.optional(),
 });
 
 export type CreateTagRequest = { data?: CreateTagData2 | undefined };
 
-export const CreateTagRequest$zodSchema: z.ZodType<
-  CreateTagRequest,
-  z.ZodTypeDef,
-  unknown
-> = z.object({
-  data: z.lazy(() => CreateTagData2$zodSchema).optional(),
-});
+export const CreateTagRequest$zodSchema: z.ZodType<CreateTagRequest> = z.object(
+  {
+    data: z.lazy(() => CreateTagData2$zodSchema).optional(),
+  },
+);
 
 export type CreateTagResponse = {
   ContentType: string;
@@ -58,13 +53,10 @@ export type CreateTagResponse = {
   custom_tag?: CustomTag | undefined;
 };
 
-export const CreateTagResponse$zodSchema: z.ZodType<
-  CreateTagResponse,
-  z.ZodTypeDef,
-  unknown
-> = z.object({
-  ContentType: z.string(),
-  RawResponse: z.instanceof(Response),
-  StatusCode: z.number().int(),
-  custom_tag: CustomTag$zodSchema.optional(),
-});
+export const CreateTagResponse$zodSchema: z.ZodType<CreateTagResponse> = z
+  .object({
+    ContentType: z.string(),
+    RawResponse: z.custom<Response>(x => x instanceof Response),
+    StatusCode: z.int(),
+    custom_tag: CustomTag$zodSchema.optional(),
+  });

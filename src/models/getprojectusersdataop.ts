@@ -11,9 +11,7 @@ export type GetProjectUsersDataRequest = {
 };
 
 export const GetProjectUsersDataRequest$zodSchema: z.ZodType<
-  GetProjectUsersDataRequest,
-  z.ZodTypeDef,
-  unknown
+  GetProjectUsersDataRequest
 > = z.object({
   extraFieldsUserData: z.string().default("decoded_content").describe(
     "The `decoded_content` is provided as an extra attribute that shows content in decoded form.",
@@ -21,35 +19,18 @@ export const GetProjectUsersDataRequest$zodSchema: z.ZodType<
   project_id: z.string().describe("Project ID or Slug"),
 });
 
-/**
- * Success
- */
-export type GetProjectUsersDataResponseBody = {
-  data?: Array<UserData> | undefined;
-};
-
-export const GetProjectUsersDataResponseBody$zodSchema: z.ZodType<
-  GetProjectUsersDataResponseBody,
-  z.ZodTypeDef,
-  unknown
-> = z.object({
-  data: z.array(UserData$zodSchema).optional(),
-}).describe("Success");
-
 export type GetProjectUsersDataResponse = {
   ContentType: string;
   StatusCode: number;
   RawResponse: Response;
-  object?: GetProjectUsersDataResponseBody | undefined;
+  user_data?: UserData | undefined;
 };
 
 export const GetProjectUsersDataResponse$zodSchema: z.ZodType<
-  GetProjectUsersDataResponse,
-  z.ZodTypeDef,
-  unknown
+  GetProjectUsersDataResponse
 > = z.object({
   ContentType: z.string(),
-  RawResponse: z.instanceof(Response),
-  StatusCode: z.number().int(),
-  object: z.lazy(() => GetProjectUsersDataResponseBody$zodSchema).optional(),
+  RawResponse: z.custom<Response>(x => x instanceof Response),
+  StatusCode: z.int(),
+  user_data: UserData$zodSchema.optional(),
 });

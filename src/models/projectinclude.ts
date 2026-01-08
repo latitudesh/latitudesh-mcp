@@ -10,15 +10,12 @@ export type ProjectIncludeBilling = {
   method?: string | undefined;
 };
 
-export const ProjectIncludeBilling$zodSchema: z.ZodType<
-  ProjectIncludeBilling,
-  z.ZodTypeDef,
-  unknown
-> = z.object({
-  method: z.string().optional(),
-  subscription_id: z.string().optional(),
-  type: z.string().optional(),
-});
+export const ProjectIncludeBilling$zodSchema: z.ZodType<ProjectIncludeBilling> =
+  z.object({
+    method: z.string().optional(),
+    subscription_id: z.string().optional(),
+    type: z.string().optional(),
+  });
 
 export type ProjectIncludeStats = {
   ip_addresses?: number | undefined;
@@ -27,16 +24,13 @@ export type ProjectIncludeStats = {
   vlans?: number | undefined;
 };
 
-export const ProjectIncludeStats$zodSchema: z.ZodType<
-  ProjectIncludeStats,
-  z.ZodTypeDef,
-  unknown
-> = z.object({
-  ip_addresses: z.number().int().optional(),
-  prefixes: z.number().int().optional(),
-  servers: z.number().int().optional(),
-  vlans: z.number().int().optional(),
-});
+export const ProjectIncludeStats$zodSchema: z.ZodType<ProjectIncludeStats> = z
+  .object({
+    ip_addresses: z.int().optional(),
+    prefixes: z.int().optional(),
+    servers: z.int().optional(),
+    vlans: z.int().optional(),
+  });
 
 export type ProjectInclude = {
   id?: string | undefined;
@@ -52,11 +46,7 @@ export type ProjectInclude = {
   stats?: ProjectIncludeStats | undefined;
 };
 
-export const ProjectInclude$zodSchema: z.ZodType<
-  ProjectInclude,
-  z.ZodTypeDef,
-  unknown
-> = z.object({
+export const ProjectInclude$zodSchema: z.ZodType<ProjectInclude> = z.object({
   bandwidth_alert: z.boolean().optional(),
   billing: z.lazy(() => ProjectIncludeBilling$zodSchema).optional(),
   billing_method: z.string().optional(),

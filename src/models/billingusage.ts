@@ -3,6 +3,7 @@
  */
 
 import * as z from "zod";
+import { ClosedEnum } from "../types/enums.js";
 
 /**
  * The project in which the returned usage belongs to
@@ -13,36 +14,39 @@ export type BillingUsageProject = {
   name?: string | undefined;
 };
 
-export const BillingUsageProject$zodSchema: z.ZodType<
-  BillingUsageProject,
-  z.ZodTypeDef,
-  unknown
-> = z.object({
-  id: z.string().optional(),
-  name: z.string().optional(),
-  slug: z.string().optional(),
-}).describe("The project in which the returned usage belongs to");
+export const BillingUsageProject$zodSchema: z.ZodType<BillingUsageProject> = z
+  .object({
+    id: z.string().optional(),
+    name: z.string().optional(),
+    slug: z.string().optional(),
+  }).describe("The project in which the returned usage belongs to");
 
 /**
  * The period from the returned billing cycle
  */
 export type Period = { start?: string | undefined; end?: string | undefined };
 
-export const Period$zodSchema: z.ZodType<Period, z.ZodTypeDef, unknown> = z
-  .object({
-    end: z.string().datetime({ offset: true }).optional(),
-    start: z.string().datetime({ offset: true }).optional(),
-  }).describe("The period from the returned billing cycle");
+export const Period$zodSchema: z.ZodType<Period> = z.object({
+  end: z.iso.datetime({ offset: true }).optional(),
+  start: z.iso.datetime({ offset: true }).optional(),
+}).describe("The period from the returned billing cycle");
 
 /**
  * Type of discount (percentage or fixed amount)
  */
+export const BillingUsageType = {
+  Percent: "percent",
+  Amount: "amount",
+} as const;
+/**
+ * Type of discount (percentage or fixed amount)
+ */
+export type BillingUsageType = ClosedEnum<typeof BillingUsageType>;
+
 export const BillingUsageType$zodSchema = z.enum([
   "percent",
   "amount",
 ]).describe("Type of discount (percentage or fixed amount)");
-
-export type BillingUsageType = z.infer<typeof BillingUsageType$zodSchema>;
 
 export type Discount = {
   description: string;
@@ -50,12 +54,18 @@ export type Discount = {
   value: number;
 };
 
-export const Discount$zodSchema: z.ZodType<Discount, z.ZodTypeDef, unknown> = z
-  .object({
-    description: z.string(),
-    type: BillingUsageType$zodSchema,
-    value: z.number(),
-  });
+export const Discount$zodSchema: z.ZodType<Discount> = z.object({
+  description: z.string(),
+  type: BillingUsageType$zodSchema,
+  value: z.number(),
+});
+
+export const BillingUsageUnit = {
+  Quantity: "quantity",
+  Hour: "hour",
+  Minute: "minute",
+} as const;
+export type BillingUsageUnit = ClosedEnum<typeof BillingUsageUnit>;
 
 export const BillingUsageUnit$zodSchema = z.enum([
   "quantity",
@@ -63,14 +73,16 @@ export const BillingUsageUnit$zodSchema = z.enum([
   "minute",
 ]);
 
-export type BillingUsageUnit = z.infer<typeof BillingUsageUnit$zodSchema>;
+export const UsageType = {
+  Licensed: "licensed",
+  Metered: "metered",
+} as const;
+export type UsageType = ClosedEnum<typeof UsageType>;
 
 export const UsageType$zodSchema = z.enum([
   "licensed",
   "metered",
 ]);
-
-export type UsageType = z.infer<typeof UsageType$zodSchema>;
 
 export type Metadata = {
   id?: string | undefined;
@@ -79,13 +91,12 @@ export type Metadata = {
   tags?: Array<string> | undefined;
 };
 
-export const Metadata$zodSchema: z.ZodType<Metadata, z.ZodTypeDef, unknown> = z
-  .object({
-    hostname: z.string().optional(),
-    id: z.string().optional(),
-    plan: z.string().optional(),
-    tags: z.array(z.string()).optional(),
-  });
+export const Metadata$zodSchema: z.ZodType<Metadata> = z.object({
+  hostname: z.string().optional(),
+  id: z.string().optional(),
+  plan: z.string().optional(),
+  tags: z.array(z.string()).optional(),
+});
 
 export type Product = {
   id?: string | undefined;
@@ -106,44 +117,43 @@ export type Product = {
   metadata?: Metadata | undefined;
 };
 
-export const Product$zodSchema: z.ZodType<Product, z.ZodTypeDef, unknown> = z
-  .object({
-    amount_without_discount: z.number().int().optional(),
-    description: z.string().optional(),
-    discountable: z.boolean().optional(),
-    discounts: z.array(z.lazy(() => Discount$zodSchema)).optional(),
-    end: z.string().datetime({ offset: true }).optional(),
-    id: z.string().optional(),
-    metadata: z.lazy(() => Metadata$zodSchema).optional(),
-    name: z.string().optional(),
-    price: z.number().optional(),
-    proration: z.boolean().optional(),
-    quantity: z.number().optional(),
-    resource: z.string().optional(),
-    start: z.string().datetime({ offset: true }).optional(),
-    unit: BillingUsageUnit$zodSchema.optional(),
-    unit_price: z.number().optional(),
-    usage_type: UsageType$zodSchema.optional(),
-  });
+export const Product$zodSchema: z.ZodType<Product> = z.object({
+  amount_without_discount: z.int().optional(),
+  description: z.string().optional(),
+  discountable: z.boolean().optional(),
+  discounts: z.array(z.lazy(() => Discount$zodSchema)).optional(),
+  end: z.iso.datetime({ offset: true }).optional(),
+  id: z.string().optional(),
+  metadata: z.lazy(() => Metadata$zodSchema).optional(),
+  name: z.string().optional(),
+  price: z.number().optional(),
+  proration: z.boolean().optional(),
+  quantity: z.number().optional(),
+  resource: z.string().optional(),
+  start: z.iso.datetime({ offset: true }).optional(),
+  unit: BillingUsageUnit$zodSchema.optional(),
+  unit_price: z.number().optional(),
+  usage_type: UsageType$zodSchema.optional(),
+});
 
 export type BillingUsageAttributes = {
   project?: BillingUsageProject | undefined;
   period?: Period | undefined;
+  available_credit_balance?: number | undefined;
   price?: number | undefined;
-  threshold?: number | undefined;
+  threshold?: number | null | undefined;
   products?: Array<Product> | undefined;
 };
 
 export const BillingUsageAttributes$zodSchema: z.ZodType<
-  BillingUsageAttributes,
-  z.ZodTypeDef,
-  unknown
+  BillingUsageAttributes
 > = z.object({
+  available_credit_balance: z.int().optional(),
   period: z.lazy(() => Period$zodSchema).optional(),
   price: z.number().optional(),
   products: z.array(z.lazy(() => Product$zodSchema)).optional(),
   project: z.lazy(() => BillingUsageProject$zodSchema).optional(),
-  threshold: z.number().optional(),
+  threshold: z.number().nullable().optional(),
 });
 
 export type BillingUsageData = {
@@ -151,21 +161,15 @@ export type BillingUsageData = {
   attributes?: BillingUsageAttributes | undefined;
 };
 
-export const BillingUsageData$zodSchema: z.ZodType<
-  BillingUsageData,
-  z.ZodTypeDef,
-  unknown
-> = z.object({
-  attributes: z.lazy(() => BillingUsageAttributes$zodSchema).optional(),
-  id: z.string().optional(),
-});
+export const BillingUsageData$zodSchema: z.ZodType<BillingUsageData> = z.object(
+  {
+    attributes: z.lazy(() => BillingUsageAttributes$zodSchema).optional(),
+    id: z.string().optional(),
+  },
+);
 
 export type BillingUsage = { data?: BillingUsageData | undefined };
 
-export const BillingUsage$zodSchema: z.ZodType<
-  BillingUsage,
-  z.ZodTypeDef,
-  unknown
-> = z.object({
+export const BillingUsage$zodSchema: z.ZodType<BillingUsage> = z.object({
   data: z.lazy(() => BillingUsageData$zodSchema).optional(),
 });

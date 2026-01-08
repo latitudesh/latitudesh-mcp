@@ -7,9 +7,7 @@ import * as z from "zod";
 export type DeleteVirtualNetworksAssignmentsRequest = { assignment_id: string };
 
 export const DeleteVirtualNetworksAssignmentsRequest$zodSchema: z.ZodType<
-  DeleteVirtualNetworksAssignmentsRequest,
-  z.ZodTypeDef,
-  unknown
+  DeleteVirtualNetworksAssignmentsRequest
 > = z.object({
   assignment_id: z.string(),
 });
@@ -21,11 +19,9 @@ export type DeleteVirtualNetworksAssignmentsResponse = {
 };
 
 export const DeleteVirtualNetworksAssignmentsResponse$zodSchema: z.ZodType<
-  DeleteVirtualNetworksAssignmentsResponse,
-  z.ZodTypeDef,
-  unknown
+  DeleteVirtualNetworksAssignmentsResponse
 > = z.object({
   ContentType: z.string(),
-  RawResponse: z.instanceof(Response),
-  StatusCode: z.number().int(),
+  RawResponse: z.custom<Response>(x => x instanceof Response),
+  StatusCode: z.int(),
 });

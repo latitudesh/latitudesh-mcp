@@ -3,19 +3,21 @@
  */
 
 import * as z from "zod";
+import { ClosedEnum } from "../types/enums.js";
+
+export const CreateApiKeyType = {
+  ApiKeys: "api_keys",
+} as const;
+export type CreateApiKeyType = ClosedEnum<typeof CreateApiKeyType>;
 
 export const CreateApiKeyType$zodSchema = z.enum([
   "api_keys",
 ]);
 
-export type CreateApiKeyType = z.infer<typeof CreateApiKeyType$zodSchema>;
-
 export type CreateApiKeyAttributes = { name?: string | undefined };
 
 export const CreateApiKeyAttributes$zodSchema: z.ZodType<
-  CreateApiKeyAttributes,
-  z.ZodTypeDef,
-  unknown
+  CreateApiKeyAttributes
 > = z.object({
   name: z.string().default("Name of the API Key"),
 });
@@ -25,21 +27,15 @@ export type CreateApiKeyData = {
   attributes?: CreateApiKeyAttributes | undefined;
 };
 
-export const CreateApiKeyData$zodSchema: z.ZodType<
-  CreateApiKeyData,
-  z.ZodTypeDef,
-  unknown
-> = z.object({
-  attributes: z.lazy(() => CreateApiKeyAttributes$zodSchema).optional(),
-  type: CreateApiKeyType$zodSchema,
-});
+export const CreateApiKeyData$zodSchema: z.ZodType<CreateApiKeyData> = z.object(
+  {
+    attributes: z.lazy(() => CreateApiKeyAttributes$zodSchema).optional(),
+    type: CreateApiKeyType$zodSchema,
+  },
+);
 
 export type CreateApiKey = { data?: CreateApiKeyData | undefined };
 
-export const CreateApiKey$zodSchema: z.ZodType<
-  CreateApiKey,
-  z.ZodTypeDef,
-  unknown
-> = z.object({
+export const CreateApiKey$zodSchema: z.ZodType<CreateApiKey> = z.object({
   data: z.lazy(() => CreateApiKeyData$zodSchema).optional(),
 });

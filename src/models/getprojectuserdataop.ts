@@ -3,7 +3,7 @@
  */
 
 import * as z from "zod";
-import { UserData, UserData$zodSchema } from "./userdata.js";
+import { UserDataObject, UserDataObject$zodSchema } from "./userdataobject.js";
 
 export type GetProjectUserDataRequest = {
   project_id: string;
@@ -12,9 +12,7 @@ export type GetProjectUserDataRequest = {
 };
 
 export const GetProjectUserDataRequest$zodSchema: z.ZodType<
-  GetProjectUserDataRequest,
-  z.ZodTypeDef,
-  unknown
+  GetProjectUserDataRequest
 > = z.object({
   extraFieldsUserData: z.string().default("decoded_content").describe(
     "The `decoded_content` is provided as an extra attribute that shows content in decoded form.",
@@ -27,16 +25,14 @@ export type GetProjectUserDataResponse = {
   ContentType: string;
   StatusCode: number;
   RawResponse: Response;
-  user_data?: UserData | undefined;
+  user_data_object?: UserDataObject | undefined;
 };
 
 export const GetProjectUserDataResponse$zodSchema: z.ZodType<
-  GetProjectUserDataResponse,
-  z.ZodTypeDef,
-  unknown
+  GetProjectUserDataResponse
 > = z.object({
   ContentType: z.string(),
-  RawResponse: z.instanceof(Response),
-  StatusCode: z.number().int(),
-  user_data: UserData$zodSchema.optional(),
+  RawResponse: z.custom<Response>(x => x instanceof Response),
+  StatusCode: z.int(),
+  user_data_object: UserDataObject$zodSchema.optional(),
 });

@@ -11,9 +11,7 @@ import {
 export type ServerScheduleDeletionRequest = { server_id: string };
 
 export const ServerScheduleDeletionRequest$zodSchema: z.ZodType<
-  ServerScheduleDeletionRequest,
-  z.ZodTypeDef,
-  unknown
+  ServerScheduleDeletionRequest
 > = z.object({
   server_id: z.string(),
 });
@@ -26,12 +24,10 @@ export type ServerScheduleDeletionResponse = {
 };
 
 export const ServerScheduleDeletionResponse$zodSchema: z.ZodType<
-  ServerScheduleDeletionResponse,
-  z.ZodTypeDef,
-  unknown
+  ServerScheduleDeletionResponse
 > = z.object({
   ContentType: z.string(),
-  RawResponse: z.instanceof(Response),
-  StatusCode: z.number().int(),
+  RawResponse: z.custom<Response>(x => x instanceof Response),
+  StatusCode: z.int(),
   server_schedule_deletion: ServerScheduleDeletion$zodSchema.optional(),
 });

@@ -5,17 +5,22 @@
 import * as z from "zod";
 import { SshKeys, SshKeys$zodSchema } from "./sshkeys.js";
 
-export type GetSshKeysRequest = { filterTags?: string | undefined };
+export type GetSshKeysRequest = {
+  filterProject?: string | undefined;
+  filterScope?: string | undefined;
+  filterTags?: string | undefined;
+};
 
-export const GetSshKeysRequest$zodSchema: z.ZodType<
-  GetSshKeysRequest,
-  z.ZodTypeDef,
-  unknown
-> = z.object({
-  filterTags: z.string().describe(
-    "The tags ids to filter by, separated by comma, e.g. `filter[tags]=tag_1,tag_2`will return ssh keys with `tag_1` AND `tag_2`",
-  ).optional(),
-});
+export const GetSshKeysRequest$zodSchema: z.ZodType<GetSshKeysRequest> = z
+  .object({
+    filterProject: z.string().describe("Project ID or slug").optional(),
+    filterScope: z.string().describe(
+      "Filter by scope: `project` (has projects), `team` (no projects), or empty (all)",
+    ).optional(),
+    filterTags: z.string().describe(
+      "The tags ids to filter by, separated by comma, e.g. `filter[tags]=tag_1,tag_2`will return ssh keys with `tag_1` AND `tag_2`",
+    ).optional(),
+  });
 
 export type GetSshKeysResponse = {
   ContentType: string;
@@ -24,13 +29,10 @@ export type GetSshKeysResponse = {
   ssh_keys?: SshKeys | undefined;
 };
 
-export const GetSshKeysResponse$zodSchema: z.ZodType<
-  GetSshKeysResponse,
-  z.ZodTypeDef,
-  unknown
-> = z.object({
-  ContentType: z.string(),
-  RawResponse: z.instanceof(Response),
-  StatusCode: z.number().int(),
-  ssh_keys: SshKeys$zodSchema.optional(),
-});
+export const GetSshKeysResponse$zodSchema: z.ZodType<GetSshKeysResponse> = z
+  .object({
+    ContentType: z.string(),
+    RawResponse: z.custom<Response>(x => x instanceof Response),
+    StatusCode: z.int(),
+    ssh_keys: SshKeys$zodSchema.optional(),
+  });

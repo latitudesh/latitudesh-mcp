@@ -3,38 +3,32 @@
  */
 
 import * as z from "zod";
-import { UserData, UserData$zodSchema } from "./userdata.js";
+import { UserDataObject, UserDataObject$zodSchema } from "./userdataobject.js";
 
 export type GetUserDataRequest = {
   user_data_id: string;
   extraFieldsUserData?: string | undefined;
 };
 
-export const GetUserDataRequest$zodSchema: z.ZodType<
-  GetUserDataRequest,
-  z.ZodTypeDef,
-  unknown
-> = z.object({
-  extraFieldsUserData: z.string().default("decoded_content").describe(
-    "The `decoded_content` is provided as an extra attribute that shows content in decoded form.",
-  ),
-  user_data_id: z.string(),
-});
+export const GetUserDataRequest$zodSchema: z.ZodType<GetUserDataRequest> = z
+  .object({
+    extraFieldsUserData: z.string().default("decoded_content").describe(
+      "The `decoded_content` is provided as an extra attribute that shows content in decoded form.",
+    ),
+    user_data_id: z.string(),
+  });
 
 export type GetUserDataResponse = {
   ContentType: string;
   StatusCode: number;
   RawResponse: Response;
-  user_data?: UserData | undefined;
+  user_data_object?: UserDataObject | undefined;
 };
 
-export const GetUserDataResponse$zodSchema: z.ZodType<
-  GetUserDataResponse,
-  z.ZodTypeDef,
-  unknown
-> = z.object({
-  ContentType: z.string(),
-  RawResponse: z.instanceof(Response),
-  StatusCode: z.number().int(),
-  user_data: UserData$zodSchema.optional(),
-});
+export const GetUserDataResponse$zodSchema: z.ZodType<GetUserDataResponse> = z
+  .object({
+    ContentType: z.string(),
+    RawResponse: z.custom<Response>(x => x instanceof Response),
+    StatusCode: z.int(),
+    user_data_object: UserDataObject$zodSchema.optional(),
+  });

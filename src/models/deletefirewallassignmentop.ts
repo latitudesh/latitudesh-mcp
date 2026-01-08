@@ -10,9 +10,7 @@ export type DeleteFirewallAssignmentRequest = {
 };
 
 export const DeleteFirewallAssignmentRequest$zodSchema: z.ZodType<
-  DeleteFirewallAssignmentRequest,
-  z.ZodTypeDef,
-  unknown
+  DeleteFirewallAssignmentRequest
 > = z.object({
   assignment_id: z.string().describe("The Assignment ID"),
   firewall_id: z.string().describe("The Firewall ID"),
@@ -25,11 +23,9 @@ export type DeleteFirewallAssignmentResponse = {
 };
 
 export const DeleteFirewallAssignmentResponse$zodSchema: z.ZodType<
-  DeleteFirewallAssignmentResponse,
-  z.ZodTypeDef,
-  unknown
+  DeleteFirewallAssignmentResponse
 > = z.object({
   ContentType: z.string(),
-  RawResponse: z.instanceof(Response),
-  StatusCode: z.number().int(),
+  RawResponse: z.custom<Response>(x => x instanceof Response),
+  StatusCode: z.int(),
 });

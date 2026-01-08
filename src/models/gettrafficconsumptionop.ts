@@ -13,9 +13,7 @@ export type GetTrafficConsumptionRequest = {
 };
 
 export const GetTrafficConsumptionRequest$zodSchema: z.ZodType<
-  GetTrafficConsumptionRequest,
-  z.ZodTypeDef,
-  unknown
+  GetTrafficConsumptionRequest
 > = z.object({
   filterDateGte: z.string().describe(
     "The start timestamp to retrieve the traffic. You must provide in ISO8601 format. Example: filter[date][gte]=2024-04-01T00:00:00Z",
@@ -35,12 +33,10 @@ export type GetTrafficConsumptionResponse = {
 };
 
 export const GetTrafficConsumptionResponse$zodSchema: z.ZodType<
-  GetTrafficConsumptionResponse,
-  z.ZodTypeDef,
-  unknown
+  GetTrafficConsumptionResponse
 > = z.object({
   ContentType: z.string(),
-  RawResponse: z.instanceof(Response),
-  StatusCode: z.number().int(),
+  RawResponse: z.custom<Response>(x => x instanceof Response),
+  StatusCode: z.int(),
   traffic: Traffic$zodSchema.optional(),
 });

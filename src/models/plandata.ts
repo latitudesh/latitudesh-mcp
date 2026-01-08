@@ -3,12 +3,31 @@
  */
 
 import * as z from "zod";
+import { ClosedEnum } from "../types/enums.js";
+
+export const PlanDataTypePlans = {
+  Plans: "plans",
+} as const;
+export type PlanDataTypePlans = ClosedEnum<typeof PlanDataTypePlans>;
 
 export const PlanDataTypePlans$zodSchema = z.enum([
   "plans",
 ]);
 
-export type PlanDataTypePlans = z.infer<typeof PlanDataTypePlans$zodSchema>;
+export const Feature = {
+  Ssh: "ssh",
+  Raid: "raid",
+  UserData: "user_data",
+  Sev: "sev",
+} as const;
+export type Feature = ClosedEnum<typeof Feature>;
+
+export const Feature$zodSchema = z.enum([
+  "ssh",
+  "raid",
+  "user_data",
+  "sev",
+]);
 
 export type PlanDataCpu = {
   type?: string | undefined;
@@ -17,11 +36,7 @@ export type PlanDataCpu = {
   count?: number | undefined;
 };
 
-export const PlanDataCpu$zodSchema: z.ZodType<
-  PlanDataCpu,
-  z.ZodTypeDef,
-  unknown
-> = z.object({
+export const PlanDataCpu$zodSchema: z.ZodType<PlanDataCpu> = z.object({
   clock: z.number().optional(),
   cores: z.number().optional(),
   count: z.number().optional(),
@@ -30,13 +45,16 @@ export const PlanDataCpu$zodSchema: z.ZodType<
 
 export type PlanDataMemory = { total?: number | undefined };
 
-export const PlanDataMemory$zodSchema: z.ZodType<
-  PlanDataMemory,
-  z.ZodTypeDef,
-  unknown
-> = z.object({
+export const PlanDataMemory$zodSchema: z.ZodType<PlanDataMemory> = z.object({
   total: z.number().optional(),
 });
+
+export const DriveType = {
+  Ssd: "SSD",
+  Hdd: "HDD",
+  Nvme: "NVME",
+} as const;
+export type DriveType = ClosedEnum<typeof DriveType>;
 
 export const DriveType$zodSchema = z.enum([
   "SSD",
@@ -44,24 +62,21 @@ export const DriveType$zodSchema = z.enum([
   "NVME",
 ]);
 
-export type DriveType = z.infer<typeof DriveType$zodSchema>;
-
 export type Drive = {
   count?: number | undefined;
   size?: string | undefined;
   type?: DriveType | undefined;
 };
 
-export const Drive$zodSchema: z.ZodType<Drive, z.ZodTypeDef, unknown> = z
-  .object({
-    count: z.number().optional(),
-    size: z.string().optional(),
-    type: DriveType$zodSchema.optional(),
-  });
+export const Drive$zodSchema: z.ZodType<Drive> = z.object({
+  count: z.number().optional(),
+  size: z.string().optional(),
+  type: DriveType$zodSchema.optional(),
+});
 
 export type Nic = { count?: number | undefined; type?: string | undefined };
 
-export const Nic$zodSchema: z.ZodType<Nic, z.ZodTypeDef, unknown> = z.object({
+export const Nic$zodSchema: z.ZodType<Nic> = z.object({
   count: z.number().optional(),
   type: z.string().optional(),
 });
@@ -69,15 +84,15 @@ export const Nic$zodSchema: z.ZodType<Nic, z.ZodTypeDef, unknown> = z.object({
 export type PlanDataGpu = {
   count?: number | undefined;
   type?: string | undefined;
+  vram_per_gpu?: number | null | undefined;
+  interconnect?: string | null | undefined;
 };
 
-export const PlanDataGpu$zodSchema: z.ZodType<
-  PlanDataGpu,
-  z.ZodTypeDef,
-  unknown
-> = z.object({
+export const PlanDataGpu$zodSchema: z.ZodType<PlanDataGpu> = z.object({
   count: z.number().optional(),
+  interconnect: z.string().nullable().optional(),
   type: z.string().optional(),
+  vram_per_gpu: z.number().nullable().optional(),
 });
 
 export type PlanDataSpecs = {
@@ -88,11 +103,7 @@ export type PlanDataSpecs = {
   gpu?: PlanDataGpu | undefined;
 };
 
-export const PlanDataSpecs$zodSchema: z.ZodType<
-  PlanDataSpecs,
-  z.ZodTypeDef,
-  unknown
-> = z.object({
+export const PlanDataSpecs$zodSchema: z.ZodType<PlanDataSpecs> = z.object({
   cpu: z.lazy(() => PlanDataCpu$zodSchema).optional(),
   drives: z.array(z.lazy(() => Drive$zodSchema)).optional(),
   gpu: z.lazy(() => PlanDataGpu$zodSchema).optional(),
@@ -105,14 +116,19 @@ export type PlanDataLocations = {
   in_stock?: Array<string> | undefined;
 };
 
-export const PlanDataLocations$zodSchema: z.ZodType<
-  PlanDataLocations,
-  z.ZodTypeDef,
-  unknown
-> = z.object({
-  available: z.array(z.string()).optional(),
-  in_stock: z.array(z.string()).optional(),
-});
+export const PlanDataLocations$zodSchema: z.ZodType<PlanDataLocations> = z
+  .object({
+    available: z.array(z.string()).optional(),
+    in_stock: z.array(z.string()).optional(),
+  });
+
+export const PlanDataStockLevel = {
+  Unavailable: "unavailable",
+  Low: "low",
+  Medium: "medium",
+  High: "high",
+} as const;
+export type PlanDataStockLevel = ClosedEnum<typeof PlanDataStockLevel>;
 
 export const PlanDataStockLevel$zodSchema = z.enum([
   "unavailable",
@@ -121,19 +137,13 @@ export const PlanDataStockLevel$zodSchema = z.enum([
   "high",
 ]);
 
-export type PlanDataStockLevel = z.infer<typeof PlanDataStockLevel$zodSchema>;
-
 export type PlanDataUSD = {
   hour?: number | undefined;
   month?: number | undefined;
   year?: number | undefined;
 };
 
-export const PlanDataUSD$zodSchema: z.ZodType<
-  PlanDataUSD,
-  z.ZodTypeDef,
-  unknown
-> = z.object({
+export const PlanDataUSD$zodSchema: z.ZodType<PlanDataUSD> = z.object({
   hour: z.number().optional(),
   month: z.number().optional(),
   year: z.number().optional(),
@@ -145,11 +155,7 @@ export type PlanDataBRL = {
   year?: number | undefined;
 };
 
-export const PlanDataBRL$zodSchema: z.ZodType<
-  PlanDataBRL,
-  z.ZodTypeDef,
-  unknown
-> = z.object({
+export const PlanDataBRL$zodSchema: z.ZodType<PlanDataBRL> = z.object({
   hour: z.number().optional(),
   month: z.number().optional(),
   year: z.number().optional(),
@@ -160,11 +166,7 @@ export type PlanDataPricing = {
   BRL?: PlanDataBRL | undefined;
 };
 
-export const PlanDataPricing$zodSchema: z.ZodType<
-  PlanDataPricing,
-  z.ZodTypeDef,
-  unknown
-> = z.object({
+export const PlanDataPricing$zodSchema: z.ZodType<PlanDataPricing> = z.object({
   BRL: z.lazy(() => PlanDataBRL$zodSchema).optional(),
   USD: z.lazy(() => PlanDataUSD$zodSchema).optional(),
 });
@@ -177,11 +179,7 @@ export type PlanDataRegion = {
   pricing?: PlanDataPricing | undefined;
 };
 
-export const PlanDataRegion$zodSchema: z.ZodType<
-  PlanDataRegion,
-  z.ZodTypeDef,
-  unknown
-> = z.object({
+export const PlanDataRegion$zodSchema: z.ZodType<PlanDataRegion> = z.object({
   deploys_instantly: z.array(z.string()).optional(),
   locations: z.lazy(() => PlanDataLocations$zodSchema).optional(),
   name: z.string().optional(),
@@ -192,22 +190,19 @@ export const PlanDataRegion$zodSchema: z.ZodType<
 export type PlanDataAttributes = {
   slug?: string | undefined;
   name?: string | undefined;
-  features?: Array<string> | undefined;
+  features?: Array<Feature> | undefined;
   specs?: PlanDataSpecs | undefined;
   regions?: Array<PlanDataRegion> | undefined;
 };
 
-export const PlanDataAttributes$zodSchema: z.ZodType<
-  PlanDataAttributes,
-  z.ZodTypeDef,
-  unknown
-> = z.object({
-  features: z.array(z.string()).optional(),
-  name: z.string().optional(),
-  regions: z.array(z.lazy(() => PlanDataRegion$zodSchema)).optional(),
-  slug: z.string().optional(),
-  specs: z.lazy(() => PlanDataSpecs$zodSchema).optional(),
-});
+export const PlanDataAttributes$zodSchema: z.ZodType<PlanDataAttributes> = z
+  .object({
+    features: z.array(Feature$zodSchema).optional(),
+    name: z.string().optional(),
+    regions: z.array(z.lazy(() => PlanDataRegion$zodSchema)).optional(),
+    slug: z.string().optional(),
+    specs: z.lazy(() => PlanDataSpecs$zodSchema).optional(),
+  });
 
 export type PlanData = {
   id?: string | undefined;
@@ -215,9 +210,8 @@ export type PlanData = {
   attributes?: PlanDataAttributes | undefined;
 };
 
-export const PlanData$zodSchema: z.ZodType<PlanData, z.ZodTypeDef, unknown> = z
-  .object({
-    attributes: z.lazy(() => PlanDataAttributes$zodSchema).optional(),
-    id: z.string().optional(),
-    type: PlanDataTypePlans$zodSchema.optional(),
-  });
+export const PlanData$zodSchema: z.ZodType<PlanData> = z.object({
+  attributes: z.lazy(() => PlanDataAttributes$zodSchema).optional(),
+  id: z.string().optional(),
+  type: PlanDataTypePlans$zodSchema.optional(),
+});

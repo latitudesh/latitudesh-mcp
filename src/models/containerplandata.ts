@@ -3,62 +3,54 @@
  */
 
 import * as z from "zod";
+import { ClosedEnum } from "../types/enums.js";
+
+export const ContainerPlanDataType = {
+  ContainerPlan: "container_plan",
+} as const;
+export type ContainerPlanDataType = ClosedEnum<typeof ContainerPlanDataType>;
 
 export const ContainerPlanDataType$zodSchema = z.enum([
   "container_plan",
 ]);
-
-export type ContainerPlanDataType = z.infer<
-  typeof ContainerPlanDataType$zodSchema
->;
 
 export type ContainerPlanDataCpu = {
   cores?: number | undefined;
   count?: number | undefined;
 };
 
-export const ContainerPlanDataCpu$zodSchema: z.ZodType<
-  ContainerPlanDataCpu,
-  z.ZodTypeDef,
-  unknown
-> = z.object({
-  cores: z.number().optional(),
-  count: z.number().optional(),
-});
+export const ContainerPlanDataCpu$zodSchema: z.ZodType<ContainerPlanDataCpu> = z
+  .object({
+    cores: z.number().optional(),
+    count: z.number().optional(),
+  });
 
 export type ContainerPlanDataMemory = { total?: number | undefined };
 
 export const ContainerPlanDataMemory$zodSchema: z.ZodType<
-  ContainerPlanDataMemory,
-  z.ZodTypeDef,
-  unknown
+  ContainerPlanDataMemory
 > = z.object({
   total: z.number().optional(),
 });
 
 export type EphemeralStorage = { size?: number | undefined };
 
-export const EphemeralStorage$zodSchema: z.ZodType<
-  EphemeralStorage,
-  z.ZodTypeDef,
-  unknown
-> = z.object({
-  size: z.number().optional(),
-});
+export const EphemeralStorage$zodSchema: z.ZodType<EphemeralStorage> = z.object(
+  {
+    size: z.number().optional(),
+  },
+);
 
 export type ContainerPlanDataGpu = {
   count?: number | undefined;
   type?: string | undefined;
 };
 
-export const ContainerPlanDataGpu$zodSchema: z.ZodType<
-  ContainerPlanDataGpu,
-  z.ZodTypeDef,
-  unknown
-> = z.object({
-  count: z.number().optional(),
-  type: z.string().optional(),
-});
+export const ContainerPlanDataGpu$zodSchema: z.ZodType<ContainerPlanDataGpu> = z
+  .object({
+    count: z.number().optional(),
+    type: z.string().optional(),
+  });
 
 export type ContainerPlanDataSpecs = {
   cpu?: ContainerPlanDataCpu | undefined;
@@ -68,9 +60,7 @@ export type ContainerPlanDataSpecs = {
 };
 
 export const ContainerPlanDataSpecs$zodSchema: z.ZodType<
-  ContainerPlanDataSpecs,
-  z.ZodTypeDef,
-  unknown
+  ContainerPlanDataSpecs
 > = z.object({
   cpu: z.lazy(() => ContainerPlanDataCpu$zodSchema).optional(),
   ephemeral_storage: z.lazy(() => EphemeralStorage$zodSchema).optional(),
@@ -84,13 +74,21 @@ export type ContainerPlanDataLocations = {
 };
 
 export const ContainerPlanDataLocations$zodSchema: z.ZodType<
-  ContainerPlanDataLocations,
-  z.ZodTypeDef,
-  unknown
+  ContainerPlanDataLocations
 > = z.object({
   available: z.array(z.string()).optional(),
   in_stock: z.array(z.string()).optional(),
 });
+
+export const ContainerPlanDataStockLevel = {
+  Unavailable: "unavailable",
+  Low: "low",
+  Medium: "medium",
+  High: "high",
+} as const;
+export type ContainerPlanDataStockLevel = ClosedEnum<
+  typeof ContainerPlanDataStockLevel
+>;
 
 export const ContainerPlanDataStockLevel$zodSchema = z.enum([
   "unavailable",
@@ -99,37 +97,27 @@ export const ContainerPlanDataStockLevel$zodSchema = z.enum([
   "high",
 ]);
 
-export type ContainerPlanDataStockLevel = z.infer<
-  typeof ContainerPlanDataStockLevel$zodSchema
->;
-
 export type ContainerPlanDataUSD = {
   minute?: number | undefined;
   hour?: number | undefined;
 };
 
-export const ContainerPlanDataUSD$zodSchema: z.ZodType<
-  ContainerPlanDataUSD,
-  z.ZodTypeDef,
-  unknown
-> = z.object({
-  hour: z.number().optional(),
-  minute: z.number().optional(),
-});
+export const ContainerPlanDataUSD$zodSchema: z.ZodType<ContainerPlanDataUSD> = z
+  .object({
+    hour: z.number().optional(),
+    minute: z.number().optional(),
+  });
 
 export type ContainerPlanDataBRL = {
   minute?: number | undefined;
   hour?: number | undefined;
 };
 
-export const ContainerPlanDataBRL$zodSchema: z.ZodType<
-  ContainerPlanDataBRL,
-  z.ZodTypeDef,
-  unknown
-> = z.object({
-  hour: z.number().optional(),
-  minute: z.number().optional(),
-});
+export const ContainerPlanDataBRL$zodSchema: z.ZodType<ContainerPlanDataBRL> = z
+  .object({
+    hour: z.number().optional(),
+    minute: z.number().optional(),
+  });
 
 export type ContainerPlanDataPricing = {
   USD?: ContainerPlanDataUSD | undefined;
@@ -137,9 +125,7 @@ export type ContainerPlanDataPricing = {
 };
 
 export const ContainerPlanDataPricing$zodSchema: z.ZodType<
-  ContainerPlanDataPricing,
-  z.ZodTypeDef,
-  unknown
+  ContainerPlanDataPricing
 > = z.object({
   BRL: z.lazy(() => ContainerPlanDataBRL$zodSchema).optional(),
   USD: z.lazy(() => ContainerPlanDataUSD$zodSchema).optional(),
@@ -153,9 +139,7 @@ export type ContainerPlanDataRegion = {
 };
 
 export const ContainerPlanDataRegion$zodSchema: z.ZodType<
-  ContainerPlanDataRegion,
-  z.ZodTypeDef,
-  unknown
+  ContainerPlanDataRegion
 > = z.object({
   locations: z.lazy(() => ContainerPlanDataLocations$zodSchema).optional(),
   name: z.string().optional(),
@@ -170,9 +154,7 @@ export type ContainerPlanDataAttributes = {
 };
 
 export const ContainerPlanDataAttributes$zodSchema: z.ZodType<
-  ContainerPlanDataAttributes,
-  z.ZodTypeDef,
-  unknown
+  ContainerPlanDataAttributes
 > = z.object({
   regions: z.array(z.lazy(() => ContainerPlanDataRegion$zodSchema)).optional(),
   slug: z.string().optional(),
@@ -185,12 +167,9 @@ export type ContainerPlanData = {
   attributes?: ContainerPlanDataAttributes | undefined;
 };
 
-export const ContainerPlanData$zodSchema: z.ZodType<
-  ContainerPlanData,
-  z.ZodTypeDef,
-  unknown
-> = z.object({
-  attributes: z.lazy(() => ContainerPlanDataAttributes$zodSchema).optional(),
-  id: z.string().optional(),
-  type: ContainerPlanDataType$zodSchema.optional(),
-});
+export const ContainerPlanData$zodSchema: z.ZodType<ContainerPlanData> = z
+  .object({
+    attributes: z.lazy(() => ContainerPlanDataAttributes$zodSchema).optional(),
+    id: z.string().optional(),
+    type: ContainerPlanDataType$zodSchema.optional(),
+  });

@@ -6,13 +6,10 @@ import * as z from "zod";
 
 export type DeleteUserDataRequest = { user_data_id: string };
 
-export const DeleteUserDataRequest$zodSchema: z.ZodType<
-  DeleteUserDataRequest,
-  z.ZodTypeDef,
-  unknown
-> = z.object({
-  user_data_id: z.string(),
-});
+export const DeleteUserDataRequest$zodSchema: z.ZodType<DeleteUserDataRequest> =
+  z.object({
+    user_data_id: z.string(),
+  });
 
 export type DeleteUserDataResponse = {
   ContentType: string;
@@ -21,11 +18,9 @@ export type DeleteUserDataResponse = {
 };
 
 export const DeleteUserDataResponse$zodSchema: z.ZodType<
-  DeleteUserDataResponse,
-  z.ZodTypeDef,
-  unknown
+  DeleteUserDataResponse
 > = z.object({
   ContentType: z.string(),
-  RawResponse: z.instanceof(Response),
-  StatusCode: z.number().int(),
+  RawResponse: z.custom<Response>(x => x instanceof Response),
+  StatusCode: z.int(),
 });

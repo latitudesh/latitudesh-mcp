@@ -11,9 +11,7 @@ import {
 export type GetServerOutOfBandRequest = { server_id: string };
 
 export const GetServerOutOfBandRequest$zodSchema: z.ZodType<
-  GetServerOutOfBandRequest,
-  z.ZodTypeDef,
-  unknown
+  GetServerOutOfBandRequest
 > = z.object({
   server_id: z.string().describe("The Server ID"),
 });
@@ -26,12 +24,10 @@ export type GetServerOutOfBandResponse = {
 };
 
 export const GetServerOutOfBandResponse$zodSchema: z.ZodType<
-  GetServerOutOfBandResponse,
-  z.ZodTypeDef,
-  unknown
+  GetServerOutOfBandResponse
 > = z.object({
   ContentType: z.string(),
-  RawResponse: z.instanceof(Response),
-  StatusCode: z.number().int(),
+  RawResponse: z.custom<Response>(x => x instanceof Response),
+  StatusCode: z.int(),
   out_of_band_connection: OutOfBandConnection$zodSchema.optional(),
 });

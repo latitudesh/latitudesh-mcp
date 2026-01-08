@@ -11,9 +11,7 @@ export type GetProjectSshKeysRequest = {
 };
 
 export const GetProjectSshKeysRequest$zodSchema: z.ZodType<
-  GetProjectSshKeysRequest,
-  z.ZodTypeDef,
-  unknown
+  GetProjectSshKeysRequest
 > = z.object({
   filterTags: z.string().describe(
     "The tags ids to filter by, separated by comma, e.g. `filter[tags]=tag_1,tag_2`will return ssh keys with `tag_1` AND `tag_2`",
@@ -29,12 +27,10 @@ export type GetProjectSshKeysResponse = {
 };
 
 export const GetProjectSshKeysResponse$zodSchema: z.ZodType<
-  GetProjectSshKeysResponse,
-  z.ZodTypeDef,
-  unknown
+  GetProjectSshKeysResponse
 > = z.object({
   ContentType: z.string(),
-  RawResponse: z.instanceof(Response),
-  StatusCode: z.number().int(),
+  RawResponse: z.custom<Response>(x => x instanceof Response),
+  StatusCode: z.int(),
   ssh_keys: SshKeys$zodSchema.optional(),
 });

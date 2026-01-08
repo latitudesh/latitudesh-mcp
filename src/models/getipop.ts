@@ -10,11 +10,7 @@ export type GetIpRequest = {
   extraFieldsIpAddresses?: string | undefined;
 };
 
-export const GetIpRequest$zodSchema: z.ZodType<
-  GetIpRequest,
-  z.ZodTypeDef,
-  unknown
-> = z.object({
+export const GetIpRequest$zodSchema: z.ZodType<GetIpRequest> = z.object({
   extraFieldsIpAddresses: z.string().describe(
     "The `region` and `server` are provided as extra attributes that are lazy loaded. To request it, just set `extra_fields[ip_addresses]=region,server` in the query string.",
   ).optional(),
@@ -28,13 +24,9 @@ export type GetIpResponse = {
   ip_address?: IpAddress | undefined;
 };
 
-export const GetIpResponse$zodSchema: z.ZodType<
-  GetIpResponse,
-  z.ZodTypeDef,
-  unknown
-> = z.object({
+export const GetIpResponse$zodSchema: z.ZodType<GetIpResponse> = z.object({
   ContentType: z.string(),
-  RawResponse: z.instanceof(Response),
-  StatusCode: z.number().int(),
+  RawResponse: z.custom<Response>(x => x instanceof Response),
+  StatusCode: z.int(),
   ip_address: IpAddress$zodSchema.optional(),
 });

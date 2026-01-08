@@ -13,12 +13,10 @@ export type CreateVirtualMachineResponse = {
 };
 
 export const CreateVirtualMachineResponse$zodSchema: z.ZodType<
-  CreateVirtualMachineResponse,
-  z.ZodTypeDef,
-  unknown
+  CreateVirtualMachineResponse
 > = z.object({
   ContentType: z.string(),
-  RawResponse: z.instanceof(Response),
-  StatusCode: z.number().int(),
+  RawResponse: z.custom<Response>(x => x instanceof Response),
+  StatusCode: z.int(),
   virtual_machine: VirtualMachine$zodSchema.optional(),
 });

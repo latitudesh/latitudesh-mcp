@@ -11,19 +11,16 @@ export type ListFirewallsRequest = {
   pageNumber?: number | undefined;
 };
 
-export const ListFirewallsRequest$zodSchema: z.ZodType<
-  ListFirewallsRequest,
-  z.ZodTypeDef,
-  unknown
-> = z.object({
-  filterProject: z.string().optional(),
-  pageNumber: z.number().int().default(1).describe(
-    "Page number to return (starts at 1)",
-  ),
-  pageSize: z.number().int().default(20).describe(
-    "Number of items to return per page",
-  ),
-});
+export const ListFirewallsRequest$zodSchema: z.ZodType<ListFirewallsRequest> = z
+  .object({
+    filterProject: z.string().optional(),
+    pageNumber: z.int().default(1).describe(
+      "Page number to return (starts at 1)",
+    ),
+    pageSize: z.int().default(20).describe(
+      "Number of items to return per page",
+    ),
+  });
 
 export type ListFirewallsResponse = {
   ContentType: string;
@@ -32,13 +29,10 @@ export type ListFirewallsResponse = {
   firewalls?: Firewalls | undefined;
 };
 
-export const ListFirewallsResponse$zodSchema: z.ZodType<
-  ListFirewallsResponse,
-  z.ZodTypeDef,
-  unknown
-> = z.object({
-  ContentType: z.string(),
-  RawResponse: z.instanceof(Response),
-  StatusCode: z.number().int(),
-  firewalls: Firewalls$zodSchema.optional(),
-});
+export const ListFirewallsResponse$zodSchema: z.ZodType<ListFirewallsResponse> =
+  z.object({
+    ContentType: z.string(),
+    RawResponse: z.custom<Response>(x => x instanceof Response),
+    StatusCode: z.int(),
+    firewalls: Firewalls$zodSchema.optional(),
+  });

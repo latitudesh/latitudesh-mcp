@@ -9,9 +9,7 @@ export type GetStorageFilesystemsRequest = {
 };
 
 export const GetStorageFilesystemsRequest$zodSchema: z.ZodType<
-  GetStorageFilesystemsRequest,
-  z.ZodTypeDef,
-  unknown
+  GetStorageFilesystemsRequest
 > = z.object({
   filterProject: z.string().describe("The project ID or Slug to filter by")
     .optional(),
@@ -24,11 +22,9 @@ export type GetStorageFilesystemsResponse = {
 };
 
 export const GetStorageFilesystemsResponse$zodSchema: z.ZodType<
-  GetStorageFilesystemsResponse,
-  z.ZodTypeDef,
-  unknown
+  GetStorageFilesystemsResponse
 > = z.object({
   ContentType: z.string(),
-  RawResponse: z.instanceof(Response),
-  StatusCode: z.number().int(),
+  RawResponse: z.custom<Response>(x => x instanceof Response),
+  StatusCode: z.int(),
 });

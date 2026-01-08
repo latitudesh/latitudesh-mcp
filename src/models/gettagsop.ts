@@ -12,13 +12,9 @@ export type GetTagsResponse = {
   custom_tags?: CustomTags | undefined;
 };
 
-export const GetTagsResponse$zodSchema: z.ZodType<
-  GetTagsResponse,
-  z.ZodTypeDef,
-  unknown
-> = z.object({
+export const GetTagsResponse$zodSchema: z.ZodType<GetTagsResponse> = z.object({
   ContentType: z.string(),
-  RawResponse: z.instanceof(Response),
-  StatusCode: z.number().int(),
+  RawResponse: z.custom<Response>(x => x instanceof Response),
+  StatusCode: z.int(),
   custom_tags: CustomTags$zodSchema.optional(),
 });

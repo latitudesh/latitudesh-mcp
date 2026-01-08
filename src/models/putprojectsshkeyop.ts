@@ -3,15 +3,17 @@
  */
 
 import * as z from "zod";
+import { ClosedEnum } from "../types/enums.js";
 import { SshKeyData, SshKeyData$zodSchema } from "./sshkeydata.js";
+
+export const PutProjectSshKeyType2 = {
+  SshKeys: "ssh_keys",
+} as const;
+export type PutProjectSshKeyType2 = ClosedEnum<typeof PutProjectSshKeyType2>;
 
 export const PutProjectSshKeyType2$zodSchema = z.enum([
   "ssh_keys",
 ]);
-
-export type PutProjectSshKeyType2 = z.infer<
-  typeof PutProjectSshKeyType2$zodSchema
->;
 
 export type PutProjectSshKeyAttributes2 = {
   tags?: Array<string> | undefined;
@@ -19,9 +21,7 @@ export type PutProjectSshKeyAttributes2 = {
 };
 
 export const PutProjectSshKeyAttributes2$zodSchema: z.ZodType<
-  PutProjectSshKeyAttributes2,
-  z.ZodTypeDef,
-  unknown
+  PutProjectSshKeyAttributes2
 > = z.object({
   name: z.string().default("New SSH Key Name"),
   tags: z.array(z.string()).optional(),
@@ -33,22 +33,17 @@ export type PutProjectSshKeyData2 = {
   attributes?: PutProjectSshKeyAttributes2 | undefined;
 };
 
-export const PutProjectSshKeyData2$zodSchema: z.ZodType<
-  PutProjectSshKeyData2,
-  z.ZodTypeDef,
-  unknown
-> = z.object({
-  attributes: z.lazy(() => PutProjectSshKeyAttributes2$zodSchema).optional(),
-  id: z.string().default("ssh_81EVOtR1N4J2Z"),
-  type: PutProjectSshKeyType2$zodSchema,
-});
+export const PutProjectSshKeyData2$zodSchema: z.ZodType<PutProjectSshKeyData2> =
+  z.object({
+    attributes: z.lazy(() => PutProjectSshKeyAttributes2$zodSchema).optional(),
+    id: z.string().default("ssh_81EVOtR1N4J2Z"),
+    type: PutProjectSshKeyType2$zodSchema,
+  });
 
 export type PutProjectSshKeyRequestBody2 = { data: PutProjectSshKeyData2 };
 
 export const PutProjectSshKeyRequestBody2$zodSchema: z.ZodType<
-  PutProjectSshKeyRequestBody2,
-  z.ZodTypeDef,
-  unknown
+  PutProjectSshKeyRequestBody2
 > = z.object({
   data: z.lazy(() => PutProjectSshKeyData2$zodSchema),
 });
@@ -60,9 +55,7 @@ export type PutProjectSshKeyRequest = {
 };
 
 export const PutProjectSshKeyRequest$zodSchema: z.ZodType<
-  PutProjectSshKeyRequest,
-  z.ZodTypeDef,
-  unknown
+  PutProjectSshKeyRequest
 > = z.object({
   RequestBody: z.lazy(() => PutProjectSshKeyRequestBody2$zodSchema),
   project_id: z.string().describe("Project ID or Slug"),
@@ -75,9 +68,7 @@ export const PutProjectSshKeyRequest$zodSchema: z.ZodType<
 export type PutProjectSshKeyResponseBody = { data?: SshKeyData | undefined };
 
 export const PutProjectSshKeyResponseBody$zodSchema: z.ZodType<
-  PutProjectSshKeyResponseBody,
-  z.ZodTypeDef,
-  unknown
+  PutProjectSshKeyResponseBody
 > = z.object({
   data: SshKeyData$zodSchema.optional(),
 }).describe("Success");
@@ -90,12 +81,10 @@ export type PutProjectSshKeyResponse = {
 };
 
 export const PutProjectSshKeyResponse$zodSchema: z.ZodType<
-  PutProjectSshKeyResponse,
-  z.ZodTypeDef,
-  unknown
+  PutProjectSshKeyResponse
 > = z.object({
   ContentType: z.string(),
-  RawResponse: z.instanceof(Response),
-  StatusCode: z.number().int(),
+  RawResponse: z.custom<Response>(x => x instanceof Response),
+  StatusCode: z.int(),
   object: z.lazy(() => PutProjectSshKeyResponseBody$zodSchema).optional(),
 });

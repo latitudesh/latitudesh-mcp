@@ -12,13 +12,10 @@ export type GetUserTeamsResponse = {
   user_teams?: UserTeams | undefined;
 };
 
-export const GetUserTeamsResponse$zodSchema: z.ZodType<
-  GetUserTeamsResponse,
-  z.ZodTypeDef,
-  unknown
-> = z.object({
-  ContentType: z.string(),
-  RawResponse: z.instanceof(Response),
-  StatusCode: z.number().int(),
-  user_teams: UserTeams$zodSchema.optional(),
-});
+export const GetUserTeamsResponse$zodSchema: z.ZodType<GetUserTeamsResponse> = z
+  .object({
+    ContentType: z.string(),
+    RawResponse: z.custom<Response>(x => x instanceof Response),
+    StatusCode: z.int(),
+    user_teams: UserTeams$zodSchema.optional(),
+  });

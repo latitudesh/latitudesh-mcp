@@ -3,14 +3,17 @@
  */
 
 import * as z from "zod";
+import { ClosedEnum } from "../types/enums.js";
+import { ProjectInclude, ProjectInclude$zodSchema } from "./projectinclude.js";
+
+export const VirtualNetworkDataType = {
+  VirtualNetworks: "virtual_networks",
+} as const;
+export type VirtualNetworkDataType = ClosedEnum<typeof VirtualNetworkDataType>;
 
 export const VirtualNetworkDataType$zodSchema = z.enum([
   "virtual_networks",
 ]);
-
-export type VirtualNetworkDataType = z.infer<
-  typeof VirtualNetworkDataType$zodSchema
->;
 
 export type VirtualNetworkDataSite = {
   id?: string | undefined;
@@ -20,9 +23,7 @@ export type VirtualNetworkDataSite = {
 };
 
 export const VirtualNetworkDataSite$zodSchema: z.ZodType<
-  VirtualNetworkDataSite,
-  z.ZodTypeDef,
-  unknown
+  VirtualNetworkDataSite
 > = z.object({
   facility: z.string().optional(),
   id: z.string().optional(),
@@ -37,35 +38,49 @@ export type VirtualNetworkDataRegion = {
 };
 
 export const VirtualNetworkDataRegion$zodSchema: z.ZodType<
-  VirtualNetworkDataRegion,
-  z.ZodTypeDef,
-  unknown
+  VirtualNetworkDataRegion
 > = z.object({
   city: z.string().optional(),
   country: z.string().optional(),
   site: z.lazy(() => VirtualNetworkDataSite$zodSchema).optional(),
 });
 
+export type Tag = {
+  id?: string | undefined;
+  name?: string | undefined;
+  description?: string | undefined;
+  color?: string | undefined;
+};
+
+export const Tag$zodSchema: z.ZodType<Tag> = z.object({
+  color: z.string().optional(),
+  description: z.string().optional(),
+  id: z.string().optional(),
+  name: z.string().optional(),
+});
+
 export type VirtualNetworkDataAttributes = {
   vid?: number | undefined;
   name?: string | undefined;
   description?: string | undefined;
+  project?: ProjectInclude | undefined;
   region?: VirtualNetworkDataRegion | undefined;
   created_at?: string | undefined;
   assignments_count?: number | undefined;
+  tags?: Array<Tag> | undefined;
 };
 
 export const VirtualNetworkDataAttributes$zodSchema: z.ZodType<
-  VirtualNetworkDataAttributes,
-  z.ZodTypeDef,
-  unknown
+  VirtualNetworkDataAttributes
 > = z.object({
-  assignments_count: z.number().int().optional(),
-  created_at: z.string().datetime({ offset: true }).optional(),
+  assignments_count: z.int().optional(),
+  created_at: z.iso.datetime({ offset: true }).optional(),
   description: z.string().optional(),
   name: z.string().optional(),
+  project: ProjectInclude$zodSchema.optional(),
   region: z.lazy(() => VirtualNetworkDataRegion$zodSchema).optional(),
-  vid: z.number().int().optional(),
+  tags: z.array(z.lazy(() => Tag$zodSchema)).optional(),
+  vid: z.int().optional(),
 });
 
 export type VirtualNetworkData = {
@@ -74,12 +89,9 @@ export type VirtualNetworkData = {
   attributes?: VirtualNetworkDataAttributes | undefined;
 };
 
-export const VirtualNetworkData$zodSchema: z.ZodType<
-  VirtualNetworkData,
-  z.ZodTypeDef,
-  unknown
-> = z.object({
-  attributes: z.lazy(() => VirtualNetworkDataAttributes$zodSchema).optional(),
-  id: z.string().optional(),
-  type: VirtualNetworkDataType$zodSchema.optional(),
-});
+export const VirtualNetworkData$zodSchema: z.ZodType<VirtualNetworkData> = z
+  .object({
+    attributes: z.lazy(() => VirtualNetworkDataAttributes$zodSchema).optional(),
+    id: z.string().optional(),
+    type: VirtualNetworkDataType$zodSchema.optional(),
+  });

@@ -8,9 +8,7 @@ import { VolumeData, VolumeData$zodSchema } from "./volumedata.js";
 export type GetStorageVolumeRequest = { id: string };
 
 export const GetStorageVolumeRequest$zodSchema: z.ZodType<
-  GetStorageVolumeRequest,
-  z.ZodTypeDef,
-  unknown
+  GetStorageVolumeRequest
 > = z.object({
   id: z.string().describe("The volume storage ID"),
 });
@@ -21,9 +19,7 @@ export const GetStorageVolumeRequest$zodSchema: z.ZodType<
 export type GetStorageVolumeResponseBody = { data?: VolumeData | undefined };
 
 export const GetStorageVolumeResponseBody$zodSchema: z.ZodType<
-  GetStorageVolumeResponseBody,
-  z.ZodTypeDef,
-  unknown
+  GetStorageVolumeResponseBody
 > = z.object({
   data: VolumeData$zodSchema.optional(),
 }).describe("Success");
@@ -36,12 +32,10 @@ export type GetStorageVolumeResponse = {
 };
 
 export const GetStorageVolumeResponse$zodSchema: z.ZodType<
-  GetStorageVolumeResponse,
-  z.ZodTypeDef,
-  unknown
+  GetStorageVolumeResponse
 > = z.object({
   ContentType: z.string(),
-  RawResponse: z.instanceof(Response),
-  StatusCode: z.number().int(),
+  RawResponse: z.custom<Response>(x => x instanceof Response),
+  StatusCode: z.int(),
   object: z.lazy(() => GetStorageVolumeResponseBody$zodSchema).optional(),
 });

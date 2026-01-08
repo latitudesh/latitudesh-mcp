@@ -7,9 +7,7 @@ import * as z from "zod";
 export type DestroyTeamMemberRequest = { user_id: string };
 
 export const DestroyTeamMemberRequest$zodSchema: z.ZodType<
-  DestroyTeamMemberRequest,
-  z.ZodTypeDef,
-  unknown
+  DestroyTeamMemberRequest
 > = z.object({
   user_id: z.string().describe("The user ID"),
 });
@@ -21,11 +19,9 @@ export type DestroyTeamMemberResponse = {
 };
 
 export const DestroyTeamMemberResponse$zodSchema: z.ZodType<
-  DestroyTeamMemberResponse,
-  z.ZodTypeDef,
-  unknown
+  DestroyTeamMemberResponse
 > = z.object({
   ContentType: z.string(),
-  RawResponse: z.instanceof(Response),
-  StatusCode: z.number().int(),
+  RawResponse: z.custom<Response>(x => x instanceof Response),
+  StatusCode: z.int(),
 });

@@ -5,45 +5,34 @@
 import * as z from "zod";
 import { UserData, UserData$zodSchema } from "./userdata.js";
 
-export type GetUsersDataRequest = { extraFieldsUserData?: string | undefined };
+export type GetUsersDataRequest = {
+  filterProject?: string | undefined;
+  filterScope?: string | undefined;
+  extraFieldsUserData?: string | undefined;
+};
 
-export const GetUsersDataRequest$zodSchema: z.ZodType<
-  GetUsersDataRequest,
-  z.ZodTypeDef,
-  unknown
-> = z.object({
-  extraFieldsUserData: z.string().default("decoded_content").describe(
-    "The `decoded_content` is provided as an extra attribute that shows content in decoded form.",
-  ),
-});
-
-/**
- * Success
- */
-export type GetUsersDataResponseBody = { data?: Array<UserData> | undefined };
-
-export const GetUsersDataResponseBody$zodSchema: z.ZodType<
-  GetUsersDataResponseBody,
-  z.ZodTypeDef,
-  unknown
-> = z.object({
-  data: z.array(UserData$zodSchema).optional(),
-}).describe("Success");
+export const GetUsersDataRequest$zodSchema: z.ZodType<GetUsersDataRequest> = z
+  .object({
+    extraFieldsUserData: z.string().default("decoded_content").describe(
+      "The `decoded_content` is provided as an extra attribute that shows content in decoded form.",
+    ),
+    filterProject: z.string().describe("Project ID or slug").optional(),
+    filterScope: z.string().describe(
+      "Filter by scope: `project` (has project), `team` (no project), or empty (all)",
+    ).optional(),
+  });
 
 export type GetUsersDataResponse = {
   ContentType: string;
   StatusCode: number;
   RawResponse: Response;
-  object?: GetUsersDataResponseBody | undefined;
+  user_data?: UserData | undefined;
 };
 
-export const GetUsersDataResponse$zodSchema: z.ZodType<
-  GetUsersDataResponse,
-  z.ZodTypeDef,
-  unknown
-> = z.object({
-  ContentType: z.string(),
-  RawResponse: z.instanceof(Response),
-  StatusCode: z.number().int(),
-  object: z.lazy(() => GetUsersDataResponseBody$zodSchema).optional(),
-});
+export const GetUsersDataResponse$zodSchema: z.ZodType<GetUsersDataResponse> = z
+  .object({
+    ContentType: z.string(),
+    RawResponse: z.custom<Response>(x => x instanceof Response),
+    StatusCode: z.int(),
+    user_data: UserData$zodSchema.optional(),
+  });

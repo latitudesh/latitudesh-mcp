@@ -10,9 +10,7 @@ export type DeleteProjectSshKeyRequest = {
 };
 
 export const DeleteProjectSshKeyRequest$zodSchema: z.ZodType<
-  DeleteProjectSshKeyRequest,
-  z.ZodTypeDef,
-  unknown
+  DeleteProjectSshKeyRequest
 > = z.object({
   project_id: z.string().describe("Project ID or Slug"),
   ssh_key_id: z.string(),
@@ -25,11 +23,9 @@ export type DeleteProjectSshKeyResponse = {
 };
 
 export const DeleteProjectSshKeyResponse$zodSchema: z.ZodType<
-  DeleteProjectSshKeyResponse,
-  z.ZodTypeDef,
-  unknown
+  DeleteProjectSshKeyResponse
 > = z.object({
   ContentType: z.string(),
-  RawResponse: z.instanceof(Response),
-  StatusCode: z.number().int(),
+  RawResponse: z.custom<Response>(x => x instanceof Response),
+  StatusCode: z.int(),
 });

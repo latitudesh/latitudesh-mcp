@@ -11,11 +11,7 @@ export type UserIncludeRole = {
   updated_at?: string | undefined;
 };
 
-export const UserIncludeRole$zodSchema: z.ZodType<
-  UserIncludeRole,
-  z.ZodTypeDef,
-  unknown
-> = z.object({
+export const UserIncludeRole$zodSchema: z.ZodType<UserIncludeRole> = z.object({
   created_at: z.string().optional(),
   id: z.string().optional(),
   name: z.string().optional(),
@@ -33,11 +29,7 @@ export type UserInclude = {
   role?: UserIncludeRole | undefined;
 };
 
-export const UserInclude$zodSchema: z.ZodType<
-  UserInclude,
-  z.ZodTypeDef,
-  unknown
-> = z.object({
+export const UserInclude$zodSchema: z.ZodType<UserInclude> = z.object({
   authentication_factor_id: z.string().optional(),
   created_at: z.string().optional(),
   email: z.string().optional(),

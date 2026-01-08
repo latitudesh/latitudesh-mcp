@@ -3,15 +3,25 @@
  */
 
 import * as z from "zod";
+import { ClosedEnum } from "../types/enums.js";
 import { Membership, Membership$zodSchema } from "./membership.js";
+
+export const PostTeamMembersType2 = {
+  Memberships: "memberships",
+} as const;
+export type PostTeamMembersType2 = ClosedEnum<typeof PostTeamMembersType2>;
 
 export const PostTeamMembersType2$zodSchema = z.enum([
   "memberships",
 ]);
 
-export type PostTeamMembersType2 = z.infer<
-  typeof PostTeamMembersType2$zodSchema
->;
+export const PostTeamMembersRole2 = {
+  Owner: "owner",
+  Administrator: "administrator",
+  Collaborator: "collaborator",
+  Billing: "billing",
+} as const;
+export type PostTeamMembersRole2 = ClosedEnum<typeof PostTeamMembersRole2>;
 
 export const PostTeamMembersRole2$zodSchema = z.enum([
   "owner",
@@ -19,10 +29,6 @@ export const PostTeamMembersRole2$zodSchema = z.enum([
   "collaborator",
   "billing",
 ]);
-
-export type PostTeamMembersRole2 = z.infer<
-  typeof PostTeamMembersRole2$zodSchema
->;
 
 export type PostTeamMembersAttributes2 = {
   first_name?: string | undefined;
@@ -32,9 +38,7 @@ export type PostTeamMembersAttributes2 = {
 };
 
 export const PostTeamMembersAttributes2$zodSchema: z.ZodType<
-  PostTeamMembersAttributes2,
-  z.ZodTypeDef,
-  unknown
+  PostTeamMembersAttributes2
 > = z.object({
   email: z.string(),
   first_name: z.string().optional(),
@@ -47,21 +51,16 @@ export type PostTeamMembersData2 = {
   attributes?: PostTeamMembersAttributes2 | undefined;
 };
 
-export const PostTeamMembersData2$zodSchema: z.ZodType<
-  PostTeamMembersData2,
-  z.ZodTypeDef,
-  unknown
-> = z.object({
-  attributes: z.lazy(() => PostTeamMembersAttributes2$zodSchema).optional(),
-  type: PostTeamMembersType2$zodSchema,
-});
+export const PostTeamMembersData2$zodSchema: z.ZodType<PostTeamMembersData2> = z
+  .object({
+    attributes: z.lazy(() => PostTeamMembersAttributes2$zodSchema).optional(),
+    type: PostTeamMembersType2$zodSchema,
+  });
 
 export type PostTeamMembersRequest = { data: PostTeamMembersData2 };
 
 export const PostTeamMembersRequest$zodSchema: z.ZodType<
-  PostTeamMembersRequest,
-  z.ZodTypeDef,
-  unknown
+  PostTeamMembersRequest
 > = z.object({
   data: z.lazy(() => PostTeamMembersData2$zodSchema),
 });
@@ -74,12 +73,10 @@ export type PostTeamMembersResponse = {
 };
 
 export const PostTeamMembersResponse$zodSchema: z.ZodType<
-  PostTeamMembersResponse,
-  z.ZodTypeDef,
-  unknown
+  PostTeamMembersResponse
 > = z.object({
   ContentType: z.string(),
-  RawResponse: z.instanceof(Response),
-  StatusCode: z.number().int(),
+  RawResponse: z.custom<Response>(x => x instanceof Response),
+  StatusCode: z.int(),
   membership: Membership$zodSchema.optional(),
 });

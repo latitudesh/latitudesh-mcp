@@ -3,15 +3,30 @@
  */
 
 import * as z from "zod";
+import { ClosedEnum } from "../types/enums.js";
 import { ProjectInclude, ProjectInclude$zodSchema } from "./projectinclude.js";
 import { TeamInclude, TeamInclude$zodSchema } from "./teaminclude.js";
+
+export const VirtualMachineAttributesType = {
+  VirtualMachines: "virtual_machines",
+} as const;
+export type VirtualMachineAttributesType = ClosedEnum<
+  typeof VirtualMachineAttributesType
+>;
 
 export const VirtualMachineAttributesType$zodSchema = z.enum([
   "virtual_machines",
 ]);
 
-export type VirtualMachineAttributesType = z.infer<
-  typeof VirtualMachineAttributesType$zodSchema
+export const VirtualMachineAttributesStatus = {
+  Running: "Running",
+  ConfiguringNetwork: "Configuring network",
+  Starting: "Starting",
+  Scheduling: "Scheduling",
+  Scheduled: "Scheduled",
+} as const;
+export type VirtualMachineAttributesStatus = ClosedEnum<
+  typeof VirtualMachineAttributesStatus
 >;
 
 export const VirtualMachineAttributesStatus$zodSchema = z.enum([
@@ -22,10 +37,6 @@ export const VirtualMachineAttributesStatus$zodSchema = z.enum([
   "Scheduled",
 ]);
 
-export type VirtualMachineAttributesStatus = z.infer<
-  typeof VirtualMachineAttributesStatus$zodSchema
->;
-
 export type VirtualMachineAttributesCredentials = {
   username?: string | undefined;
   host?: string | undefined;
@@ -34,9 +45,7 @@ export type VirtualMachineAttributesCredentials = {
 };
 
 export const VirtualMachineAttributesCredentials$zodSchema: z.ZodType<
-  VirtualMachineAttributesCredentials,
-  z.ZodTypeDef,
-  unknown
+  VirtualMachineAttributesCredentials
 > = z.object({
   host: z.string().optional(),
   password: z.string().optional(),
@@ -50,9 +59,7 @@ export type VirtualMachineAttributesPlan = {
 };
 
 export const VirtualMachineAttributesPlan$zodSchema: z.ZodType<
-  VirtualMachineAttributesPlan,
-  z.ZodTypeDef,
-  unknown
+  VirtualMachineAttributesPlan
 > = z.object({
   id: z.string().optional(),
   name: z.string().optional(),
@@ -67,16 +74,35 @@ export type VirtualMachineAttributesSpecs = {
 };
 
 export const VirtualMachineAttributesSpecs$zodSchema: z.ZodType<
-  VirtualMachineAttributesSpecs,
-  z.ZodTypeDef,
-  unknown
+  VirtualMachineAttributesSpecs
 > = z.object({
   gpu: z.string().optional(),
   nic: z.string().optional(),
   ram: z.string().optional(),
   storage: z.string().optional(),
-  vcpu: z.number().int().optional(),
+  vcpu: z.int().optional(),
 });
+
+/**
+ * The billing type for the virtual machine.
+ */
+export const VirtualMachineAttributesBilling = {
+  Hourly: "hourly",
+  Monthly: "monthly",
+  Yearly: "yearly",
+} as const;
+/**
+ * The billing type for the virtual machine.
+ */
+export type VirtualMachineAttributesBilling = ClosedEnum<
+  typeof VirtualMachineAttributesBilling
+>;
+
+export const VirtualMachineAttributesBilling$zodSchema = z.enum([
+  "hourly",
+  "monthly",
+  "yearly",
+]).describe("The billing type for the virtual machine.");
 
 export type VirtualMachineAttributesAttributes = {
   name?: string | undefined;
@@ -88,13 +114,13 @@ export type VirtualMachineAttributesAttributes = {
   specs?: VirtualMachineAttributesSpecs | undefined;
   team?: TeamInclude | undefined;
   project?: ProjectInclude | undefined;
+  billing?: VirtualMachineAttributesBilling | undefined;
 };
 
 export const VirtualMachineAttributesAttributes$zodSchema: z.ZodType<
-  VirtualMachineAttributesAttributes,
-  z.ZodTypeDef,
-  unknown
+  VirtualMachineAttributesAttributes
 > = z.object({
+  billing: VirtualMachineAttributesBilling$zodSchema.optional(),
   created_at: z.string().optional(),
   credentials: z.lazy(() => VirtualMachineAttributesCredentials$zodSchema)
     .optional(),
@@ -114,9 +140,7 @@ export type VirtualMachineAttributes = {
 };
 
 export const VirtualMachineAttributes$zodSchema: z.ZodType<
-  VirtualMachineAttributes,
-  z.ZodTypeDef,
-  unknown
+  VirtualMachineAttributes
 > = z.object({
   attributes: z.lazy(() => VirtualMachineAttributesAttributes$zodSchema)
     .optional(),

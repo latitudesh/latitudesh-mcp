@@ -8,9 +8,7 @@ import { ServerRescue, ServerRescue$zodSchema } from "./serverrescue.js";
 export type ServerStartRescueModeRequest = { server_id: string };
 
 export const ServerStartRescueModeRequest$zodSchema: z.ZodType<
-  ServerStartRescueModeRequest,
-  z.ZodTypeDef,
-  unknown
+  ServerStartRescueModeRequest
 > = z.object({
   server_id: z.string(),
 });
@@ -23,12 +21,10 @@ export type ServerStartRescueModeResponse = {
 };
 
 export const ServerStartRescueModeResponse$zodSchema: z.ZodType<
-  ServerStartRescueModeResponse,
-  z.ZodTypeDef,
-  unknown
+  ServerStartRescueModeResponse
 > = z.object({
   ContentType: z.string(),
-  RawResponse: z.instanceof(Response),
-  StatusCode: z.number().int(),
+  RawResponse: z.custom<Response>(x => x instanceof Response),
+  StatusCode: z.int(),
   server_rescue: ServerRescue$zodSchema.optional(),
 });

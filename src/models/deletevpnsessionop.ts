@@ -7,9 +7,7 @@ import * as z from "zod";
 export type DeleteVpnSessionRequest = { vpn_session_id: string };
 
 export const DeleteVpnSessionRequest$zodSchema: z.ZodType<
-  DeleteVpnSessionRequest,
-  z.ZodTypeDef,
-  unknown
+  DeleteVpnSessionRequest
 > = z.object({
   vpn_session_id: z.string(),
 });
@@ -21,11 +19,9 @@ export type DeleteVpnSessionResponse = {
 };
 
 export const DeleteVpnSessionResponse$zodSchema: z.ZodType<
-  DeleteVpnSessionResponse,
-  z.ZodTypeDef,
-  unknown
+  DeleteVpnSessionResponse
 > = z.object({
   ContentType: z.string(),
-  RawResponse: z.instanceof(Response),
-  StatusCode: z.number().int(),
+  RawResponse: z.custom<Response>(x => x instanceof Response),
+  StatusCode: z.int(),
 });

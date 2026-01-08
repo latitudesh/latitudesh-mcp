@@ -12,7 +12,7 @@ export interface Env {
   LATITUDESH_DEBUG?: boolean | undefined;
 }
 
-export const envSchema: z.ZodType<Env, z.ZodTypeDef, unknown> = z.object({
+export const envSchema: z.ZodType<Env> = z.object({
   LATITUDESH_BEARER: z.string().optional(),
 
   LATITUDESH_DEBUG: z.coerce.boolean().optional(),

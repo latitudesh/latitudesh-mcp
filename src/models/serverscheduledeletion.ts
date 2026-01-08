@@ -3,14 +3,18 @@
  */
 
 import * as z from "zod";
+import { ClosedEnum } from "../types/enums.js";
+
+export const ServerScheduleDeletionType = {
+  ScheduleDeletion: "schedule_deletion",
+} as const;
+export type ServerScheduleDeletionType = ClosedEnum<
+  typeof ServerScheduleDeletionType
+>;
 
 export const ServerScheduleDeletionType$zodSchema = z.enum([
   "schedule_deletion",
 ]);
-
-export type ServerScheduleDeletionType = z.infer<
-  typeof ServerScheduleDeletionType$zodSchema
->;
 
 export type ServerScheduleDeletionAttributes = {
   server_id?: string | undefined;
@@ -18,9 +22,7 @@ export type ServerScheduleDeletionAttributes = {
 };
 
 export const ServerScheduleDeletionAttributes$zodSchema: z.ZodType<
-  ServerScheduleDeletionAttributes,
-  z.ZodTypeDef,
-  unknown
+  ServerScheduleDeletionAttributes
 > = z.object({
   scheduled_deletion_at: z.string().optional(),
   server_id: z.string().optional(),
@@ -33,9 +35,7 @@ export type ServerScheduleDeletionData = {
 };
 
 export const ServerScheduleDeletionData$zodSchema: z.ZodType<
-  ServerScheduleDeletionData,
-  z.ZodTypeDef,
-  unknown
+  ServerScheduleDeletionData
 > = z.object({
   attributes: z.lazy(() => ServerScheduleDeletionAttributes$zodSchema)
     .optional(),
@@ -48,9 +48,7 @@ export type ServerScheduleDeletion = {
 };
 
 export const ServerScheduleDeletion$zodSchema: z.ZodType<
-  ServerScheduleDeletion,
-  z.ZodTypeDef,
-  unknown
+  ServerScheduleDeletion
 > = z.object({
   data: z.lazy(() => ServerScheduleDeletionData$zodSchema).optional(),
 });

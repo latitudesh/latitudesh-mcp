@@ -3,30 +3,59 @@
  */
 
 import * as z from "zod";
+import { ClosedEnum } from "../types/enums.js";
+
+export const VirtualMachinePayloadType = {
+  VirtualMachines: "virtual_machines",
+} as const;
+export type VirtualMachinePayloadType = ClosedEnum<
+  typeof VirtualMachinePayloadType
+>;
 
 export const VirtualMachinePayloadType$zodSchema = z.enum([
   "virtual_machines",
 ]);
 
-export type VirtualMachinePayloadType = z.infer<
-  typeof VirtualMachinePayloadType$zodSchema
+/**
+ * The billing type for the virtual machine. Accepts `hourly` and `monthly` for on demand projects and `yearly` for reserved projects. Defaults to `monthly` for on demand projects and `yearly` for reserved projects.
+ */
+export const VirtualMachinePayloadBilling = {
+  Hourly: "hourly",
+  Monthly: "monthly",
+  Yearly: "yearly",
+} as const;
+/**
+ * The billing type for the virtual machine. Accepts `hourly` and `monthly` for on demand projects and `yearly` for reserved projects. Defaults to `monthly` for on demand projects and `yearly` for reserved projects.
+ */
+export type VirtualMachinePayloadBilling = ClosedEnum<
+  typeof VirtualMachinePayloadBilling
 >;
+
+export const VirtualMachinePayloadBilling$zodSchema = z.enum([
+  "hourly",
+  "monthly",
+  "yearly",
+]).describe(
+  "The billing type for the virtual machine. Accepts `hourly` and `monthly` for on demand projects and `yearly` for reserved projects. Defaults to `monthly` for on demand projects and `yearly` for reserved projects.",
+);
 
 export type VirtualMachinePayloadAttributes = {
   name?: string | undefined;
   plan?: string | undefined;
+  site?: string | undefined;
   ssh_keys?: Array<string> | undefined;
   project?: string | undefined;
+  billing?: VirtualMachinePayloadBilling | undefined;
 };
 
 export const VirtualMachinePayloadAttributes$zodSchema: z.ZodType<
-  VirtualMachinePayloadAttributes,
-  z.ZodTypeDef,
-  unknown
+  VirtualMachinePayloadAttributes
 > = z.object({
+  billing: VirtualMachinePayloadBilling$zodSchema.optional(),
   name: z.string().default("my-vm"),
   plan: z.string().optional(),
   project: z.string().default("my-project"),
+  site: z.string().optional(),
   ssh_keys: z.array(z.string()).optional(),
 });
 
@@ -36,9 +65,7 @@ export type VirtualMachinePayloadData = {
 };
 
 export const VirtualMachinePayloadData$zodSchema: z.ZodType<
-  VirtualMachinePayloadData,
-  z.ZodTypeDef,
-  unknown
+  VirtualMachinePayloadData
 > = z.object({
   attributes: z.lazy(() => VirtualMachinePayloadAttributes$zodSchema)
     .optional(),
@@ -49,10 +76,7 @@ export type VirtualMachinePayload = {
   data?: VirtualMachinePayloadData | undefined;
 };
 
-export const VirtualMachinePayload$zodSchema: z.ZodType<
-  VirtualMachinePayload,
-  z.ZodTypeDef,
-  unknown
-> = z.object({
-  data: z.lazy(() => VirtualMachinePayloadData$zodSchema).optional(),
-});
+export const VirtualMachinePayload$zodSchema: z.ZodType<VirtualMachinePayload> =
+  z.object({
+    data: z.lazy(() => VirtualMachinePayloadData$zodSchema).optional(),
+  });

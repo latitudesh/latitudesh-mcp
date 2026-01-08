@@ -7,13 +7,10 @@ import { Firewall, Firewall$zodSchema } from "./firewall.js";
 
 export type GetFirewallRequest = { firewall_id: string };
 
-export const GetFirewallRequest$zodSchema: z.ZodType<
-  GetFirewallRequest,
-  z.ZodTypeDef,
-  unknown
-> = z.object({
-  firewall_id: z.string().describe("The Firewall ID"),
-});
+export const GetFirewallRequest$zodSchema: z.ZodType<GetFirewallRequest> = z
+  .object({
+    firewall_id: z.string().describe("The Firewall ID"),
+  });
 
 export type GetFirewallResponse = {
   ContentType: string;
@@ -22,13 +19,10 @@ export type GetFirewallResponse = {
   firewall?: Firewall | undefined;
 };
 
-export const GetFirewallResponse$zodSchema: z.ZodType<
-  GetFirewallResponse,
-  z.ZodTypeDef,
-  unknown
-> = z.object({
-  ContentType: z.string(),
-  RawResponse: z.instanceof(Response),
-  StatusCode: z.number().int(),
-  firewall: Firewall$zodSchema.optional(),
-});
+export const GetFirewallResponse$zodSchema: z.ZodType<GetFirewallResponse> = z
+  .object({
+    ContentType: z.string(),
+    RawResponse: z.custom<Response>(x => x instanceof Response),
+    StatusCode: z.int(),
+    firewall: Firewall$zodSchema.optional(),
+  });

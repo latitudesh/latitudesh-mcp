@@ -8,9 +8,7 @@ import { TrafficQuota, TrafficQuota$zodSchema } from "./trafficquota.js";
 export type GetTrafficQuotaRequest = { filterProject?: string | undefined };
 
 export const GetTrafficQuotaRequest$zodSchema: z.ZodType<
-  GetTrafficQuotaRequest,
-  z.ZodTypeDef,
-  unknown
+  GetTrafficQuotaRequest
 > = z.object({
   filterProject: z.string().optional(),
 });
@@ -23,12 +21,10 @@ export type GetTrafficQuotaResponse = {
 };
 
 export const GetTrafficQuotaResponse$zodSchema: z.ZodType<
-  GetTrafficQuotaResponse,
-  z.ZodTypeDef,
-  unknown
+  GetTrafficQuotaResponse
 > = z.object({
   ContentType: z.string(),
-  RawResponse: z.instanceof(Response),
-  StatusCode: z.number().int(),
+  RawResponse: z.custom<Response>(x => x instanceof Response),
+  StatusCode: z.int(),
   traffic_quota: TrafficQuota$zodSchema.optional(),
 });

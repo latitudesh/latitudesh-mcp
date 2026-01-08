@@ -10,9 +10,7 @@ export type IndexVirtualMachineRequest = {
 };
 
 export const IndexVirtualMachineRequest$zodSchema: z.ZodType<
-  IndexVirtualMachineRequest,
-  z.ZodTypeDef,
-  unknown
+  IndexVirtualMachineRequest
 > = z.object({
   extraFieldsVirtualMachines: z.string().describe(
     "The `credentials` are provided as extra attributes that are lazy loaded. To request it, just set `extra_fields[virtual_machines]=credentials` in the query string.",
@@ -28,11 +26,9 @@ export type IndexVirtualMachineResponse = {
 };
 
 export const IndexVirtualMachineResponse$zodSchema: z.ZodType<
-  IndexVirtualMachineResponse,
-  z.ZodTypeDef,
-  unknown
+  IndexVirtualMachineResponse
 > = z.object({
   ContentType: z.string(),
-  RawResponse: z.instanceof(Response),
-  StatusCode: z.number().int(),
+  RawResponse: z.custom<Response>(x => x instanceof Response),
+  StatusCode: z.int(),
 });

@@ -7,19 +7,14 @@ import { SshKeyData, SshKeyData$zodSchema } from "./sshkeydata.js";
 
 export type SshKeysMeta = {};
 
-export const SshKeysMeta$zodSchema: z.ZodType<
-  SshKeysMeta,
-  z.ZodTypeDef,
-  unknown
-> = z.object({});
+export const SshKeysMeta$zodSchema: z.ZodType<SshKeysMeta> = z.object({});
 
 export type SshKeys = {
   data?: Array<SshKeyData> | undefined;
   meta?: SshKeysMeta | undefined;
 };
 
-export const SshKeys$zodSchema: z.ZodType<SshKeys, z.ZodTypeDef, unknown> = z
-  .object({
-    data: z.array(SshKeyData$zodSchema).optional(),
-    meta: z.lazy(() => SshKeysMeta$zodSchema).optional(),
-  });
+export const SshKeys$zodSchema: z.ZodType<SshKeys> = z.object({
+  data: z.array(SshKeyData$zodSchema).optional(),
+  meta: z.lazy(() => SshKeysMeta$zodSchema).optional(),
+});

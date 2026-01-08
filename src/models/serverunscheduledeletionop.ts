@@ -7,9 +7,7 @@ import * as z from "zod";
 export type ServerUnscheduleDeletionRequest = { server_id: string };
 
 export const ServerUnscheduleDeletionRequest$zodSchema: z.ZodType<
-  ServerUnscheduleDeletionRequest,
-  z.ZodTypeDef,
-  unknown
+  ServerUnscheduleDeletionRequest
 > = z.object({
   server_id: z.string(),
 });
@@ -21,11 +19,9 @@ export type ServerUnscheduleDeletionResponse = {
 };
 
 export const ServerUnscheduleDeletionResponse$zodSchema: z.ZodType<
-  ServerUnscheduleDeletionResponse,
-  z.ZodTypeDef,
-  unknown
+  ServerUnscheduleDeletionResponse
 > = z.object({
   ContentType: z.string(),
-  RawResponse: z.instanceof(Response),
-  StatusCode: z.number().int(),
+  RawResponse: z.custom<Response>(x => x instanceof Response),
+  StatusCode: z.int(),
 });

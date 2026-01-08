@@ -7,11 +7,7 @@ import { Plan, Plan$zodSchema } from "./plan.js";
 
 export type GetPlanRequest = { plan_id: string };
 
-export const GetPlanRequest$zodSchema: z.ZodType<
-  GetPlanRequest,
-  z.ZodTypeDef,
-  unknown
-> = z.object({
+export const GetPlanRequest$zodSchema: z.ZodType<GetPlanRequest> = z.object({
   plan_id: z.string(),
 });
 
@@ -22,13 +18,9 @@ export type GetPlanResponse = {
   plan?: Plan | undefined;
 };
 
-export const GetPlanResponse$zodSchema: z.ZodType<
-  GetPlanResponse,
-  z.ZodTypeDef,
-  unknown
-> = z.object({
+export const GetPlanResponse$zodSchema: z.ZodType<GetPlanResponse> = z.object({
   ContentType: z.string(),
-  RawResponse: z.instanceof(Response),
-  StatusCode: z.number().int(),
+  RawResponse: z.custom<Response>(x => x instanceof Response),
+  StatusCode: z.int(),
   plan: Plan$zodSchema.optional(),
 });

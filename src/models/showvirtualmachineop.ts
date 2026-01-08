@@ -7,9 +7,7 @@ import * as z from "zod";
 export type ShowVirtualMachineRequest = { virtual_machine_id: string };
 
 export const ShowVirtualMachineRequest$zodSchema: z.ZodType<
-  ShowVirtualMachineRequest,
-  z.ZodTypeDef,
-  unknown
+  ShowVirtualMachineRequest
 > = z.object({
   virtual_machine_id: z.string(),
 });
@@ -21,11 +19,9 @@ export type ShowVirtualMachineResponse = {
 };
 
 export const ShowVirtualMachineResponse$zodSchema: z.ZodType<
-  ShowVirtualMachineResponse,
-  z.ZodTypeDef,
-  unknown
+  ShowVirtualMachineResponse
 > = z.object({
   ContentType: z.string(),
-  RawResponse: z.instanceof(Response),
-  StatusCode: z.number().int(),
+  RawResponse: z.custom<Response>(x => x instanceof Response),
+  StatusCode: z.int(),
 });

@@ -15,17 +15,13 @@ export type GetFirewallAssignmentsRequest = {
 };
 
 export const GetFirewallAssignmentsRequest$zodSchema: z.ZodType<
-  GetFirewallAssignmentsRequest,
-  z.ZodTypeDef,
-  unknown
+  GetFirewallAssignmentsRequest
 > = z.object({
   firewall_id: z.string().describe("The Firewall ID"),
-  pageNumber: z.number().int().default(1).describe(
+  pageNumber: z.int().default(1).describe(
     "Page number to return (starts at 1)",
   ),
-  pageSize: z.number().int().default(20).describe(
-    "Number of items to return per page",
-  ),
+  pageSize: z.int().default(20).describe("Number of items to return per page"),
 });
 
 export type GetFirewallAssignmentsResponse = {
@@ -36,12 +32,10 @@ export type GetFirewallAssignmentsResponse = {
 };
 
 export const GetFirewallAssignmentsResponse$zodSchema: z.ZodType<
-  GetFirewallAssignmentsResponse,
-  z.ZodTypeDef,
-  unknown
+  GetFirewallAssignmentsResponse
 > = z.object({
   ContentType: z.string(),
-  RawResponse: z.instanceof(Response),
-  StatusCode: z.number().int(),
+  RawResponse: z.custom<Response>(x => x instanceof Response),
+  StatusCode: z.int(),
   firewall_assignments: FirewallAssignments$zodSchema.optional(),
 });

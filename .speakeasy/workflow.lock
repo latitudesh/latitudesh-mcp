@@ -1,17 +1,18 @@
-speakeasyVersion: 1.636.3
+speakeasyVersion: 1.682.0
 sources:
     Latitudesh-OAS:
         sourceNamespace: latitudesh-oas
-        sourceRevisionDigest: sha256:3d1c5a22023ead205263d2f0727bc73913eac45262ea2d208ae5569ed1515aa7
-        sourceBlobDigest: sha256:bd06853de43a4e735ac002acdb1e7315df380b586b5ae71c466fc8af7f6c6373
+        sourceRevisionDigest: sha256:038d24609944dc293b41ef9d9ecf510cbfb9c500456b9df34234a6cc642a230a
+        sourceBlobDigest: sha256:53c0651c0384c925dbec581206cd11cd8b78cc0a37541c1b06bcf05e1b8d3d2c
         tags:
             - latest
+            - speakeasy-sdk-regen-1765327117
 targets:
     latitudesh:
         source: Latitudesh-OAS
         sourceNamespace: latitudesh-oas
-        sourceRevisionDigest: sha256:3d1c5a22023ead205263d2f0727bc73913eac45262ea2d208ae5569ed1515aa7
-        sourceBlobDigest: sha256:bd06853de43a4e735ac002acdb1e7315df380b586b5ae71c466fc8af7f6c6373
+        sourceRevisionDigest: sha256:038d24609944dc293b41ef9d9ecf510cbfb9c500456b9df34234a6cc642a230a
+        sourceBlobDigest: sha256:53c0651c0384c925dbec581206cd11cd8b78cc0a37541c1b06bcf05e1b8d3d2c
 workflow:
     workflowVersion: 1.0.0
     speakeasyVersion: latest
@@ -26,3 +27,6 @@ workflow:
         latitudesh:
             target: mcp-typescript
             source: Latitudesh-OAS
+            publish:
+                npm:
+                    token: $npm_token

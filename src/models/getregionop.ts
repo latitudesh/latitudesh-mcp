@@ -7,13 +7,11 @@ import { Region, Region$zodSchema } from "./region.js";
 
 export type GetRegionRequest = { region_id: string };
 
-export const GetRegionRequest$zodSchema: z.ZodType<
-  GetRegionRequest,
-  z.ZodTypeDef,
-  unknown
-> = z.object({
-  region_id: z.string().describe("The region region_ID"),
-});
+export const GetRegionRequest$zodSchema: z.ZodType<GetRegionRequest> = z.object(
+  {
+    region_id: z.string().describe("The region region_ID"),
+  },
+);
 
 export type GetRegionResponse = {
   ContentType: string;
@@ -22,13 +20,10 @@ export type GetRegionResponse = {
   region?: Region | undefined;
 };
 
-export const GetRegionResponse$zodSchema: z.ZodType<
-  GetRegionResponse,
-  z.ZodTypeDef,
-  unknown
-> = z.object({
-  ContentType: z.string(),
-  RawResponse: z.instanceof(Response),
-  StatusCode: z.number().int(),
-  region: Region$zodSchema.optional(),
-});
+export const GetRegionResponse$zodSchema: z.ZodType<GetRegionResponse> = z
+  .object({
+    ContentType: z.string(),
+    RawResponse: z.custom<Response>(x => x instanceof Response),
+    StatusCode: z.int(),
+    region: Region$zodSchema.optional(),
+  });

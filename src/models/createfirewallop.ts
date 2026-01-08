@@ -3,22 +3,30 @@
  */
 
 import * as z from "zod";
+import { ClosedEnum } from "../types/enums.js";
 import { Firewall, Firewall$zodSchema } from "./firewall.js";
+
+export const CreateFirewallType2 = {
+  Firewalls: "firewalls",
+} as const;
+export type CreateFirewallType2 = ClosedEnum<typeof CreateFirewallType2>;
 
 export const CreateFirewallType2$zodSchema = z.enum([
   "firewalls",
 ]);
 
-export type CreateFirewallType2 = z.infer<typeof CreateFirewallType2$zodSchema>;
+export const CreateFirewallProtocol2 = {
+  Tcp: "TCP",
+  Udp: "UDP",
+} as const;
+export type CreateFirewallProtocol2 = ClosedEnum<
+  typeof CreateFirewallProtocol2
+>;
 
 export const CreateFirewallProtocol2$zodSchema = z.enum([
   "TCP",
   "UDP",
 ]);
-
-export type CreateFirewallProtocol2 = z.infer<
-  typeof CreateFirewallProtocol2$zodSchema
->;
 
 export type CreateFirewallRule2 = {
   from?: string | undefined;
@@ -27,16 +35,13 @@ export type CreateFirewallRule2 = {
   port?: string | undefined;
 };
 
-export const CreateFirewallRule2$zodSchema: z.ZodType<
-  CreateFirewallRule2,
-  z.ZodTypeDef,
-  unknown
-> = z.object({
-  from: z.string().optional(),
-  port: z.string().optional(),
-  protocol: CreateFirewallProtocol2$zodSchema.optional(),
-  to: z.string().optional(),
-});
+export const CreateFirewallRule2$zodSchema: z.ZodType<CreateFirewallRule2> = z
+  .object({
+    from: z.string().optional(),
+    port: z.string().optional(),
+    protocol: CreateFirewallProtocol2$zodSchema.optional(),
+    to: z.string().optional(),
+  });
 
 export type CreateFirewallAttributes2 = {
   name: string;
@@ -45,9 +50,7 @@ export type CreateFirewallAttributes2 = {
 };
 
 export const CreateFirewallAttributes2$zodSchema: z.ZodType<
-  CreateFirewallAttributes2,
-  z.ZodTypeDef,
-  unknown
+  CreateFirewallAttributes2
 > = z.object({
   name: z.string(),
   project: z.string(),
@@ -59,24 +62,18 @@ export type CreateFirewallData2 = {
   attributes?: CreateFirewallAttributes2 | undefined;
 };
 
-export const CreateFirewallData2$zodSchema: z.ZodType<
-  CreateFirewallData2,
-  z.ZodTypeDef,
-  unknown
-> = z.object({
-  attributes: z.lazy(() => CreateFirewallAttributes2$zodSchema).optional(),
-  type: CreateFirewallType2$zodSchema,
-});
+export const CreateFirewallData2$zodSchema: z.ZodType<CreateFirewallData2> = z
+  .object({
+    attributes: z.lazy(() => CreateFirewallAttributes2$zodSchema).optional(),
+    type: CreateFirewallType2$zodSchema,
+  });
 
 export type CreateFirewallRequest = { data: CreateFirewallData2 };
 
-export const CreateFirewallRequest$zodSchema: z.ZodType<
-  CreateFirewallRequest,
-  z.ZodTypeDef,
-  unknown
-> = z.object({
-  data: z.lazy(() => CreateFirewallData2$zodSchema),
-});
+export const CreateFirewallRequest$zodSchema: z.ZodType<CreateFirewallRequest> =
+  z.object({
+    data: z.lazy(() => CreateFirewallData2$zodSchema),
+  });
 
 export type CreateFirewallResponse = {
   ContentType: string;
@@ -86,12 +83,10 @@ export type CreateFirewallResponse = {
 };
 
 export const CreateFirewallResponse$zodSchema: z.ZodType<
-  CreateFirewallResponse,
-  z.ZodTypeDef,
-  unknown
+  CreateFirewallResponse
 > = z.object({
   ContentType: z.string(),
-  RawResponse: z.instanceof(Response),
-  StatusCode: z.number().int(),
+  RawResponse: z.custom<Response>(x => x instanceof Response),
+  StatusCode: z.int(),
   firewall: Firewall$zodSchema.optional(),
 });

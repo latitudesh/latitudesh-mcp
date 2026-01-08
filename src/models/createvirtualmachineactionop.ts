@@ -3,36 +3,46 @@
  */
 
 import * as z from "zod";
+import { ClosedEnum } from "../types/enums.js";
+
+export const CreateVirtualMachineActionType2 = {
+  VirtualMachines: "virtual_machines",
+} as const;
+export type CreateVirtualMachineActionType2 = ClosedEnum<
+  typeof CreateVirtualMachineActionType2
+>;
 
 export const CreateVirtualMachineActionType2$zodSchema = z.enum([
   "virtual_machines",
 ]);
 
-export type CreateVirtualMachineActionType2 = z.infer<
-  typeof CreateVirtualMachineActionType2$zodSchema
->;
-
 /**
  * The action to perform on the virtual machine
  */
+export const CreateVirtualMachineActionAction2 = {
+  PowerOn: "power_on",
+  PowerOff: "power_off",
+  Reboot: "reboot",
+} as const;
+/**
+ * The action to perform on the virtual machine
+ */
+export type CreateVirtualMachineActionAction2 = ClosedEnum<
+  typeof CreateVirtualMachineActionAction2
+>;
+
 export const CreateVirtualMachineActionAction2$zodSchema = z.enum([
   "power_on",
   "power_off",
   "reboot",
 ]).describe("The action to perform on the virtual machine");
 
-export type CreateVirtualMachineActionAction2 = z.infer<
-  typeof CreateVirtualMachineActionAction2$zodSchema
->;
-
 export type CreateVirtualMachineActionAttributes2 = {
   action: CreateVirtualMachineActionAction2;
 };
 
 export const CreateVirtualMachineActionAttributes2$zodSchema: z.ZodType<
-  CreateVirtualMachineActionAttributes2,
-  z.ZodTypeDef,
-  unknown
+  CreateVirtualMachineActionAttributes2
 > = z.object({
   action: CreateVirtualMachineActionAction2$zodSchema,
 });
@@ -44,9 +54,7 @@ export type CreateVirtualMachineActionRequestBody2 = {
 };
 
 export const CreateVirtualMachineActionRequestBody2$zodSchema: z.ZodType<
-  CreateVirtualMachineActionRequestBody2,
-  z.ZodTypeDef,
-  unknown
+  CreateVirtualMachineActionRequestBody2
 > = z.object({
   attributes: z.lazy(() => CreateVirtualMachineActionAttributes2$zodSchema),
   id: z.string(),
@@ -59,9 +67,7 @@ export type CreateVirtualMachineActionRequest = {
 };
 
 export const CreateVirtualMachineActionRequest$zodSchema: z.ZodType<
-  CreateVirtualMachineActionRequest,
-  z.ZodTypeDef,
-  unknown
+  CreateVirtualMachineActionRequest
 > = z.object({
   RequestBody: z.lazy(() => CreateVirtualMachineActionRequestBody2$zodSchema),
   virtual_machine_id: z.string(),
@@ -74,11 +80,9 @@ export type CreateVirtualMachineActionResponse = {
 };
 
 export const CreateVirtualMachineActionResponse$zodSchema: z.ZodType<
-  CreateVirtualMachineActionResponse,
-  z.ZodTypeDef,
-  unknown
+  CreateVirtualMachineActionResponse
 > = z.object({
   ContentType: z.string(),
-  RawResponse: z.instanceof(Response),
-  StatusCode: z.number().int(),
+  RawResponse: z.custom<Response>(x => x instanceof Response),
+  StatusCode: z.int(),
 });

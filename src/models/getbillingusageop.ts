@@ -12,17 +12,13 @@ export type GetBillingUsageRequest = {
 };
 
 export const GetBillingUsageRequest$zodSchema: z.ZodType<
-  GetBillingUsageRequest,
-  z.ZodTypeDef,
-  unknown
+  GetBillingUsageRequest
 > = z.object({
   filterPlan: z.string().describe(
-    "Accepts a plan name and allows to filter the usage for that plan.\n"
-      + "",
+    "Accepts a plan name and allows to filter the usage for that plan.\n",
   ).optional(),
   filterProducts: z.array(z.string()).describe(
-    "Allows to filter the billing usage for specific products. It accepts an array of product ids.\n"
-      + "",
+    "Allows to filter the billing usage for specific products. It accepts an array of product ids.\n",
   ).optional(),
   filterProject: z.string(),
 });
@@ -35,12 +31,10 @@ export type GetBillingUsageResponse = {
 };
 
 export const GetBillingUsageResponse$zodSchema: z.ZodType<
-  GetBillingUsageResponse,
-  z.ZodTypeDef,
-  unknown
+  GetBillingUsageResponse
 > = z.object({
   ContentType: z.string(),
-  RawResponse: z.instanceof(Response),
-  StatusCode: z.number().int(),
+  RawResponse: z.custom<Response>(x => x instanceof Response),
+  StatusCode: z.int(),
   billing_usage: BillingUsage$zodSchema.optional(),
 });

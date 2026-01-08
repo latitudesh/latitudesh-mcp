@@ -89,6 +89,8 @@ async function $do(
   const path$ = pathToFunc("/user_data")();
   const query$ = encodeFormQuery({
     "extra_fields[user_data]": payload$?.extraFieldsUserData,
+    "filter[project]": payload$?.filterProject,
+    "filter[scope]": payload$?.filterScope,
   });
 
   const headers$ = new Headers(compactMap({
@@ -159,7 +161,7 @@ async function $do(
   >(
     M.json(200, GetUsersDataResponse$zodSchema, {
       ctype: "application/vnd.api+json",
-      key: "object",
+      key: "user_data",
     }),
   )(response, req$, { extraFields: responseFields$ });
 

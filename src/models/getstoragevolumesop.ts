@@ -8,9 +8,7 @@ import { VolumeData, VolumeData$zodSchema } from "./volumedata.js";
 export type GetStorageVolumesRequest = { filterProject?: string | undefined };
 
 export const GetStorageVolumesRequest$zodSchema: z.ZodType<
-  GetStorageVolumesRequest,
-  z.ZodTypeDef,
-  unknown
+  GetStorageVolumesRequest
 > = z.object({
   filterProject: z.string().describe("The project ID or Slug to filter by")
     .optional(),
@@ -24,9 +22,7 @@ export type GetStorageVolumesResponseBody = {
 };
 
 export const GetStorageVolumesResponseBody$zodSchema: z.ZodType<
-  GetStorageVolumesResponseBody,
-  z.ZodTypeDef,
-  unknown
+  GetStorageVolumesResponseBody
 > = z.object({
   data: z.array(VolumeData$zodSchema).optional(),
 }).describe("Success");
@@ -39,12 +35,10 @@ export type GetStorageVolumesResponse = {
 };
 
 export const GetStorageVolumesResponse$zodSchema: z.ZodType<
-  GetStorageVolumesResponse,
-  z.ZodTypeDef,
-  unknown
+  GetStorageVolumesResponse
 > = z.object({
   ContentType: z.string(),
-  RawResponse: z.instanceof(Response),
-  StatusCode: z.number().int(),
+  RawResponse: z.custom<Response>(x => x instanceof Response),
+  StatusCode: z.int(),
   object: z.lazy(() => GetStorageVolumesResponseBody$zodSchema).optional(),
 });

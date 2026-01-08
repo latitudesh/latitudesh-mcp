@@ -7,26 +7,21 @@ import { SshKeyData, SshKeyData$zodSchema } from "./sshkeydata.js";
 
 export type GetSshKeyRequest = { ssh_key_id: string };
 
-export const GetSshKeyRequest$zodSchema: z.ZodType<
-  GetSshKeyRequest,
-  z.ZodTypeDef,
-  unknown
-> = z.object({
-  ssh_key_id: z.string(),
-});
+export const GetSshKeyRequest$zodSchema: z.ZodType<GetSshKeyRequest> = z.object(
+  {
+    ssh_key_id: z.string(),
+  },
+);
 
 /**
  * Success
  */
 export type GetSshKeyResponseBody = { data?: SshKeyData | undefined };
 
-export const GetSshKeyResponseBody$zodSchema: z.ZodType<
-  GetSshKeyResponseBody,
-  z.ZodTypeDef,
-  unknown
-> = z.object({
-  data: SshKeyData$zodSchema.optional(),
-}).describe("Success");
+export const GetSshKeyResponseBody$zodSchema: z.ZodType<GetSshKeyResponseBody> =
+  z.object({
+    data: SshKeyData$zodSchema.optional(),
+  }).describe("Success");
 
 export type GetSshKeyResponse = {
   ContentType: string;
@@ -35,13 +30,10 @@ export type GetSshKeyResponse = {
   object?: GetSshKeyResponseBody | undefined;
 };
 
-export const GetSshKeyResponse$zodSchema: z.ZodType<
-  GetSshKeyResponse,
-  z.ZodTypeDef,
-  unknown
-> = z.object({
-  ContentType: z.string(),
-  RawResponse: z.instanceof(Response),
-  StatusCode: z.number().int(),
-  object: z.lazy(() => GetSshKeyResponseBody$zodSchema).optional(),
-});
+export const GetSshKeyResponse$zodSchema: z.ZodType<GetSshKeyResponse> = z
+  .object({
+    ContentType: z.string(),
+    RawResponse: z.custom<Response>(x => x instanceof Response),
+    StatusCode: z.int(),
+    object: z.lazy(() => GetSshKeyResponseBody$zodSchema).optional(),
+  });

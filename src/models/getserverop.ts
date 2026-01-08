@@ -10,16 +10,14 @@ export type GetServerRequest = {
   extraFieldsServers?: string | undefined;
 };
 
-export const GetServerRequest$zodSchema: z.ZodType<
-  GetServerRequest,
-  z.ZodTypeDef,
-  unknown
-> = z.object({
-  extraFieldsServers: z.string().describe(
-    "The `credentials` are provided as extra attributes that is lazy loaded. To request it, just set `extra_fields[servers]=credentials` in the query string.",
-  ).optional(),
-  server_id: z.string().describe("The Server ID"),
-});
+export const GetServerRequest$zodSchema: z.ZodType<GetServerRequest> = z.object(
+  {
+    extraFieldsServers: z.string().describe(
+      "The `credentials` are provided as extra attributes that is lazy loaded. To request it, just set `extra_fields[servers]=credentials` in the query string.",
+    ).optional(),
+    server_id: z.string().describe("The Server ID"),
+  },
+);
 
 export type GetServerResponse = {
   ContentType: string;
@@ -28,13 +26,10 @@ export type GetServerResponse = {
   server?: Server | undefined;
 };
 
-export const GetServerResponse$zodSchema: z.ZodType<
-  GetServerResponse,
-  z.ZodTypeDef,
-  unknown
-> = z.object({
-  ContentType: z.string(),
-  RawResponse: z.instanceof(Response),
-  StatusCode: z.number().int(),
-  server: Server$zodSchema.optional(),
-});
+export const GetServerResponse$zodSchema: z.ZodType<GetServerResponse> = z
+  .object({
+    ContentType: z.string(),
+    RawResponse: z.custom<Response>(x => x instanceof Response),
+    StatusCode: z.int(),
+    server: Server$zodSchema.optional(),
+  });

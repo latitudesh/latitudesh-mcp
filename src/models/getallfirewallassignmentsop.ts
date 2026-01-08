@@ -15,17 +15,13 @@ export type GetAllFirewallAssignmentsRequest = {
 };
 
 export const GetAllFirewallAssignmentsRequest$zodSchema: z.ZodType<
-  GetAllFirewallAssignmentsRequest,
-  z.ZodTypeDef,
-  unknown
+  GetAllFirewallAssignmentsRequest
 > = z.object({
   filterServer: z.string().describe("The server ID to filter by").optional(),
-  pageNumber: z.number().int().default(1).describe(
+  pageNumber: z.int().default(1).describe(
     "Page number to return (starts at 1)",
   ),
-  pageSize: z.number().int().default(20).describe(
-    "Number of items to return per page",
-  ),
+  pageSize: z.int().default(20).describe("Number of items to return per page"),
 });
 
 export type GetAllFirewallAssignmentsResponse = {
@@ -36,12 +32,10 @@ export type GetAllFirewallAssignmentsResponse = {
 };
 
 export const GetAllFirewallAssignmentsResponse$zodSchema: z.ZodType<
-  GetAllFirewallAssignmentsResponse,
-  z.ZodTypeDef,
-  unknown
+  GetAllFirewallAssignmentsResponse
 > = z.object({
   ContentType: z.string(),
-  RawResponse: z.instanceof(Response),
-  StatusCode: z.number().int(),
+  RawResponse: z.custom<Response>(x => x instanceof Response),
+  StatusCode: z.int(),
   firewall_assignments: FirewallAssignments$zodSchema.optional(),
 });

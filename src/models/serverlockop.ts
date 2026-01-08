@@ -7,13 +7,10 @@ import { Server, Server$zodSchema } from "./server.js";
 
 export type ServerLockRequest = { server_id: string };
 
-export const ServerLockRequest$zodSchema: z.ZodType<
-  ServerLockRequest,
-  z.ZodTypeDef,
-  unknown
-> = z.object({
-  server_id: z.string(),
-});
+export const ServerLockRequest$zodSchema: z.ZodType<ServerLockRequest> = z
+  .object({
+    server_id: z.string(),
+  });
 
 export type ServerLockResponse = {
   ContentType: string;
@@ -22,13 +19,10 @@ export type ServerLockResponse = {
   server?: Server | undefined;
 };
 
-export const ServerLockResponse$zodSchema: z.ZodType<
-  ServerLockResponse,
-  z.ZodTypeDef,
-  unknown
-> = z.object({
-  ContentType: z.string(),
-  RawResponse: z.instanceof(Response),
-  StatusCode: z.number().int(),
-  server: Server$zodSchema.optional(),
-});
+export const ServerLockResponse$zodSchema: z.ZodType<ServerLockResponse> = z
+  .object({
+    ContentType: z.string(),
+    RawResponse: z.custom<Response>(x => x instanceof Response),
+    StatusCode: z.int(),
+    server: Server$zodSchema.optional(),
+  });

@@ -7,7 +7,6 @@ import { Project, Project$zodSchema } from "./project.js";
 
 export type Projects = { data?: Array<Project> | undefined };
 
-export const Projects$zodSchema: z.ZodType<Projects, z.ZodTypeDef, unknown> = z
-  .object({
-    data: z.array(Project$zodSchema).optional(),
-  });
+export const Projects$zodSchema: z.ZodType<Projects> = z.object({
+  data: z.array(Project$zodSchema).optional(),
+});

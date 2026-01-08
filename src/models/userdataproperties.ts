@@ -3,30 +3,33 @@
  */
 
 import * as z from "zod";
+import { ClosedEnum } from "../types/enums.js";
+import { ProjectInclude, ProjectInclude$zodSchema } from "./projectinclude.js";
+
+export const UserDataPropertiesType = {
+  UserData: "user_data",
+} as const;
+export type UserDataPropertiesType = ClosedEnum<typeof UserDataPropertiesType>;
 
 export const UserDataPropertiesType$zodSchema = z.enum([
   "user_data",
 ]);
-
-export type UserDataPropertiesType = z.infer<
-  typeof UserDataPropertiesType$zodSchema
->;
 
 export type UserDataPropertiesAttributes = {
   description?: string | undefined;
   content?: string | undefined;
   created_at?: string | undefined;
   updated_at?: string | undefined;
+  project?: ProjectInclude | undefined;
 };
 
 export const UserDataPropertiesAttributes$zodSchema: z.ZodType<
-  UserDataPropertiesAttributes,
-  z.ZodTypeDef,
-  unknown
+  UserDataPropertiesAttributes
 > = z.object({
   content: z.string().optional(),
   created_at: z.string().optional(),
   description: z.string().optional(),
+  project: ProjectInclude$zodSchema.optional(),
   updated_at: z.string().optional(),
 });
 
@@ -36,12 +39,9 @@ export type UserDataProperties = {
   attributes?: UserDataPropertiesAttributes | undefined;
 };
 
-export const UserDataProperties$zodSchema: z.ZodType<
-  UserDataProperties,
-  z.ZodTypeDef,
-  unknown
-> = z.object({
-  attributes: z.lazy(() => UserDataPropertiesAttributes$zodSchema).optional(),
-  id: z.string().optional(),
-  type: UserDataPropertiesType$zodSchema,
-});
+export const UserDataProperties$zodSchema: z.ZodType<UserDataProperties> = z
+  .object({
+    attributes: z.lazy(() => UserDataPropertiesAttributes$zodSchema).optional(),
+    id: z.string().optional(),
+    type: UserDataPropertiesType$zodSchema,
+  });

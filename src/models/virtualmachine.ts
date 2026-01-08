@@ -10,22 +10,15 @@ import {
 
 export type VirtualMachineMeta = {};
 
-export const VirtualMachineMeta$zodSchema: z.ZodType<
-  VirtualMachineMeta,
-  z.ZodTypeDef,
-  unknown
-> = z.object({});
+export const VirtualMachineMeta$zodSchema: z.ZodType<VirtualMachineMeta> = z
+  .object({});
 
 export type VirtualMachine = {
   data?: VirtualMachineAttributes | undefined;
   meta?: VirtualMachineMeta | undefined;
 };
 
-export const VirtualMachine$zodSchema: z.ZodType<
-  VirtualMachine,
-  z.ZodTypeDef,
-  unknown
-> = z.object({
+export const VirtualMachine$zodSchema: z.ZodType<VirtualMachine> = z.object({
   data: VirtualMachineAttributes$zodSchema.optional(),
   meta: z.lazy(() => VirtualMachineMeta$zodSchema).optional(),
 });

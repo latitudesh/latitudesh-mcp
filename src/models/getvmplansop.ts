@@ -15,13 +15,10 @@ export type GetVmPlansResponse = {
   virtual_machine_plans?: VirtualMachinePlans | undefined;
 };
 
-export const GetVmPlansResponse$zodSchema: z.ZodType<
-  GetVmPlansResponse,
-  z.ZodTypeDef,
-  unknown
-> = z.object({
-  ContentType: z.string(),
-  RawResponse: z.instanceof(Response),
-  StatusCode: z.number().int(),
-  virtual_machine_plans: VirtualMachinePlans$zodSchema.optional(),
-});
+export const GetVmPlansResponse$zodSchema: z.ZodType<GetVmPlansResponse> = z
+  .object({
+    ContentType: z.string(),
+    RawResponse: z.custom<Response>(x => x instanceof Response),
+    StatusCode: z.int(),
+    virtual_machine_plans: VirtualMachinePlans$zodSchema.optional(),
+  });

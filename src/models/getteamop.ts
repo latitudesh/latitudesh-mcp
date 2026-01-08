@@ -12,13 +12,9 @@ export type GetTeamResponse = {
   teams?: Teams | undefined;
 };
 
-export const GetTeamResponse$zodSchema: z.ZodType<
-  GetTeamResponse,
-  z.ZodTypeDef,
-  unknown
-> = z.object({
+export const GetTeamResponse$zodSchema: z.ZodType<GetTeamResponse> = z.object({
   ContentType: z.string(),
-  RawResponse: z.instanceof(Response),
-  StatusCode: z.number().int(),
+  RawResponse: z.custom<Response>(x => x instanceof Response),
+  StatusCode: z.int(),
   teams: Teams$zodSchema.optional(),
 });

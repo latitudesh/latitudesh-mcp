@@ -3,14 +3,49 @@
  */
 
 import * as z from "zod";
+import { ClosedEnum } from "../types/enums.js";
 import { DeployConfig, DeployConfig$zodSchema } from "./deployconfig.js";
+
+export const UpdateServerDeployConfigType2 = {
+  DeployConfig: "deploy_config",
+} as const;
+export type UpdateServerDeployConfigType2 = ClosedEnum<
+  typeof UpdateServerDeployConfigType2
+>;
 
 export const UpdateServerDeployConfigType2$zodSchema = z.enum([
   "deploy_config",
 ]);
 
-export type UpdateServerDeployConfigType2 = z.infer<
-  typeof UpdateServerDeployConfigType2$zodSchema
+export const UpdateServerDeployConfigOperatingSystem2 = {
+  Ipxe: "ipxe",
+  WindowsServer2019StdV1: "windows_server_2019_std_v1",
+  Ubuntu2204X64Lts: "ubuntu_22_04_x64_lts",
+  Debian11: "debian_11",
+  Debian10: "debian_10",
+  Rhel8: "rhel8",
+  WindowsServer2012R2StdV28: "windows_server_2012_r2_std_v28",
+  WindowsServer2012R2DcV5: "windows_server_2012_r2_dc_v5",
+  Esxi67: "esxi_6_7",
+  Debian94X64: "debian_9_4_x64",
+  Centos74X64: "centos_7_4_x64",
+  Centos8X64: "centos_8_x64",
+  Ubuntu1604X64Lts: "ubuntu_16_04_x64_lts",
+  Ubuntu2004X64Lts: "ubuntu_20_04_x64_lts",
+  WindowsServer2016StdV1: "windows_server_2016_std_v1",
+  WindowsServer2016DcV1: "windows_server_2016_dc_v1",
+  WindowsServer2019DcV1: "windows_server_2019_dc_v1",
+  Debian12: "debian_12",
+  Ubuntu22MlInABox: "ubuntu22_ml_in_a_box",
+  Ubuntu1804X64Lts: "ubuntu_18_04_x64_lts",
+  WindowsServer2019StdUefi: "windows_server_2019_std_uefi",
+  Windows2022StdUefi: "windows_2022_std_uefi",
+  Windows2022Std: "windows_2022_std",
+  Ubuntu2404X64Lts: "ubuntu_24_04_x64_lts",
+  Rockylinux8: "rockylinux_8",
+} as const;
+export type UpdateServerDeployConfigOperatingSystem2 = ClosedEnum<
+  typeof UpdateServerDeployConfigOperatingSystem2
 >;
 
 export const UpdateServerDeployConfigOperatingSystem2$zodSchema = z.enum([
@@ -41,18 +76,18 @@ export const UpdateServerDeployConfigOperatingSystem2$zodSchema = z.enum([
   "rockylinux_8",
 ]);
 
-export type UpdateServerDeployConfigOperatingSystem2 = z.infer<
-  typeof UpdateServerDeployConfigOperatingSystem2$zodSchema
+export const UpdateServerDeployConfigRaid2 = {
+  Raid0: "raid-0",
+  Raid1: "raid-1",
+} as const;
+export type UpdateServerDeployConfigRaid2 = ClosedEnum<
+  typeof UpdateServerDeployConfigRaid2
 >;
 
 export const UpdateServerDeployConfigRaid2$zodSchema = z.enum([
   "raid-0",
   "raid-1",
 ]);
-
-export type UpdateServerDeployConfigRaid2 = z.infer<
-  typeof UpdateServerDeployConfigRaid2$zodSchema
->;
 
 export type UpdateServerDeployConfigPartition2 = {
   size_in_gb?: number | undefined;
@@ -61,13 +96,11 @@ export type UpdateServerDeployConfigPartition2 = {
 };
 
 export const UpdateServerDeployConfigPartition2$zodSchema: z.ZodType<
-  UpdateServerDeployConfigPartition2,
-  z.ZodTypeDef,
-  unknown
+  UpdateServerDeployConfigPartition2
 > = z.object({
   filesystem_type: z.string().optional(),
   path: z.string().optional(),
-  size_in_gb: z.number().int().optional(),
+  size_in_gb: z.int().optional(),
 });
 
 export type UpdateServerDeployConfigAttributes2 = {
@@ -81,9 +114,7 @@ export type UpdateServerDeployConfigAttributes2 = {
 };
 
 export const UpdateServerDeployConfigAttributes2$zodSchema: z.ZodType<
-  UpdateServerDeployConfigAttributes2,
-  z.ZodTypeDef,
-  unknown
+  UpdateServerDeployConfigAttributes2
 > = z.object({
   hostname: z.string().optional(),
   ipxe_url: z.string().optional(),
@@ -103,9 +134,7 @@ export type UpdateServerDeployConfigRequestBody2 = {
 };
 
 export const UpdateServerDeployConfigRequestBody2$zodSchema: z.ZodType<
-  UpdateServerDeployConfigRequestBody2,
-  z.ZodTypeDef,
-  unknown
+  UpdateServerDeployConfigRequestBody2
 > = z.object({
   attributes: z.lazy(() => UpdateServerDeployConfigAttributes2$zodSchema)
     .optional(),
@@ -118,9 +147,7 @@ export type UpdateServerDeployConfigRequest = {
 };
 
 export const UpdateServerDeployConfigRequest$zodSchema: z.ZodType<
-  UpdateServerDeployConfigRequest,
-  z.ZodTypeDef,
-  unknown
+  UpdateServerDeployConfigRequest
 > = z.object({
   RequestBody: z.lazy(() => UpdateServerDeployConfigRequestBody2$zodSchema),
   server_id: z.string().describe("The Server ID"),
@@ -134,12 +161,10 @@ export type UpdateServerDeployConfigResponse = {
 };
 
 export const UpdateServerDeployConfigResponse$zodSchema: z.ZodType<
-  UpdateServerDeployConfigResponse,
-  z.ZodTypeDef,
-  unknown
+  UpdateServerDeployConfigResponse
 > = z.object({
   ContentType: z.string(),
-  RawResponse: z.instanceof(Response),
-  StatusCode: z.number().int(),
+  RawResponse: z.custom<Response>(x => x instanceof Response),
+  StatusCode: z.int(),
   deploy_config: DeployConfig$zodSchema.optional(),
 });

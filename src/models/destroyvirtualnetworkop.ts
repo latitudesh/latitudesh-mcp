@@ -7,9 +7,7 @@ import * as z from "zod";
 export type DestroyVirtualNetworkRequest = { vlan_id: string };
 
 export const DestroyVirtualNetworkRequest$zodSchema: z.ZodType<
-  DestroyVirtualNetworkRequest,
-  z.ZodTypeDef,
-  unknown
+  DestroyVirtualNetworkRequest
 > = z.object({
   vlan_id: z.string().describe("The virtual network ID"),
 });
@@ -21,11 +19,9 @@ export type DestroyVirtualNetworkResponse = {
 };
 
 export const DestroyVirtualNetworkResponse$zodSchema: z.ZodType<
-  DestroyVirtualNetworkResponse,
-  z.ZodTypeDef,
-  unknown
+  DestroyVirtualNetworkResponse
 > = z.object({
   ContentType: z.string(),
-  RawResponse: z.instanceof(Response),
-  StatusCode: z.number().int(),
+  RawResponse: z.custom<Response>(x => x instanceof Response),
+  StatusCode: z.int(),
 });

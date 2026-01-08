@@ -7,13 +7,11 @@ import { Role, Role$zodSchema } from "./role.js";
 
 export type GetRoleIdRequest = { role_id: string };
 
-export const GetRoleIdRequest$zodSchema: z.ZodType<
-  GetRoleIdRequest,
-  z.ZodTypeDef,
-  unknown
-> = z.object({
-  role_id: z.string(),
-});
+export const GetRoleIdRequest$zodSchema: z.ZodType<GetRoleIdRequest> = z.object(
+  {
+    role_id: z.string(),
+  },
+);
 
 export type GetRoleIdResponse = {
   ContentType: string;
@@ -22,13 +20,10 @@ export type GetRoleIdResponse = {
   role?: Role | undefined;
 };
 
-export const GetRoleIdResponse$zodSchema: z.ZodType<
-  GetRoleIdResponse,
-  z.ZodTypeDef,
-  unknown
-> = z.object({
-  ContentType: z.string(),
-  RawResponse: z.instanceof(Response),
-  StatusCode: z.number().int(),
-  role: Role$zodSchema.optional(),
-});
+export const GetRoleIdResponse$zodSchema: z.ZodType<GetRoleIdResponse> = z
+  .object({
+    ContentType: z.string(),
+    RawResponse: z.custom<Response>(x => x instanceof Response),
+    StatusCode: z.int(),
+    role: Role$zodSchema.optional(),
+  });

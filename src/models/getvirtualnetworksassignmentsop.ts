@@ -17,21 +17,17 @@ export type GetVirtualNetworksAssignmentsRequest = {
 };
 
 export const GetVirtualNetworksAssignmentsRequest$zodSchema: z.ZodType<
-  GetVirtualNetworksAssignmentsRequest,
-  z.ZodTypeDef,
-  unknown
+  GetVirtualNetworksAssignmentsRequest
 > = z.object({
   filterServer: z.string().describe("The server ID to filter by").optional(),
   filterVid: z.string().describe("The vlan ID to filter by").optional(),
   filterVirtualNetworkId: z.string().describe(
     "The virtual network ID to filter by",
   ).optional(),
-  pageNumber: z.number().int().default(1).describe(
+  pageNumber: z.int().default(1).describe(
     "Page number to return (starts at 1)",
   ),
-  pageSize: z.number().int().default(20).describe(
-    "Number of items to return per page",
-  ),
+  pageSize: z.int().default(20).describe("Number of items to return per page"),
 });
 
 export type GetVirtualNetworksAssignmentsResponse = {
@@ -42,12 +38,10 @@ export type GetVirtualNetworksAssignmentsResponse = {
 };
 
 export const GetVirtualNetworksAssignmentsResponse$zodSchema: z.ZodType<
-  GetVirtualNetworksAssignmentsResponse,
-  z.ZodTypeDef,
-  unknown
+  GetVirtualNetworksAssignmentsResponse
 > = z.object({
   ContentType: z.string(),
-  RawResponse: z.instanceof(Response),
-  StatusCode: z.number().int(),
+  RawResponse: z.custom<Response>(x => x instanceof Response),
+  StatusCode: z.int(),
   virtual_network_assignments: VirtualNetworkAssignments$zodSchema.optional(),
 });

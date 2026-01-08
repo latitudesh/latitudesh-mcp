@@ -170,7 +170,7 @@ async function $do(
   >(
     M.json(200, GetProjectUsersDataResponse$zodSchema, {
       ctype: "application/vnd.api+json",
-      key: "object",
+      key: "user_data",
     }),
   )(response, req$, { extraFields: responseFields$ });
 

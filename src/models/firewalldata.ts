@@ -3,12 +3,16 @@
  */
 
 import * as z from "zod";
+import { ClosedEnum } from "../types/enums.js";
+
+export const FirewallDataType = {
+  Firewalls: "firewalls",
+} as const;
+export type FirewallDataType = ClosedEnum<typeof FirewallDataType>;
 
 export const FirewallDataType$zodSchema = z.enum([
   "firewalls",
 ]);
-
-export type FirewallDataType = z.infer<typeof FirewallDataType$zodSchema>;
 
 export type Rule = {
   from?: string | undefined;
@@ -17,7 +21,7 @@ export type Rule = {
   protocol?: string | undefined;
 };
 
-export const Rule$zodSchema: z.ZodType<Rule, z.ZodTypeDef, unknown> = z.object({
+export const Rule$zodSchema: z.ZodType<Rule> = z.object({
   from: z.string().optional(),
   port: z.string().optional(),
   protocol: z.string().optional(),
@@ -30,15 +34,12 @@ export type FirewallDataProject = {
   name?: string | undefined;
 };
 
-export const FirewallDataProject$zodSchema: z.ZodType<
-  FirewallDataProject,
-  z.ZodTypeDef,
-  unknown
-> = z.object({
-  id: z.string().optional(),
-  name: z.string().optional(),
-  slug: z.string().optional(),
-});
+export const FirewallDataProject$zodSchema: z.ZodType<FirewallDataProject> = z
+  .object({
+    id: z.string().optional(),
+    name: z.string().optional(),
+    slug: z.string().optional(),
+  });
 
 export type FirewallDataAttributes = {
   name?: string | undefined;
@@ -47,9 +48,7 @@ export type FirewallDataAttributes = {
 };
 
 export const FirewallDataAttributes$zodSchema: z.ZodType<
-  FirewallDataAttributes,
-  z.ZodTypeDef,
-  unknown
+  FirewallDataAttributes
 > = z.object({
   name: z.string().optional(),
   project: z.lazy(() => FirewallDataProject$zodSchema).optional(),
@@ -62,11 +61,7 @@ export type FirewallData = {
   attributes?: FirewallDataAttributes | undefined;
 };
 
-export const FirewallData$zodSchema: z.ZodType<
-  FirewallData,
-  z.ZodTypeDef,
-  unknown
-> = z.object({
+export const FirewallData$zodSchema: z.ZodType<FirewallData> = z.object({
   attributes: z.lazy(() => FirewallDataAttributes$zodSchema).optional(),
   id: z.string().optional(),
   type: FirewallDataType$zodSchema.optional(),

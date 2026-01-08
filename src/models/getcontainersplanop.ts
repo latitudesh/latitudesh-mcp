@@ -11,9 +11,7 @@ import {
 export type GetContainersPlanRequest = { plan_id: string };
 
 export const GetContainersPlanRequest$zodSchema: z.ZodType<
-  GetContainersPlanRequest,
-  z.ZodTypeDef,
-  unknown
+  GetContainersPlanRequest
 > = z.object({
   plan_id: z.string().describe("The Plan ID"),
 });
@@ -26,12 +24,10 @@ export type GetContainersPlanResponse = {
 };
 
 export const GetContainersPlanResponse$zodSchema: z.ZodType<
-  GetContainersPlanResponse,
-  z.ZodTypeDef,
-  unknown
+  GetContainersPlanResponse
 > = z.object({
   ContentType: z.string(),
-  RawResponse: z.instanceof(Response),
-  StatusCode: z.number().int(),
+  RawResponse: z.custom<Response>(x => x instanceof Response),
+  StatusCode: z.int(),
   container_plan_data: ContainerPlanData$zodSchema.optional(),
 });
