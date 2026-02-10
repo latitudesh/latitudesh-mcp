@@ -291,9 +291,11 @@ export function match<T, E>(
       };
     }
 
+    const normalized = coerceNullToUndefined(data);
+
     if ("err" in matcher) {
       const result = safeParse(
-        data,
+        normalized,
         (v: unknown) => matcher.schema.parse(v),
         "Response validation failed",
       );
@@ -301,7 +303,7 @@ export function match<T, E>(
     } else {
       return [
         safeParse(
-          data,
+          normalized,
           (v: unknown) => matcher.schema.parse(v),
           "Response validation failed",
         ),
@@ -347,4 +349,22 @@ export async function discardResponseBody(res: Response) {
   } finally {
     reader.releaseLock();
   }
+}
+
+function coerceNullToUndefined(value: unknown): unknown {
+  if (value === null) {
+    return undefined;
+  }
+
+  if (Array.isArray(value)) {
+    return value.map(coerceNullToUndefined);
+  }
+
+  if (isPlainObject(value)) {
+    return Object.fromEntries(
+      Object.entries(value).map(([k, v]) => [k, coerceNullToUndefined(v)]),
+    );
+  }
+
+  return value;
 }
