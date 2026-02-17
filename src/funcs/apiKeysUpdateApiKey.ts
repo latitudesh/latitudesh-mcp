@@ -3,7 +3,7 @@
  */
 
 import { LatitudeshCore } from "../core.js";
-import { encodeSimple } from "../lib/encodings.js";
+import { encodeJSON, encodeSimple } from "../lib/encodings.js";
 import * as M from "../lib/matchers.js";
 import { compactMap } from "../lib/primitives.js";
 import { safeParse } from "../lib/schemas.js";
@@ -20,27 +20,28 @@ import {
 } from "../models/errors/httpclienterrors.js";
 import { SDKValidationError } from "../models/errors/sdkvalidationerror.js";
 import {
-  GetContainersPlanRequest,
-  GetContainersPlanRequest$zodSchema,
-  GetContainersPlanResponse,
-  GetContainersPlanResponse$zodSchema,
-} from "../models/getcontainersplanop.js";
+  UpdateApiKeyRequest,
+  UpdateApiKeyRequest$zodSchema,
+  UpdateApiKeyResponse,
+  UpdateApiKeyResponse$zodSchema,
+} from "../models/updateapikeyop.js";
 import { APICall, APIPromise } from "../types/async.js";
 import { Result } from "../types/fp.js";
 
 /**
- * Retrieve container plan
+ * Update API key settings
  *
  * @remarks
- * Retrieve a container plan.
+ * Update API Key settings (name, read_only, allowed_ips) without rotating the token.
+ * Use PUT to rotate the token.
  */
-export function plansGetContainersPlan(
+export function apiKeysUpdateApiKey(
   client$: LatitudeshCore,
-  request: GetContainersPlanRequest,
+  request: UpdateApiKeyRequest,
   options?: RequestOptions,
 ): APIPromise<
   Result<
-    GetContainersPlanResponse,
+    UpdateApiKeyResponse,
     | APIError
     | SDKValidationError
     | UnexpectedClientError
@@ -59,12 +60,12 @@ export function plansGetContainersPlan(
 
 async function $do(
   client$: LatitudeshCore,
-  request: GetContainersPlanRequest,
+  request: UpdateApiKeyRequest,
   options?: RequestOptions,
 ): Promise<
   [
     Result<
-      GetContainersPlanResponse,
+      UpdateApiKeyResponse,
       | APIError
       | SDKValidationError
       | UnexpectedClientError
@@ -78,26 +79,27 @@ async function $do(
 > {
   const parsed$ = safeParse(
     request,
-    (value$) => GetContainersPlanRequest$zodSchema.parse(value$),
+    (value$) => UpdateApiKeyRequest$zodSchema.parse(value$),
     "Input validation failed",
   );
   if (!parsed$.ok) {
     return [parsed$, { status: "invalid" }];
   }
   const payload$ = parsed$.value;
-  const body$ = null;
+  const body$ = encodeJSON("body", payload$.update_api_key, { explode: true });
 
   const pathParams$ = {
-    plan_id: encodeSimple("plan_id", payload$.plan_id, {
+    api_key_id: encodeSimple("api_key_id", payload$.api_key_id, {
       explode: false,
       charEncoding: "percent",
     }),
   };
-  const path$ = pathToFunc("/plans/containers/{plan_id}")(
+  const path$ = pathToFunc("/auth/api_keys/{api_key_id}")(
     pathParams$,
   );
 
   const headers$ = new Headers(compactMap({
+    "Content-Type": "application/json",
     Accept: "application/vnd.api+json",
   }));
   const securityInput = await extractSecurity(client$._options.security);
@@ -106,7 +108,7 @@ async function $do(
   const context = {
     options: client$._options,
     baseURL: options?.serverURL ?? client$._baseURL ?? "",
-    operationID: "get-containers-plan",
+    operationID: "update-api-key",
     oAuth2Scopes: null,
     resolvedSecurity: requestSecurity,
     securitySource: client$._options.security,
@@ -124,7 +126,7 @@ async function $do(
 
   const requestRes = client$._createRequest(context, {
     security: requestSecurity,
-    method: "GET",
+    method: "PATCH",
     baseURL: options?.serverURL,
     path: path$,
     headers: headers$,
@@ -153,7 +155,7 @@ async function $do(
   };
 
   const [result$] = await M.match<
-    GetContainersPlanResponse,
+    UpdateApiKeyResponse,
     | APIError
     | SDKValidationError
     | UnexpectedClientError
@@ -162,9 +164,9 @@ async function $do(
     | RequestTimeoutError
     | ConnectionError
   >(
-    M.json(200, GetContainersPlanResponse$zodSchema, {
+    M.json(200, UpdateApiKeyResponse$zodSchema, {
       ctype: "application/vnd.api+json",
-      key: "container_plan_data",
+      key: "object",
     }),
   )(response, req$, { extraFields: responseFields$ });
 

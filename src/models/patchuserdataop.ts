@@ -3,13 +3,16 @@
  */
 
 import * as z from "zod";
-import { UserData, UserData$zodSchema } from "./userdata.js";
+import { ClosedEnum } from "../types/enums.js";
+
+export const PatchUserDataType2 = {
+  UserData: "user_data",
+} as const;
+export type PatchUserDataType2 = ClosedEnum<typeof PatchUserDataType2>;
 
 export const PatchUserDataType2$zodSchema = z.enum([
   "user_data",
 ]);
-
-export type PatchUserDataType2 = z.infer<typeof PatchUserDataType2$zodSchema>;
 
 export type PatchUserDataAttributes2 = {
   description?: string | undefined;
@@ -17,9 +20,7 @@ export type PatchUserDataAttributes2 = {
 };
 
 export const PatchUserDataAttributes2$zodSchema: z.ZodType<
-  PatchUserDataAttributes2,
-  z.ZodTypeDef,
-  unknown
+  PatchUserDataAttributes2
 > = z.object({
   content: z.string().optional(),
   description: z.string().optional(),
@@ -31,22 +32,17 @@ export type PatchUserDataData2 = {
   attributes?: PatchUserDataAttributes2 | undefined;
 };
 
-export const PatchUserDataData2$zodSchema: z.ZodType<
-  PatchUserDataData2,
-  z.ZodTypeDef,
-  unknown
-> = z.object({
-  attributes: z.lazy(() => PatchUserDataAttributes2$zodSchema).optional(),
-  id: z.string(),
-  type: PatchUserDataType2$zodSchema,
-});
+export const PatchUserDataData2$zodSchema: z.ZodType<PatchUserDataData2> = z
+  .object({
+    attributes: z.lazy(() => PatchUserDataAttributes2$zodSchema).optional(),
+    id: z.string(),
+    type: PatchUserDataType2$zodSchema,
+  });
 
 export type PatchUserDataRequestBody2 = { data: PatchUserDataData2 };
 
 export const PatchUserDataRequestBody2$zodSchema: z.ZodType<
-  PatchUserDataRequestBody2,
-  z.ZodTypeDef,
-  unknown
+  PatchUserDataRequestBody2
 > = z.object({
   data: z.lazy(() => PatchUserDataData2$zodSchema),
 });
@@ -56,29 +52,8 @@ export type PatchUserDataRequest = {
   RequestBody?: PatchUserDataRequestBody2 | undefined;
 };
 
-export const PatchUserDataRequest$zodSchema: z.ZodType<
-  PatchUserDataRequest,
-  z.ZodTypeDef,
-  unknown
-> = z.object({
-  RequestBody: z.lazy(() => PatchUserDataRequestBody2$zodSchema).optional(),
-  user_data_id: z.string(),
-});
-
-export type PatchUserDataResponse = {
-  ContentType: string;
-  StatusCode: number;
-  RawResponse: Response;
-  user_data?: UserData | undefined;
-};
-
-export const PatchUserDataResponse$zodSchema: z.ZodType<
-  PatchUserDataResponse,
-  z.ZodTypeDef,
-  unknown
-> = z.object({
-  ContentType: z.string(),
-  RawResponse: z.instanceof(Response),
-  StatusCode: z.number().int(),
-  user_data: UserData$zodSchema.optional(),
-});
+export const PatchUserDataRequest$zodSchema: z.ZodType<PatchUserDataRequest> = z
+  .object({
+    RequestBody: z.lazy(() => PatchUserDataRequestBody2$zodSchema).optional(),
+    user_data_id: z.string(),
+  });

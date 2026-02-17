@@ -22,14 +22,16 @@ import { SDKValidationError } from "../models/errors/sdkvalidationerror.js";
 import {
   PostProjectUserDataRequest,
   PostProjectUserDataRequest$zodSchema,
-  PostProjectUserDataResponse,
-  PostProjectUserDataResponse$zodSchema,
 } from "../models/postprojectuserdataop.js";
+import {
+  UserDataObject,
+  UserDataObject$zodSchema,
+} from "../models/userdataobject.js";
 import { APICall, APIPromise } from "../types/async.js";
 import { Result } from "../types/fp.js";
 
 /**
- * Create a Project User Data
+ * Create Project user data
  *
  * @remarks
  * Allows you to create User Data in a project, which can be used to perform custom setup on your servers after deploy and reinstall.
@@ -42,7 +44,7 @@ export function userDataCreate(
   options?: RequestOptions,
 ): APIPromise<
   Result<
-    PostProjectUserDataResponse,
+    UserDataObject,
     | APIError
     | SDKValidationError
     | UnexpectedClientError
@@ -66,7 +68,7 @@ async function $do(
 ): Promise<
   [
     Result<
-      PostProjectUserDataResponse,
+      UserDataObject,
       | APIError
       | SDKValidationError
       | UnexpectedClientError
@@ -156,7 +158,7 @@ async function $do(
   };
 
   const [result$] = await M.match<
-    PostProjectUserDataResponse,
+    UserDataObject,
     | APIError
     | SDKValidationError
     | UnexpectedClientError
@@ -165,9 +167,9 @@ async function $do(
     | RequestTimeoutError
     | ConnectionError
   >(
-    M.json(201, PostProjectUserDataResponse$zodSchema, {
+    M.json(201, UserDataObject$zodSchema, {
       ctype: "application/vnd.api+json",
-      key: "user_data",
+      key: "user_data_object",
     }),
   )(response, req$, { extraFields: responseFields$ });
 

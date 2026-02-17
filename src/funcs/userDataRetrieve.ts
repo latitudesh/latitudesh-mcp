@@ -22,14 +22,16 @@ import { SDKValidationError } from "../models/errors/sdkvalidationerror.js";
 import {
   GetUserDataRequest,
   GetUserDataRequest$zodSchema,
-  GetUserDataResponse,
-  GetUserDataResponse$zodSchema,
 } from "../models/getuserdataop.js";
+import {
+  UserDataObject,
+  UserDataObject$zodSchema,
+} from "../models/userdataobject.js";
 import { APICall, APIPromise } from "../types/async.js";
 import { Result } from "../types/fp.js";
 
 /**
- * Retrieve an User Data
+ * Retrieve user data
  *
  * @remarks
  * Get User Data in the project. These scripts can be used to configure servers with user data.
@@ -40,7 +42,7 @@ export function userDataRetrieve(
   options?: RequestOptions,
 ): APIPromise<
   Result<
-    GetUserDataResponse,
+    UserDataObject,
     | APIError
     | SDKValidationError
     | UnexpectedClientError
@@ -64,7 +66,7 @@ async function $do(
 ): Promise<
   [
     Result<
-      GetUserDataResponse,
+      UserDataObject,
       | APIError
       | SDKValidationError
       | UnexpectedClientError
@@ -157,7 +159,7 @@ async function $do(
   };
 
   const [result$] = await M.match<
-    GetUserDataResponse,
+    UserDataObject,
     | APIError
     | SDKValidationError
     | UnexpectedClientError
@@ -166,9 +168,9 @@ async function $do(
     | RequestTimeoutError
     | ConnectionError
   >(
-    M.json(200, GetUserDataResponse$zodSchema, {
+    M.json(200, UserDataObject$zodSchema, {
       ctype: "application/vnd.api+json",
-      key: "user_data",
+      key: "user_data_object",
     }),
   )(response, req$, { extraFields: responseFields$ });
 

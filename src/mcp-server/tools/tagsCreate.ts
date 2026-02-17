@@ -12,7 +12,7 @@ const args = {
 
 export const tool$tagsCreate: ToolDefinition<typeof args> = {
   name: "tags-create",
-  description: `Create a Tag
+  description: `Create tag
 
 Create a Tag in the team.
 `,

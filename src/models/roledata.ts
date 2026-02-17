@@ -3,22 +3,23 @@
  */
 
 import * as z from "zod";
+import { ClosedEnum } from "../types/enums.js";
+
+export const RoleDataType = {
+  Roles: "roles",
+} as const;
+export type RoleDataType = ClosedEnum<typeof RoleDataType>;
 
 export const RoleDataType$zodSchema = z.enum([
   "roles",
 ]);
 
-export type RoleDataType = z.infer<typeof RoleDataType$zodSchema>;
-
 export type RoleDataAttributes = { name?: string | undefined };
 
-export const RoleDataAttributes$zodSchema: z.ZodType<
-  RoleDataAttributes,
-  z.ZodTypeDef,
-  unknown
-> = z.object({
-  name: z.string().optional(),
-});
+export const RoleDataAttributes$zodSchema: z.ZodType<RoleDataAttributes> = z
+  .object({
+    name: z.string().optional(),
+  });
 
 export type RoleData = {
   id?: string | undefined;
@@ -26,9 +27,8 @@ export type RoleData = {
   attributes?: RoleDataAttributes | undefined;
 };
 
-export const RoleData$zodSchema: z.ZodType<RoleData, z.ZodTypeDef, unknown> = z
-  .object({
-    attributes: z.lazy(() => RoleDataAttributes$zodSchema).optional(),
-    id: z.string().optional(),
-    type: RoleDataType$zodSchema.optional(),
-  });
+export const RoleData$zodSchema: z.ZodType<RoleData> = z.object({
+  attributes: z.lazy(() => RoleDataAttributes$zodSchema).optional(),
+  id: z.string().optional(),
+  type: RoleDataType$zodSchema.optional(),
+});

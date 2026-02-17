@@ -7,7 +7,7 @@ import { formatResult, ToolDefinition } from "../tools.js";
 
 export const tool$plansListStorage: ToolDefinition = {
   name: "plans-list-storage",
-  description: `List all Storage Plans`,
+  description: `List storage plans`,
   annotations: {
     "title": "",
     "destructiveHint": false,

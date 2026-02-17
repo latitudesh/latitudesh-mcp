@@ -3,18 +3,19 @@
  */
 
 import { apiKeysUpdate } from "../../funcs/apiKeysUpdate.js";
-import { UpdateApiKeyRequest$zodSchema } from "../../models/updateapikeyop.js";
+import { RotateApiKeyRequest$zodSchema } from "../../models/rotateapikeyop.js";
 import { formatResult, ToolDefinition } from "../tools.js";
 
 const args = {
-  request: UpdateApiKeyRequest$zodSchema,
+  request: RotateApiKeyRequest$zodSchema,
 };
 
 export const tool$apiKeysUpdate: ToolDefinition<typeof args> = {
   name: "api-keys-update",
-  description: `Regenerate API Key
+  description: `Rotate API key
 
-Regenerate an existing API Key that is tied to the current user. This overrides the previous key.
+Rotate an existing API Key, generating a new token. This invalidates the previous key.
+Use PATCH to update settings without rotating the token.
 `,
   annotations: {
     "title": "",

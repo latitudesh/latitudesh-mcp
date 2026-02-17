@@ -12,7 +12,7 @@ const args = {
 
 export const tool$sshKeysCreate: ToolDefinition<typeof args> = {
   name: "SSH-keys-create",
-  description: `Create a SSH Key
+  description: `Create SSH Key
 
 Allows you create SSH Keys. These keys can be used to access servers after deploy and reinstall actions.
 `,

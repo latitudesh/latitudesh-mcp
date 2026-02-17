@@ -6,26 +6,7 @@ import * as z from "zod";
 
 export type DeleteUserDataRequest = { user_data_id: string };
 
-export const DeleteUserDataRequest$zodSchema: z.ZodType<
-  DeleteUserDataRequest,
-  z.ZodTypeDef,
-  unknown
-> = z.object({
-  user_data_id: z.string(),
-});
-
-export type DeleteUserDataResponse = {
-  ContentType: string;
-  StatusCode: number;
-  RawResponse: Response;
-};
-
-export const DeleteUserDataResponse$zodSchema: z.ZodType<
-  DeleteUserDataResponse,
-  z.ZodTypeDef,
-  unknown
-> = z.object({
-  ContentType: z.string(),
-  RawResponse: z.instanceof(Response),
-  StatusCode: z.number().int(),
-});
+export const DeleteUserDataRequest$zodSchema: z.ZodType<DeleteUserDataRequest> =
+  z.object({
+    user_data_id: z.string(),
+  });

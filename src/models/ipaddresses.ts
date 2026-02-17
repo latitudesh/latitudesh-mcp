@@ -7,10 +7,6 @@ import { IpAddress, IpAddress$zodSchema } from "./ipaddress.js";
 
 export type IpAddresses = { data?: Array<IpAddress> | undefined };
 
-export const IpAddresses$zodSchema: z.ZodType<
-  IpAddresses,
-  z.ZodTypeDef,
-  unknown
-> = z.object({
+export const IpAddresses$zodSchema: z.ZodType<IpAddresses> = z.object({
   data: z.array(IpAddress$zodSchema).optional(),
 });

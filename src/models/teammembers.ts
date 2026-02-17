@@ -11,43 +11,50 @@ export type TeamMembersRole = {
   updated_at?: string | undefined;
 };
 
-export const TeamMembersRole$zodSchema: z.ZodType<
-  TeamMembersRole,
-  z.ZodTypeDef,
-  unknown
-> = z.object({
+export const TeamMembersRole$zodSchema: z.ZodType<TeamMembersRole> = z.object({
   created_at: z.string().optional(),
   id: z.string().optional(),
   name: z.string().optional(),
   updated_at: z.string().optional(),
 });
 
-export type TeamMembersData = {
+export type TeamMembersAttributes = {
   first_name?: string | undefined;
   last_name?: string | undefined;
   email?: string | undefined;
   mfa_enabled?: boolean | undefined;
+  created_at?: string | undefined;
+  updated_at?: string | undefined;
+  last_login_at?: string | null | undefined;
   role?: TeamMembersRole | undefined;
 };
 
-export const TeamMembersData$zodSchema: z.ZodType<
-  TeamMembersData,
-  z.ZodTypeDef,
-  unknown
-> = z.object({
-  email: z.string().optional(),
-  first_name: z.string().optional(),
-  last_name: z.string().optional(),
-  mfa_enabled: z.boolean().optional(),
-  role: z.lazy(() => TeamMembersRole$zodSchema).optional(),
+export const TeamMembersAttributes$zodSchema: z.ZodType<TeamMembersAttributes> =
+  z.object({
+    created_at: z.iso.datetime({ offset: true }).optional(),
+    email: z.string().optional(),
+    first_name: z.string().optional(),
+    last_login_at: z.iso.datetime({ offset: true }).nullable().optional(),
+    last_name: z.string().optional(),
+    mfa_enabled: z.boolean().optional(),
+    role: z.lazy(() => TeamMembersRole$zodSchema).optional(),
+    updated_at: z.iso.datetime({ offset: true }).optional(),
+  });
+
+export type TeamMembersData = {
+  id?: string | undefined;
+  type?: string | undefined;
+  attributes?: TeamMembersAttributes | undefined;
+};
+
+export const TeamMembersData$zodSchema: z.ZodType<TeamMembersData> = z.object({
+  attributes: z.lazy(() => TeamMembersAttributes$zodSchema).optional(),
+  id: z.string().optional(),
+  type: z.string().optional(),
 });
 
 export type TeamMembers = { data?: Array<TeamMembersData> | undefined };
 
-export const TeamMembers$zodSchema: z.ZodType<
-  TeamMembers,
-  z.ZodTypeDef,
-  unknown
-> = z.object({
+export const TeamMembers$zodSchema: z.ZodType<TeamMembers> = z.object({
   data: z.array(z.lazy(() => TeamMembersData$zodSchema)).optional(),
 });

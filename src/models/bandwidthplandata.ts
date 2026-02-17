@@ -3,42 +3,38 @@
  */
 
 import * as z from "zod";
+import { ClosedEnum } from "../types/enums.js";
+
+export const BandwidthPlanDataType = {
+  BandwidthPlan: "bandwidth_plan",
+} as const;
+export type BandwidthPlanDataType = ClosedEnum<typeof BandwidthPlanDataType>;
 
 export const BandwidthPlanDataType$zodSchema = z.enum([
   "bandwidth_plan",
 ]);
-
-export type BandwidthPlanDataType = z.infer<
-  typeof BandwidthPlanDataType$zodSchema
->;
 
 export type BandwidthPlanDataUsd = {
   monthly?: number | undefined;
   hourly?: number | undefined;
 };
 
-export const BandwidthPlanDataUsd$zodSchema: z.ZodType<
-  BandwidthPlanDataUsd,
-  z.ZodTypeDef,
-  unknown
-> = z.object({
-  hourly: z.number().int().optional(),
-  monthly: z.number().int().optional(),
-});
+export const BandwidthPlanDataUsd$zodSchema: z.ZodType<BandwidthPlanDataUsd> = z
+  .object({
+    hourly: z.int().optional(),
+    monthly: z.int().optional(),
+  });
 
 export type BandwidthPlanDataBrl = {
   monthly?: number | undefined;
   hourly?: number | undefined;
 };
 
-export const BandwidthPlanDataBrl$zodSchema: z.ZodType<
-  BandwidthPlanDataBrl,
-  z.ZodTypeDef,
-  unknown
-> = z.object({
-  hourly: z.number().int().optional(),
-  monthly: z.number().int().optional(),
-});
+export const BandwidthPlanDataBrl$zodSchema: z.ZodType<BandwidthPlanDataBrl> = z
+  .object({
+    hourly: z.int().optional(),
+    monthly: z.int().optional(),
+  });
 
 export type BandwidthPlanDataPricing = {
   usd?: BandwidthPlanDataUsd | undefined;
@@ -46,9 +42,7 @@ export type BandwidthPlanDataPricing = {
 };
 
 export const BandwidthPlanDataPricing$zodSchema: z.ZodType<
-  BandwidthPlanDataPricing,
-  z.ZodTypeDef,
-  unknown
+  BandwidthPlanDataPricing
 > = z.object({
   brl: z.lazy(() => BandwidthPlanDataBrl$zodSchema).optional(),
   usd: z.lazy(() => BandwidthPlanDataUsd$zodSchema).optional(),
@@ -61,9 +55,7 @@ export type BandwidthPlanDataAttributes = {
 };
 
 export const BandwidthPlanDataAttributes$zodSchema: z.ZodType<
-  BandwidthPlanDataAttributes,
-  z.ZodTypeDef,
-  unknown
+  BandwidthPlanDataAttributes
 > = z.object({
   locations: z.array(z.string()).optional(),
   pricing: z.lazy(() => BandwidthPlanDataPricing$zodSchema).optional(),
@@ -76,12 +68,9 @@ export type BandwidthPlanData = {
   attributes?: BandwidthPlanDataAttributes | undefined;
 };
 
-export const BandwidthPlanData$zodSchema: z.ZodType<
-  BandwidthPlanData,
-  z.ZodTypeDef,
-  unknown
-> = z.object({
-  attributes: z.lazy(() => BandwidthPlanDataAttributes$zodSchema).optional(),
-  id: z.string().optional(),
-  type: BandwidthPlanDataType$zodSchema.optional(),
-});
+export const BandwidthPlanData$zodSchema: z.ZodType<BandwidthPlanData> = z
+  .object({
+    attributes: z.lazy(() => BandwidthPlanDataAttributes$zodSchema).optional(),
+    id: z.string().optional(),
+    type: BandwidthPlanDataType$zodSchema.optional(),
+  });

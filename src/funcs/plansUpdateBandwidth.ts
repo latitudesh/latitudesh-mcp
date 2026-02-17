@@ -10,6 +10,10 @@ import { safeParse } from "../lib/schemas.js";
 import { RequestOptions } from "../lib/sdks.js";
 import { extractSecurity, resolveGlobalSecurity } from "../lib/security.js";
 import { pathToFunc } from "../lib/url.js";
+import {
+  BandwidthPackages,
+  BandwidthPackages$zodSchema,
+} from "../models/bandwidthpackages.js";
 import { APIError } from "../models/errors/apierror.js";
 import {
   ConnectionError,
@@ -22,14 +26,12 @@ import { SDKValidationError } from "../models/errors/sdkvalidationerror.js";
 import {
   UpdatePlansBandwidthRequest,
   UpdatePlansBandwidthRequest$zodSchema,
-  UpdatePlansBandwidthResponse,
-  UpdatePlansBandwidthResponse$zodSchema,
 } from "../models/updateplansbandwidthop.js";
 import { APICall, APIPromise } from "../types/async.js";
 import { Result } from "../types/fp.js";
 
 /**
- * Buy or remove bandwidth packages
+ * Update bandwidth packages
  *
  * @remarks
  * Allows to increase or decrease bandwidth packages. Only admins and owners can request.
@@ -40,7 +42,7 @@ export function plansUpdateBandwidth(
   options?: RequestOptions,
 ): APIPromise<
   Result<
-    UpdatePlansBandwidthResponse,
+    BandwidthPackages,
     | APIError
     | SDKValidationError
     | UnexpectedClientError
@@ -64,7 +66,7 @@ async function $do(
 ): Promise<
   [
     Result<
-      UpdatePlansBandwidthResponse,
+      BandwidthPackages,
       | APIError
       | SDKValidationError
       | UnexpectedClientError
@@ -145,7 +147,7 @@ async function $do(
   };
 
   const [result$] = await M.match<
-    UpdatePlansBandwidthResponse,
+    BandwidthPackages,
     | APIError
     | SDKValidationError
     | UnexpectedClientError
@@ -154,7 +156,7 @@ async function $do(
     | RequestTimeoutError
     | ConnectionError
   >(
-    M.json(200, UpdatePlansBandwidthResponse$zodSchema, {
+    M.json(200, BandwidthPackages$zodSchema, {
       ctype: "application/vnd.api+json",
       key: "bandwidth_packages",
     }),

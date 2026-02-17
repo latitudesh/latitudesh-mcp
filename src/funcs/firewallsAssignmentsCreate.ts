@@ -13,8 +13,6 @@ import { pathToFunc } from "../lib/url.js";
 import {
   CreateFirewallAssignmentRequest,
   CreateFirewallAssignmentRequest$zodSchema,
-  CreateFirewallAssignmentResponse,
-  CreateFirewallAssignmentResponse$zodSchema,
 } from "../models/createfirewallassignmentop.js";
 import { APIError } from "../models/errors/apierror.js";
 import {
@@ -25,14 +23,18 @@ import {
   UnexpectedClientError,
 } from "../models/errors/httpclienterrors.js";
 import { SDKValidationError } from "../models/errors/sdkvalidationerror.js";
+import {
+  FirewallServer,
+  FirewallServer$zodSchema,
+} from "../models/firewallserver.js";
 import { APICall, APIPromise } from "../types/async.js";
 import { Result } from "../types/fp.js";
 
 /**
- * Firewall Assignment
+ * Assign server to firewall
  *
  * @remarks
- * Assign a server to a firewall
+ * Assigns a server to a firewall by its ID.
  */
 export function firewallsAssignmentsCreate(
   client$: LatitudeshCore,
@@ -40,7 +42,7 @@ export function firewallsAssignmentsCreate(
   options?: RequestOptions,
 ): APIPromise<
   Result<
-    CreateFirewallAssignmentResponse,
+    FirewallServer,
     | APIError
     | SDKValidationError
     | UnexpectedClientError
@@ -64,7 +66,7 @@ async function $do(
 ): Promise<
   [
     Result<
-      CreateFirewallAssignmentResponse,
+      FirewallServer,
       | APIError
       | SDKValidationError
       | UnexpectedClientError
@@ -154,7 +156,7 @@ async function $do(
   };
 
   const [result$] = await M.match<
-    CreateFirewallAssignmentResponse,
+    FirewallServer,
     | APIError
     | SDKValidationError
     | UnexpectedClientError
@@ -163,7 +165,7 @@ async function $do(
     | RequestTimeoutError
     | ConnectionError
   >(
-    M.json(201, CreateFirewallAssignmentResponse$zodSchema, {
+    M.json(201, FirewallServer$zodSchema, {
       ctype: "application/vnd.api+json",
       key: "firewall_server",
     }),

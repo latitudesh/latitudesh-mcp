@@ -3,18 +3,18 @@
  */
 
 import * as z from "zod";
-import {
-  BandwidthPackages,
-  BandwidthPackages$zodSchema,
-} from "./bandwidthpackages.js";
+import { ClosedEnum } from "../types/enums.js";
+
+export const UpdatePlansBandwidthType2 = {
+  BandwidthPackages: "bandwidth_packages",
+} as const;
+export type UpdatePlansBandwidthType2 = ClosedEnum<
+  typeof UpdatePlansBandwidthType2
+>;
 
 export const UpdatePlansBandwidthType2$zodSchema = z.enum([
   "bandwidth_packages",
 ]);
-
-export type UpdatePlansBandwidthType2 = z.infer<
-  typeof UpdatePlansBandwidthType2$zodSchema
->;
 
 export type UpdatePlansBandwidthAttributes2 = {
   project?: string | undefined;
@@ -23,12 +23,10 @@ export type UpdatePlansBandwidthAttributes2 = {
 };
 
 export const UpdatePlansBandwidthAttributes2$zodSchema: z.ZodType<
-  UpdatePlansBandwidthAttributes2,
-  z.ZodTypeDef,
-  unknown
+  UpdatePlansBandwidthAttributes2
 > = z.object({
   project: z.string().optional(),
-  quantity: z.number().int().optional(),
+  quantity: z.int().optional(),
   region_slug: z.string().optional(),
 });
 
@@ -38,9 +36,7 @@ export type UpdatePlansBandwidthData2 = {
 };
 
 export const UpdatePlansBandwidthData2$zodSchema: z.ZodType<
-  UpdatePlansBandwidthData2,
-  z.ZodTypeDef,
-  unknown
+  UpdatePlansBandwidthData2
 > = z.object({
   attributes: z.lazy(() => UpdatePlansBandwidthAttributes2$zodSchema)
     .optional(),
@@ -52,27 +48,7 @@ export type UpdatePlansBandwidthRequest = {
 };
 
 export const UpdatePlansBandwidthRequest$zodSchema: z.ZodType<
-  UpdatePlansBandwidthRequest,
-  z.ZodTypeDef,
-  unknown
+  UpdatePlansBandwidthRequest
 > = z.object({
   data: z.lazy(() => UpdatePlansBandwidthData2$zodSchema).optional(),
-});
-
-export type UpdatePlansBandwidthResponse = {
-  ContentType: string;
-  StatusCode: number;
-  RawResponse: Response;
-  bandwidth_packages?: BandwidthPackages | undefined;
-};
-
-export const UpdatePlansBandwidthResponse$zodSchema: z.ZodType<
-  UpdatePlansBandwidthResponse,
-  z.ZodTypeDef,
-  unknown
-> = z.object({
-  ContentType: z.string(),
-  RawResponse: z.instanceof(Response),
-  StatusCode: z.number().int(),
-  bandwidth_packages: BandwidthPackages$zodSchema.optional(),
 });

@@ -7,19 +7,14 @@ import { CustomTagData, CustomTagData$zodSchema } from "./customtagdata.js";
 
 export type CustomTagMeta = {};
 
-export const CustomTagMeta$zodSchema: z.ZodType<
-  CustomTagMeta,
-  z.ZodTypeDef,
-  unknown
-> = z.object({});
+export const CustomTagMeta$zodSchema: z.ZodType<CustomTagMeta> = z.object({});
 
 export type CustomTag = {
   data?: CustomTagData | undefined;
   meta?: CustomTagMeta | undefined;
 };
 
-export const CustomTag$zodSchema: z.ZodType<CustomTag, z.ZodTypeDef, unknown> =
-  z.object({
-    data: CustomTagData$zodSchema.optional(),
-    meta: z.lazy(() => CustomTagMeta$zodSchema).optional(),
-  });
+export const CustomTag$zodSchema: z.ZodType<CustomTag> = z.object({
+  data: CustomTagData$zodSchema.optional(),
+  meta: z.lazy(() => CustomTagMeta$zodSchema).optional(),
+});

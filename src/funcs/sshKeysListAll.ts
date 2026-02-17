@@ -22,14 +22,13 @@ import { SDKValidationError } from "../models/errors/sdkvalidationerror.js";
 import {
   GetSshKeysRequest,
   GetSshKeysRequest$zodSchema,
-  GetSshKeysResponse,
-  GetSshKeysResponse$zodSchema,
 } from "../models/getsshkeysop.js";
+import { SshKeys, SshKeys$zodSchema } from "../models/sshkeys.js";
 import { APICall, APIPromise } from "../types/async.js";
 import { Result } from "../types/fp.js";
 
 /**
- * List all SSH Keys
+ * List SSH Keys
  *
  * @remarks
  * List all SSH Keys in the project. These keys can be used to access servers after deploy and reinstall actions.
@@ -40,7 +39,7 @@ export function sshKeysListAll(
   options?: RequestOptions,
 ): APIPromise<
   Result<
-    GetSshKeysResponse,
+    SshKeys,
     | APIError
     | SDKValidationError
     | UnexpectedClientError
@@ -64,7 +63,7 @@ async function $do(
 ): Promise<
   [
     Result<
-      GetSshKeysResponse,
+      SshKeys,
       | APIError
       | SDKValidationError
       | UnexpectedClientError
@@ -88,6 +87,8 @@ async function $do(
   const body$ = null;
   const path$ = pathToFunc("/ssh_keys")();
   const query$ = encodeFormQuery({
+    "filter[project]": payload$?.filterProject,
+    "filter[scope]": payload$?.filterScope,
     "filter[tags]": payload$?.filterTags,
   });
 
@@ -148,7 +149,7 @@ async function $do(
   };
 
   const [result$] = await M.match<
-    GetSshKeysResponse,
+    SshKeys,
     | APIError
     | SDKValidationError
     | UnexpectedClientError
@@ -157,7 +158,7 @@ async function $do(
     | RequestTimeoutError
     | ConnectionError
   >(
-    M.json(200, GetSshKeysResponse$zodSchema, {
+    M.json(200, SshKeys$zodSchema, {
       ctype: "application/vnd.api+json",
       key: "ssh_keys",
     }),

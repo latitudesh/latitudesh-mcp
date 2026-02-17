@@ -3,35 +3,11 @@
  */
 
 import * as z from "zod";
-import {
-  ServerScheduleDeletion,
-  ServerScheduleDeletion$zodSchema,
-} from "./serverscheduledeletion.js";
 
 export type ServerScheduleDeletionRequest = { server_id: string };
 
 export const ServerScheduleDeletionRequest$zodSchema: z.ZodType<
-  ServerScheduleDeletionRequest,
-  z.ZodTypeDef,
-  unknown
+  ServerScheduleDeletionRequest
 > = z.object({
   server_id: z.string(),
-});
-
-export type ServerScheduleDeletionResponse = {
-  ContentType: string;
-  StatusCode: number;
-  RawResponse: Response;
-  server_schedule_deletion?: ServerScheduleDeletion | undefined;
-};
-
-export const ServerScheduleDeletionResponse$zodSchema: z.ZodType<
-  ServerScheduleDeletionResponse,
-  z.ZodTypeDef,
-  unknown
-> = z.object({
-  ContentType: z.string(),
-  RawResponse: z.instanceof(Response),
-  StatusCode: z.number().int(),
-  server_schedule_deletion: ServerScheduleDeletion$zodSchema.optional(),
 });

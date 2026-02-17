@@ -22,14 +22,16 @@ import { SDKValidationError } from "../models/errors/sdkvalidationerror.js";
 import {
   GetTrafficQuotaRequest,
   GetTrafficQuotaRequest$zodSchema,
-  GetTrafficQuotaResponse,
-  GetTrafficQuotaResponse$zodSchema,
 } from "../models/gettrafficquotaop.js";
+import {
+  TrafficQuota,
+  TrafficQuota$zodSchema,
+} from "../models/trafficquota.js";
 import { APICall, APIPromise } from "../types/async.js";
 import { Result } from "../types/fp.js";
 
 /**
- * Retrieve Traffic Quota
+ * Retrieve traffic quota
  */
 export function trafficGetQuota(
   client$: LatitudeshCore,
@@ -37,7 +39,7 @@ export function trafficGetQuota(
   options?: RequestOptions,
 ): APIPromise<
   Result<
-    GetTrafficQuotaResponse,
+    TrafficQuota,
     | APIError
     | SDKValidationError
     | UnexpectedClientError
@@ -61,7 +63,7 @@ async function $do(
 ): Promise<
   [
     Result<
-      GetTrafficQuotaResponse,
+      TrafficQuota,
       | APIError
       | SDKValidationError
       | UnexpectedClientError
@@ -145,7 +147,7 @@ async function $do(
   };
 
   const [result$] = await M.match<
-    GetTrafficQuotaResponse,
+    TrafficQuota,
     | APIError
     | SDKValidationError
     | UnexpectedClientError
@@ -154,7 +156,7 @@ async function $do(
     | RequestTimeoutError
     | ConnectionError
   >(
-    M.json(200, GetTrafficQuotaResponse$zodSchema, {
+    M.json(200, TrafficQuota$zodSchema, {
       ctype: "application/vnd.api+json",
       key: "traffic_quota",
     }),

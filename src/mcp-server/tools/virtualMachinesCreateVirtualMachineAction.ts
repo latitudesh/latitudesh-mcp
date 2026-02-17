@@ -14,7 +14,7 @@ export const tool$virtualMachinesCreateVirtualMachineAction: ToolDefinition<
   typeof args
 > = {
   name: "virtual-machines-create-virtual-machine-action",
-  description: `Run Virtual Machine Action
+  description: `Run VM power action
 
 Performs a power action on a given virtual machine:
 - \`power_on\` - Starts the virtual machine

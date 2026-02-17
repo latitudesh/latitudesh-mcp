@@ -6,7 +6,6 @@ import * as z from "zod";
 
 export type Security = { Bearer: string };
 
-export const Security$zodSchema: z.ZodType<Security, z.ZodTypeDef, unknown> = z
-  .object({
-    Bearer: z.string().describe("API Key"),
-  });
+export const Security$zodSchema: z.ZodType<Security> = z.object({
+  Bearer: z.string().describe("API Key"),
+});

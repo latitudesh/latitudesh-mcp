@@ -10,6 +10,7 @@ import { safeParse } from "../lib/schemas.js";
 import { RequestOptions } from "../lib/sdks.js";
 import { extractSecurity, resolveGlobalSecurity } from "../lib/security.js";
 import { pathToFunc } from "../lib/url.js";
+import { CustomTag, CustomTag$zodSchema } from "../models/customtag.js";
 import { APIError } from "../models/errors/apierror.js";
 import {
   ConnectionError,
@@ -22,14 +23,12 @@ import { SDKValidationError } from "../models/errors/sdkvalidationerror.js";
 import {
   UpdateTagRequest,
   UpdateTagRequest$zodSchema,
-  UpdateTagResponse,
-  UpdateTagResponse$zodSchema,
 } from "../models/updatetagop.js";
 import { APICall, APIPromise } from "../types/async.js";
 import { Result } from "../types/fp.js";
 
 /**
- * Update Tag
+ * Update tag
  *
  * @remarks
  * Update a Tag in the team.
@@ -40,7 +39,7 @@ export function tagsUpdate(
   options?: RequestOptions,
 ): APIPromise<
   Result<
-    UpdateTagResponse,
+    CustomTag,
     | APIError
     | SDKValidationError
     | UnexpectedClientError
@@ -64,7 +63,7 @@ async function $do(
 ): Promise<
   [
     Result<
-      UpdateTagResponse,
+      CustomTag,
       | APIError
       | SDKValidationError
       | UnexpectedClientError
@@ -154,7 +153,7 @@ async function $do(
   };
 
   const [result$] = await M.match<
-    UpdateTagResponse,
+    CustomTag,
     | APIError
     | SDKValidationError
     | UnexpectedClientError
@@ -163,7 +162,7 @@ async function $do(
     | RequestTimeoutError
     | ConnectionError
   >(
-    M.json(200, UpdateTagResponse$zodSchema, {
+    M.json(200, CustomTag$zodSchema, {
       ctype: "application/vnd.api+json",
       key: "custom_tag",
     }),

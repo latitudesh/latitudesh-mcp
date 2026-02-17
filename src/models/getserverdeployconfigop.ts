@@ -3,32 +3,11 @@
  */
 
 import * as z from "zod";
-import { DeployConfig, DeployConfig$zodSchema } from "./deployconfig.js";
 
 export type GetServerDeployConfigRequest = { server_id: string };
 
 export const GetServerDeployConfigRequest$zodSchema: z.ZodType<
-  GetServerDeployConfigRequest,
-  z.ZodTypeDef,
-  unknown
+  GetServerDeployConfigRequest
 > = z.object({
   server_id: z.string().describe("The Server ID"),
-});
-
-export type GetServerDeployConfigResponse = {
-  ContentType: string;
-  StatusCode: number;
-  RawResponse: Response;
-  deploy_config?: DeployConfig | undefined;
-};
-
-export const GetServerDeployConfigResponse$zodSchema: z.ZodType<
-  GetServerDeployConfigResponse,
-  z.ZodTypeDef,
-  unknown
-> = z.object({
-  ContentType: z.string(),
-  RawResponse: z.instanceof(Response),
-  StatusCode: z.number().int(),
-  deploy_config: DeployConfig$zodSchema.optional(),
 });

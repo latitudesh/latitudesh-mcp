@@ -3,7 +3,17 @@
  */
 
 import * as z from "zod";
+import { ClosedEnum } from "../types/enums.js";
 import { TeamInclude, TeamInclude$zodSchema } from "./teaminclude.js";
+
+export const BillingType = {
+  Yearly: "Yearly",
+  Monthly: "Monthly",
+  Hourly: "Hourly",
+  Normal: "Normal",
+  Custom: "Custom",
+} as const;
+export type BillingType = ClosedEnum<typeof BillingType>;
 
 export const BillingType$zodSchema = z.enum([
   "Yearly",
@@ -13,22 +23,29 @@ export const BillingType$zodSchema = z.enum([
   "Custom",
 ]);
 
-export type BillingType = z.infer<typeof BillingType$zodSchema>;
+export const BillingMethod = {
+  Normal: "Normal",
+  NinetyFivethPercentile: "95th percentile",
+} as const;
+export type BillingMethod = ClosedEnum<typeof BillingMethod>;
 
 export const BillingMethod$zodSchema = z.enum([
   "Normal",
   "95th percentile",
 ]);
 
-export type BillingMethod = z.infer<typeof BillingMethod$zodSchema>;
+export const Environment = {
+  Development: "Development",
+  Staging: "Staging",
+  Production: "Production",
+} as const;
+export type Environment = ClosedEnum<typeof Environment>;
 
 export const Environment$zodSchema = z.enum([
   "Development",
   "Staging",
   "Production",
 ]);
-
-export type Environment = z.infer<typeof Environment$zodSchema>;
 
 export type ProjectStats = {
   ip_addresses?: number | undefined;
@@ -38,11 +55,7 @@ export type ProjectStats = {
   vlans?: number | undefined;
 };
 
-export const ProjectStats$zodSchema: z.ZodType<
-  ProjectStats,
-  z.ZodTypeDef,
-  unknown
-> = z.object({
+export const ProjectStats$zodSchema: z.ZodType<ProjectStats> = z.object({
   containers: z.number().optional(),
   ip_addresses: z.number().optional(),
   prefixes: z.number().optional(),
@@ -56,11 +69,7 @@ export type ProjectBilling = {
   method?: string | undefined;
 };
 
-export const ProjectBilling$zodSchema: z.ZodType<
-  ProjectBilling,
-  z.ZodTypeDef,
-  unknown
-> = z.object({
+export const ProjectBilling$zodSchema: z.ZodType<ProjectBilling> = z.object({
   method: z.string().optional(),
   subscription_id: z.string().optional(),
   type: z.string().optional(),
@@ -69,11 +78,11 @@ export const ProjectBilling$zodSchema: z.ZodType<
 export type ProjectAttributes = {
   name?: string | undefined;
   slug?: string | undefined;
-  description?: string | undefined;
-  billing_type?: BillingType | undefined;
-  billing_method?: BillingMethod | undefined;
-  cost?: string | undefined;
-  environment?: Environment | undefined;
+  description?: string | null | undefined;
+  billing_type?: BillingType | null | undefined;
+  billing_method?: BillingMethod | null | undefined;
+  cost?: string | null | undefined;
+  environment?: Environment | null | undefined;
   stats?: ProjectStats | undefined;
   billing?: ProjectBilling | undefined;
   team?: TeamInclude | undefined;
@@ -81,32 +90,28 @@ export type ProjectAttributes = {
   updated_at?: string | undefined;
 };
 
-export const ProjectAttributes$zodSchema: z.ZodType<
-  ProjectAttributes,
-  z.ZodTypeDef,
-  unknown
-> = z.object({
-  billing: z.lazy(() => ProjectBilling$zodSchema).optional(),
-  billing_method: BillingMethod$zodSchema.optional(),
-  billing_type: BillingType$zodSchema.optional(),
-  cost: z.string().optional(),
-  created_at: z.string().optional(),
-  description: z.string().optional(),
-  environment: Environment$zodSchema.optional(),
-  name: z.string().optional(),
-  slug: z.string().optional(),
-  stats: z.lazy(() => ProjectStats$zodSchema).optional(),
-  team: TeamInclude$zodSchema.optional(),
-  updated_at: z.string().optional(),
-});
+export const ProjectAttributes$zodSchema: z.ZodType<ProjectAttributes> = z
+  .object({
+    billing: z.lazy(() => ProjectBilling$zodSchema).optional(),
+    billing_method: BillingMethod$zodSchema.nullable().optional(),
+    billing_type: BillingType$zodSchema.nullable().optional(),
+    cost: z.string().nullable().optional(),
+    created_at: z.string().optional(),
+    description: z.string().nullable().optional(),
+    environment: Environment$zodSchema.nullable().optional(),
+    name: z.string().optional(),
+    slug: z.string().optional(),
+    stats: z.lazy(() => ProjectStats$zodSchema).optional(),
+    team: TeamInclude$zodSchema.optional(),
+    updated_at: z.string().optional(),
+  });
 
 export type Project = {
   id?: string | undefined;
   attributes?: ProjectAttributes | undefined;
 };
 
-export const Project$zodSchema: z.ZodType<Project, z.ZodTypeDef, unknown> = z
-  .object({
-    attributes: z.lazy(() => ProjectAttributes$zodSchema).optional(),
-    id: z.string().optional(),
-  });
+export const Project$zodSchema: z.ZodType<Project> = z.object({
+  attributes: z.lazy(() => ProjectAttributes$zodSchema).optional(),
+  id: z.string().optional(),
+});

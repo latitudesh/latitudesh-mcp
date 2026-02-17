@@ -3,11 +3,16 @@
  */
 
 import { plansVmList } from "../../funcs/plansVmList.js";
+import { GetVmPlansRequest$zodSchema } from "../../models/getvmplansop.js";
 import { formatResult, ToolDefinition } from "../tools.js";
 
-export const tool$plansVmList: ToolDefinition = {
+const args = {
+  request: GetVmPlansRequest$zodSchema.optional(),
+};
+
+export const tool$plansVmList: ToolDefinition<typeof args> = {
   name: "plans-vm-list",
-  description: `List all Virtual Machines Plans`,
+  description: `List VM plans`,
   annotations: {
     "title": "",
     "destructiveHint": false,
@@ -15,9 +20,11 @@ export const tool$plansVmList: ToolDefinition = {
     "openWorldHint": false,
     "readOnlyHint": true,
   },
-  tool: async (client, ctx) => {
+  args,
+  tool: async (client, args, ctx) => {
     const [result, apiCall] = await plansVmList(
       client,
+      args.request,
       { fetchOptions: { signal: ctx.signal } },
     ).$inspect();
 

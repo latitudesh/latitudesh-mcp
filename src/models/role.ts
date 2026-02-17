@@ -7,12 +7,11 @@ import { RoleData, RoleData$zodSchema } from "./roledata.js";
 
 export type RoleMeta = {};
 
-export const RoleMeta$zodSchema: z.ZodType<RoleMeta, z.ZodTypeDef, unknown> = z
-  .object({});
+export const RoleMeta$zodSchema: z.ZodType<RoleMeta> = z.object({});
 
 export type Role = { data?: RoleData | undefined; meta?: RoleMeta | undefined };
 
-export const Role$zodSchema: z.ZodType<Role, z.ZodTypeDef, unknown> = z.object({
+export const Role$zodSchema: z.ZodType<Role> = z.object({
   data: RoleData$zodSchema.optional(),
   meta: z.lazy(() => RoleMeta$zodSchema).optional(),
 });

@@ -12,7 +12,7 @@ const args = {
 
 export const tool$teamMembersDelete: ToolDefinition<typeof args> = {
   name: "team-members-delete",
-  description: `Remove a Team Member`,
+  description: `Remove a member`,
   annotations: {
     "title": "",
     "destructiveHint": true,

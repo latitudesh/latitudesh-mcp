@@ -10,12 +10,11 @@ export type Partition = {
   filesystem_type?: string | undefined;
 };
 
-export const Partition$zodSchema: z.ZodType<Partition, z.ZodTypeDef, unknown> =
-  z.object({
-    filesystem_type: z.string().optional(),
-    path: z.string().optional(),
-    size_in_gb: z.number().int().optional(),
-  });
+export const Partition$zodSchema: z.ZodType<Partition> = z.object({
+  filesystem_type: z.string().optional(),
+  path: z.string().optional(),
+  size_in_gb: z.int().optional(),
+});
 
 export type DeployConfigAttributes = {
   operating_system?: string | undefined;
@@ -23,17 +22,15 @@ export type DeployConfigAttributes = {
   raid?: string | undefined;
   user_data?: string | undefined;
   ssh_keys?: Array<string> | undefined;
-  partitions?: Array<Partition> | undefined;
+  partitions?: Array<Partition> | null | undefined;
 };
 
 export const DeployConfigAttributes$zodSchema: z.ZodType<
-  DeployConfigAttributes,
-  z.ZodTypeDef,
-  unknown
+  DeployConfigAttributes
 > = z.object({
   hostname: z.string().optional(),
   operating_system: z.string().optional(),
-  partitions: z.array(z.lazy(() => Partition$zodSchema)).optional(),
+  partitions: z.array(z.lazy(() => Partition$zodSchema)).nullable().optional(),
   raid: z.string().optional(),
   ssh_keys: z.array(z.string()).optional(),
   user_data: z.string().optional(),
@@ -44,21 +41,15 @@ export type DeployConfigData = {
   attributes?: DeployConfigAttributes | undefined;
 };
 
-export const DeployConfigData$zodSchema: z.ZodType<
-  DeployConfigData,
-  z.ZodTypeDef,
-  unknown
-> = z.object({
-  attributes: z.lazy(() => DeployConfigAttributes$zodSchema).optional(),
-  id: z.string().optional(),
-});
+export const DeployConfigData$zodSchema: z.ZodType<DeployConfigData> = z.object(
+  {
+    attributes: z.lazy(() => DeployConfigAttributes$zodSchema).optional(),
+    id: z.string().optional(),
+  },
+);
 
 export type DeployConfig = { data?: DeployConfigData | undefined };
 
-export const DeployConfig$zodSchema: z.ZodType<
-  DeployConfig,
-  z.ZodTypeDef,
-  unknown
-> = z.object({
+export const DeployConfig$zodSchema: z.ZodType<DeployConfig> = z.object({
   data: z.lazy(() => DeployConfigData$zodSchema).optional(),
 });

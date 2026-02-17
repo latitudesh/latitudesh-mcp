@@ -10,6 +10,10 @@ import { safeParse } from "../lib/schemas.js";
 import { RequestOptions } from "../lib/sdks.js";
 import { extractSecurity, resolveGlobalSecurity } from "../lib/security.js";
 import { pathToFunc } from "../lib/url.js";
+import {
+  BillingUsage,
+  BillingUsage$zodSchema,
+} from "../models/billingusage.js";
 import { APIError } from "../models/errors/apierror.js";
 import {
   ConnectionError,
@@ -22,14 +26,12 @@ import { SDKValidationError } from "../models/errors/sdkvalidationerror.js";
 import {
   GetBillingUsageRequest,
   GetBillingUsageRequest$zodSchema,
-  GetBillingUsageResponse,
-  GetBillingUsageResponse$zodSchema,
 } from "../models/getbillingusageop.js";
 import { APICall, APIPromise } from "../types/async.js";
 import { Result } from "../types/fp.js";
 
 /**
- * List Billing Usage
+ * Retrieve billing usage
  *
  * @remarks
  * Returns the billing usage of a project
@@ -40,7 +42,7 @@ export function billingListUsage(
   options?: RequestOptions,
 ): APIPromise<
   Result<
-    GetBillingUsageResponse,
+    BillingUsage,
     | APIError
     | SDKValidationError
     | UnexpectedClientError
@@ -64,7 +66,7 @@ async function $do(
 ): Promise<
   [
     Result<
-      GetBillingUsageResponse,
+      BillingUsage,
       | APIError
       | SDKValidationError
       | UnexpectedClientError
@@ -150,7 +152,7 @@ async function $do(
   };
 
   const [result$] = await M.match<
-    GetBillingUsageResponse,
+    BillingUsage,
     | APIError
     | SDKValidationError
     | UnexpectedClientError
@@ -159,7 +161,7 @@ async function $do(
     | RequestTimeoutError
     | ConnectionError
   >(
-    M.json(200, GetBillingUsageResponse$zodSchema, {
+    M.json(200, BillingUsage$zodSchema, {
       ctype: "application/vnd.api+json",
       key: "billing_usage",
     }),

@@ -22,14 +22,13 @@ import { SDKValidationError } from "../models/errors/sdkvalidationerror.js";
 import {
   GetServerRequest,
   GetServerRequest$zodSchema,
-  GetServerResponse,
-  GetServerResponse$zodSchema,
 } from "../models/getserverop.js";
+import { Server, Server$zodSchema } from "../models/server.js";
 import { APICall, APIPromise } from "../types/async.js";
 import { Result } from "../types/fp.js";
 
 /**
- * Retrieve a Server
+ * Retrieve server
  *
  * @remarks
  * Returns a server that belongs to the team.
@@ -40,7 +39,7 @@ export function serversGet(
   options?: RequestOptions,
 ): APIPromise<
   Result<
-    GetServerResponse,
+    Server,
     | APIError
     | SDKValidationError
     | UnexpectedClientError
@@ -64,7 +63,7 @@ async function $do(
 ): Promise<
   [
     Result<
-      GetServerResponse,
+      Server,
       | APIError
       | SDKValidationError
       | UnexpectedClientError
@@ -157,7 +156,7 @@ async function $do(
   };
 
   const [result$] = await M.match<
-    GetServerResponse,
+    Server,
     | APIError
     | SDKValidationError
     | UnexpectedClientError
@@ -166,7 +165,7 @@ async function $do(
     | RequestTimeoutError
     | ConnectionError
   >(
-    M.json(200, GetServerResponse$zodSchema, {
+    M.json(200, Server$zodSchema, {
       ctype: "application/vnd.api+json",
       key: "server",
     }),

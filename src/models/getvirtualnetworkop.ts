@@ -8,9 +8,7 @@ import { VirtualNetwork, VirtualNetwork$zodSchema } from "./virtualnetwork.js";
 export type GetVirtualNetworkRequest = { vlan_id: string };
 
 export const GetVirtualNetworkRequest$zodSchema: z.ZodType<
-  GetVirtualNetworkRequest,
-  z.ZodTypeDef,
-  unknown
+  GetVirtualNetworkRequest
 > = z.object({
   vlan_id: z.string().describe("Virtual Network ID"),
 });
@@ -18,32 +16,10 @@ export const GetVirtualNetworkRequest$zodSchema: z.ZodType<
 /**
  * Success
  */
-export type GetVirtualNetworkResponseBody = {
-  data?: VirtualNetwork | undefined;
-};
+export type GetVirtualNetworkResponse = { data?: VirtualNetwork | undefined };
 
-export const GetVirtualNetworkResponseBody$zodSchema: z.ZodType<
-  GetVirtualNetworkResponseBody,
-  z.ZodTypeDef,
-  unknown
+export const GetVirtualNetworkResponse$zodSchema: z.ZodType<
+  GetVirtualNetworkResponse
 > = z.object({
   data: VirtualNetwork$zodSchema.optional(),
 }).describe("Success");
-
-export type GetVirtualNetworkResponse = {
-  ContentType: string;
-  StatusCode: number;
-  RawResponse: Response;
-  object?: GetVirtualNetworkResponseBody | undefined;
-};
-
-export const GetVirtualNetworkResponse$zodSchema: z.ZodType<
-  GetVirtualNetworkResponse,
-  z.ZodTypeDef,
-  unknown
-> = z.object({
-  ContentType: z.string(),
-  RawResponse: z.instanceof(Response),
-  StatusCode: z.number().int(),
-  object: z.lazy(() => GetVirtualNetworkResponseBody$zodSchema).optional(),
-});

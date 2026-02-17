@@ -13,8 +13,6 @@ import { pathToFunc } from "../lib/url.js";
 import {
   CreateServerActionRequest,
   CreateServerActionRequest$zodSchema,
-  CreateServerActionResponse,
-  CreateServerActionResponse$zodSchema,
 } from "../models/createserveractionop.js";
 import { APIError } from "../models/errors/apierror.js";
 import {
@@ -25,11 +23,15 @@ import {
   UnexpectedClientError,
 } from "../models/errors/httpclienterrors.js";
 import { SDKValidationError } from "../models/errors/sdkvalidationerror.js";
+import {
+  ServerAction,
+  ServerAction$zodSchema,
+} from "../models/serveraction.js";
 import { APICall, APIPromise } from "../types/async.js";
 import { Result } from "../types/fp.js";
 
 /**
- * Run Server Action
+ * Run power action
  *
  * @remarks
  * Performs an action on a given server:
@@ -43,7 +45,7 @@ export function serversRunAction(
   options?: RequestOptions,
 ): APIPromise<
   Result<
-    CreateServerActionResponse,
+    ServerAction,
     | APIError
     | SDKValidationError
     | UnexpectedClientError
@@ -67,7 +69,7 @@ async function $do(
 ): Promise<
   [
     Result<
-      CreateServerActionResponse,
+      ServerAction,
       | APIError
       | SDKValidationError
       | UnexpectedClientError
@@ -157,7 +159,7 @@ async function $do(
   };
 
   const [result$] = await M.match<
-    CreateServerActionResponse,
+    ServerAction,
     | APIError
     | SDKValidationError
     | UnexpectedClientError
@@ -166,7 +168,7 @@ async function $do(
     | RequestTimeoutError
     | ConnectionError
   >(
-    M.json(201, CreateServerActionResponse$zodSchema, {
+    M.json(201, ServerAction$zodSchema, {
       ctype: "application/vnd.api+json",
       key: "server_action",
     }),

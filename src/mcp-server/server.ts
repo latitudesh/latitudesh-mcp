@@ -12,11 +12,12 @@ import {
   createRegisterResourceTemplate,
 } from "./resources.js";
 import { MCPScope } from "./scopes.js";
-import { createRegisterTool } from "./tools.js";
+import { createRegisterTool, registerDynamicTools } from "./tools.js";
 import { tool$apiKeysCreate } from "./tools/apiKeysCreate.js";
 import { tool$apiKeysDelete } from "./tools/apiKeysDelete.js";
 import { tool$apiKeysList } from "./tools/apiKeysList.js";
 import { tool$apiKeysUpdate } from "./tools/apiKeysUpdate.js";
+import { tool$apiKeysUpdateApiKey } from "./tools/apiKeysUpdateApiKey.js";
 import { tool$billingListUsage } from "./tools/billingListUsage.js";
 import { tool$eventsList } from "./tools/eventsList.js";
 import { tool$firewallsAssignmentsCreate } from "./tools/firewallsAssignmentsCreate.js";
@@ -33,7 +34,6 @@ import { tool$ipAddressesList } from "./tools/ipAddressesList.js";
 import { tool$operatingSystemsListPlans } from "./tools/operatingSystemsListPlans.js";
 import { tool$plansGet } from "./tools/plansGet.js";
 import { tool$plansGetBandwidth } from "./tools/plansGetBandwidth.js";
-import { tool$plansGetContainersPlan } from "./tools/plansGetContainersPlan.js";
 import { tool$plansList } from "./tools/plansList.js";
 import { tool$plansListStorage } from "./tools/plansListStorage.js";
 import { tool$plansUpdateBandwidth } from "./tools/plansUpdateBandwidth.js";
@@ -120,6 +120,7 @@ import { tool$virtualMachinesCreateVirtualMachineAction } from "./tools/virtualM
 import { tool$virtualMachinesDelete } from "./tools/virtualMachinesDelete.js";
 import { tool$virtualMachinesGet } from "./tools/virtualMachinesGet.js";
 import { tool$virtualMachinesList } from "./tools/virtualMachinesList.js";
+import { tool$virtualMachinesUpdateVirtualMachine } from "./tools/virtualMachinesUpdateVirtualMachine.js";
 import { tool$virtualNetworksDelete } from "./tools/virtualNetworksDelete.js";
 import { tool$vpnSessionsCreate } from "./tools/vpnSessionsCreate.js";
 import { tool$vpnSessionsDelete } from "./tools/vpnSessionsDelete.js";
@@ -129,6 +130,7 @@ import { tool$vpnSessionsRefreshPassword } from "./tools/vpnSessionsRefreshPassw
 export function createMCPServer(deps: {
   logger: ConsoleLogger;
   allowedTools?: string[] | undefined;
+  dynamic?: boolean | undefined;
   scopes?: MCPScope[] | undefined;
   getSDK?: () => LatitudeshCore;
   serverURL?: string | undefined;
@@ -138,7 +140,7 @@ export function createMCPServer(deps: {
 }) {
   const server = new McpServer({
     name: "Latitudesh",
-    version: "0.0.2",
+    version: "0.1.0",
   });
 
   const getClient = deps.getSDK || (() =>
@@ -159,12 +161,13 @@ export function createMCPServer(deps: {
   const scopes = new Set(deps.scopes);
 
   const allowedTools = deps.allowedTools && new Set(deps.allowedTools);
-  const tool = createRegisterTool(
+  const [tool, tools, toolMap] = createRegisterTool(
     deps.logger,
     server,
     getClient,
     scopes,
     allowedTools,
+    deps.dynamic,
   );
   const resource = createRegisterResource(
     deps.logger,
@@ -186,6 +189,7 @@ export function createMCPServer(deps: {
   tool(tool$apiKeysCreate);
   tool(tool$apiKeysUpdate);
   tool(tool$apiKeysDelete);
+  tool(tool$apiKeysUpdateApiKey);
   tool(tool$billingListUsage);
   tool(tool$eventsList);
   tool(tool$firewallsGetAllFirewallAssignments);
@@ -207,7 +211,6 @@ export function createMCPServer(deps: {
   tool(tool$plansGet);
   tool(tool$plansGetBandwidth);
   tool(tool$plansUpdateBandwidth);
-  tool(tool$plansGetContainersPlan);
   tool(tool$plansListStorage);
   tool(tool$plansVmList);
   tool(tool$projectsList);
@@ -262,9 +265,9 @@ export function createMCPServer(deps: {
   tool(tool$storageUpdateFilesystem);
   tool(tool$storageGetStorageVolumes);
   tool(tool$storagePostStorageVolumes);
-  tool(tool$storagePostStorageVolumesMount);
   tool(tool$storageGetStorageVolume);
   tool(tool$storageDeleteStorageVolumes);
+  tool(tool$storagePostStorageVolumesMount);
   tool(tool$tagsList);
   tool(tool$tagsCreate);
   tool(tool$tagsDelete);
@@ -281,6 +284,7 @@ export function createMCPServer(deps: {
   tool(tool$virtualMachinesCreate);
   tool(tool$virtualMachinesGet);
   tool(tool$virtualMachinesDelete);
+  tool(tool$virtualMachinesUpdateVirtualMachine);
   tool(tool$virtualMachinesCreateVirtualMachineAction);
   tool(tool$privateNetworksList);
   tool(tool$privateNetworksCreate);
@@ -295,5 +299,9 @@ export function createMCPServer(deps: {
   tool(tool$vpnSessionsRefreshPassword);
   tool(tool$vpnSessionsDelete);
 
-  return server;
+  if (deps.dynamic) {
+    registerDynamicTools(deps.logger, server, getClient, toolMap, scopes);
+  }
+
+  return { server, tools };
 }

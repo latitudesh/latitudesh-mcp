@@ -299,9 +299,13 @@ export function match<T, E>(
       );
       return [result.ok ? { ok: false, error: result.value } : result, raw];
     } else {
+      const valueToParse = resultKey && isPlainObject(data) && resultKey in data
+        ? data[resultKey as keyof typeof data]
+        : data;
+
       return [
         safeParse(
-          data,
+          valueToParse,
           (v: unknown) => matcher.schema.parse(v),
           "Response validation failed",
         ),

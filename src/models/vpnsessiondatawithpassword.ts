@@ -3,30 +3,41 @@
  */
 
 import * as z from "zod";
+import { ClosedEnum } from "../types/enums.js";
 import {
   RegionResourceData,
   RegionResourceData$zodSchema,
 } from "./regionresourcedata.js";
 
+export const VpnSessionDataWithPasswordType = {
+  VpnSessions: "vpn_sessions",
+} as const;
+export type VpnSessionDataWithPasswordType = ClosedEnum<
+  typeof VpnSessionDataWithPasswordType
+>;
+
 export const VpnSessionDataWithPasswordType$zodSchema = z.enum([
   "vpn_sessions",
 ]);
 
-export type VpnSessionDataWithPasswordType = z.infer<
-  typeof VpnSessionDataWithPasswordType$zodSchema
->;
-
 /**
  * from Firewall Response
  */
+export const VpnSessionDataWithPasswordStatus = {
+  Enable: "enable",
+  Disable: "disable",
+} as const;
+/**
+ * from Firewall Response
+ */
+export type VpnSessionDataWithPasswordStatus = ClosedEnum<
+  typeof VpnSessionDataWithPasswordStatus
+>;
+
 export const VpnSessionDataWithPasswordStatus$zodSchema = z.enum([
   "enable",
   "disable",
 ]).describe("from Firewall Response");
-
-export type VpnSessionDataWithPasswordStatus = z.infer<
-  typeof VpnSessionDataWithPasswordStatus$zodSchema
->;
 
 export type VpnSessionDataWithPasswordAttributes = {
   user_name?: string | undefined;
@@ -41,9 +52,7 @@ export type VpnSessionDataWithPasswordAttributes = {
 };
 
 export const VpnSessionDataWithPasswordAttributes$zodSchema: z.ZodType<
-  VpnSessionDataWithPasswordAttributes,
-  z.ZodTypeDef,
-  unknown
+  VpnSessionDataWithPasswordAttributes
 > = z.object({
   created_at: z.string().optional(),
   expires_at: z.string().optional(),
@@ -63,9 +72,7 @@ export type VpnSessionDataWithPassword = {
 };
 
 export const VpnSessionDataWithPassword$zodSchema: z.ZodType<
-  VpnSessionDataWithPassword,
-  z.ZodTypeDef,
-  unknown
+  VpnSessionDataWithPassword
 > = z.object({
   attributes: z.lazy(() => VpnSessionDataWithPasswordAttributes$zodSchema)
     .optional(),

@@ -3,15 +3,19 @@
  */
 
 import * as z from "zod";
+import { ClosedEnum } from "../types/enums.js";
 import { FilesystemData, FilesystemData$zodSchema } from "./filesystemdata.js";
+
+export const PostStorageFilesystemsType2 = {
+  Filesystems: "filesystems",
+} as const;
+export type PostStorageFilesystemsType2 = ClosedEnum<
+  typeof PostStorageFilesystemsType2
+>;
 
 export const PostStorageFilesystemsType2$zodSchema = z.enum([
   "filesystems",
 ]);
-
-export type PostStorageFilesystemsType2 = z.infer<
-  typeof PostStorageFilesystemsType2$zodSchema
->;
 
 export type PostStorageFilesystemsAttributes2 = {
   project: string;
@@ -20,13 +24,11 @@ export type PostStorageFilesystemsAttributes2 = {
 };
 
 export const PostStorageFilesystemsAttributes2$zodSchema: z.ZodType<
-  PostStorageFilesystemsAttributes2,
-  z.ZodTypeDef,
-  unknown
+  PostStorageFilesystemsAttributes2
 > = z.object({
   name: z.string(),
   project: z.string(),
-  size_in_gb: z.number().int().default(1500),
+  size_in_gb: z.int().default(1500),
 });
 
 export type PostStorageFilesystemsData2 = {
@@ -35,9 +37,7 @@ export type PostStorageFilesystemsData2 = {
 };
 
 export const PostStorageFilesystemsData2$zodSchema: z.ZodType<
-  PostStorageFilesystemsData2,
-  z.ZodTypeDef,
-  unknown
+  PostStorageFilesystemsData2
 > = z.object({
   attributes: z.lazy(() => PostStorageFilesystemsAttributes2$zodSchema),
   type: PostStorageFilesystemsType2$zodSchema,
@@ -48,9 +48,7 @@ export type PostStorageFilesystemsRequest = {
 };
 
 export const PostStorageFilesystemsRequest$zodSchema: z.ZodType<
-  PostStorageFilesystemsRequest,
-  z.ZodTypeDef,
-  unknown
+  PostStorageFilesystemsRequest
 > = z.object({
   data: z.lazy(() => PostStorageFilesystemsData2$zodSchema),
 });
@@ -58,32 +56,12 @@ export const PostStorageFilesystemsRequest$zodSchema: z.ZodType<
 /**
  * Created
  */
-export type PostStorageFilesystemsResponseBody = {
+export type PostStorageFilesystemsResponse = {
   data?: FilesystemData | undefined;
 };
 
-export const PostStorageFilesystemsResponseBody$zodSchema: z.ZodType<
-  PostStorageFilesystemsResponseBody,
-  z.ZodTypeDef,
-  unknown
+export const PostStorageFilesystemsResponse$zodSchema: z.ZodType<
+  PostStorageFilesystemsResponse
 > = z.object({
   data: FilesystemData$zodSchema.optional(),
 }).describe("Created");
-
-export type PostStorageFilesystemsResponse = {
-  ContentType: string;
-  StatusCode: number;
-  RawResponse: Response;
-  object?: PostStorageFilesystemsResponseBody | undefined;
-};
-
-export const PostStorageFilesystemsResponse$zodSchema: z.ZodType<
-  PostStorageFilesystemsResponse,
-  z.ZodTypeDef,
-  unknown
-> = z.object({
-  ContentType: z.string(),
-  RawResponse: z.instanceof(Response),
-  StatusCode: z.number().int(),
-  object: z.lazy(() => PostStorageFilesystemsResponseBody$zodSchema).optional(),
-});

@@ -25,75 +25,59 @@ export type GetServersRequest = {
   pageNumber?: number | undefined;
 };
 
-export const GetServersRequest$zodSchema: z.ZodType<
-  GetServersRequest,
-  z.ZodTypeDef,
-  unknown
-> = z.object({
-  extraFieldsServers: z.string().describe(
-    "The `credentials` are provided as extra attributes that are lazy loaded. To request it, just set `extra_fields[servers]=credentials` in the query string.",
-  ).optional(),
-  filterCreatedAtGte: z.string().describe(
-    "The created at greater than equal date to filter by",
-  ).optional(),
-  filterCreatedAtLte: z.string().describe(
-    "The created at less than equal date to filter by",
-  ).optional(),
-  filterDisk: z.number().int().describe(
-    "The disk size in Gigabytes to filter by, should be used with the following options:\n"
-      + "                              [eql] to filter for values equal to the provided value.\n"
-      + "                              [gte] to filter for values greater than or equal to the provided value.\n"
-      + "                              [lte] to filter by values lower than or equal to the provided value.",
-  ).optional(),
-  filterGpu: z.boolean().describe(
-    "Filter by the existence of an associated GPU",
-  ).optional(),
-  filterHostname: z.string().describe("The hostname of server to filter by")
-    .optional(),
-  filterLabel: z.string().describe("The label of server to filter by")
-    .optional(),
-  filterPlan: z.string().describe(
-    "The platform/plan name of the server to filter by",
-  ).optional(),
-  filterProject: z.string().describe("The project ID or Slug to filter by")
-    .optional(),
-  filterRamEql: z.number().int().describe(
-    "Filter servers with RAM size (in GB) equals the provided value.",
-  ).optional(),
-  filterRamGte: z.number().int().describe(
-    "Filter servers with RAM size (in GB) greater than or equal the provided value.",
-  ).optional(),
-  filterRamLte: z.number().int().describe(
-    "Filter servers with RAM size (in GB) less than or equal the provided value.",
-  ).optional(),
-  filterRegion: z.string().describe("The region Slug to filter by").optional(),
-  filterStatus: z.string().describe("The status of server to filter by")
-    .optional(),
-  filterTags: z.string().describe(
-    "The tags IDs to filter by, separated by comma, e.g. `filter[tags]=tag_1,tag_2`will return servers with `tag_1` AND `tag_2`",
-  ).optional(),
-  pageNumber: z.number().int().default(1).describe(
-    "Page number to return (starts at 1)",
-  ),
-  pageSize: z.number().int().default(20).describe(
-    "Number of items to return per page",
-  ),
-});
+export const GetServersRequest$zodSchema: z.ZodType<GetServersRequest> = z
+  .object({
+    extraFieldsServers: z.string().describe(
+      "The `credentials` are provided as extra attributes that are lazy loaded. To request it, just set `extra_fields[servers]=credentials` in the query string.",
+    ).optional(),
+    filterCreatedAtGte: z.string().describe(
+      "The created at greater than equal date to filter by",
+    ).optional(),
+    filterCreatedAtLte: z.string().describe(
+      "The created at less than equal date to filter by",
+    ).optional(),
+    filterDisk: z.int().describe(
+      "The disk size in Gigabytes to filter by, should be used with the following options:\n                              [eql] to filter for values equal to the provided value.\n                              [gte] to filter for values greater than or equal to the provided value.\n                              [lte] to filter by values lower than or equal to the provided value.",
+    ).optional(),
+    filterGpu: z.boolean().describe(
+      "Filter by the existence of an associated GPU",
+    ).optional(),
+    filterHostname: z.string().describe("The hostname of server to filter by")
+      .optional(),
+    filterLabel: z.string().describe("The label of server to filter by")
+      .optional(),
+    filterPlan: z.string().describe(
+      "The platform/plan name of the server to filter by",
+    ).optional(),
+    filterProject: z.string().describe("The project ID or Slug to filter by")
+      .optional(),
+    filterRamEql: z.int().describe(
+      "Filter servers with RAM size (in GB) equals the provided value.",
+    ).optional(),
+    filterRamGte: z.int().describe(
+      "Filter servers with RAM size (in GB) greater than or equal the provided value.",
+    ).optional(),
+    filterRamLte: z.int().describe(
+      "Filter servers with RAM size (in GB) less than or equal the provided value.",
+    ).optional(),
+    filterRegion: z.string().describe("The region Slug to filter by")
+      .optional(),
+    filterStatus: z.string().describe("The status of server to filter by")
+      .optional(),
+    filterTags: z.string().describe(
+      "The tags IDs to filter by, separated by comma, e.g. `filter[tags]=tag_1,tag_2`will return servers with `tag_1` AND `tag_2`",
+    ).optional(),
+    pageNumber: z.int().default(1).describe(
+      "Page number to return (starts at 1)",
+    ),
+    pageSize: z.int().default(20).describe(
+      "Number of items to return per page",
+    ),
+  });
 
-export type GetServersResponse = {
-  ContentType: string;
-  StatusCode: number;
-  RawResponse: Response;
-  servers?: Servers | undefined;
-};
+export type GetServersResponse = { Result: Servers };
 
-export const GetServersResponse$zodSchema: z.ZodType<
-  GetServersResponse,
-  z.ZodTypeDef,
-  unknown
-> = z.object({
-  ContentType: z.string(),
-  RawResponse: z.instanceof(Response),
-  StatusCode: z.number().int(),
-  servers: Servers$zodSchema.optional(),
-});
+export const GetServersResponse$zodSchema: z.ZodType<GetServersResponse> = z
+  .object({
+    Result: Servers$zodSchema,
+  });

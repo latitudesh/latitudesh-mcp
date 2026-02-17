@@ -11,42 +11,18 @@ export type UpdateApiKeyRequest = {
   update_api_key: UpdateApiKey;
 };
 
-export const UpdateApiKeyRequest$zodSchema: z.ZodType<
-  UpdateApiKeyRequest,
-  z.ZodTypeDef,
-  unknown
-> = z.object({
-  api_key_id: z.string(),
-  update_api_key: UpdateApiKey$zodSchema,
-});
+export const UpdateApiKeyRequest$zodSchema: z.ZodType<UpdateApiKeyRequest> = z
+  .object({
+    api_key_id: z.string(),
+    update_api_key: UpdateApiKey$zodSchema,
+  });
 
 /**
- * Success
+ * Success - Update name without rotating token
  */
-export type UpdateApiKeyResponseBody = { data?: ApiKey | undefined };
+export type UpdateApiKeyResponse = { data?: ApiKey | undefined };
 
-export const UpdateApiKeyResponseBody$zodSchema: z.ZodType<
-  UpdateApiKeyResponseBody,
-  z.ZodTypeDef,
-  unknown
-> = z.object({
-  data: ApiKey$zodSchema.optional(),
-}).describe("Success");
-
-export type UpdateApiKeyResponse = {
-  ContentType: string;
-  StatusCode: number;
-  RawResponse: Response;
-  object?: UpdateApiKeyResponseBody | undefined;
-};
-
-export const UpdateApiKeyResponse$zodSchema: z.ZodType<
-  UpdateApiKeyResponse,
-  z.ZodTypeDef,
-  unknown
-> = z.object({
-  ContentType: z.string(),
-  RawResponse: z.instanceof(Response),
-  StatusCode: z.number().int(),
-  object: z.lazy(() => UpdateApiKeyResponseBody$zodSchema).optional(),
-});
+export const UpdateApiKeyResponse$zodSchema: z.ZodType<UpdateApiKeyResponse> = z
+  .object({
+    data: ApiKey$zodSchema.optional(),
+  }).describe("Success - Update name without rotating token");

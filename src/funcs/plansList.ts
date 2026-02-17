@@ -29,7 +29,7 @@ import { APICall, APIPromise } from "../types/async.js";
 import { Result } from "../types/fp.js";
 
 /**
- * List all Plans
+ * List plans
  *
  * @remarks
  * Lists all plans. Availability by region is included in `attributes.regions.locations.available[*]` node for a given plan.

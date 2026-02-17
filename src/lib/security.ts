@@ -243,7 +243,7 @@ export function resolveGlobalSecurity(
       {
         fieldName: "Authorization",
         type: "apiKey:header",
-        value: security?.Bearer ?? env().LATITUDESH_BEARER,
+        value: security?.Bearer || env().LATITUDESH_BEARER,
       },
     ],
   );

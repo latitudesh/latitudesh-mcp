@@ -13,7 +13,7 @@ const args = {
 export const tool$privateNetworksListAssignments: ToolDefinition<typeof args> =
   {
     name: "private-networks-list-assignments",
-    description: `List all servers assigned to virtual networks
+    description: `List VLAN assignments
 
 Returns a list of all servers assigned to virtual networks.
 `,

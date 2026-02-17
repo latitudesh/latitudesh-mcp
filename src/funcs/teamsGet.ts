@@ -17,22 +17,19 @@ import {
   UnexpectedClientError,
 } from "../models/errors/httpclienterrors.js";
 import { SDKValidationError } from "../models/errors/sdkvalidationerror.js";
-import {
-  GetTeamResponse,
-  GetTeamResponse$zodSchema,
-} from "../models/getteamop.js";
+import { Teams, Teams$zodSchema } from "../models/teams.js";
 import { APICall, APIPromise } from "../types/async.js";
 import { Result } from "../types/fp.js";
 
 /**
- * Retrieve the team
+ * Retrieve team
  */
 export function teamsGet(
   client$: LatitudeshCore,
   options?: RequestOptions,
 ): APIPromise<
   Result<
-    GetTeamResponse,
+    Teams,
     | APIError
     | SDKValidationError
     | UnexpectedClientError
@@ -54,7 +51,7 @@ async function $do(
 ): Promise<
   [
     Result<
-      GetTeamResponse,
+      Teams,
       | APIError
       | SDKValidationError
       | UnexpectedClientError
@@ -123,7 +120,7 @@ async function $do(
   };
 
   const [result$] = await M.match<
-    GetTeamResponse,
+    Teams,
     | APIError
     | SDKValidationError
     | UnexpectedClientError
@@ -132,7 +129,7 @@ async function $do(
     | RequestTimeoutError
     | ConnectionError
   >(
-    M.json(200, GetTeamResponse$zodSchema, {
+    M.json(200, Teams$zodSchema, {
       ctype: "application/vnd.api+json",
       key: "teams",
     }),

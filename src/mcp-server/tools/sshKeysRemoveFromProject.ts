@@ -12,7 +12,7 @@ const args = {
 
 export const tool$sshKeysRemoveFromProject: ToolDefinition<typeof args> = {
   name: "SSH-keys-remove-from-project",
-  description: `Delete a Project SSH Key
+  description: `Delete Project SSH Key
 
 Allow you remove SSH Keys in a project. Remove a SSH Key from the project won't revoke the SSH Keys access for previously deploy and reinstall actions.
 `,

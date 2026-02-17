@@ -12,7 +12,7 @@ const args = {
 
 export const tool$privateNetworksUpdate: ToolDefinition<typeof args> = {
   name: "private-networks-update",
-  description: `Update a Virtual Network
+  description: `Update VLAN
 
 Update a Virtual Network.
 `,

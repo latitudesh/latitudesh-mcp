@@ -3,12 +3,16 @@
  */
 
 import * as z from "zod";
+import { ClosedEnum } from "../types/enums.js";
+
+export const TrafficType = {
+  Traffic: "traffic",
+} as const;
+export type TrafficType = ClosedEnum<typeof TrafficType>;
 
 export const TrafficType$zodSchema = z.enum([
   "traffic",
 ]);
-
-export type TrafficType = z.infer<typeof TrafficType$zodSchema>;
 
 export type AttributesData = {
   date?: string | undefined;
@@ -18,16 +22,12 @@ export type AttributesData = {
   avg_inbound_speed_mbps?: number | undefined;
 };
 
-export const AttributesData$zodSchema: z.ZodType<
-  AttributesData,
-  z.ZodTypeDef,
-  unknown
-> = z.object({
+export const AttributesData$zodSchema: z.ZodType<AttributesData> = z.object({
   avg_inbound_speed_mbps: z.number().optional(),
   avg_outbound_speed_mbps: z.number().optional(),
   date: z.string().optional(),
-  inbound_gb: z.number().int().optional(),
-  outbound_gb: z.number().int().optional(),
+  inbound_gb: z.int().optional(),
+  outbound_gb: z.int().optional(),
 });
 
 export type TrafficRegion = {
@@ -39,17 +39,13 @@ export type TrafficRegion = {
   data?: Array<AttributesData> | undefined;
 };
 
-export const TrafficRegion$zodSchema: z.ZodType<
-  TrafficRegion,
-  z.ZodTypeDef,
-  unknown
-> = z.object({
+export const TrafficRegion$zodSchema: z.ZodType<TrafficRegion> = z.object({
   data: z.array(z.lazy(() => AttributesData$zodSchema)).optional(),
   region_slug: z.string().optional(),
   total_inbound_95th_percentile_mbps: z.number().optional(),
-  total_inbound_gb: z.number().int().optional(),
+  total_inbound_gb: z.int().optional(),
   total_outbound_95th_percentile_mbps: z.number().optional(),
-  total_outbound_gb: z.number().int().optional(),
+  total_outbound_gb: z.int().optional(),
 });
 
 export type TrafficAttributes = {
@@ -62,19 +58,16 @@ export type TrafficAttributes = {
   total_outbound_95th_percentile_mbps?: number | undefined;
 };
 
-export const TrafficAttributes$zodSchema: z.ZodType<
-  TrafficAttributes,
-  z.ZodTypeDef,
-  unknown
-> = z.object({
-  from_date: z.number().int().optional(),
-  regions: z.array(z.lazy(() => TrafficRegion$zodSchema)).optional(),
-  to_date: z.number().int().optional(),
-  total_inbound_95th_percentile_mbps: z.number().optional(),
-  total_inbound_gb: z.number().int().optional(),
-  total_outbound_95th_percentile_mbps: z.number().optional(),
-  total_outbound_gb: z.number().int().optional(),
-});
+export const TrafficAttributes$zodSchema: z.ZodType<TrafficAttributes> = z
+  .object({
+    from_date: z.int().optional(),
+    regions: z.array(z.lazy(() => TrafficRegion$zodSchema)).optional(),
+    to_date: z.int().optional(),
+    total_inbound_95th_percentile_mbps: z.number().optional(),
+    total_inbound_gb: z.int().optional(),
+    total_outbound_95th_percentile_mbps: z.number().optional(),
+    total_outbound_gb: z.int().optional(),
+  });
 
 export type TrafficData = {
   id?: string | undefined;
@@ -82,11 +75,7 @@ export type TrafficData = {
   attributes?: TrafficAttributes | undefined;
 };
 
-export const TrafficData$zodSchema: z.ZodType<
-  TrafficData,
-  z.ZodTypeDef,
-  unknown
-> = z.object({
+export const TrafficData$zodSchema: z.ZodType<TrafficData> = z.object({
   attributes: z.lazy(() => TrafficAttributes$zodSchema).optional(),
   id: z.string().optional(),
   type: TrafficType$zodSchema.optional(),
@@ -94,7 +83,6 @@ export const TrafficData$zodSchema: z.ZodType<
 
 export type Traffic = { data?: TrafficData | undefined };
 
-export const Traffic$zodSchema: z.ZodType<Traffic, z.ZodTypeDef, unknown> = z
-  .object({
-    data: z.lazy(() => TrafficData$zodSchema).optional(),
-  });
+export const Traffic$zodSchema: z.ZodType<Traffic> = z.object({
+  data: z.lazy(() => TrafficData$zodSchema).optional(),
+});

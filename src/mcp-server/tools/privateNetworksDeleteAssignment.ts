@@ -13,7 +13,7 @@ const args = {
 export const tool$privateNetworksDeleteAssignment: ToolDefinition<typeof args> =
   {
     name: "private-networks-delete-assignment",
-    description: `Delete Virtual Network Assignment
+    description: `Delete VLAN assignment
 
 Allow you to remove a Virtual Network assignment.
 `,

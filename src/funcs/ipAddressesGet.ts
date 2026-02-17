@@ -19,12 +19,8 @@ import {
   UnexpectedClientError,
 } from "../models/errors/httpclienterrors.js";
 import { SDKValidationError } from "../models/errors/sdkvalidationerror.js";
-import {
-  GetIpRequest,
-  GetIpRequest$zodSchema,
-  GetIpResponse,
-  GetIpResponse$zodSchema,
-} from "../models/getipop.js";
+import { GetIpRequest, GetIpRequest$zodSchema } from "../models/getipop.js";
+import { IpAddress, IpAddress$zodSchema } from "../models/ipaddress.js";
 import { APICall, APIPromise } from "../types/async.js";
 import { Result } from "../types/fp.js";
 
@@ -40,7 +36,7 @@ export function ipAddressesGet(
   options?: RequestOptions,
 ): APIPromise<
   Result<
-    GetIpResponse,
+    IpAddress,
     | APIError
     | SDKValidationError
     | UnexpectedClientError
@@ -64,7 +60,7 @@ async function $do(
 ): Promise<
   [
     Result<
-      GetIpResponse,
+      IpAddress,
       | APIError
       | SDKValidationError
       | UnexpectedClientError
@@ -157,7 +153,7 @@ async function $do(
   };
 
   const [result$] = await M.match<
-    GetIpResponse,
+    IpAddress,
     | APIError
     | SDKValidationError
     | UnexpectedClientError
@@ -166,7 +162,7 @@ async function $do(
     | RequestTimeoutError
     | ConnectionError
   >(
-    M.json(200, GetIpResponse$zodSchema, {
+    M.json(200, IpAddress$zodSchema, {
       ctype: "application/vnd.api+json",
       key: "ip_address",
     }),

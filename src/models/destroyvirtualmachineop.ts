@@ -7,25 +7,7 @@ import * as z from "zod";
 export type DestroyVirtualMachineRequest = { virtual_machine_id: string };
 
 export const DestroyVirtualMachineRequest$zodSchema: z.ZodType<
-  DestroyVirtualMachineRequest,
-  z.ZodTypeDef,
-  unknown
+  DestroyVirtualMachineRequest
 > = z.object({
   virtual_machine_id: z.string(),
-});
-
-export type DestroyVirtualMachineResponse = {
-  ContentType: string;
-  StatusCode: number;
-  RawResponse: Response;
-};
-
-export const DestroyVirtualMachineResponse$zodSchema: z.ZodType<
-  DestroyVirtualMachineResponse,
-  z.ZodTypeDef,
-  unknown
-> = z.object({
-  ContentType: z.string(),
-  RawResponse: z.instanceof(Response),
-  StatusCode: z.number().int(),
 });

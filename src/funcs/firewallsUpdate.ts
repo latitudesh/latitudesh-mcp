@@ -19,20 +19,19 @@ import {
   UnexpectedClientError,
 } from "../models/errors/httpclienterrors.js";
 import { SDKValidationError } from "../models/errors/sdkvalidationerror.js";
+import { Firewall, Firewall$zodSchema } from "../models/firewall.js";
 import {
   UpdateFirewallRequest,
   UpdateFirewallRequest$zodSchema,
-  UpdateFirewallResponse,
-  UpdateFirewallResponse$zodSchema,
 } from "../models/updatefirewallop.js";
 import { APICall, APIPromise } from "../types/async.js";
 import { Result } from "../types/fp.js";
 
 /**
- * Update Firewall
+ * Update firewall
  *
  * @remarks
- * Update a firewall
+ * Updates a firewall by its ID.
  */
 export function firewallsUpdate(
   client$: LatitudeshCore,
@@ -40,7 +39,7 @@ export function firewallsUpdate(
   options?: RequestOptions,
 ): APIPromise<
   Result<
-    UpdateFirewallResponse,
+    Firewall,
     | APIError
     | SDKValidationError
     | UnexpectedClientError
@@ -64,7 +63,7 @@ async function $do(
 ): Promise<
   [
     Result<
-      UpdateFirewallResponse,
+      Firewall,
       | APIError
       | SDKValidationError
       | UnexpectedClientError
@@ -154,7 +153,7 @@ async function $do(
   };
 
   const [result$] = await M.match<
-    UpdateFirewallResponse,
+    Firewall,
     | APIError
     | SDKValidationError
     | UnexpectedClientError
@@ -163,7 +162,7 @@ async function $do(
     | RequestTimeoutError
     | ConnectionError
   >(
-    M.json(200, UpdateFirewallResponse$zodSchema, {
+    M.json(200, Firewall$zodSchema, {
       ctype: "application/vnd.api+json",
       key: "firewall",
     }),

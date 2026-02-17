@@ -3,32 +3,11 @@
  */
 
 import * as z from "zod";
-import { IpmiSession, IpmiSession$zodSchema } from "./ipmisession.js";
 
 export type CreateIpmiSessionRequest = { server_id: string };
 
 export const CreateIpmiSessionRequest$zodSchema: z.ZodType<
-  CreateIpmiSessionRequest,
-  z.ZodTypeDef,
-  unknown
+  CreateIpmiSessionRequest
 > = z.object({
   server_id: z.string(),
-});
-
-export type CreateIpmiSessionResponse = {
-  ContentType: string;
-  StatusCode: number;
-  RawResponse: Response;
-  ipmi_session?: IpmiSession | undefined;
-};
-
-export const CreateIpmiSessionResponse$zodSchema: z.ZodType<
-  CreateIpmiSessionResponse,
-  z.ZodTypeDef,
-  unknown
-> = z.object({
-  ContentType: z.string(),
-  RawResponse: z.instanceof(Response),
-  StatusCode: z.number().int(),
-  ipmi_session: IpmiSession$zodSchema.optional(),
 });

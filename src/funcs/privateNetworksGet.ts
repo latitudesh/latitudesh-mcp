@@ -29,7 +29,7 @@ import { APICall, APIPromise } from "../types/async.js";
 import { Result } from "../types/fp.js";
 
 /**
- * Retrieve a Virtual Network
+ * Retrieve VLAN
  *
  * @remarks
  * Retrieve a Virtual Network.

@@ -3,37 +3,46 @@
  */
 
 import * as z from "zod";
-import { ServerAction, ServerAction$zodSchema } from "./serveraction.js";
+import { ClosedEnum } from "../types/enums.js";
+
+export const CreateServerActionType2 = {
+  Actions: "actions",
+} as const;
+export type CreateServerActionType2 = ClosedEnum<
+  typeof CreateServerActionType2
+>;
 
 export const CreateServerActionType2$zodSchema = z.enum([
   "actions",
 ]);
 
-export type CreateServerActionType2 = z.infer<
-  typeof CreateServerActionType2$zodSchema
->;
-
 /**
  * The action to perform on the server
  */
+export const CreateServerActionAction2 = {
+  PowerOn: "power_on",
+  PowerOff: "power_off",
+  Reboot: "reboot",
+} as const;
+/**
+ * The action to perform on the server
+ */
+export type CreateServerActionAction2 = ClosedEnum<
+  typeof CreateServerActionAction2
+>;
+
 export const CreateServerActionAction2$zodSchema = z.enum([
   "power_on",
   "power_off",
   "reboot",
 ]).describe("The action to perform on the server");
 
-export type CreateServerActionAction2 = z.infer<
-  typeof CreateServerActionAction2$zodSchema
->;
-
 export type CreateServerActionAttributes2 = {
   action: CreateServerActionAction2;
 };
 
 export const CreateServerActionAttributes2$zodSchema: z.ZodType<
-  CreateServerActionAttributes2,
-  z.ZodTypeDef,
-  unknown
+  CreateServerActionAttributes2
 > = z.object({
   action: CreateServerActionAction2$zodSchema,
 });
@@ -44,9 +53,7 @@ export type CreateServerActionData2 = {
 };
 
 export const CreateServerActionData2$zodSchema: z.ZodType<
-  CreateServerActionData2,
-  z.ZodTypeDef,
-  unknown
+  CreateServerActionData2
 > = z.object({
   attributes: z.lazy(() => CreateServerActionAttributes2$zodSchema).optional(),
   type: CreateServerActionType2$zodSchema,
@@ -55,9 +62,7 @@ export const CreateServerActionData2$zodSchema: z.ZodType<
 export type CreateServerActionRequestBody2 = { data: CreateServerActionData2 };
 
 export const CreateServerActionRequestBody2$zodSchema: z.ZodType<
-  CreateServerActionRequestBody2,
-  z.ZodTypeDef,
-  unknown
+  CreateServerActionRequestBody2
 > = z.object({
   data: z.lazy(() => CreateServerActionData2$zodSchema),
 });
@@ -68,28 +73,8 @@ export type CreateServerActionRequest = {
 };
 
 export const CreateServerActionRequest$zodSchema: z.ZodType<
-  CreateServerActionRequest,
-  z.ZodTypeDef,
-  unknown
+  CreateServerActionRequest
 > = z.object({
   RequestBody: z.lazy(() => CreateServerActionRequestBody2$zodSchema),
   server_id: z.string(),
-});
-
-export type CreateServerActionResponse = {
-  ContentType: string;
-  StatusCode: number;
-  RawResponse: Response;
-  server_action?: ServerAction | undefined;
-};
-
-export const CreateServerActionResponse$zodSchema: z.ZodType<
-  CreateServerActionResponse,
-  z.ZodTypeDef,
-  unknown
-> = z.object({
-  ContentType: z.string(),
-  RawResponse: z.instanceof(Response),
-  StatusCode: z.number().int(),
-  server_action: ServerAction$zodSchema.optional(),
 });

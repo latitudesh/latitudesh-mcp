@@ -9,11 +9,7 @@ export type RegionCountry = {
   name?: string | undefined;
 };
 
-export const RegionCountry$zodSchema: z.ZodType<
-  RegionCountry,
-  z.ZodTypeDef,
-  unknown
-> = z.object({
+export const RegionCountry$zodSchema: z.ZodType<RegionCountry> = z.object({
   name: z.string().optional(),
   slug: z.string().optional(),
 });
@@ -24,33 +20,26 @@ export type RegionAttributes = {
   country?: RegionCountry | undefined;
 };
 
-export const RegionAttributes$zodSchema: z.ZodType<
-  RegionAttributes,
-  z.ZodTypeDef,
-  unknown
-> = z.object({
-  country: z.lazy(() => RegionCountry$zodSchema).optional(),
-  name: z.string().optional(),
-  slug: z.string().optional(),
-});
+export const RegionAttributes$zodSchema: z.ZodType<RegionAttributes> = z.object(
+  {
+    country: z.lazy(() => RegionCountry$zodSchema).optional(),
+    name: z.string().optional(),
+    slug: z.string().optional(),
+  },
+);
 
 export type RegionData = {
   id?: string | undefined;
   attributes?: RegionAttributes | undefined;
 };
 
-export const RegionData$zodSchema: z.ZodType<
-  RegionData,
-  z.ZodTypeDef,
-  unknown
-> = z.object({
+export const RegionData$zodSchema: z.ZodType<RegionData> = z.object({
   attributes: z.lazy(() => RegionAttributes$zodSchema).optional(),
   id: z.string().optional(),
 });
 
 export type Region = { data?: RegionData | undefined };
 
-export const Region$zodSchema: z.ZodType<Region, z.ZodTypeDef, unknown> = z
-  .object({
-    data: z.lazy(() => RegionData$zodSchema).optional(),
-  });
+export const Region$zodSchema: z.ZodType<Region> = z.object({
+  data: z.lazy(() => RegionData$zodSchema).optional(),
+});

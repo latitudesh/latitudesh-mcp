@@ -7,19 +7,14 @@ import { EventData, EventData$zodSchema } from "./eventdata.js";
 
 export type EventsMeta = {};
 
-export const EventsMeta$zodSchema: z.ZodType<
-  EventsMeta,
-  z.ZodTypeDef,
-  unknown
-> = z.object({});
+export const EventsMeta$zodSchema: z.ZodType<EventsMeta> = z.object({});
 
 export type Events = {
   data?: Array<EventData> | undefined;
   meta?: EventsMeta | undefined;
 };
 
-export const Events$zodSchema: z.ZodType<Events, z.ZodTypeDef, unknown> = z
-  .object({
-    data: z.array(EventData$zodSchema).optional(),
-    meta: z.lazy(() => EventsMeta$zodSchema).optional(),
-  });
+export const Events$zodSchema: z.ZodType<Events> = z.object({
+  data: z.array(EventData$zodSchema).optional(),
+  meta: z.lazy(() => EventsMeta$zodSchema).optional(),
+});

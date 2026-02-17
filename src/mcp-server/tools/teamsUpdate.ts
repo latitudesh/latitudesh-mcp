@@ -12,7 +12,7 @@ const args = {
 
 export const tool$teamsUpdate: ToolDefinition<typeof args> = {
   name: "teams-update",
-  description: `Update a team`,
+  description: `Update team`,
   annotations: {
     "title": "",
     "destructiveHint": false,

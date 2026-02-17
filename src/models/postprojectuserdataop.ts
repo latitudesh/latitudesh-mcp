@@ -3,15 +3,18 @@
  */
 
 import * as z from "zod";
-import { UserData, UserData$zodSchema } from "./userdata.js";
+import { ClosedEnum } from "../types/enums.js";
+
+export const PostProjectUserDataType2 = {
+  UserData: "user_data",
+} as const;
+export type PostProjectUserDataType2 = ClosedEnum<
+  typeof PostProjectUserDataType2
+>;
 
 export const PostProjectUserDataType2$zodSchema = z.enum([
   "user_data",
 ]);
-
-export type PostProjectUserDataType2 = z.infer<
-  typeof PostProjectUserDataType2$zodSchema
->;
 
 export type PostProjectUserDataAttributes2 = {
   description: string;
@@ -19,9 +22,7 @@ export type PostProjectUserDataAttributes2 = {
 };
 
 export const PostProjectUserDataAttributes2$zodSchema: z.ZodType<
-  PostProjectUserDataAttributes2,
-  z.ZodTypeDef,
-  unknown
+  PostProjectUserDataAttributes2
 > = z.object({
   content: z.string(),
   description: z.string(),
@@ -33,9 +34,7 @@ export type PostProjectUserDataData2 = {
 };
 
 export const PostProjectUserDataData2$zodSchema: z.ZodType<
-  PostProjectUserDataData2,
-  z.ZodTypeDef,
-  unknown
+  PostProjectUserDataData2
 > = z.object({
   attributes: z.lazy(() => PostProjectUserDataAttributes2$zodSchema).optional(),
   type: PostProjectUserDataType2$zodSchema,
@@ -46,9 +45,7 @@ export type PostProjectUserDataRequestBody2 = {
 };
 
 export const PostProjectUserDataRequestBody2$zodSchema: z.ZodType<
-  PostProjectUserDataRequestBody2,
-  z.ZodTypeDef,
-  unknown
+  PostProjectUserDataRequestBody2
 > = z.object({
   data: z.lazy(() => PostProjectUserDataData2$zodSchema),
 });
@@ -59,28 +56,8 @@ export type PostProjectUserDataRequest = {
 };
 
 export const PostProjectUserDataRequest$zodSchema: z.ZodType<
-  PostProjectUserDataRequest,
-  z.ZodTypeDef,
-  unknown
+  PostProjectUserDataRequest
 > = z.object({
   RequestBody: z.lazy(() => PostProjectUserDataRequestBody2$zodSchema),
   project_id: z.string().describe("Project ID or Slug"),
-});
-
-export type PostProjectUserDataResponse = {
-  ContentType: string;
-  StatusCode: number;
-  RawResponse: Response;
-  user_data?: UserData | undefined;
-};
-
-export const PostProjectUserDataResponse$zodSchema: z.ZodType<
-  PostProjectUserDataResponse,
-  z.ZodTypeDef,
-  unknown
-> = z.object({
-  ContentType: z.string(),
-  RawResponse: z.instanceof(Response),
-  StatusCode: z.number().int(),
-  user_data: UserData$zodSchema.optional(),
 });

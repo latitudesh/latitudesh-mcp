@@ -3,40 +3,46 @@
  */
 
 import * as z from "zod";
-import { Firewall, Firewall$zodSchema } from "./firewall.js";
+import { ClosedEnum } from "../types/enums.js";
+
+export const UpdateFirewallType2 = {
+  Firewalls: "firewalls",
+} as const;
+export type UpdateFirewallType2 = ClosedEnum<typeof UpdateFirewallType2>;
 
 export const UpdateFirewallType2$zodSchema = z.enum([
   "firewalls",
 ]);
 
-export type UpdateFirewallType2 = z.infer<typeof UpdateFirewallType2$zodSchema>;
+export const UpdateFirewallProtocol2 = {
+  Tcp: "TCP",
+  Udp: "UDP",
+} as const;
+export type UpdateFirewallProtocol2 = ClosedEnum<
+  typeof UpdateFirewallProtocol2
+>;
 
 export const UpdateFirewallProtocol2$zodSchema = z.enum([
   "TCP",
   "UDP",
 ]);
 
-export type UpdateFirewallProtocol2 = z.infer<
-  typeof UpdateFirewallProtocol2$zodSchema
->;
-
 export type UpdateFirewallRule2 = {
   from?: string | undefined;
   to?: string | undefined;
   protocol?: UpdateFirewallProtocol2 | undefined;
   port?: string | undefined;
+  description?: string | null | undefined;
 };
 
-export const UpdateFirewallRule2$zodSchema: z.ZodType<
-  UpdateFirewallRule2,
-  z.ZodTypeDef,
-  unknown
-> = z.object({
-  from: z.string().optional(),
-  port: z.string().optional(),
-  protocol: UpdateFirewallProtocol2$zodSchema.optional(),
-  to: z.string().optional(),
-});
+export const UpdateFirewallRule2$zodSchema: z.ZodType<UpdateFirewallRule2> = z
+  .object({
+    description: z.string().nullable().optional(),
+    from: z.string().optional(),
+    port: z.string().optional(),
+    protocol: UpdateFirewallProtocol2$zodSchema.optional(),
+    to: z.string().optional(),
+  });
 
 export type UpdateFirewallAttributes2 = {
   name?: string | undefined;
@@ -44,9 +50,7 @@ export type UpdateFirewallAttributes2 = {
 };
 
 export const UpdateFirewallAttributes2$zodSchema: z.ZodType<
-  UpdateFirewallAttributes2,
-  z.ZodTypeDef,
-  unknown
+  UpdateFirewallAttributes2
 > = z.object({
   name: z.string().optional(),
   rules: z.array(z.lazy(() => UpdateFirewallRule2$zodSchema)).optional(),
@@ -57,21 +61,16 @@ export type UpdateFirewallData2 = {
   attributes?: UpdateFirewallAttributes2 | undefined;
 };
 
-export const UpdateFirewallData2$zodSchema: z.ZodType<
-  UpdateFirewallData2,
-  z.ZodTypeDef,
-  unknown
-> = z.object({
-  attributes: z.lazy(() => UpdateFirewallAttributes2$zodSchema).optional(),
-  type: UpdateFirewallType2$zodSchema,
-});
+export const UpdateFirewallData2$zodSchema: z.ZodType<UpdateFirewallData2> = z
+  .object({
+    attributes: z.lazy(() => UpdateFirewallAttributes2$zodSchema).optional(),
+    type: UpdateFirewallType2$zodSchema,
+  });
 
 export type UpdateFirewallRequestBody2 = { data: UpdateFirewallData2 };
 
 export const UpdateFirewallRequestBody2$zodSchema: z.ZodType<
-  UpdateFirewallRequestBody2,
-  z.ZodTypeDef,
-  unknown
+  UpdateFirewallRequestBody2
 > = z.object({
   data: z.lazy(() => UpdateFirewallData2$zodSchema),
 });
@@ -81,29 +80,8 @@ export type UpdateFirewallRequest = {
   RequestBody: UpdateFirewallRequestBody2;
 };
 
-export const UpdateFirewallRequest$zodSchema: z.ZodType<
-  UpdateFirewallRequest,
-  z.ZodTypeDef,
-  unknown
-> = z.object({
-  RequestBody: z.lazy(() => UpdateFirewallRequestBody2$zodSchema),
-  firewall_id: z.string().describe("The Firewall ID"),
-});
-
-export type UpdateFirewallResponse = {
-  ContentType: string;
-  StatusCode: number;
-  RawResponse: Response;
-  firewall?: Firewall | undefined;
-};
-
-export const UpdateFirewallResponse$zodSchema: z.ZodType<
-  UpdateFirewallResponse,
-  z.ZodTypeDef,
-  unknown
-> = z.object({
-  ContentType: z.string(),
-  RawResponse: z.instanceof(Response),
-  StatusCode: z.number().int(),
-  firewall: Firewall$zodSchema.optional(),
-});
+export const UpdateFirewallRequest$zodSchema: z.ZodType<UpdateFirewallRequest> =
+  z.object({
+    RequestBody: z.lazy(() => UpdateFirewallRequestBody2$zodSchema),
+    firewall_id: z.string().describe("The Firewall ID"),
+  });

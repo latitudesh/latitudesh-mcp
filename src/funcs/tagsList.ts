@@ -8,6 +8,7 @@ import { compactMap } from "../lib/primitives.js";
 import { RequestOptions } from "../lib/sdks.js";
 import { extractSecurity, resolveGlobalSecurity } from "../lib/security.js";
 import { pathToFunc } from "../lib/url.js";
+import { CustomTags, CustomTags$zodSchema } from "../models/customtags.js";
 import { APIError } from "../models/errors/apierror.js";
 import {
   ConnectionError,
@@ -17,15 +18,11 @@ import {
   UnexpectedClientError,
 } from "../models/errors/httpclienterrors.js";
 import { SDKValidationError } from "../models/errors/sdkvalidationerror.js";
-import {
-  GetTagsResponse,
-  GetTagsResponse$zodSchema,
-} from "../models/gettagsop.js";
 import { APICall, APIPromise } from "../types/async.js";
 import { Result } from "../types/fp.js";
 
 /**
- * List all Tags
+ * List tags
  *
  * @remarks
  * List all Tags in the team.
@@ -35,7 +32,7 @@ export function tagsList(
   options?: RequestOptions,
 ): APIPromise<
   Result<
-    GetTagsResponse,
+    CustomTags,
     | APIError
     | SDKValidationError
     | UnexpectedClientError
@@ -57,7 +54,7 @@ async function $do(
 ): Promise<
   [
     Result<
-      GetTagsResponse,
+      CustomTags,
       | APIError
       | SDKValidationError
       | UnexpectedClientError
@@ -126,7 +123,7 @@ async function $do(
   };
 
   const [result$] = await M.match<
-    GetTagsResponse,
+    CustomTags,
     | APIError
     | SDKValidationError
     | UnexpectedClientError
@@ -135,7 +132,7 @@ async function $do(
     | RequestTimeoutError
     | ConnectionError
   >(
-    M.json(200, GetTagsResponse$zodSchema, {
+    M.json(200, CustomTags$zodSchema, {
       ctype: "application/vnd.api+json",
       key: "custom_tags",
     }),

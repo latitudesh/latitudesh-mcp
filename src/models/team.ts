@@ -11,11 +11,7 @@ export type TeamBilling = {
   customer_billing_id?: string | undefined;
 };
 
-export const TeamBilling$zodSchema: z.ZodType<
-  TeamBilling,
-  z.ZodTypeDef,
-  unknown
-> = z.object({
+export const TeamBilling$zodSchema: z.ZodType<TeamBilling> = z.object({
   customer_billing_id: z.string().optional(),
   id: z.string().optional(),
 });
@@ -23,8 +19,8 @@ export const TeamBilling$zodSchema: z.ZodType<
 export type TeamAttributes = {
   name?: string | undefined;
   slug?: string | undefined;
-  description?: string | undefined;
-  address?: string | undefined;
+  description?: string | null | undefined;
+  address?: string | null | undefined;
   currency?: string | undefined;
   created_at?: string | undefined;
   updated_at?: string | undefined;
@@ -36,16 +32,12 @@ export type TeamAttributes = {
   feature_flags?: Array<string> | undefined;
 };
 
-export const TeamAttributes$zodSchema: z.ZodType<
-  TeamAttributes,
-  z.ZodTypeDef,
-  unknown
-> = z.object({
-  address: z.string().optional(),
+export const TeamAttributes$zodSchema: z.ZodType<TeamAttributes> = z.object({
+  address: z.string().nullable().optional(),
   billing: z.lazy(() => TeamBilling$zodSchema).optional(),
   created_at: z.string().optional(),
   currency: z.string().optional(),
-  description: z.string().optional(),
+  description: z.string().nullable().optional(),
   enforce_mfa: z.boolean().optional(),
   feature_flags: z.array(z.string()).optional(),
   name: z.string().optional(),
@@ -61,7 +53,7 @@ export type Team = {
   attributes?: TeamAttributes | undefined;
 };
 
-export const Team$zodSchema: z.ZodType<Team, z.ZodTypeDef, unknown> = z.object({
+export const Team$zodSchema: z.ZodType<Team> = z.object({
   attributes: z.lazy(() => TeamAttributes$zodSchema).optional(),
   id: z.string().optional(),
 });

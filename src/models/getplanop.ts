@@ -3,32 +3,9 @@
  */
 
 import * as z from "zod";
-import { Plan, Plan$zodSchema } from "./plan.js";
 
 export type GetPlanRequest = { plan_id: string };
 
-export const GetPlanRequest$zodSchema: z.ZodType<
-  GetPlanRequest,
-  z.ZodTypeDef,
-  unknown
-> = z.object({
+export const GetPlanRequest$zodSchema: z.ZodType<GetPlanRequest> = z.object({
   plan_id: z.string(),
-});
-
-export type GetPlanResponse = {
-  ContentType: string;
-  StatusCode: number;
-  RawResponse: Response;
-  plan?: Plan | undefined;
-};
-
-export const GetPlanResponse$zodSchema: z.ZodType<
-  GetPlanResponse,
-  z.ZodTypeDef,
-  unknown
-> = z.object({
-  ContentType: z.string(),
-  RawResponse: z.instanceof(Response),
-  StatusCode: z.number().int(),
-  plan: Plan$zodSchema.optional(),
 });

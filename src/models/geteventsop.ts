@@ -18,66 +18,52 @@ export type GetEventsRequest = {
   pageNumber?: number | undefined;
 };
 
-export const GetEventsRequest$zodSchema: z.ZodType<
-  GetEventsRequest,
-  z.ZodTypeDef,
-  unknown
-> = z.object({
-  filterAction: z.string().describe(
-    "The action performed in event to filter by",
-  ).optional(),
-  filterAuthor: z.string().describe("The author ID or email to filter by")
-    .optional(),
-  filterCreatedAt: z.array(z.string()).describe(
-    "The created at between date range date1, date2 (inclusive) to filter by, in ISO formatting (yyyy-MM-dd'T'HH:mm:ss)",
-  ).optional(),
-  filterCreatedAtGte: z.string().describe(
-    "The created at greater than equal date to filter by, in ISO formatting (yyyy-MM-dd'T'HH:mm:ss)",
-  ).optional(),
-  filterCreatedAtLte: z.string().describe(
-    "The created at less than equal date to filter by, in ISO formatting (yyyy-MM-dd'T'HH:mm:ss)",
-  ).optional(),
-  filterProject: z.string().describe("The project ID to filter by").optional(),
-  filterTargetId: z.string().describe("The target id of the event to filter by")
-    .optional(),
-  filterTargetName: z.array(z.string()).describe(
-    "The target type(s) of the event to filter by",
-  ).optional(),
-  pageNumber: z.number().int().default(1).describe(
-    "Page number to return (starts at 1)",
-  ),
-  pageSize: z.number().int().default(20).describe(
-    "Number of items to return per page",
-  ),
-});
+export const GetEventsRequest$zodSchema: z.ZodType<GetEventsRequest> = z.object(
+  {
+    filterAction: z.string().describe(
+      "The action performed in event to filter by",
+    ).optional(),
+    filterAuthor: z.string().describe("The author ID or email to filter by")
+      .optional(),
+    filterCreatedAt: z.array(z.string()).describe(
+      "The created at between date range date1, date2 (inclusive) to filter by, in ISO formatting (yyyy-MM-dd'T'HH:mm:ss)",
+    ).optional(),
+    filterCreatedAtGte: z.string().describe(
+      "The created at greater than equal date to filter by, in ISO formatting (yyyy-MM-dd'T'HH:mm:ss)",
+    ).optional(),
+    filterCreatedAtLte: z.string().describe(
+      "The created at less than equal date to filter by, in ISO formatting (yyyy-MM-dd'T'HH:mm:ss)",
+    ).optional(),
+    filterProject: z.string().describe("The project ID to filter by")
+      .optional(),
+    filterTargetId: z.string().describe(
+      "The target id of the event to filter by",
+    ).optional(),
+    filterTargetName: z.array(z.string()).describe(
+      "The target type(s) of the event to filter by",
+    ).optional(),
+    pageNumber: z.int().default(1).describe(
+      "Page number to return (starts at 1)",
+    ),
+    pageSize: z.int().default(20).describe(
+      "Number of items to return per page",
+    ),
+  },
+);
 
 /**
  * Success
  */
 export type GetEventsResponseBody = { data?: Array<Events> | undefined };
 
-export const GetEventsResponseBody$zodSchema: z.ZodType<
-  GetEventsResponseBody,
-  z.ZodTypeDef,
-  unknown
-> = z.object({
-  data: z.array(Events$zodSchema).optional(),
-}).describe("Success");
+export const GetEventsResponseBody$zodSchema: z.ZodType<GetEventsResponseBody> =
+  z.object({
+    data: z.array(Events$zodSchema).optional(),
+  }).describe("Success");
 
-export type GetEventsResponse = {
-  ContentType: string;
-  StatusCode: number;
-  RawResponse: Response;
-  object?: GetEventsResponseBody | undefined;
-};
+export type GetEventsResponse = { Result: GetEventsResponseBody };
 
-export const GetEventsResponse$zodSchema: z.ZodType<
-  GetEventsResponse,
-  z.ZodTypeDef,
-  unknown
-> = z.object({
-  ContentType: z.string(),
-  RawResponse: z.instanceof(Response),
-  StatusCode: z.number().int(),
-  object: z.lazy(() => GetEventsResponseBody$zodSchema).optional(),
-});
+export const GetEventsResponse$zodSchema: z.ZodType<GetEventsResponse> = z
+  .object({
+    Result: z.lazy(() => GetEventsResponseBody$zodSchema),
+  });

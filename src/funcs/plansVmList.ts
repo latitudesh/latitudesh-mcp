@@ -3,8 +3,10 @@
  */
 
 import { LatitudeshCore } from "../core.js";
+import { encodeFormQuery } from "../lib/encodings.js";
 import * as M from "../lib/matchers.js";
 import { compactMap } from "../lib/primitives.js";
+import { safeParse } from "../lib/schemas.js";
 import { RequestOptions } from "../lib/sdks.js";
 import { extractSecurity, resolveGlobalSecurity } from "../lib/security.js";
 import { pathToFunc } from "../lib/url.js";
@@ -18,21 +20,26 @@ import {
 } from "../models/errors/httpclienterrors.js";
 import { SDKValidationError } from "../models/errors/sdkvalidationerror.js";
 import {
-  GetVmPlansResponse,
-  GetVmPlansResponse$zodSchema,
+  GetVmPlansRequest,
+  GetVmPlansRequest$zodSchema,
 } from "../models/getvmplansop.js";
+import {
+  VirtualMachinePlans,
+  VirtualMachinePlans$zodSchema,
+} from "../models/virtualmachineplans.js";
 import { APICall, APIPromise } from "../types/async.js";
 import { Result } from "../types/fp.js";
 
 /**
- * List all Virtual Machines Plans
+ * List VM plans
  */
 export function plansVmList(
   client$: LatitudeshCore,
+  request?: GetVmPlansRequest | undefined,
   options?: RequestOptions,
 ): APIPromise<
   Result<
-    GetVmPlansResponse,
+    VirtualMachinePlans,
     | APIError
     | SDKValidationError
     | UnexpectedClientError
@@ -44,17 +51,19 @@ export function plansVmList(
 > {
   return new APIPromise($do(
     client$,
+    request,
     options,
   ));
 }
 
 async function $do(
   client$: LatitudeshCore,
+  request?: GetVmPlansRequest | undefined,
   options?: RequestOptions,
 ): Promise<
   [
     Result<
-      GetVmPlansResponse,
+      VirtualMachinePlans,
       | APIError
       | SDKValidationError
       | UnexpectedClientError
@@ -66,7 +75,20 @@ async function $do(
     APICall,
   ]
 > {
+  const parsed$ = safeParse(
+    request,
+    (value$) => GetVmPlansRequest$zodSchema.optional().parse(value$),
+    "Input validation failed",
+  );
+  if (!parsed$.ok) {
+    return [parsed$, { status: "invalid" }];
+  }
+  const payload$ = parsed$.value;
+  const body$ = null;
   const path$ = pathToFunc("/plans/virtual_machines")();
+  const query$ = encodeFormQuery({
+    "filter[gpu]": payload$?.filterGpu,
+  });
 
   const headers$ = new Headers(compactMap({
     Accept: "application/vnd.api+json",
@@ -99,6 +121,8 @@ async function $do(
     baseURL: options?.serverURL,
     path: path$,
     headers: headers$,
+    query: query$,
+    body: body$,
     userAgent: client$._options.userAgent,
     timeoutMs: options?.timeoutMs || client$._options.timeoutMs
       || -1,
@@ -123,7 +147,7 @@ async function $do(
   };
 
   const [result$] = await M.match<
-    GetVmPlansResponse,
+    VirtualMachinePlans,
     | APIError
     | SDKValidationError
     | UnexpectedClientError
@@ -132,7 +156,7 @@ async function $do(
     | RequestTimeoutError
     | ConnectionError
   >(
-    M.json(200, GetVmPlansResponse$zodSchema, {
+    M.json(200, VirtualMachinePlans$zodSchema, {
       ctype: "application/vnd.api+json",
       key: "virtual_machine_plans",
     }),

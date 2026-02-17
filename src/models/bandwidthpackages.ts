@@ -3,14 +3,16 @@
  */
 
 import * as z from "zod";
+import { ClosedEnum } from "../types/enums.js";
+
+export const BandwidthPackagesType = {
+  BandwidthPackages: "bandwidth_packages",
+} as const;
+export type BandwidthPackagesType = ClosedEnum<typeof BandwidthPackagesType>;
 
 export const BandwidthPackagesType$zodSchema = z.enum([
   "bandwidth_packages",
 ]);
-
-export type BandwidthPackagesType = z.infer<
-  typeof BandwidthPackagesType$zodSchema
->;
 
 export type BandwidthPackagesProject = {
   id?: number | undefined;
@@ -19,11 +21,9 @@ export type BandwidthPackagesProject = {
 };
 
 export const BandwidthPackagesProject$zodSchema: z.ZodType<
-  BandwidthPackagesProject,
-  z.ZodTypeDef,
-  unknown
+  BandwidthPackagesProject
 > = z.object({
-  id: z.number().int().optional(),
+  id: z.int().optional(),
   name: z.string().optional(),
   slug: z.string().optional(),
 });
@@ -36,14 +36,13 @@ export type Package = {
   total_price?: number | undefined;
 };
 
-export const Package$zodSchema: z.ZodType<Package, z.ZodTypeDef, unknown> = z
-  .object({
-    contracted: z.number().int().optional(),
-    currency: z.string().optional(),
-    region_slug: z.string().optional(),
-    total_price: z.number().optional(),
-    unit_price: z.number().optional(),
-  });
+export const Package$zodSchema: z.ZodType<Package> = z.object({
+  contracted: z.int().optional(),
+  currency: z.string().optional(),
+  region_slug: z.string().optional(),
+  total_price: z.number().optional(),
+  unit_price: z.number().optional(),
+});
 
 export type BandwidthPackagesAttributes = {
   project?: BandwidthPackagesProject | undefined;
@@ -51,9 +50,7 @@ export type BandwidthPackagesAttributes = {
 };
 
 export const BandwidthPackagesAttributes$zodSchema: z.ZodType<
-  BandwidthPackagesAttributes,
-  z.ZodTypeDef,
-  unknown
+  BandwidthPackagesAttributes
 > = z.object({
   packages: z.array(z.lazy(() => Package$zodSchema)).optional(),
   project: z.lazy(() => BandwidthPackagesProject$zodSchema).optional(),
@@ -64,11 +61,8 @@ export type BandwidthPackages = {
   attributes?: BandwidthPackagesAttributes | undefined;
 };
 
-export const BandwidthPackages$zodSchema: z.ZodType<
-  BandwidthPackages,
-  z.ZodTypeDef,
-  unknown
-> = z.object({
-  attributes: z.lazy(() => BandwidthPackagesAttributes$zodSchema).optional(),
-  type: BandwidthPackagesType$zodSchema.optional(),
-});
+export const BandwidthPackages$zodSchema: z.ZodType<BandwidthPackages> = z
+  .object({
+    attributes: z.lazy(() => BandwidthPackagesAttributes$zodSchema).optional(),
+    type: BandwidthPackagesType$zodSchema.optional(),
+  });

@@ -3,20 +3,41 @@
  */
 
 import * as z from "zod";
-import {
-  VpnSessionWithPassword,
-  VpnSessionWithPassword$zodSchema,
-} from "./vpnsessionwithpassword.js";
+import { ClosedEnum } from "../types/enums.js";
+
+export const PostVpnSessionType2 = {
+  VpnSessions: "vpn_sessions",
+} as const;
+export type PostVpnSessionType2 = ClosedEnum<typeof PostVpnSessionType2>;
 
 export const PostVpnSessionType2$zodSchema = z.enum([
   "vpn_sessions",
 ]);
 
-export type PostVpnSessionType2 = z.infer<typeof PostVpnSessionType2$zodSchema>;
+export const PostVpnSessionSite2 = {
+  Ash: "ASH",
+  Bue: "BUE",
+  Chi: "CHI",
+  Dal: "DAL",
+  Fra: "FRA",
+  Lax: "LAX",
+  Lon: "LON",
+  Mex: "MEX",
+  Mex2: "MEX2",
+  Mia: "MIA",
+  Mia2: "MIA2",
+  Nyc: "NYC",
+  Sao: "SAO",
+  Sao2: "SAO2",
+  Sgp: "SGP",
+  Syd: "SYD",
+  Tyo: "TYO",
+  Tyo2: "TYO2",
+} as const;
+export type PostVpnSessionSite2 = ClosedEnum<typeof PostVpnSessionSite2>;
 
 export const PostVpnSessionSite2$zodSchema = z.enum([
   "ASH",
-  "BGT",
   "BUE",
   "CHI",
   "DAL",
@@ -28,15 +49,13 @@ export const PostVpnSessionSite2$zodSchema = z.enum([
   "MIA",
   "MIA2",
   "NYC",
-  "SAN",
   "SAO",
   "SAO2",
+  "SGP",
   "SYD",
   "TYO",
   "TYO2",
 ]);
-
-export type PostVpnSessionSite2 = z.infer<typeof PostVpnSessionSite2$zodSchema>;
 
 export type PostVpnSessionAttributes2 = {
   site?: PostVpnSessionSite2 | undefined;
@@ -44,9 +63,7 @@ export type PostVpnSessionAttributes2 = {
 };
 
 export const PostVpnSessionAttributes2$zodSchema: z.ZodType<
-  PostVpnSessionAttributes2,
-  z.ZodTypeDef,
-  unknown
+  PostVpnSessionAttributes2
 > = z.object({
   server_id: z.string().optional(),
   site: PostVpnSessionSite2$zodSchema.optional(),
@@ -57,39 +74,15 @@ export type PostVpnSessionData2 = {
   attributes?: PostVpnSessionAttributes2 | undefined;
 };
 
-export const PostVpnSessionData2$zodSchema: z.ZodType<
-  PostVpnSessionData2,
-  z.ZodTypeDef,
-  unknown
-> = z.object({
-  attributes: z.lazy(() => PostVpnSessionAttributes2$zodSchema).optional(),
-  type: PostVpnSessionType2$zodSchema.optional(),
-});
+export const PostVpnSessionData2$zodSchema: z.ZodType<PostVpnSessionData2> = z
+  .object({
+    attributes: z.lazy(() => PostVpnSessionAttributes2$zodSchema).optional(),
+    type: PostVpnSessionType2$zodSchema.optional(),
+  });
 
 export type PostVpnSessionRequest = { data?: PostVpnSessionData2 | undefined };
 
-export const PostVpnSessionRequest$zodSchema: z.ZodType<
-  PostVpnSessionRequest,
-  z.ZodTypeDef,
-  unknown
-> = z.object({
-  data: z.lazy(() => PostVpnSessionData2$zodSchema).optional(),
-});
-
-export type PostVpnSessionResponse = {
-  ContentType: string;
-  StatusCode: number;
-  RawResponse: Response;
-  vpn_session_with_password?: VpnSessionWithPassword | undefined;
-};
-
-export const PostVpnSessionResponse$zodSchema: z.ZodType<
-  PostVpnSessionResponse,
-  z.ZodTypeDef,
-  unknown
-> = z.object({
-  ContentType: z.string(),
-  RawResponse: z.instanceof(Response),
-  StatusCode: z.number().int(),
-  vpn_session_with_password: VpnSessionWithPassword$zodSchema.optional(),
-});
+export const PostVpnSessionRequest$zodSchema: z.ZodType<PostVpnSessionRequest> =
+  z.object({
+    data: z.lazy(() => PostVpnSessionData2$zodSchema).optional(),
+  });

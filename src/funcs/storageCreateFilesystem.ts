@@ -29,7 +29,7 @@ import { APICall, APIPromise } from "../types/async.js";
 import { Result } from "../types/fp.js";
 
 /**
- * Create a filesystem for a project
+ * Create filesystem
  *
  * @remarks
  * Allows you to add persistent storage to a project. These filesystems can be used to store data across your servers.

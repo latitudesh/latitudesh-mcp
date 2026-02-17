@@ -22,14 +22,13 @@ import { SDKValidationError } from "../models/errors/sdkvalidationerror.js";
 import {
   GetRoleIdRequest,
   GetRoleIdRequest$zodSchema,
-  GetRoleIdResponse,
-  GetRoleIdResponse$zodSchema,
 } from "../models/getroleidop.js";
+import { Role, Role$zodSchema } from "../models/role.js";
 import { APICall, APIPromise } from "../types/async.js";
 import { Result } from "../types/fp.js";
 
 /**
- * Retrieve Role
+ * Retrieve role
  */
 export function rolesGet(
   client$: LatitudeshCore,
@@ -37,7 +36,7 @@ export function rolesGet(
   options?: RequestOptions,
 ): APIPromise<
   Result<
-    GetRoleIdResponse,
+    Role,
     | APIError
     | SDKValidationError
     | UnexpectedClientError
@@ -61,7 +60,7 @@ async function $do(
 ): Promise<
   [
     Result<
-      GetRoleIdResponse,
+      Role,
       | APIError
       | SDKValidationError
       | UnexpectedClientError
@@ -150,7 +149,7 @@ async function $do(
   };
 
   const [result$] = await M.match<
-    GetRoleIdResponse,
+    Role,
     | APIError
     | SDKValidationError
     | UnexpectedClientError
@@ -159,7 +158,7 @@ async function $do(
     | RequestTimeoutError
     | ConnectionError
   >(
-    M.json(200, GetRoleIdResponse$zodSchema, {
+    M.json(200, Role$zodSchema, {
       ctype: "application/vnd.api+json",
       key: "role",
     }),

@@ -13,8 +13,6 @@ import { pathToFunc } from "../lib/url.js";
 import {
   CreateServerRequest,
   CreateServerRequest$zodSchema,
-  CreateServerResponse,
-  CreateServerResponse$zodSchema,
 } from "../models/createserverop.js";
 import { APIError } from "../models/errors/apierror.js";
 import {
@@ -25,11 +23,12 @@ import {
   UnexpectedClientError,
 } from "../models/errors/httpclienterrors.js";
 import { SDKValidationError } from "../models/errors/sdkvalidationerror.js";
+import { Server, Server$zodSchema } from "../models/server.js";
 import { APICall, APIPromise } from "../types/async.js";
 import { Result } from "../types/fp.js";
 
 /**
- * Deploy Server
+ * Create server
  */
 export function serversCreate(
   client$: LatitudeshCore,
@@ -37,7 +36,7 @@ export function serversCreate(
   options?: RequestOptions,
 ): APIPromise<
   Result<
-    CreateServerResponse,
+    Server,
     | APIError
     | SDKValidationError
     | UnexpectedClientError
@@ -61,7 +60,7 @@ async function $do(
 ): Promise<
   [
     Result<
-      CreateServerResponse,
+      Server,
       | APIError
       | SDKValidationError
       | UnexpectedClientError
@@ -142,7 +141,7 @@ async function $do(
   };
 
   const [result$] = await M.match<
-    CreateServerResponse,
+    Server,
     | APIError
     | SDKValidationError
     | UnexpectedClientError
@@ -151,7 +150,7 @@ async function $do(
     | RequestTimeoutError
     | ConnectionError
   >(
-    M.json(201, CreateServerResponse$zodSchema, {
+    M.json(201, Server$zodSchema, {
       ctype: "application/vnd.api+json",
       key: "server",
     }),

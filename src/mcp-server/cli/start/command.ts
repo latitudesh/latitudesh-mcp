@@ -36,6 +36,13 @@ export const startCommand = buildCommand({
           return z.string().parse(value);
         },
       },
+      mode: {
+        kind: "enum",
+        brief:
+          "Server mode (dynamic: expose list_tools, describe_tool, and execute_tool instead of individual tools)",
+        values: ["dynamic"],
+        optional: true,
+      },
       bearer: {
         kind: "parsed",
         brief: "Sets the Bearer auth field for the API",

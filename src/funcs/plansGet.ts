@@ -22,14 +22,13 @@ import { SDKValidationError } from "../models/errors/sdkvalidationerror.js";
 import {
   GetPlanRequest,
   GetPlanRequest$zodSchema,
-  GetPlanResponse,
-  GetPlanResponse$zodSchema,
 } from "../models/getplanop.js";
+import { Plan, Plan$zodSchema } from "../models/plan.js";
 import { APICall, APIPromise } from "../types/async.js";
 import { Result } from "../types/fp.js";
 
 /**
- * Retrieve a Plan
+ * Retrieve plan
  */
 export function plansGet(
   client$: LatitudeshCore,
@@ -37,7 +36,7 @@ export function plansGet(
   options?: RequestOptions,
 ): APIPromise<
   Result<
-    GetPlanResponse,
+    Plan,
     | APIError
     | SDKValidationError
     | UnexpectedClientError
@@ -61,7 +60,7 @@ async function $do(
 ): Promise<
   [
     Result<
-      GetPlanResponse,
+      Plan,
       | APIError
       | SDKValidationError
       | UnexpectedClientError
@@ -150,7 +149,7 @@ async function $do(
   };
 
   const [result$] = await M.match<
-    GetPlanResponse,
+    Plan,
     | APIError
     | SDKValidationError
     | UnexpectedClientError
@@ -159,7 +158,7 @@ async function $do(
     | RequestTimeoutError
     | ConnectionError
   >(
-    M.json(200, GetPlanResponse$zodSchema, {
+    M.json(200, Plan$zodSchema, {
       ctype: "application/vnd.api+json",
       key: "plan",
     }),

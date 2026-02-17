@@ -3,7 +3,6 @@
  */
 
 import * as z from "zod";
-import { BillingUsage, BillingUsage$zodSchema } from "./billingusage.js";
 
 export type GetBillingUsageRequest = {
   filterProducts?: Array<string> | undefined;
@@ -12,35 +11,13 @@ export type GetBillingUsageRequest = {
 };
 
 export const GetBillingUsageRequest$zodSchema: z.ZodType<
-  GetBillingUsageRequest,
-  z.ZodTypeDef,
-  unknown
+  GetBillingUsageRequest
 > = z.object({
   filterPlan: z.string().describe(
-    "Accepts a plan name and allows to filter the usage for that plan.\n"
-      + "",
+    "Accepts a plan name and allows to filter the usage for that plan.\n",
   ).optional(),
   filterProducts: z.array(z.string()).describe(
-    "Allows to filter the billing usage for specific products. It accepts an array of product ids.\n"
-      + "",
+    "Allows to filter the billing usage for specific products. It accepts an array of product ids.\n",
   ).optional(),
   filterProject: z.string(),
-});
-
-export type GetBillingUsageResponse = {
-  ContentType: string;
-  StatusCode: number;
-  RawResponse: Response;
-  billing_usage?: BillingUsage | undefined;
-};
-
-export const GetBillingUsageResponse$zodSchema: z.ZodType<
-  GetBillingUsageResponse,
-  z.ZodTypeDef,
-  unknown
-> = z.object({
-  ContentType: z.string(),
-  RawResponse: z.instanceof(Response),
-  StatusCode: z.number().int(),
-  billing_usage: BillingUsage$zodSchema.optional(),
 });

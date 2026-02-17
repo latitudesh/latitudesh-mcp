@@ -12,9 +12,9 @@ const args = {
 
 export const tool$firewallsUpdate: ToolDefinition<typeof args> = {
   name: "firewalls-update",
-  description: `Update Firewall
+  description: `Update firewall
 
-Update a firewall`,
+Updates a firewall by its ID.`,
   annotations: {
     "title": "",
     "destructiveHint": false,

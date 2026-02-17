@@ -29,7 +29,7 @@ import { APICall, APIPromise } from "../types/async.js";
 import { Result } from "../types/fp.js";
 
 /**
- * List all operating systems available
+ * List operating systems
  *
  * @remarks
  * Lists all operating systems available to deploy and reinstall.

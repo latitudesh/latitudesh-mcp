@@ -10,33 +10,20 @@ export type GetTeamMembersRequest = {
   pageNumber?: number | undefined;
 };
 
-export const GetTeamMembersRequest$zodSchema: z.ZodType<
-  GetTeamMembersRequest,
-  z.ZodTypeDef,
-  unknown
-> = z.object({
-  pageNumber: z.number().int().default(1).describe(
-    "Page number to return (starts at 1)",
-  ),
-  pageSize: z.number().int().default(20).describe(
-    "Number of items to return per page",
-  ),
-});
+export const GetTeamMembersRequest$zodSchema: z.ZodType<GetTeamMembersRequest> =
+  z.object({
+    pageNumber: z.int().default(1).describe(
+      "Page number to return (starts at 1)",
+    ),
+    pageSize: z.int().default(20).describe(
+      "Number of items to return per page",
+    ),
+  });
 
-export type GetTeamMembersResponse = {
-  ContentType: string;
-  StatusCode: number;
-  RawResponse: Response;
-  team_members?: TeamMembers | undefined;
-};
+export type GetTeamMembersResponse = { Result: TeamMembers };
 
 export const GetTeamMembersResponse$zodSchema: z.ZodType<
-  GetTeamMembersResponse,
-  z.ZodTypeDef,
-  unknown
+  GetTeamMembersResponse
 > = z.object({
-  ContentType: z.string(),
-  RawResponse: z.instanceof(Response),
-  StatusCode: z.number().int(),
-  team_members: TeamMembers$zodSchema.optional(),
+  Result: TeamMembers$zodSchema,
 });

@@ -3,29 +3,29 @@
  */
 
 import * as z from "zod";
-import { CustomTag, CustomTag$zodSchema } from "./customtag.js";
+import { ClosedEnum } from "../types/enums.js";
+
+export const UpdateTagType2 = {
+  Tags: "tags",
+} as const;
+export type UpdateTagType2 = ClosedEnum<typeof UpdateTagType2>;
 
 export const UpdateTagType2$zodSchema = z.enum([
   "tags",
 ]);
 
-export type UpdateTagType2 = z.infer<typeof UpdateTagType2$zodSchema>;
-
 export type UpdateTagAttributes2 = {
   name?: string | undefined;
-  description?: string | undefined;
+  description?: string | null | undefined;
   color?: string | undefined;
 };
 
-export const UpdateTagAttributes2$zodSchema: z.ZodType<
-  UpdateTagAttributes2,
-  z.ZodTypeDef,
-  unknown
-> = z.object({
-  color: z.string().default("#ffffff"),
-  description: z.string().optional(),
-  name: z.string().optional(),
-});
+export const UpdateTagAttributes2$zodSchema: z.ZodType<UpdateTagAttributes2> = z
+  .object({
+    color: z.string().default("#ffffff"),
+    description: z.string().nullable().optional(),
+    name: z.string().optional(),
+  });
 
 export type UpdateTagData2 = {
   id?: string | undefined;
@@ -33,11 +33,7 @@ export type UpdateTagData2 = {
   attributes?: UpdateTagAttributes2 | undefined;
 };
 
-export const UpdateTagData2$zodSchema: z.ZodType<
-  UpdateTagData2,
-  z.ZodTypeDef,
-  unknown
-> = z.object({
+export const UpdateTagData2$zodSchema: z.ZodType<UpdateTagData2> = z.object({
   attributes: z.lazy(() => UpdateTagAttributes2$zodSchema).optional(),
   id: z.string().optional(),
   type: UpdateTagType2$zodSchema.optional(),
@@ -45,42 +41,19 @@ export const UpdateTagData2$zodSchema: z.ZodType<
 
 export type UpdateTagRequestBody2 = { data?: UpdateTagData2 | undefined };
 
-export const UpdateTagRequestBody2$zodSchema: z.ZodType<
-  UpdateTagRequestBody2,
-  z.ZodTypeDef,
-  unknown
-> = z.object({
-  data: z.lazy(() => UpdateTagData2$zodSchema).optional(),
-});
+export const UpdateTagRequestBody2$zodSchema: z.ZodType<UpdateTagRequestBody2> =
+  z.object({
+    data: z.lazy(() => UpdateTagData2$zodSchema).optional(),
+  });
 
 export type UpdateTagRequest = {
   tag_id: string;
   RequestBody: UpdateTagRequestBody2;
 };
 
-export const UpdateTagRequest$zodSchema: z.ZodType<
-  UpdateTagRequest,
-  z.ZodTypeDef,
-  unknown
-> = z.object({
-  RequestBody: z.lazy(() => UpdateTagRequestBody2$zodSchema),
-  tag_id: z.string(),
-});
-
-export type UpdateTagResponse = {
-  ContentType: string;
-  StatusCode: number;
-  RawResponse: Response;
-  custom_tag?: CustomTag | undefined;
-};
-
-export const UpdateTagResponse$zodSchema: z.ZodType<
-  UpdateTagResponse,
-  z.ZodTypeDef,
-  unknown
-> = z.object({
-  ContentType: z.string(),
-  RawResponse: z.instanceof(Response),
-  StatusCode: z.number().int(),
-  custom_tag: CustomTag$zodSchema.optional(),
-});
+export const UpdateTagRequest$zodSchema: z.ZodType<UpdateTagRequest> = z.object(
+  {
+    RequestBody: z.lazy(() => UpdateTagRequestBody2$zodSchema),
+    tag_id: z.string(),
+  },
+);

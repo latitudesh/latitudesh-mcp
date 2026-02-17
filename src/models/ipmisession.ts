@@ -3,12 +3,16 @@
  */
 
 import * as z from "zod";
+import { ClosedEnum } from "../types/enums.js";
+
+export const IpmiSessionType = {
+  IpmiSessions: "ipmi_sessions",
+} as const;
+export type IpmiSessionType = ClosedEnum<typeof IpmiSessionType>;
 
 export const IpmiSessionType$zodSchema = z.enum([
   "ipmi_sessions",
 ]);
-
-export type IpmiSessionType = z.infer<typeof IpmiSessionType$zodSchema>;
 
 export type IpmiSessionAttributes = {
   ipmi_address?: string | undefined;
@@ -16,15 +20,12 @@ export type IpmiSessionAttributes = {
   ipmi_password?: string | undefined;
 };
 
-export const IpmiSessionAttributes$zodSchema: z.ZodType<
-  IpmiSessionAttributes,
-  z.ZodTypeDef,
-  unknown
-> = z.object({
-  ipmi_address: z.string().optional(),
-  ipmi_password: z.string().optional(),
-  ipmi_username: z.string().optional(),
-});
+export const IpmiSessionAttributes$zodSchema: z.ZodType<IpmiSessionAttributes> =
+  z.object({
+    ipmi_address: z.string().optional(),
+    ipmi_password: z.string().optional(),
+    ipmi_username: z.string().optional(),
+  });
 
 export type IpmiSessionData = {
   id?: string | undefined;
@@ -32,11 +33,7 @@ export type IpmiSessionData = {
   attributes?: IpmiSessionAttributes | undefined;
 };
 
-export const IpmiSessionData$zodSchema: z.ZodType<
-  IpmiSessionData,
-  z.ZodTypeDef,
-  unknown
-> = z.object({
+export const IpmiSessionData$zodSchema: z.ZodType<IpmiSessionData> = z.object({
   attributes: z.lazy(() => IpmiSessionAttributes$zodSchema).optional(),
   id: z.string().optional(),
   type: IpmiSessionType$zodSchema.optional(),
@@ -44,10 +41,6 @@ export const IpmiSessionData$zodSchema: z.ZodType<
 
 export type IpmiSession = { data?: IpmiSessionData | undefined };
 
-export const IpmiSession$zodSchema: z.ZodType<
-  IpmiSession,
-  z.ZodTypeDef,
-  unknown
-> = z.object({
+export const IpmiSession$zodSchema: z.ZodType<IpmiSession> = z.object({
   data: z.lazy(() => IpmiSessionData$zodSchema).optional(),
 });

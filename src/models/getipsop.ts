@@ -3,27 +3,42 @@
  */
 
 import * as z from "zod";
+import { ClosedEnum } from "../types/enums.js";
 import { IpAddresses, IpAddresses$zodSchema } from "./ipaddresses.js";
 
 /**
  * The protocol family to filter by
  */
+export const FilterFamily = {
+  IPv4: "IPv4",
+  IPv6: "IPv6",
+} as const;
+/**
+ * The protocol family to filter by
+ */
+export type FilterFamily = ClosedEnum<typeof FilterFamily>;
+
 export const FilterFamily$zodSchema = z.enum([
   "IPv4",
   "IPv6",
 ]).describe("The protocol family to filter by");
 
-export type FilterFamily = z.infer<typeof FilterFamily$zodSchema>;
-
 /**
  * The protocol type to filter by
  */
+export const FilterType = {
+  Private: "private",
+  Public: "public",
+} as const;
+/**
+ * The protocol type to filter by
+ */
+export type FilterType = ClosedEnum<typeof FilterType>;
+
 export const FilterType$zodSchema = z.enum([
   "private",
   "public",
 ]).describe("The protocol type to filter by");
-
-export type FilterType = z.infer<typeof FilterType$zodSchema>;
 
 export type GetIpsRequest = {
   filterServer?: string | undefined;
@@ -32,18 +47,18 @@ export type GetIpsRequest = {
   filterType?: FilterType | undefined;
   filterLocation?: string | undefined;
   filterAddress?: string | undefined;
+  filterAdditional?: boolean | undefined;
   extraFieldsIpAddresses?: string | undefined;
   pageSize?: number | undefined;
   pageNumber?: number | undefined;
 };
 
-export const GetIpsRequest$zodSchema: z.ZodType<
-  GetIpsRequest,
-  z.ZodTypeDef,
-  unknown
-> = z.object({
+export const GetIpsRequest$zodSchema: z.ZodType<GetIpsRequest> = z.object({
   extraFieldsIpAddresses: z.string().describe(
     "The `region` and `server` are provided as extra attributes that are lazy loaded. To request it, just set `extra_fields[ip_addresses]=region,server` in the query string.",
+  ).optional(),
+  filterAdditional: z.boolean().describe(
+    "Filter by additional IPs (true) or management IPs (false)",
   ).optional(),
   filterAddress: z.string().describe(
     "The address of IP to filter by starts_with",
@@ -54,28 +69,14 @@ export const GetIpsRequest$zodSchema: z.ZodType<
     .optional(),
   filterServer: z.string().describe("The server ID to filter by").optional(),
   filterType: FilterType$zodSchema.optional(),
-  pageNumber: z.number().int().default(1).describe(
+  pageNumber: z.int().default(1).describe(
     "Page number to return (starts at 1)",
   ),
-  pageSize: z.number().int().default(20).describe(
-    "Number of items to return per page",
-  ),
+  pageSize: z.int().default(20).describe("Number of items to return per page"),
 });
 
-export type GetIpsResponse = {
-  ContentType: string;
-  StatusCode: number;
-  RawResponse: Response;
-  ip_addresses?: IpAddresses | undefined;
-};
+export type GetIpsResponse = { Result: IpAddresses };
 
-export const GetIpsResponse$zodSchema: z.ZodType<
-  GetIpsResponse,
-  z.ZodTypeDef,
-  unknown
-> = z.object({
-  ContentType: z.string(),
-  RawResponse: z.instanceof(Response),
-  StatusCode: z.number().int(),
-  ip_addresses: IpAddresses$zodSchema.optional(),
+export const GetIpsResponse$zodSchema: z.ZodType<GetIpsResponse> = z.object({
+  Result: IpAddresses$zodSchema,
 });
