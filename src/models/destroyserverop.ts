@@ -9,27 +9,9 @@ export type DestroyServerRequest = {
   reason?: string | undefined;
 };
 
-export const DestroyServerRequest$zodSchema: z.ZodType<
-  DestroyServerRequest,
-  z.ZodTypeDef,
-  unknown
-> = z.object({
-  reason: z.string().describe("The reason for deleting the server").optional(),
-  server_id: z.string().describe("The server ID"),
-});
-
-export type DestroyServerResponse = {
-  ContentType: string;
-  StatusCode: number;
-  RawResponse: Response;
-};
-
-export const DestroyServerResponse$zodSchema: z.ZodType<
-  DestroyServerResponse,
-  z.ZodTypeDef,
-  unknown
-> = z.object({
-  ContentType: z.string(),
-  RawResponse: z.instanceof(Response),
-  StatusCode: z.number().int(),
-});
+export const DestroyServerRequest$zodSchema: z.ZodType<DestroyServerRequest> = z
+  .object({
+    reason: z.string().describe("The reason for deleting the server")
+      .optional(),
+    server_id: z.string().describe("The server ID"),
+  });

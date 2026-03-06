@@ -12,7 +12,7 @@ const args = {
 
 export const tool$rolesList: ToolDefinition<typeof args> = {
   name: "roles-list",
-  description: `List all Roles
+  description: `List roles
 
 Returns a list of all roles that can be assigned to users
 `,

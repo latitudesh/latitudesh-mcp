@@ -7,19 +7,14 @@ import { UserTeam, UserTeam$zodSchema } from "./userteam.js";
 
 export type UserTeamsMeta = {};
 
-export const UserTeamsMeta$zodSchema: z.ZodType<
-  UserTeamsMeta,
-  z.ZodTypeDef,
-  unknown
-> = z.object({});
+export const UserTeamsMeta$zodSchema: z.ZodType<UserTeamsMeta> = z.object({});
 
 export type UserTeams = {
   data?: Array<UserTeam> | undefined;
   meta?: UserTeamsMeta | undefined;
 };
 
-export const UserTeams$zodSchema: z.ZodType<UserTeams, z.ZodTypeDef, unknown> =
-  z.object({
-    data: z.array(UserTeam$zodSchema).optional(),
-    meta: z.lazy(() => UserTeamsMeta$zodSchema).optional(),
-  });
+export const UserTeams$zodSchema: z.ZodType<UserTeams> = z.object({
+  data: z.array(UserTeam$zodSchema).optional(),
+  meta: z.lazy(() => UserTeamsMeta$zodSchema).optional(),
+});

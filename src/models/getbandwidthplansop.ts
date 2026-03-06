@@ -13,34 +13,20 @@ export type GetBandwidthPlansRequest = {
 };
 
 export const GetBandwidthPlansRequest$zodSchema: z.ZodType<
-  GetBandwidthPlansRequest,
-  z.ZodTypeDef,
-  unknown
+  GetBandwidthPlansRequest
 > = z.object({
   apiVersion: z.string().default("2023-06-01"),
   filterId: z.string().describe("The plan ID to filter by").optional(),
-  pageNumber: z.number().int().default(1).describe(
+  pageNumber: z.int().default(1).describe(
     "Page number to return (starts at 1)",
   ),
-  pageSize: z.number().int().default(20).describe(
-    "Number of items to return per page",
-  ),
+  pageSize: z.int().default(20).describe("Number of items to return per page"),
 });
 
-export type GetBandwidthPlansResponse = {
-  ContentType: string;
-  StatusCode: number;
-  RawResponse: Response;
-  bandwidth_plans?: BandwidthPlans | undefined;
-};
+export type GetBandwidthPlansResponse = { Result: BandwidthPlans };
 
 export const GetBandwidthPlansResponse$zodSchema: z.ZodType<
-  GetBandwidthPlansResponse,
-  z.ZodTypeDef,
-  unknown
+  GetBandwidthPlansResponse
 > = z.object({
-  ContentType: z.string(),
-  RawResponse: z.instanceof(Response),
-  StatusCode: z.number().int(),
-  bandwidth_plans: BandwidthPlans$zodSchema.optional(),
+  Result: BandwidthPlans$zodSchema,
 });

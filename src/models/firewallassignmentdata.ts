@@ -3,14 +3,18 @@
  */
 
 import * as z from "zod";
+import { ClosedEnum } from "../types/enums.js";
+
+export const FirewallAssignmentDataType = {
+  FirewallAssignments: "firewall_assignments",
+} as const;
+export type FirewallAssignmentDataType = ClosedEnum<
+  typeof FirewallAssignmentDataType
+>;
 
 export const FirewallAssignmentDataType$zodSchema = z.enum([
   "firewall_assignments",
 ]);
-
-export type FirewallAssignmentDataType = z.infer<
-  typeof FirewallAssignmentDataType$zodSchema
->;
 
 export type FirewallAssignmentDataServer = {
   id?: string | undefined;
@@ -19,9 +23,7 @@ export type FirewallAssignmentDataServer = {
 };
 
 export const FirewallAssignmentDataServer$zodSchema: z.ZodType<
-  FirewallAssignmentDataServer,
-  z.ZodTypeDef,
-  unknown
+  FirewallAssignmentDataServer
 > = z.object({
   hostname: z.string().optional(),
   id: z.string().optional(),
@@ -34,9 +36,7 @@ export type FirewallAssignmentDataAttributes = {
 };
 
 export const FirewallAssignmentDataAttributes$zodSchema: z.ZodType<
-  FirewallAssignmentDataAttributes,
-  z.ZodTypeDef,
-  unknown
+  FirewallAssignmentDataAttributes
 > = z.object({
   firewall_id: z.string().optional(),
   server: z.lazy(() => FirewallAssignmentDataServer$zodSchema).optional(),
@@ -49,9 +49,7 @@ export type FirewallAssignmentData = {
 };
 
 export const FirewallAssignmentData$zodSchema: z.ZodType<
-  FirewallAssignmentData,
-  z.ZodTypeDef,
-  unknown
+  FirewallAssignmentData
 > = z.object({
   attributes: z.lazy(() => FirewallAssignmentDataAttributes$zodSchema)
     .optional(),

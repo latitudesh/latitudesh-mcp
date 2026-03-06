@@ -3,17 +3,30 @@
  */
 
 import * as z from "zod";
-import { Server, Server$zodSchema } from "./server.js";
+import { ClosedEnum } from "../types/enums.js";
+
+export const UpdateServerType2 = {
+  Servers: "servers",
+} as const;
+export type UpdateServerType2 = ClosedEnum<typeof UpdateServerType2>;
 
 export const UpdateServerType2$zodSchema = z.enum([
   "servers",
 ]);
 
-export type UpdateServerType2 = z.infer<typeof UpdateServerType2$zodSchema>;
-
 /**
  * The server billing type. Accepts `hourly` and `monthly` for on demand projects and `yearly` for reserved projects.
  */
+export const UpdateServerBilling2 = {
+  Hourly: "hourly",
+  Monthly: "monthly",
+  Yearly: "yearly",
+} as const;
+/**
+ * The server billing type. Accepts `hourly` and `monthly` for on demand projects and `yearly` for reserved projects.
+ */
+export type UpdateServerBilling2 = ClosedEnum<typeof UpdateServerBilling2>;
+
 export const UpdateServerBilling2$zodSchema = z.enum([
   "hourly",
   "monthly",
@@ -22,26 +35,20 @@ export const UpdateServerBilling2$zodSchema = z.enum([
   "The server billing type. Accepts `hourly` and `monthly` for on demand projects and `yearly` for reserved projects.",
 );
 
-export type UpdateServerBilling2 = z.infer<
-  typeof UpdateServerBilling2$zodSchema
->;
-
 export type UpdateServerAttributes2 = {
   hostname?: string | undefined;
-  billing?: UpdateServerBilling2 | undefined;
-  tags?: Array<string> | undefined;
+  billing?: UpdateServerBilling2 | null | undefined;
+  tags?: Array<string> | null | undefined;
   project?: string | undefined;
 };
 
 export const UpdateServerAttributes2$zodSchema: z.ZodType<
-  UpdateServerAttributes2,
-  z.ZodTypeDef,
-  unknown
+  UpdateServerAttributes2
 > = z.object({
-  billing: UpdateServerBilling2$zodSchema.optional(),
+  billing: UpdateServerBilling2$zodSchema.nullable().optional(),
   hostname: z.string().default("new-hostname"),
   project: z.string().optional(),
-  tags: z.array(z.string()).optional(),
+  tags: z.array(z.string()).nullable().optional(),
 });
 
 export type UpdateServerData2 = {
@@ -50,22 +57,17 @@ export type UpdateServerData2 = {
   attributes?: UpdateServerAttributes2 | undefined;
 };
 
-export const UpdateServerData2$zodSchema: z.ZodType<
-  UpdateServerData2,
-  z.ZodTypeDef,
-  unknown
-> = z.object({
-  attributes: z.lazy(() => UpdateServerAttributes2$zodSchema).optional(),
-  id: z.string().default("sv_81EVOtR1N4J2Z"),
-  type: UpdateServerType2$zodSchema.optional(),
-});
+export const UpdateServerData2$zodSchema: z.ZodType<UpdateServerData2> = z
+  .object({
+    attributes: z.lazy(() => UpdateServerAttributes2$zodSchema).optional(),
+    id: z.string().default("sv_81EVOtR1N4J2Z"),
+    type: UpdateServerType2$zodSchema.optional(),
+  });
 
 export type UpdateServerRequestBody2 = { data?: UpdateServerData2 | undefined };
 
 export const UpdateServerRequestBody2$zodSchema: z.ZodType<
-  UpdateServerRequestBody2,
-  z.ZodTypeDef,
-  unknown
+  UpdateServerRequestBody2
 > = z.object({
   data: z.lazy(() => UpdateServerData2$zodSchema).optional(),
 });
@@ -75,29 +77,8 @@ export type UpdateServerRequest = {
   RequestBody: UpdateServerRequestBody2;
 };
 
-export const UpdateServerRequest$zodSchema: z.ZodType<
-  UpdateServerRequest,
-  z.ZodTypeDef,
-  unknown
-> = z.object({
-  RequestBody: z.lazy(() => UpdateServerRequestBody2$zodSchema),
-  server_id: z.string(),
-});
-
-export type UpdateServerResponse = {
-  ContentType: string;
-  StatusCode: number;
-  RawResponse: Response;
-  server?: Server | undefined;
-};
-
-export const UpdateServerResponse$zodSchema: z.ZodType<
-  UpdateServerResponse,
-  z.ZodTypeDef,
-  unknown
-> = z.object({
-  ContentType: z.string(),
-  RawResponse: z.instanceof(Response),
-  StatusCode: z.number().int(),
-  server: Server$zodSchema.optional(),
-});
+export const UpdateServerRequest$zodSchema: z.ZodType<UpdateServerRequest> = z
+  .object({
+    RequestBody: z.lazy(() => UpdateServerRequestBody2$zodSchema),
+    server_id: z.string(),
+  });

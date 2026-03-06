@@ -3,32 +3,10 @@
  */
 
 import * as z from "zod";
-import { Server, Server$zodSchema } from "./server.js";
 
 export type ServerLockRequest = { server_id: string };
 
-export const ServerLockRequest$zodSchema: z.ZodType<
-  ServerLockRequest,
-  z.ZodTypeDef,
-  unknown
-> = z.object({
-  server_id: z.string(),
-});
-
-export type ServerLockResponse = {
-  ContentType: string;
-  StatusCode: number;
-  RawResponse: Response;
-  server?: Server | undefined;
-};
-
-export const ServerLockResponse$zodSchema: z.ZodType<
-  ServerLockResponse,
-  z.ZodTypeDef,
-  unknown
-> = z.object({
-  ContentType: z.string(),
-  RawResponse: z.instanceof(Response),
-  StatusCode: z.number().int(),
-  server: Server$zodSchema.optional(),
-});
+export const ServerLockRequest$zodSchema: z.ZodType<ServerLockRequest> = z
+  .object({
+    server_id: z.string(),
+  });

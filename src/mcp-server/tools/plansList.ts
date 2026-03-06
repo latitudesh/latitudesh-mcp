@@ -12,7 +12,7 @@ const args = {
 
 export const tool$plansList: ToolDefinition<typeof args> = {
   name: "plans-list",
-  description: `List all Plans
+  description: `List plans
 
 Lists all plans. Availability by region is included in \`attributes.regions.locations.available[*]\` node for a given plan.
 `,

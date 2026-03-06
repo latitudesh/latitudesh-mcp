@@ -3,15 +3,30 @@
  */
 
 import * as z from "zod";
+import { ClosedEnum } from "../types/enums.js";
 import { ProjectInclude, ProjectInclude$zodSchema } from "./projectinclude.js";
 import { TeamInclude, TeamInclude$zodSchema } from "./teaminclude.js";
+
+export const VirtualMachineAttributesType = {
+  VirtualMachines: "virtual_machines",
+} as const;
+export type VirtualMachineAttributesType = ClosedEnum<
+  typeof VirtualMachineAttributesType
+>;
 
 export const VirtualMachineAttributesType$zodSchema = z.enum([
   "virtual_machines",
 ]);
 
-export type VirtualMachineAttributesType = z.infer<
-  typeof VirtualMachineAttributesType$zodSchema
+export const VirtualMachineAttributesStatus = {
+  Running: "Running",
+  ConfiguringNetwork: "Configuring network",
+  Starting: "Starting",
+  Scheduling: "Scheduling",
+  Scheduled: "Scheduled",
+} as const;
+export type VirtualMachineAttributesStatus = ClosedEnum<
+  typeof VirtualMachineAttributesStatus
 >;
 
 export const VirtualMachineAttributesStatus$zodSchema = z.enum([
@@ -22,10 +37,6 @@ export const VirtualMachineAttributesStatus$zodSchema = z.enum([
   "Scheduled",
 ]);
 
-export type VirtualMachineAttributesStatus = z.infer<
-  typeof VirtualMachineAttributesStatus$zodSchema
->;
-
 export type VirtualMachineAttributesCredentials = {
   username?: string | undefined;
   host?: string | undefined;
@@ -34,9 +45,7 @@ export type VirtualMachineAttributesCredentials = {
 };
 
 export const VirtualMachineAttributesCredentials$zodSchema: z.ZodType<
-  VirtualMachineAttributesCredentials,
-  z.ZodTypeDef,
-  unknown
+  VirtualMachineAttributesCredentials
 > = z.object({
   host: z.string().optional(),
   password: z.string().optional(),
@@ -50,40 +59,37 @@ export type VirtualMachineAttributesPlan = {
 };
 
 export const VirtualMachineAttributesPlan$zodSchema: z.ZodType<
-  VirtualMachineAttributesPlan,
-  z.ZodTypeDef,
-  unknown
+  VirtualMachineAttributesPlan
 > = z.object({
   id: z.string().optional(),
   name: z.string().optional(),
 });
 
 export type VirtualMachineAttributesSpecs = {
-  vcpu?: number | undefined;
-  ram?: string | undefined;
-  storage?: string | undefined;
-  nic?: string | undefined;
-  gpu?: string | undefined;
+  vcpu?: number | null | undefined;
+  ram?: string | null | undefined;
+  storage?: string | null | undefined;
+  nic?: string | null | undefined;
+  gpu?: string | null | undefined;
 };
 
 export const VirtualMachineAttributesSpecs$zodSchema: z.ZodType<
-  VirtualMachineAttributesSpecs,
-  z.ZodTypeDef,
-  unknown
+  VirtualMachineAttributesSpecs
 > = z.object({
-  gpu: z.string().optional(),
-  nic: z.string().optional(),
-  ram: z.string().optional(),
-  storage: z.string().optional(),
-  vcpu: z.number().int().optional(),
+  gpu: z.string().nullable().optional(),
+  nic: z.string().nullable().optional(),
+  ram: z.string().nullable().optional(),
+  storage: z.string().nullable().optional(),
+  vcpu: z.int().nullable().optional(),
 });
 
 export type VirtualMachineAttributesAttributes = {
   name?: string | undefined;
   created_at?: string | undefined;
   status?: VirtualMachineAttributesStatus | undefined;
-  operating_system?: string | undefined;
-  credentials?: VirtualMachineAttributesCredentials | undefined;
+  primary_ipv4?: string | null | undefined;
+  operating_system?: string | null | undefined;
+  credentials?: VirtualMachineAttributesCredentials | null | undefined;
   plan?: VirtualMachineAttributesPlan | undefined;
   specs?: VirtualMachineAttributesSpecs | undefined;
   team?: TeamInclude | undefined;
@@ -91,16 +97,15 @@ export type VirtualMachineAttributesAttributes = {
 };
 
 export const VirtualMachineAttributesAttributes$zodSchema: z.ZodType<
-  VirtualMachineAttributesAttributes,
-  z.ZodTypeDef,
-  unknown
+  VirtualMachineAttributesAttributes
 > = z.object({
   created_at: z.string().optional(),
   credentials: z.lazy(() => VirtualMachineAttributesCredentials$zodSchema)
-    .optional(),
+    .nullable().optional(),
   name: z.string().optional(),
-  operating_system: z.string().optional(),
+  operating_system: z.string().nullable().optional(),
   plan: z.lazy(() => VirtualMachineAttributesPlan$zodSchema).optional(),
+  primary_ipv4: z.string().nullable().optional(),
   project: ProjectInclude$zodSchema.optional(),
   specs: z.lazy(() => VirtualMachineAttributesSpecs$zodSchema).optional(),
   status: VirtualMachineAttributesStatus$zodSchema.optional(),
@@ -114,9 +119,7 @@ export type VirtualMachineAttributes = {
 };
 
 export const VirtualMachineAttributes$zodSchema: z.ZodType<
-  VirtualMachineAttributes,
-  z.ZodTypeDef,
-  unknown
+  VirtualMachineAttributes
 > = z.object({
   attributes: z.lazy(() => VirtualMachineAttributesAttributes$zodSchema)
     .optional(),

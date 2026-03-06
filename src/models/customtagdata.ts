@@ -3,13 +3,17 @@
  */
 
 import * as z from "zod";
+import { ClosedEnum } from "../types/enums.js";
 import { TeamInclude, TeamInclude$zodSchema } from "./teaminclude.js";
+
+export const CustomTagDataType = {
+  Tags: "tags",
+} as const;
+export type CustomTagDataType = ClosedEnum<typeof CustomTagDataType>;
 
 export const CustomTagDataType$zodSchema = z.enum([
   "tags",
 ]);
-
-export type CustomTagDataType = z.infer<typeof CustomTagDataType$zodSchema>;
 
 export type CustomTagDataAttributes = {
   name?: string | undefined;
@@ -20,9 +24,7 @@ export type CustomTagDataAttributes = {
 };
 
 export const CustomTagDataAttributes$zodSchema: z.ZodType<
-  CustomTagDataAttributes,
-  z.ZodTypeDef,
-  unknown
+  CustomTagDataAttributes
 > = z.object({
   color: z.string().optional(),
   description: z.string().optional(),
@@ -37,11 +39,7 @@ export type CustomTagData = {
   attributes?: CustomTagDataAttributes | undefined;
 };
 
-export const CustomTagData$zodSchema: z.ZodType<
-  CustomTagData,
-  z.ZodTypeDef,
-  unknown
-> = z.object({
+export const CustomTagData$zodSchema: z.ZodType<CustomTagData> = z.object({
   attributes: z.lazy(() => CustomTagDataAttributes$zodSchema).optional(),
   id: z.string().optional(),
   type: CustomTagDataType$zodSchema.optional(),

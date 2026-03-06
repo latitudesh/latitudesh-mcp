@@ -10,22 +10,16 @@ import {
 
 export type StoragePlansMeta = {};
 
-export const StoragePlansMeta$zodSchema: z.ZodType<
-  StoragePlansMeta,
-  z.ZodTypeDef,
-  unknown
-> = z.object({});
+export const StoragePlansMeta$zodSchema: z.ZodType<StoragePlansMeta> = z.object(
+  {},
+);
 
 export type StoragePlans = {
   data?: Array<StoragePlanData> | undefined;
   meta?: StoragePlansMeta | undefined;
 };
 
-export const StoragePlans$zodSchema: z.ZodType<
-  StoragePlans,
-  z.ZodTypeDef,
-  unknown
-> = z.object({
+export const StoragePlans$zodSchema: z.ZodType<StoragePlans> = z.object({
   data: z.array(StoragePlanData$zodSchema).optional(),
   meta: z.lazy(() => StoragePlansMeta$zodSchema).optional(),
 });

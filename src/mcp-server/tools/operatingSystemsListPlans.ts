@@ -12,7 +12,7 @@ const args = {
 
 export const tool$operatingSystemsListPlans: ToolDefinition<typeof args> = {
   name: "operating-systems-list-plans",
-  description: `List all operating systems available
+  description: `List operating systems
 
 Lists all operating systems available to deploy and reinstall.
 `,

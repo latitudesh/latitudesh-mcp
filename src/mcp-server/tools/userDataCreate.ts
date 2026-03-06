@@ -12,7 +12,7 @@ const args = {
 
 export const tool$userDataCreate: ToolDefinition<typeof args> = {
   name: "user-data-create",
-  description: `Create a Project User Data
+  description: `Create Project user data
 
 Allows you to create User Data in a project, which can be used to perform custom setup on your servers after deploy and reinstall.
 `,

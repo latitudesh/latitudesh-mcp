@@ -11,9 +11,7 @@ import {
 export type VirtualNetworkAssignmentsMeta = {};
 
 export const VirtualNetworkAssignmentsMeta$zodSchema: z.ZodType<
-  VirtualNetworkAssignmentsMeta,
-  z.ZodTypeDef,
-  unknown
+  VirtualNetworkAssignmentsMeta
 > = z.object({});
 
 export type VirtualNetworkAssignments = {
@@ -22,9 +20,7 @@ export type VirtualNetworkAssignments = {
 };
 
 export const VirtualNetworkAssignments$zodSchema: z.ZodType<
-  VirtualNetworkAssignments,
-  z.ZodTypeDef,
-  unknown
+  VirtualNetworkAssignments
 > = z.object({
   data: z.array(VirtualNetworkAssignmentData$zodSchema).optional(),
   meta: z.lazy(() => VirtualNetworkAssignmentsMeta$zodSchema).optional(),

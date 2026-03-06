@@ -22,14 +22,16 @@ import { SDKValidationError } from "../models/errors/sdkvalidationerror.js";
 import {
   PostVpnSessionRequest,
   PostVpnSessionRequest$zodSchema,
-  PostVpnSessionResponse,
-  PostVpnSessionResponse$zodSchema,
 } from "../models/postvpnsessionop.js";
+import {
+  VpnSessionWithPassword,
+  VpnSessionWithPassword$zodSchema,
+} from "../models/vpnsessionwithpassword.js";
 import { APICall, APIPromise } from "../types/async.js";
 import { Result } from "../types/fp.js";
 
 /**
- * Create a VPN Session
+ * Create VPN session
  *
  * @remarks
  * Creates a new VPN Session.
@@ -41,7 +43,7 @@ export function vpnSessionsCreate(
   options?: RequestOptions,
 ): APIPromise<
   Result<
-    PostVpnSessionResponse,
+    VpnSessionWithPassword,
     | APIError
     | SDKValidationError
     | UnexpectedClientError
@@ -65,7 +67,7 @@ async function $do(
 ): Promise<
   [
     Result<
-      PostVpnSessionResponse,
+      VpnSessionWithPassword,
       | APIError
       | SDKValidationError
       | UnexpectedClientError
@@ -146,7 +148,7 @@ async function $do(
   };
 
   const [result$] = await M.match<
-    PostVpnSessionResponse,
+    VpnSessionWithPassword,
     | APIError
     | SDKValidationError
     | UnexpectedClientError
@@ -155,7 +157,7 @@ async function $do(
     | RequestTimeoutError
     | ConnectionError
   >(
-    M.json(201, PostVpnSessionResponse$zodSchema, {
+    M.json(201, VpnSessionWithPassword$zodSchema, {
       ctype: "application/vnd.api+json",
       key: "vpn_session_with_password",
     }),

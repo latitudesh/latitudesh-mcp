@@ -12,7 +12,7 @@ const args = {
 
 export const tool$serversCreateIpmiSession: ToolDefinition<typeof args> = {
   name: "servers-create-ipmi-session",
-  description: `Generate IPMI credentials
+  description: `Create IPMI credentials
 
 Generates IPMI credentials for a given server. Remote access creates a VPN connection to the internal network of your server so you can connect to its IPMI.
 You will have to use a VPN client such as https://openvpn.net to connect. See \`VPN Sessions\` API to create a VPN connection.

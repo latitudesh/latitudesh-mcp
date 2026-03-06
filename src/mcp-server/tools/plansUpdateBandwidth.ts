@@ -12,7 +12,7 @@ const args = {
 
 export const tool$plansUpdateBandwidth: ToolDefinition<typeof args> = {
   name: "plans-update-bandwidth",
-  description: `Buy or remove bandwidth packages
+  description: `Update bandwidth packages
 
 Allows to increase or decrease bandwidth packages. Only admins and owners can request.
 `,

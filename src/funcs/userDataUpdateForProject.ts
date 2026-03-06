@@ -22,14 +22,16 @@ import { SDKValidationError } from "../models/errors/sdkvalidationerror.js";
 import {
   PutProjectUserDataRequest,
   PutProjectUserDataRequest$zodSchema,
-  PutProjectUserDataResponse,
-  PutProjectUserDataResponse$zodSchema,
 } from "../models/putprojectuserdataop.js";
+import {
+  UserDataObject,
+  UserDataObject$zodSchema,
+} from "../models/userdataobject.js";
 import { APICall, APIPromise } from "../types/async.js";
 import { Result } from "../types/fp.js";
 
 /**
- * Update a Project User Data
+ * Update Project user data
  *
  * @remarks
  * Allow you update User Data in a project.
@@ -42,7 +44,7 @@ export function userDataUpdateForProject(
   options?: RequestOptions,
 ): APIPromise<
   Result<
-    PutProjectUserDataResponse,
+    UserDataObject,
     | APIError
     | SDKValidationError
     | UnexpectedClientError
@@ -66,7 +68,7 @@ async function $do(
 ): Promise<
   [
     Result<
-      PutProjectUserDataResponse,
+      UserDataObject,
       | APIError
       | SDKValidationError
       | UnexpectedClientError
@@ -160,7 +162,7 @@ async function $do(
   };
 
   const [result$] = await M.match<
-    PutProjectUserDataResponse,
+    UserDataObject,
     | APIError
     | SDKValidationError
     | UnexpectedClientError
@@ -169,9 +171,9 @@ async function $do(
     | RequestTimeoutError
     | ConnectionError
   >(
-    M.json(200, PutProjectUserDataResponse$zodSchema, {
+    M.json(200, UserDataObject$zodSchema, {
       ctype: "application/vnd.api+json",
-      key: "user_data",
+      key: "user_data_object",
     }),
   )(response, req$, { extraFields: responseFields$ });
 

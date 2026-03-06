@@ -12,9 +12,9 @@ const args = {
 
 export const tool$eventsList: ToolDefinition<typeof args> = {
   name: "events-list",
-  description: `List all Events
+  description: `List events
 
-Lists all events.
+Lists actions performed by users on your account.
 `,
   annotations: {
     "title": "",

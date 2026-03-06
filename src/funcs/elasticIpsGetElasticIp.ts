@@ -20,27 +20,29 @@ import {
 } from "../models/errors/httpclienterrors.js";
 import { SDKValidationError } from "../models/errors/sdkvalidationerror.js";
 import {
-  GetContainersPlanRequest,
-  GetContainersPlanRequest$zodSchema,
-  GetContainersPlanResponse,
-  GetContainersPlanResponse$zodSchema,
-} from "../models/getcontainersplanop.js";
+  GetElasticIpRequest,
+  GetElasticIpRequest$zodSchema,
+  GetElasticIpResponse,
+  GetElasticIpResponse$zodSchema,
+} from "../models/getelasticipop.js";
 import { APICall, APIPromise } from "../types/async.js";
 import { Result } from "../types/fp.js";
 
 /**
- * Retrieve container plan
+ * Retrieve an Elastic IP
  *
  * @remarks
- * Retrieve a container plan.
+ * Returns a single Elastic IP by its ID.
+ *
+ * **Note:** This feature requires the `elastic_ips` feature flag to be enabled for your team.
  */
-export function plansGetContainersPlan(
+export function elasticIpsGetElasticIp(
   client$: LatitudeshCore,
-  request: GetContainersPlanRequest,
+  request: GetElasticIpRequest,
   options?: RequestOptions,
 ): APIPromise<
   Result<
-    GetContainersPlanResponse,
+    GetElasticIpResponse,
     | APIError
     | SDKValidationError
     | UnexpectedClientError
@@ -59,12 +61,12 @@ export function plansGetContainersPlan(
 
 async function $do(
   client$: LatitudeshCore,
-  request: GetContainersPlanRequest,
+  request: GetElasticIpRequest,
   options?: RequestOptions,
 ): Promise<
   [
     Result<
-      GetContainersPlanResponse,
+      GetElasticIpResponse,
       | APIError
       | SDKValidationError
       | UnexpectedClientError
@@ -78,7 +80,7 @@ async function $do(
 > {
   const parsed$ = safeParse(
     request,
-    (value$) => GetContainersPlanRequest$zodSchema.parse(value$),
+    (value$) => GetElasticIpRequest$zodSchema.parse(value$),
     "Input validation failed",
   );
   if (!parsed$.ok) {
@@ -88,12 +90,12 @@ async function $do(
   const body$ = null;
 
   const pathParams$ = {
-    plan_id: encodeSimple("plan_id", payload$.plan_id, {
+    elastic_ip_id: encodeSimple("elastic_ip_id", payload$.elastic_ip_id, {
       explode: false,
       charEncoding: "percent",
     }),
   };
-  const path$ = pathToFunc("/plans/containers/{plan_id}")(
+  const path$ = pathToFunc("/elastic_ips/{elastic_ip_id}")(
     pathParams$,
   );
 
@@ -106,7 +108,7 @@ async function $do(
   const context = {
     options: client$._options,
     baseURL: options?.serverURL ?? client$._baseURL ?? "",
-    operationID: "get-containers-plan",
+    operationID: "get-elastic-ip",
     oAuth2Scopes: null,
     resolvedSecurity: requestSecurity,
     securitySource: client$._options.security,
@@ -153,7 +155,7 @@ async function $do(
   };
 
   const [result$] = await M.match<
-    GetContainersPlanResponse,
+    GetElasticIpResponse,
     | APIError
     | SDKValidationError
     | UnexpectedClientError
@@ -162,9 +164,13 @@ async function $do(
     | RequestTimeoutError
     | ConnectionError
   >(
-    M.json(200, GetContainersPlanResponse$zodSchema, {
+    M.json(200, GetElasticIpResponse$zodSchema, {
       ctype: "application/vnd.api+json",
-      key: "container_plan_data",
+      key: "elastic_ip",
+    }),
+    M.json([403, 404], GetElasticIpResponse$zodSchema, {
+      ctype: "application/vnd.api+json",
+      key: "error_object",
     }),
   )(response, req$, { extraFields: responseFields$ });
 

@@ -17,15 +17,12 @@ import {
   UnexpectedClientError,
 } from "../models/errors/httpclienterrors.js";
 import { SDKValidationError } from "../models/errors/sdkvalidationerror.js";
-import {
-  GetUserTeamsResponse,
-  GetUserTeamsResponse$zodSchema,
-} from "../models/getuserteamsop.js";
+import { UserTeams, UserTeams$zodSchema } from "../models/userteams.js";
 import { APICall, APIPromise } from "../types/async.js";
 import { Result } from "../types/fp.js";
 
 /**
- * List User Teams
+ * List user teams
  *
  * @remarks
  * Returns a list of all teams the user belongs to
@@ -35,7 +32,7 @@ export function userProfileListTeams(
   options?: RequestOptions,
 ): APIPromise<
   Result<
-    GetUserTeamsResponse,
+    UserTeams,
     | APIError
     | SDKValidationError
     | UnexpectedClientError
@@ -57,7 +54,7 @@ async function $do(
 ): Promise<
   [
     Result<
-      GetUserTeamsResponse,
+      UserTeams,
       | APIError
       | SDKValidationError
       | UnexpectedClientError
@@ -126,7 +123,7 @@ async function $do(
   };
 
   const [result$] = await M.match<
-    GetUserTeamsResponse,
+    UserTeams,
     | APIError
     | SDKValidationError
     | UnexpectedClientError
@@ -135,7 +132,7 @@ async function $do(
     | RequestTimeoutError
     | ConnectionError
   >(
-    M.json(200, GetUserTeamsResponse$zodSchema, {
+    M.json(200, UserTeams$zodSchema, {
       ctype: "application/vnd.api+json",
       key: "user_teams",
     }),

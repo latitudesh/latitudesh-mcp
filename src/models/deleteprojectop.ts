@@ -6,26 +6,7 @@ import * as z from "zod";
 
 export type DeleteProjectRequest = { project_id: string };
 
-export const DeleteProjectRequest$zodSchema: z.ZodType<
-  DeleteProjectRequest,
-  z.ZodTypeDef,
-  unknown
-> = z.object({
-  project_id: z.string().describe("The project ID or Slug"),
-});
-
-export type DeleteProjectResponse = {
-  ContentType: string;
-  StatusCode: number;
-  RawResponse: Response;
-};
-
-export const DeleteProjectResponse$zodSchema: z.ZodType<
-  DeleteProjectResponse,
-  z.ZodTypeDef,
-  unknown
-> = z.object({
-  ContentType: z.string(),
-  RawResponse: z.instanceof(Response),
-  StatusCode: z.number().int(),
-});
+export const DeleteProjectRequest$zodSchema: z.ZodType<DeleteProjectRequest> = z
+  .object({
+    project_id: z.string().describe("The project ID or Slug"),
+  });

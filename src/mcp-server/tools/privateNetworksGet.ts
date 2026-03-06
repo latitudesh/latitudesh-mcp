@@ -12,7 +12,7 @@ const args = {
 
 export const tool$privateNetworksGet: ToolDefinition<typeof args> = {
   name: "private-networks-get",
-  description: `Retrieve a Virtual Network
+  description: `Retrieve VLAN
 
 Retrieve a Virtual Network.
 `,

@@ -12,7 +12,7 @@ const args = {
 
 export const tool$vpnSessionsList: ToolDefinition<typeof args> = {
   name: "vpn-sessions-list",
-  description: `List all Active VPN Sessions`,
+  description: `List VPN sessions`,
   annotations: {
     "title": "",
     "destructiveHint": false,

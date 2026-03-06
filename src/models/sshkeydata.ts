@@ -3,35 +3,39 @@
  */
 
 import * as z from "zod";
+import { ClosedEnum } from "../types/enums.js";
+import { ProjectInclude, ProjectInclude$zodSchema } from "./projectinclude.js";
 import { UserInclude, UserInclude$zodSchema } from "./userinclude.js";
+
+export const SshKeyDataType = {
+  SshKeys: "ssh_keys",
+} as const;
+export type SshKeyDataType = ClosedEnum<typeof SshKeyDataType>;
 
 export const SshKeyDataType$zodSchema = z.enum([
   "ssh_keys",
 ]);
-
-export type SshKeyDataType = z.infer<typeof SshKeyDataType$zodSchema>;
 
 export type SshKeyDataAttributes = {
   name?: string | undefined;
   public_key?: string | undefined;
   fingerprint?: string | undefined;
   user?: UserInclude | undefined;
+  project?: ProjectInclude | undefined;
   created_at?: string | undefined;
   updated_at?: string | undefined;
 };
 
-export const SshKeyDataAttributes$zodSchema: z.ZodType<
-  SshKeyDataAttributes,
-  z.ZodTypeDef,
-  unknown
-> = z.object({
-  created_at: z.string().optional(),
-  fingerprint: z.string().optional(),
-  name: z.string().optional(),
-  public_key: z.string().optional(),
-  updated_at: z.string().optional(),
-  user: UserInclude$zodSchema.optional(),
-});
+export const SshKeyDataAttributes$zodSchema: z.ZodType<SshKeyDataAttributes> = z
+  .object({
+    created_at: z.string().optional(),
+    fingerprint: z.string().optional(),
+    name: z.string().optional(),
+    project: ProjectInclude$zodSchema.optional(),
+    public_key: z.string().optional(),
+    updated_at: z.string().optional(),
+    user: UserInclude$zodSchema.optional(),
+  });
 
 export type SshKeyData = {
   id?: string | undefined;
@@ -39,11 +43,7 @@ export type SshKeyData = {
   attributes?: SshKeyDataAttributes | undefined;
 };
 
-export const SshKeyData$zodSchema: z.ZodType<
-  SshKeyData,
-  z.ZodTypeDef,
-  unknown
-> = z.object({
+export const SshKeyData$zodSchema: z.ZodType<SshKeyData> = z.object({
   attributes: z.lazy(() => SshKeyDataAttributes$zodSchema).optional(),
   id: z.string().optional(),
   type: SshKeyDataType$zodSchema,

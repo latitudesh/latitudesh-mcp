@@ -19,17 +19,16 @@ import {
   UnexpectedClientError,
 } from "../models/errors/httpclienterrors.js";
 import { SDKValidationError } from "../models/errors/sdkvalidationerror.js";
+import { Server, Server$zodSchema } from "../models/server.js";
 import {
   ServerUnlockRequest,
   ServerUnlockRequest$zodSchema,
-  ServerUnlockResponse,
-  ServerUnlockResponse$zodSchema,
 } from "../models/serverunlockop.js";
 import { APICall, APIPromise } from "../types/async.js";
 import { Result } from "../types/fp.js";
 
 /**
- * Unlock the server
+ * Unlock server
  *
  * @remarks
  * Unlocks the server. A locked server cannot be deleted or modified and no actions can be performed on it.
@@ -40,7 +39,7 @@ export function serversUnlock(
   options?: RequestOptions,
 ): APIPromise<
   Result<
-    ServerUnlockResponse,
+    Server,
     | APIError
     | SDKValidationError
     | UnexpectedClientError
@@ -64,7 +63,7 @@ async function $do(
 ): Promise<
   [
     Result<
-      ServerUnlockResponse,
+      Server,
       | APIError
       | SDKValidationError
       | UnexpectedClientError
@@ -153,7 +152,7 @@ async function $do(
   };
 
   const [result$] = await M.match<
-    ServerUnlockResponse,
+    Server,
     | APIError
     | SDKValidationError
     | UnexpectedClientError
@@ -162,7 +161,7 @@ async function $do(
     | RequestTimeoutError
     | ConnectionError
   >(
-    M.json(200, ServerUnlockResponse$zodSchema, {
+    M.json(200, Server$zodSchema, {
       ctype: "application/vnd.api+json",
       key: "server",
     }),

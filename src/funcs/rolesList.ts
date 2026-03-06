@@ -29,7 +29,7 @@ import { APICall, APIPromise } from "../types/async.js";
 import { Result } from "../types/fp.js";
 
 /**
- * List all Roles
+ * List roles
  *
  * @remarks
  * Returns a list of all roles that can be assigned to users

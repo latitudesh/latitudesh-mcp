@@ -12,7 +12,7 @@ const args = {
 
 export const tool$apiKeysDelete: ToolDefinition<typeof args> = {
   name: "api-keys-delete",
-  description: `Delete API Key
+  description: `Delete API key
 
 Delete an existing API Key. Once deleted, the API Key can no longer be used to access the API.
 `,

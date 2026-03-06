@@ -14,9 +14,9 @@ export const tool$firewallsGetAllFirewallAssignments: ToolDefinition<
   typeof args
 > = {
   name: "firewalls-get-all-firewall-assignments",
-  description: `List All Firewall Assignments
+  description: `List firewall assignments
 
-List all firewall assignments`,
+Returns a list of all servers assigned to one or more firewalls.`,
   annotations: {
     "title": "",
     "destructiveHint": false,

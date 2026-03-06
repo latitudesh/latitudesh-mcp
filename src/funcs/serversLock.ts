@@ -19,17 +19,16 @@ import {
   UnexpectedClientError,
 } from "../models/errors/httpclienterrors.js";
 import { SDKValidationError } from "../models/errors/sdkvalidationerror.js";
+import { Server, Server$zodSchema } from "../models/server.js";
 import {
   ServerLockRequest,
   ServerLockRequest$zodSchema,
-  ServerLockResponse,
-  ServerLockResponse$zodSchema,
 } from "../models/serverlockop.js";
 import { APICall, APIPromise } from "../types/async.js";
 import { Result } from "../types/fp.js";
 
 /**
- * Lock the server
+ * Lock server
  *
  * @remarks
  * Locks the server. A locked server cannot be deleted or modified and no actions can be performed on it.
@@ -40,7 +39,7 @@ export function serversLock(
   options?: RequestOptions,
 ): APIPromise<
   Result<
-    ServerLockResponse,
+    Server,
     | APIError
     | SDKValidationError
     | UnexpectedClientError
@@ -64,7 +63,7 @@ async function $do(
 ): Promise<
   [
     Result<
-      ServerLockResponse,
+      Server,
       | APIError
       | SDKValidationError
       | UnexpectedClientError
@@ -153,7 +152,7 @@ async function $do(
   };
 
   const [result$] = await M.match<
-    ServerLockResponse,
+    Server,
     | APIError
     | SDKValidationError
     | UnexpectedClientError
@@ -162,7 +161,7 @@ async function $do(
     | RequestTimeoutError
     | ConnectionError
   >(
-    M.json(200, ServerLockResponse$zodSchema, {
+    M.json(200, Server$zodSchema, {
       ctype: "application/vnd.api+json",
       key: "server",
     }),

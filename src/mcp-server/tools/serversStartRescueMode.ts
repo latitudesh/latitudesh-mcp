@@ -12,7 +12,7 @@ const args = {
 
 export const tool$serversStartRescueMode: ToolDefinition<typeof args> = {
   name: "servers-start-rescue-mode",
-  description: `Puts a Server in rescue mode
+  description: `Put server in rescue mode
 
 Starts rescue mode on a given server.`,
   annotations: {

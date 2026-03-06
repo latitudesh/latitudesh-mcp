@@ -3,20 +3,28 @@
  */
 
 import * as z from "zod";
+import { ClosedEnum } from "../types/enums.js";
 import { Team, Team$zodSchema } from "./team.js";
+
+export const PostTeamType2 = {
+  Teams: "teams",
+} as const;
+export type PostTeamType2 = ClosedEnum<typeof PostTeamType2>;
 
 export const PostTeamType2$zodSchema = z.enum([
   "teams",
 ]);
 
-export type PostTeamType2 = z.infer<typeof PostTeamType2$zodSchema>;
+export const PostTeamCurrency2 = {
+  Usd: "USD",
+  Brl: "BRL",
+} as const;
+export type PostTeamCurrency2 = ClosedEnum<typeof PostTeamCurrency2>;
 
 export const PostTeamCurrency2$zodSchema = z.enum([
   "USD",
   "BRL",
 ]);
-
-export type PostTeamCurrency2 = z.infer<typeof PostTeamCurrency2$zodSchema>;
 
 export type PostTeamAttributes2 = {
   name: string;
@@ -25,68 +33,37 @@ export type PostTeamAttributes2 = {
   referred_code?: string | undefined;
 };
 
-export const PostTeamAttributes2$zodSchema: z.ZodType<
-  PostTeamAttributes2,
-  z.ZodTypeDef,
-  unknown
-> = z.object({
-  address: z.string().optional(),
-  currency: PostTeamCurrency2$zodSchema,
-  name: z.string(),
-  referred_code: z.string().optional(),
-});
+export const PostTeamAttributes2$zodSchema: z.ZodType<PostTeamAttributes2> = z
+  .object({
+    address: z.string().optional(),
+    currency: PostTeamCurrency2$zodSchema,
+    name: z.string(),
+    referred_code: z.string().optional(),
+  });
 
 export type PostTeamData2 = {
   type: PostTeamType2;
   attributes?: PostTeamAttributes2 | undefined;
 };
 
-export const PostTeamData2$zodSchema: z.ZodType<
-  PostTeamData2,
-  z.ZodTypeDef,
-  unknown
-> = z.object({
+export const PostTeamData2$zodSchema: z.ZodType<PostTeamData2> = z.object({
   attributes: z.lazy(() => PostTeamAttributes2$zodSchema).optional(),
   type: PostTeamType2$zodSchema,
 });
 
 export type PostTeamRequest = { data: PostTeamData2 };
 
-export const PostTeamRequest$zodSchema: z.ZodType<
-  PostTeamRequest,
-  z.ZodTypeDef,
-  unknown
-> = z.object({
+export const PostTeamRequest$zodSchema: z.ZodType<PostTeamRequest> = z.object({
   data: z.lazy(() => PostTeamData2$zodSchema),
 });
 
 /**
  * Created
  */
-export type PostTeamResponseBody = { data?: Team | undefined };
+export type PostTeamResponse = { data?: Team | undefined };
 
-export const PostTeamResponseBody$zodSchema: z.ZodType<
-  PostTeamResponseBody,
-  z.ZodTypeDef,
-  unknown
-> = z.object({
-  data: Team$zodSchema.optional(),
-}).describe("Created");
-
-export type PostTeamResponse = {
-  ContentType: string;
-  StatusCode: number;
-  RawResponse: Response;
-  object?: PostTeamResponseBody | undefined;
-};
-
-export const PostTeamResponse$zodSchema: z.ZodType<
-  PostTeamResponse,
-  z.ZodTypeDef,
-  unknown
-> = z.object({
-  ContentType: z.string(),
-  RawResponse: z.instanceof(Response),
-  StatusCode: z.number().int(),
-  object: z.lazy(() => PostTeamResponseBody$zodSchema).optional(),
-});
+export const PostTeamResponse$zodSchema: z.ZodType<PostTeamResponse> = z.object(
+  {
+    data: Team$zodSchema.optional(),
+  },
+).describe("Created");

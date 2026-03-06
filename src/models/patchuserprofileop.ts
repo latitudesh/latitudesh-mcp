@@ -3,15 +3,25 @@
  */
 
 import * as z from "zod";
+import { ClosedEnum } from "../types/enums.js";
 import { UserUpdate, UserUpdate$zodSchema } from "./userupdate.js";
+
+export const PatchUserProfileType2 = {
+  Users: "users",
+} as const;
+export type PatchUserProfileType2 = ClosedEnum<typeof PatchUserProfileType2>;
 
 export const PatchUserProfileType2$zodSchema = z.enum([
   "users",
 ]);
 
-export type PatchUserProfileType2 = z.infer<
-  typeof PatchUserProfileType2$zodSchema
->;
+export const PatchUserProfileRole2 = {
+  Administrator: "administrator",
+  Billing: "billing",
+  Collaborator: "collaborator",
+  Owner: "owner",
+} as const;
+export type PatchUserProfileRole2 = ClosedEnum<typeof PatchUserProfileRole2>;
 
 export const PatchUserProfileRole2$zodSchema = z.enum([
   "administrator",
@@ -20,10 +30,6 @@ export const PatchUserProfileRole2$zodSchema = z.enum([
   "owner",
 ]);
 
-export type PatchUserProfileRole2 = z.infer<
-  typeof PatchUserProfileRole2$zodSchema
->;
-
 export type PatchUserProfileAttributes2 = {
   first_name?: string | undefined;
   last_name?: string | undefined;
@@ -31,9 +37,7 @@ export type PatchUserProfileAttributes2 = {
 };
 
 export const PatchUserProfileAttributes2$zodSchema: z.ZodType<
-  PatchUserProfileAttributes2,
-  z.ZodTypeDef,
-  unknown
+  PatchUserProfileAttributes2
 > = z.object({
   first_name: z.string().optional(),
   last_name: z.string().optional(),
@@ -46,22 +50,17 @@ export type PatchUserProfileData2 = {
   attributes?: PatchUserProfileAttributes2 | undefined;
 };
 
-export const PatchUserProfileData2$zodSchema: z.ZodType<
-  PatchUserProfileData2,
-  z.ZodTypeDef,
-  unknown
-> = z.object({
-  attributes: z.lazy(() => PatchUserProfileAttributes2$zodSchema).optional(),
-  id: z.string(),
-  type: PatchUserProfileType2$zodSchema,
-});
+export const PatchUserProfileData2$zodSchema: z.ZodType<PatchUserProfileData2> =
+  z.object({
+    attributes: z.lazy(() => PatchUserProfileAttributes2$zodSchema).optional(),
+    id: z.string(),
+    type: PatchUserProfileType2$zodSchema,
+  });
 
 export type PatchUserProfileRequestBody2 = { data: PatchUserProfileData2 };
 
 export const PatchUserProfileRequestBody2$zodSchema: z.ZodType<
-  PatchUserProfileRequestBody2,
-  z.ZodTypeDef,
-  unknown
+  PatchUserProfileRequestBody2
 > = z.object({
   data: z.lazy(() => PatchUserProfileData2$zodSchema),
 });
@@ -72,9 +71,7 @@ export type PatchUserProfileRequest = {
 };
 
 export const PatchUserProfileRequest$zodSchema: z.ZodType<
-  PatchUserProfileRequest,
-  z.ZodTypeDef,
-  unknown
+  PatchUserProfileRequest
 > = z.object({
   RequestBody: z.lazy(() => PatchUserProfileRequestBody2$zodSchema),
   id: z.string(),
@@ -83,30 +80,10 @@ export const PatchUserProfileRequest$zodSchema: z.ZodType<
 /**
  * Success
  */
-export type PatchUserProfileResponseBody = { data?: UserUpdate | undefined };
+export type PatchUserProfileResponse = { data?: UserUpdate | undefined };
 
-export const PatchUserProfileResponseBody$zodSchema: z.ZodType<
-  PatchUserProfileResponseBody,
-  z.ZodTypeDef,
-  unknown
+export const PatchUserProfileResponse$zodSchema: z.ZodType<
+  PatchUserProfileResponse
 > = z.object({
   data: UserUpdate$zodSchema.optional(),
 }).describe("Success");
-
-export type PatchUserProfileResponse = {
-  ContentType: string;
-  StatusCode: number;
-  RawResponse: Response;
-  object?: PatchUserProfileResponseBody | undefined;
-};
-
-export const PatchUserProfileResponse$zodSchema: z.ZodType<
-  PatchUserProfileResponse,
-  z.ZodTypeDef,
-  unknown
-> = z.object({
-  ContentType: z.string(),
-  RawResponse: z.instanceof(Response),
-  StatusCode: z.number().int(),
-  object: z.lazy(() => PatchUserProfileResponseBody$zodSchema).optional(),
-});

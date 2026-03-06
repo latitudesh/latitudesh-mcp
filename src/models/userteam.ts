@@ -10,11 +10,7 @@ export type UserTeamBilling = {
   customer_billing_id?: string | undefined;
 };
 
-export const UserTeamBilling$zodSchema: z.ZodType<
-  UserTeamBilling,
-  z.ZodTypeDef,
-  unknown
-> = z.object({
+export const UserTeamBilling$zodSchema: z.ZodType<UserTeamBilling> = z.object({
   customer_billing_id: z.string().optional(),
   id: z.string().optional(),
 });
@@ -22,8 +18,8 @@ export const UserTeamBilling$zodSchema: z.ZodType<
 export type UserTeamAttributes = {
   name?: string | undefined;
   slug?: string | undefined;
-  description?: string | undefined;
-  address?: string | undefined;
+  description?: string | null | undefined;
+  address?: string | null | undefined;
   currency?: string | undefined;
   created_at?: string | undefined;
   updated_at?: string | undefined;
@@ -31,29 +27,25 @@ export type UserTeamAttributes = {
   billing?: UserTeamBilling | undefined;
 };
 
-export const UserTeamAttributes$zodSchema: z.ZodType<
-  UserTeamAttributes,
-  z.ZodTypeDef,
-  unknown
-> = z.object({
-  address: z.string().optional(),
-  billing: z.lazy(() => UserTeamBilling$zodSchema).optional(),
-  created_at: z.string().optional(),
-  currency: z.string().optional(),
-  description: z.string().optional(),
-  name: z.string().optional(),
-  owner: UserInclude$zodSchema.optional(),
-  slug: z.string().optional(),
-  updated_at: z.string().optional(),
-});
+export const UserTeamAttributes$zodSchema: z.ZodType<UserTeamAttributes> = z
+  .object({
+    address: z.string().nullable().optional(),
+    billing: z.lazy(() => UserTeamBilling$zodSchema).optional(),
+    created_at: z.string().optional(),
+    currency: z.string().optional(),
+    description: z.string().nullable().optional(),
+    name: z.string().optional(),
+    owner: UserInclude$zodSchema.optional(),
+    slug: z.string().optional(),
+    updated_at: z.string().optional(),
+  });
 
 export type UserTeam = {
   id?: string | undefined;
   attributes?: UserTeamAttributes | undefined;
 };
 
-export const UserTeam$zodSchema: z.ZodType<UserTeam, z.ZodTypeDef, unknown> = z
-  .object({
-    attributes: z.lazy(() => UserTeamAttributes$zodSchema).optional(),
-    id: z.string().optional(),
-  });
+export const UserTeam$zodSchema: z.ZodType<UserTeam> = z.object({
+  attributes: z.lazy(() => UserTeamAttributes$zodSchema).optional(),
+  id: z.string().optional(),
+});

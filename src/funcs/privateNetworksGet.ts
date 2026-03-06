@@ -22,14 +22,16 @@ import { SDKValidationError } from "../models/errors/sdkvalidationerror.js";
 import {
   GetVirtualNetworkRequest,
   GetVirtualNetworkRequest$zodSchema,
-  GetVirtualNetworkResponse,
-  GetVirtualNetworkResponse$zodSchema,
 } from "../models/getvirtualnetworkop.js";
+import {
+  VirtualNetwork,
+  VirtualNetwork$zodSchema,
+} from "../models/virtualnetwork.js";
 import { APICall, APIPromise } from "../types/async.js";
 import { Result } from "../types/fp.js";
 
 /**
- * Retrieve a Virtual Network
+ * Retrieve VLAN
  *
  * @remarks
  * Retrieve a Virtual Network.
@@ -40,7 +42,7 @@ export function privateNetworksGet(
   options?: RequestOptions,
 ): APIPromise<
   Result<
-    GetVirtualNetworkResponse,
+    VirtualNetwork,
     | APIError
     | SDKValidationError
     | UnexpectedClientError
@@ -64,7 +66,7 @@ async function $do(
 ): Promise<
   [
     Result<
-      GetVirtualNetworkResponse,
+      VirtualNetwork,
       | APIError
       | SDKValidationError
       | UnexpectedClientError
@@ -153,7 +155,7 @@ async function $do(
   };
 
   const [result$] = await M.match<
-    GetVirtualNetworkResponse,
+    VirtualNetwork,
     | APIError
     | SDKValidationError
     | UnexpectedClientError
@@ -162,9 +164,9 @@ async function $do(
     | RequestTimeoutError
     | ConnectionError
   >(
-    M.json(200, GetVirtualNetworkResponse$zodSchema, {
+    M.json(200, VirtualNetwork$zodSchema, {
       ctype: "application/vnd.api+json",
-      key: "object",
+      key: "virtual_network",
     }),
   )(response, req$, { extraFields: responseFields$ });
 

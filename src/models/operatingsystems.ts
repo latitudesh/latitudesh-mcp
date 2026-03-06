@@ -10,22 +10,17 @@ import {
 
 export type OperatingSystemsMeta = {};
 
-export const OperatingSystemsMeta$zodSchema: z.ZodType<
-  OperatingSystemsMeta,
-  z.ZodTypeDef,
-  unknown
-> = z.object({});
+export const OperatingSystemsMeta$zodSchema: z.ZodType<OperatingSystemsMeta> = z
+  .object({});
 
 export type OperatingSystems = {
   data?: Array<OperatingSystemData> | undefined;
   meta?: OperatingSystemsMeta | undefined;
 };
 
-export const OperatingSystems$zodSchema: z.ZodType<
-  OperatingSystems,
-  z.ZodTypeDef,
-  unknown
-> = z.object({
-  data: z.array(OperatingSystemData$zodSchema).optional(),
-  meta: z.lazy(() => OperatingSystemsMeta$zodSchema).optional(),
-});
+export const OperatingSystems$zodSchema: z.ZodType<OperatingSystems> = z.object(
+  {
+    data: z.array(OperatingSystemData$zodSchema).optional(),
+    meta: z.lazy(() => OperatingSystemsMeta$zodSchema).optional(),
+  },
+);

@@ -3,27 +3,25 @@
  */
 
 import * as z from "zod";
-import {
-  OutOfBandConnection,
-  OutOfBandConnection$zodSchema,
-} from "./outofbandconnection.js";
+import { ClosedEnum } from "../types/enums.js";
+
+export const CreateServerOutOfBandType2 = {
+  OutOfBand: "out_of_band",
+} as const;
+export type CreateServerOutOfBandType2 = ClosedEnum<
+  typeof CreateServerOutOfBandType2
+>;
 
 export const CreateServerOutOfBandType2$zodSchema = z.enum([
   "out_of_band",
 ]);
-
-export type CreateServerOutOfBandType2 = z.infer<
-  typeof CreateServerOutOfBandType2$zodSchema
->;
 
 export type CreateServerOutOfBandAttributes2 = {
   ssh_key_id?: string | undefined;
 };
 
 export const CreateServerOutOfBandAttributes2$zodSchema: z.ZodType<
-  CreateServerOutOfBandAttributes2,
-  z.ZodTypeDef,
-  unknown
+  CreateServerOutOfBandAttributes2
 > = z.object({
   ssh_key_id: z.string().optional(),
 });
@@ -34,9 +32,7 @@ export type CreateServerOutOfBandData2 = {
 };
 
 export const CreateServerOutOfBandData2$zodSchema: z.ZodType<
-  CreateServerOutOfBandData2,
-  z.ZodTypeDef,
-  unknown
+  CreateServerOutOfBandData2
 > = z.object({
   attributes: z.lazy(() => CreateServerOutOfBandAttributes2$zodSchema)
     .optional(),
@@ -48,9 +44,7 @@ export type CreateServerOutOfBandRequestBody2 = {
 };
 
 export const CreateServerOutOfBandRequestBody2$zodSchema: z.ZodType<
-  CreateServerOutOfBandRequestBody2,
-  z.ZodTypeDef,
-  unknown
+  CreateServerOutOfBandRequestBody2
 > = z.object({
   data: z.lazy(() => CreateServerOutOfBandData2$zodSchema),
 });
@@ -61,28 +55,8 @@ export type CreateServerOutOfBandRequest = {
 };
 
 export const CreateServerOutOfBandRequest$zodSchema: z.ZodType<
-  CreateServerOutOfBandRequest,
-  z.ZodTypeDef,
-  unknown
+  CreateServerOutOfBandRequest
 > = z.object({
   RequestBody: z.lazy(() => CreateServerOutOfBandRequestBody2$zodSchema),
   server_id: z.string(),
-});
-
-export type CreateServerOutOfBandResponse = {
-  ContentType: string;
-  StatusCode: number;
-  RawResponse: Response;
-  out_of_band_connection?: OutOfBandConnection | undefined;
-};
-
-export const CreateServerOutOfBandResponse$zodSchema: z.ZodType<
-  CreateServerOutOfBandResponse,
-  z.ZodTypeDef,
-  unknown
-> = z.object({
-  ContentType: z.string(),
-  RawResponse: z.instanceof(Response),
-  StatusCode: z.number().int(),
-  out_of_band_connection: OutOfBandConnection$zodSchema.optional(),
 });

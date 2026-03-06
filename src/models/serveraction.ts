@@ -3,19 +3,21 @@
  */
 
 import * as z from "zod";
+import { ClosedEnum } from "../types/enums.js";
+
+export const ServerActionType = {
+  Actions: "actions",
+} as const;
+export type ServerActionType = ClosedEnum<typeof ServerActionType>;
 
 export const ServerActionType$zodSchema = z.enum([
   "actions",
 ]);
 
-export type ServerActionType = z.infer<typeof ServerActionType$zodSchema>;
-
 export type ServerActionAttributes = { status?: string | undefined };
 
 export const ServerActionAttributes$zodSchema: z.ZodType<
-  ServerActionAttributes,
-  z.ZodTypeDef,
-  unknown
+  ServerActionAttributes
 > = z.object({
   status: z.string().optional(),
 });
@@ -26,34 +28,26 @@ export type ServerActionData = {
   attributes?: ServerActionAttributes | undefined;
 };
 
-export const ServerActionData$zodSchema: z.ZodType<
-  ServerActionData,
-  z.ZodTypeDef,
-  unknown
-> = z.object({
-  attributes: z.lazy(() => ServerActionAttributes$zodSchema).optional(),
-  id: z.string().optional(),
-  type: ServerActionType$zodSchema.optional(),
-});
+export const ServerActionData$zodSchema: z.ZodType<ServerActionData> = z.object(
+  {
+    attributes: z.lazy(() => ServerActionAttributes$zodSchema).optional(),
+    id: z.string().optional(),
+    type: ServerActionType$zodSchema.optional(),
+  },
+);
 
 export type ServerActionMeta = {};
 
-export const ServerActionMeta$zodSchema: z.ZodType<
-  ServerActionMeta,
-  z.ZodTypeDef,
-  unknown
-> = z.object({});
+export const ServerActionMeta$zodSchema: z.ZodType<ServerActionMeta> = z.object(
+  {},
+);
 
 export type ServerAction = {
   data?: ServerActionData | undefined;
   meta?: ServerActionMeta | undefined;
 };
 
-export const ServerAction$zodSchema: z.ZodType<
-  ServerAction,
-  z.ZodTypeDef,
-  unknown
-> = z.object({
+export const ServerAction$zodSchema: z.ZodType<ServerAction> = z.object({
   data: z.lazy(() => ServerActionData$zodSchema).optional(),
   meta: z.lazy(() => ServerActionMeta$zodSchema).optional(),
 });

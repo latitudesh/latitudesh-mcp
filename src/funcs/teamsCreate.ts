@@ -29,7 +29,7 @@ import { APICall, APIPromise } from "../types/async.js";
 import { Result } from "../types/fp.js";
 
 /**
- * Create a team
+ * Create team
  */
 export function teamsCreate(
   client$: LatitudeshCore,

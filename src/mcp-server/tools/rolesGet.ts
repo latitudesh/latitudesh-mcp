@@ -12,7 +12,7 @@ const args = {
 
 export const tool$rolesGet: ToolDefinition<typeof args> = {
   name: "roles-get",
-  description: `Retrieve Role`,
+  description: `Retrieve role`,
   annotations: {
     "title": "",
     "destructiveHint": false,

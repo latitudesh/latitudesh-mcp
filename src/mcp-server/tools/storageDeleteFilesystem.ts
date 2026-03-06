@@ -12,7 +12,7 @@ const args = {
 
 export const tool$storageDeleteFilesystem: ToolDefinition<typeof args> = {
   name: "storage-delete-filesystem",
-  description: `Delete a filesystem for a project
+  description: `Delete filesystem
 
 Allows you to remove persistent storage from a project.`,
   annotations: {

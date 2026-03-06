@@ -22,14 +22,16 @@ import { SDKValidationError } from "../models/errors/sdkvalidationerror.js";
 import {
   UpdateVirtualNetworkRequest,
   UpdateVirtualNetworkRequest$zodSchema,
-  UpdateVirtualNetworkResponse,
-  UpdateVirtualNetworkResponse$zodSchema,
 } from "../models/updatevirtualnetworkop.js";
+import {
+  VirtualNetwork,
+  VirtualNetwork$zodSchema,
+} from "../models/virtualnetwork.js";
 import { APICall, APIPromise } from "../types/async.js";
 import { Result } from "../types/fp.js";
 
 /**
- * Update a Virtual Network
+ * Update VLAN
  *
  * @remarks
  * Update a Virtual Network.
@@ -40,7 +42,7 @@ export function privateNetworksUpdate(
   options?: RequestOptions,
 ): APIPromise<
   Result<
-    UpdateVirtualNetworkResponse,
+    VirtualNetwork,
     | APIError
     | SDKValidationError
     | UnexpectedClientError
@@ -64,7 +66,7 @@ async function $do(
 ): Promise<
   [
     Result<
-      UpdateVirtualNetworkResponse,
+      VirtualNetwork,
       | APIError
       | SDKValidationError
       | UnexpectedClientError
@@ -154,7 +156,7 @@ async function $do(
   };
 
   const [result$] = await M.match<
-    UpdateVirtualNetworkResponse,
+    VirtualNetwork,
     | APIError
     | SDKValidationError
     | UnexpectedClientError
@@ -163,7 +165,7 @@ async function $do(
     | RequestTimeoutError
     | ConnectionError
   >(
-    M.json(200, UpdateVirtualNetworkResponse$zodSchema, {
+    M.json(200, VirtualNetwork$zodSchema, {
       ctype: "application/vnd.api+json",
       key: "virtual_network",
     }),

@@ -12,7 +12,7 @@ const args = {
 
 export const tool$virtualMachinesList: ToolDefinition<typeof args> = {
   name: "virtual-machines-list",
-  description: `Get Teams Virtual Machines
+  description: `List VMs
 
 Show all Team's Virtual Machines.
 `,

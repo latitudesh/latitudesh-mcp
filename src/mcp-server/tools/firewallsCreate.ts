@@ -12,7 +12,7 @@ const args = {
 
 export const tool$firewallsCreate: ToolDefinition<typeof args> = {
   name: "firewalls-create",
-  description: `Create a firewall
+  description: `Create firewall
 
 Create a firewall`,
   annotations: {

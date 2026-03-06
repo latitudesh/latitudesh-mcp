@@ -158,6 +158,10 @@ async function $do(
       ctype: "application/vnd.api+json",
       key: "object",
     }),
+    M.json(503, PostStorageVolumesResponse$zodSchema, {
+      ctype: "application/vnd.api+json",
+      key: "error_object",
+    }),
   )(response, req$, { extraFields: responseFields$ });
 
   return [result$, { status: "complete", request: req$, response }];

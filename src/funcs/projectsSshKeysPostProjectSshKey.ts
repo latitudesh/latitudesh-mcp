@@ -29,7 +29,7 @@ import { APICall, APIPromise } from "../types/async.js";
 import { Result } from "../types/fp.js";
 
 /**
- * Create a Project SSH Key
+ * Create SSH Key
  *
  * @remarks
  * Allow you create SSH Keys in a project. These keys can be used to access servers after deploy and reinstall actions.

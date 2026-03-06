@@ -12,7 +12,7 @@ const args = {
 
 export const tool$serversDelete: ToolDefinition<typeof args> = {
   name: "servers-delete",
-  description: `Remove Server`,
+  description: `Remove server`,
   annotations: {
     "title": "",
     "destructiveHint": true,

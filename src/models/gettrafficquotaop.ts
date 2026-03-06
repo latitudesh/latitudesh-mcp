@@ -3,32 +3,11 @@
  */
 
 import * as z from "zod";
-import { TrafficQuota, TrafficQuota$zodSchema } from "./trafficquota.js";
 
 export type GetTrafficQuotaRequest = { filterProject?: string | undefined };
 
 export const GetTrafficQuotaRequest$zodSchema: z.ZodType<
-  GetTrafficQuotaRequest,
-  z.ZodTypeDef,
-  unknown
+  GetTrafficQuotaRequest
 > = z.object({
   filterProject: z.string().optional(),
-});
-
-export type GetTrafficQuotaResponse = {
-  ContentType: string;
-  StatusCode: number;
-  RawResponse: Response;
-  traffic_quota?: TrafficQuota | undefined;
-};
-
-export const GetTrafficQuotaResponse$zodSchema: z.ZodType<
-  GetTrafficQuotaResponse,
-  z.ZodTypeDef,
-  unknown
-> = z.object({
-  ContentType: z.string(),
-  RawResponse: z.instanceof(Response),
-  StatusCode: z.number().int(),
-  traffic_quota: TrafficQuota$zodSchema.optional(),
 });

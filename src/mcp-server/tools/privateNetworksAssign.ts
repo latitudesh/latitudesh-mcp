@@ -12,7 +12,7 @@ const args = {
 
 export const tool$privateNetworksAssign: ToolDefinition<typeof args> = {
   name: "private-networks-assign",
-  description: `Assign Virtual network`,
+  description: `Assign VLAN`,
   annotations: {
     "title": "",
     "destructiveHint": false,

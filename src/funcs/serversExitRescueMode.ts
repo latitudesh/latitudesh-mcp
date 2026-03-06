@@ -22,14 +22,16 @@ import { SDKValidationError } from "../models/errors/sdkvalidationerror.js";
 import {
   ServerExitRescueModeRequest,
   ServerExitRescueModeRequest$zodSchema,
-  ServerExitRescueModeResponse,
-  ServerExitRescueModeResponse$zodSchema,
 } from "../models/serverexitrescuemodeop.js";
+import {
+  ServerRescue,
+  ServerRescue$zodSchema,
+} from "../models/serverrescue.js";
 import { APICall, APIPromise } from "../types/async.js";
 import { Result } from "../types/fp.js";
 
 /**
- * Exits rescue mode for a Server
+ * Exits rescue mode
  *
  * @remarks
  * Exits rescue mode on a given server.
@@ -40,7 +42,7 @@ export function serversExitRescueMode(
   options?: RequestOptions,
 ): APIPromise<
   Result<
-    ServerExitRescueModeResponse,
+    ServerRescue,
     | APIError
     | SDKValidationError
     | UnexpectedClientError
@@ -64,7 +66,7 @@ async function $do(
 ): Promise<
   [
     Result<
-      ServerExitRescueModeResponse,
+      ServerRescue,
       | APIError
       | SDKValidationError
       | UnexpectedClientError
@@ -153,7 +155,7 @@ async function $do(
   };
 
   const [result$] = await M.match<
-    ServerExitRescueModeResponse,
+    ServerRescue,
     | APIError
     | SDKValidationError
     | UnexpectedClientError
@@ -162,7 +164,7 @@ async function $do(
     | RequestTimeoutError
     | ConnectionError
   >(
-    M.json(200, ServerExitRescueModeResponse$zodSchema, {
+    M.json(200, ServerRescue$zodSchema, {
       ctype: "application/vnd.api+json",
       key: "server_rescue",
     }),

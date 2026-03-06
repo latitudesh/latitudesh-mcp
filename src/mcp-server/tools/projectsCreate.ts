@@ -12,7 +12,7 @@ const args = {
 
 export const tool$projectsCreate: ToolDefinition<typeof args> = {
   name: "projects-create",
-  description: `Create a Project`,
+  description: `Create project`,
   annotations: {
     "title": "",
     "destructiveHint": false,

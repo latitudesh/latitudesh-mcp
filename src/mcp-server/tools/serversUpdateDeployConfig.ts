@@ -12,7 +12,7 @@ const args = {
 
 export const tool$serversUpdateDeployConfig: ToolDefinition<typeof args> = {
   name: "servers-update-deploy-config",
-  description: `Update Deploy Config`,
+  description: `Update deploy config`,
   annotations: {
     "title": "",
     "destructiveHint": false,

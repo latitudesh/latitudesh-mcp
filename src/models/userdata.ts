@@ -3,26 +3,18 @@
  */
 
 import * as z from "zod";
-import {
-  UserDataProperties,
-  UserDataProperties$zodSchema,
-} from "./userdataproperties.js";
+import { UserDataObject, UserDataObject$zodSchema } from "./userdataobject.js";
 
 export type UserDataMeta = {};
 
-export const UserDataMeta$zodSchema: z.ZodType<
-  UserDataMeta,
-  z.ZodTypeDef,
-  unknown
-> = z.object({});
+export const UserDataMeta$zodSchema: z.ZodType<UserDataMeta> = z.object({});
 
 export type UserData = {
-  data?: UserDataProperties | undefined;
+  data?: Array<UserDataObject> | undefined;
   meta?: UserDataMeta | undefined;
 };
 
-export const UserData$zodSchema: z.ZodType<UserData, z.ZodTypeDef, unknown> = z
-  .object({
-    data: UserDataProperties$zodSchema.optional(),
-    meta: z.lazy(() => UserDataMeta$zodSchema).optional(),
-  });
+export const UserData$zodSchema: z.ZodType<UserData> = z.object({
+  data: z.array(UserDataObject$zodSchema).optional(),
+  meta: z.lazy(() => UserDataMeta$zodSchema).optional(),
+});

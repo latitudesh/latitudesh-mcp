@@ -3,32 +3,11 @@
  */
 
 import * as z from "zod";
-import { ServerRescue, ServerRescue$zodSchema } from "./serverrescue.js";
 
 export type ServerStartRescueModeRequest = { server_id: string };
 
 export const ServerStartRescueModeRequest$zodSchema: z.ZodType<
-  ServerStartRescueModeRequest,
-  z.ZodTypeDef,
-  unknown
+  ServerStartRescueModeRequest
 > = z.object({
   server_id: z.string(),
-});
-
-export type ServerStartRescueModeResponse = {
-  ContentType: string;
-  StatusCode: number;
-  RawResponse: Response;
-  server_rescue?: ServerRescue | undefined;
-};
-
-export const ServerStartRescueModeResponse$zodSchema: z.ZodType<
-  ServerStartRescueModeResponse,
-  z.ZodTypeDef,
-  unknown
-> = z.object({
-  ContentType: z.string(),
-  RawResponse: z.instanceof(Response),
-  StatusCode: z.number().int(),
-  server_rescue: ServerRescue$zodSchema.optional(),
 });

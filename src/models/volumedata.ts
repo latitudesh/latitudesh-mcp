@@ -3,47 +3,48 @@
  */
 
 import * as z from "zod";
+import { ClosedEnum } from "../types/enums.js";
 import { ProjectInclude, ProjectInclude$zodSchema } from "./projectinclude.js";
 import { TeamInclude, TeamInclude$zodSchema } from "./teaminclude.js";
+
+export const VolumeDataType = {
+  Volumes: "volumes",
+} as const;
+export type VolumeDataType = ClosedEnum<typeof VolumeDataType>;
 
 export const VolumeDataType$zodSchema = z.enum([
   "volumes",
 ]);
 
-export type VolumeDataType = z.infer<typeof VolumeDataType$zodSchema>;
-
 export type Initiator = { nqn?: string | undefined };
 
-export const Initiator$zodSchema: z.ZodType<Initiator, z.ZodTypeDef, unknown> =
-  z.object({
-    nqn: z.string().optional(),
-  });
+export const Initiator$zodSchema: z.ZodType<Initiator> = z.object({
+  nqn: z.string().optional(),
+});
 
 export type VolumeDataAttributes = {
   name?: string | undefined;
   size_in_gb?: number | undefined;
-  created_at?: string | undefined;
-  namespace_id?: number | undefined;
-  connector_id?: string | undefined;
-  initiators?: Array<Initiator> | undefined;
+  created_at?: string | null | undefined;
+  namespace_id?: string | null | undefined;
+  connector_id?: string | null | undefined;
+  initiators?: Array<Initiator> | null | undefined;
   project?: ProjectInclude | undefined;
   team?: TeamInclude | undefined;
 };
 
-export const VolumeDataAttributes$zodSchema: z.ZodType<
-  VolumeDataAttributes,
-  z.ZodTypeDef,
-  unknown
-> = z.object({
-  connector_id: z.string().optional(),
-  created_at: z.string().datetime({ offset: true }).optional(),
-  initiators: z.array(z.lazy(() => Initiator$zodSchema)).optional(),
-  name: z.string().optional(),
-  namespace_id: z.number().int().optional(),
-  project: ProjectInclude$zodSchema.optional(),
-  size_in_gb: z.number().int().optional(),
-  team: TeamInclude$zodSchema.optional(),
-});
+export const VolumeDataAttributes$zodSchema: z.ZodType<VolumeDataAttributes> = z
+  .object({
+    connector_id: z.string().nullable().optional(),
+    created_at: z.iso.datetime({ offset: true }).nullable().optional(),
+    initiators: z.array(z.lazy(() => Initiator$zodSchema)).nullable()
+      .optional(),
+    name: z.string().optional(),
+    namespace_id: z.string().nullable().optional(),
+    project: ProjectInclude$zodSchema.optional(),
+    size_in_gb: z.int().optional(),
+    team: TeamInclude$zodSchema.optional(),
+  });
 
 export type VolumeData = {
   id?: string | undefined;
@@ -51,11 +52,7 @@ export type VolumeData = {
   attributes?: VolumeDataAttributes | undefined;
 };
 
-export const VolumeData$zodSchema: z.ZodType<
-  VolumeData,
-  z.ZodTypeDef,
-  unknown
-> = z.object({
+export const VolumeData$zodSchema: z.ZodType<VolumeData> = z.object({
   attributes: z.lazy(() => VolumeDataAttributes$zodSchema).optional(),
   id: z.string().optional(),
   type: VolumeDataType$zodSchema.optional(),

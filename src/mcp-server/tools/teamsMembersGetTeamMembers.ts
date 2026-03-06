@@ -12,7 +12,7 @@ const args = {
 
 export const tool$teamsMembersGetTeamMembers: ToolDefinition<typeof args> = {
   name: "teams-members-get-team-members",
-  description: `List all Team Members`,
+  description: `List members`,
   annotations: {
     "title": "",
     "destructiveHint": false,

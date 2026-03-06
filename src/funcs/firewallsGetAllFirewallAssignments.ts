@@ -29,10 +29,10 @@ import { APICall, APIPromise } from "../types/async.js";
 import { Result } from "../types/fp.js";
 
 /**
- * List All Firewall Assignments
+ * List firewall assignments
  *
  * @remarks
- * List all firewall assignments
+ * Returns a list of all servers assigned to one or more firewalls.
  */
 export function firewallsGetAllFirewallAssignments(
   client$: LatitudeshCore,

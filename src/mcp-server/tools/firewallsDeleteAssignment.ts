@@ -12,9 +12,9 @@ const args = {
 
 export const tool$firewallsDeleteAssignment: ToolDefinition<typeof args> = {
   name: "firewalls-delete-assignment",
-  description: `Delete Firewall Assignment
+  description: `Delete assignment
 
-Remove a server from a firewall`,
+Removes a server from a firewall by its ID.`,
   annotations: {
     "title": "",
     "destructiveHint": true,

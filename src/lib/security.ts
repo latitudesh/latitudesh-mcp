@@ -84,7 +84,10 @@ type SecurityInputOAuth2 = {
 type SecurityInputOAuth2ClientCredentials = {
   type: "oauth2:client_credentials";
   value:
-    | { clientID?: string | undefined; clientSecret?: string | undefined }
+    | {
+      clientID?: string | undefined;
+      clientSecret?: string | undefined;
+    }
     | null
     | string
     | undefined;
@@ -243,7 +246,7 @@ export function resolveGlobalSecurity(
       {
         fieldName: "Authorization",
         type: "apiKey:header",
-        value: security?.Bearer ?? env().LATITUDESH_BEARER,
+        value: security?.Bearer || env().LATITUDESH_BEARER,
       },
     ],
   );

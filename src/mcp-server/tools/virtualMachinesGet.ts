@@ -12,7 +12,7 @@ const args = {
 
 export const tool$virtualMachinesGet: ToolDefinition<typeof args> = {
   name: "virtual-machines-get",
-  description: `Get a Virtual Machine
+  description: `Retrieve VM
 
 Show a Virtual Machine.
 `,

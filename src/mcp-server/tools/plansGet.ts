@@ -12,7 +12,7 @@ const args = {
 
 export const tool$plansGet: ToolDefinition<typeof args> = {
   name: "plans-get",
-  description: `Retrieve a Plan`,
+  description: `Retrieve plan`,
   annotations: {
     "title": "",
     "destructiveHint": false,

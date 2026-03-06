@@ -12,7 +12,7 @@ const args = {
 
 export const tool$serversList: ToolDefinition<typeof args> = {
   name: "servers-list",
-  description: `List all Servers
+  description: `List servers
 
 Returns a list of all servers belonging to the team.
 `,

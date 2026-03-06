@@ -12,7 +12,7 @@ const args = {
 
 export const tool$storageCreateFilesystem: ToolDefinition<typeof args> = {
   name: "storage-create-filesystem",
-  description: `Create a filesystem for a project
+  description: `Create filesystem
 
 Allows you to add persistent storage to a project. These filesystems can be used to store data across your servers.`,
   annotations: {

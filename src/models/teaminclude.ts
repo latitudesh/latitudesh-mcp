@@ -6,28 +6,23 @@ import * as z from "zod";
 
 export type Currency = {};
 
-export const Currency$zodSchema: z.ZodType<Currency, z.ZodTypeDef, unknown> = z
-  .object({});
+export const Currency$zodSchema: z.ZodType<Currency> = z.object({});
 
 export type TeamInclude = {
   id?: string | undefined;
   name?: string | undefined;
   slug?: string | undefined;
-  description?: string | undefined;
+  description?: string | null | undefined;
   address?: string | undefined;
   currency?: Currency | undefined;
   status?: string | undefined;
   feature_flags?: Array<string> | undefined;
 };
 
-export const TeamInclude$zodSchema: z.ZodType<
-  TeamInclude,
-  z.ZodTypeDef,
-  unknown
-> = z.object({
+export const TeamInclude$zodSchema: z.ZodType<TeamInclude> = z.object({
   address: z.string().optional(),
   currency: z.lazy(() => Currency$zodSchema).optional(),
-  description: z.string().optional(),
+  description: z.string().nullable().optional(),
   feature_flags: z.array(z.string()).optional(),
   id: z.string().optional(),
   name: z.string().optional(),
