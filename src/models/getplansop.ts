@@ -3,11 +3,24 @@
  */
 
 import * as z from "zod";
+import { ClosedEnum } from "../types/enums.js";
 import { PlanData, PlanData$zodSchema } from "./plandata.js";
 
 /**
  * The stock level at the site to filter by
  */
+export const FilterStockLevel = {
+  Unavailable: "unavailable",
+  Low: "low",
+  Medium: "medium",
+  High: "high",
+  Unique: "unique",
+} as const;
+/**
+ * The stock level at the site to filter by
+ */
+export type FilterStockLevel = ClosedEnum<typeof FilterStockLevel>;
+
 export const FilterStockLevel$zodSchema = z.enum([
   "unavailable",
   "low",
@@ -15,8 +28,6 @@ export const FilterStockLevel$zodSchema = z.enum([
   "high",
   "unique",
 ]).describe("The stock level at the site to filter by");
-
-export type FilterStockLevel = z.infer<typeof FilterStockLevel$zodSchema>;
 
 export type GetPlansRequest = {
   filterName?: string | undefined;
@@ -29,16 +40,9 @@ export type GetPlansRequest = {
   filterDisk?: number | undefined;
 };
 
-export const GetPlansRequest$zodSchema: z.ZodType<
-  GetPlansRequest,
-  z.ZodTypeDef,
-  unknown
-> = z.object({
-  filterDisk: z.number().int().describe(
-    "The disk size in Gigabytes to filter by, should be used with the following options:\n"
-      + "                              [eql] to filter for values equal to the provided value.\n"
-      + "                              [gte] to filter for values greater or equal to the provided value.\n"
-      + "                              [lte] to filter by values lower or equal to the provided value.",
+export const GetPlansRequest$zodSchema: z.ZodType<GetPlansRequest> = z.object({
+  filterDisk: z.int().describe(
+    "The disk size in Gigabytes to filter by, should be used with the following options:\n                              [eql] to filter for values equal to the provided value.\n                              [gte] to filter for values greater or equal to the provided value.\n                              [lte] to filter by values lower or equal to the provided value.",
   ).optional(),
   filterGpu: z.boolean().describe(
     "Filter by the existence of an associated GPU",
@@ -49,11 +53,8 @@ export const GetPlansRequest$zodSchema: z.ZodType<
   filterLocation: z.string().describe("The location of the site to filter by")
     .optional(),
   filterName: z.string().describe("The plan name to filter by").optional(),
-  filterRam: z.number().int().describe(
-    "The ram size in Gigabytes to filter by, should be used with the following options:\n"
-      + "                              [eql] to filter for values equal to the provided value.\n"
-      + "                              [gte] to filter for values greater or equal to the provided value.\n"
-      + "                              [lte] to filter by values lower or equal to the provided value.",
+  filterRam: z.int().describe(
+    "The ram size in Gigabytes to filter by, should be used with the following options:\n                              [eql] to filter for values equal to the provided value.\n                              [gte] to filter for values greater or equal to the provided value.\n                              [lte] to filter by values lower or equal to the provided value.",
   ).optional(),
   filterSlug: z.string().describe("The plan slug to filter by").optional(),
   filterStockLevel: FilterStockLevel$zodSchema.optional(),
@@ -62,30 +63,10 @@ export const GetPlansRequest$zodSchema: z.ZodType<
 /**
  * Success
  */
-export type GetPlansResponseBody = { data?: Array<PlanData> | undefined };
+export type GetPlansResponse = { data?: Array<PlanData> | undefined };
 
-export const GetPlansResponseBody$zodSchema: z.ZodType<
-  GetPlansResponseBody,
-  z.ZodTypeDef,
-  unknown
-> = z.object({
-  data: z.array(PlanData$zodSchema).optional(),
-}).describe("Success");
-
-export type GetPlansResponse = {
-  ContentType: string;
-  StatusCode: number;
-  RawResponse: Response;
-  object?: GetPlansResponseBody | undefined;
-};
-
-export const GetPlansResponse$zodSchema: z.ZodType<
-  GetPlansResponse,
-  z.ZodTypeDef,
-  unknown
-> = z.object({
-  ContentType: z.string(),
-  RawResponse: z.instanceof(Response),
-  StatusCode: z.number().int(),
-  object: z.lazy(() => GetPlansResponseBody$zodSchema).optional(),
-});
+export const GetPlansResponse$zodSchema: z.ZodType<GetPlansResponse> = z.object(
+  {
+    data: z.array(PlanData$zodSchema).optional(),
+  },
+).describe("Success");

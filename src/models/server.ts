@@ -7,19 +7,14 @@ import { ServerData, ServerData$zodSchema } from "./serverdata.js";
 
 export type ServerMeta = {};
 
-export const ServerMeta$zodSchema: z.ZodType<
-  ServerMeta,
-  z.ZodTypeDef,
-  unknown
-> = z.object({});
+export const ServerMeta$zodSchema: z.ZodType<ServerMeta> = z.object({});
 
 export type Server = {
   data?: ServerData | undefined;
   meta?: ServerMeta | undefined;
 };
 
-export const Server$zodSchema: z.ZodType<Server, z.ZodTypeDef, unknown> = z
-  .object({
-    data: ServerData$zodSchema.optional(),
-    meta: z.lazy(() => ServerMeta$zodSchema).optional(),
-  });
+export const Server$zodSchema: z.ZodType<Server> = z.object({
+  data: ServerData$zodSchema.optional(),
+  meta: z.lazy(() => ServerMeta$zodSchema).optional(),
+});

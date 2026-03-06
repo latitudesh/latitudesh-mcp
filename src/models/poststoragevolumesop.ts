@@ -3,15 +3,20 @@
  */
 
 import * as z from "zod";
+import { ClosedEnum } from "../types/enums.js";
+import { ErrorObject, ErrorObject$zodSchema } from "./errorobject.js";
 import { VolumeData, VolumeData$zodSchema } from "./volumedata.js";
+
+export const PostStorageVolumesType2 = {
+  Volumes: "volumes",
+} as const;
+export type PostStorageVolumesType2 = ClosedEnum<
+  typeof PostStorageVolumesType2
+>;
 
 export const PostStorageVolumesType2$zodSchema = z.enum([
   "volumes",
 ]);
-
-export type PostStorageVolumesType2 = z.infer<
-  typeof PostStorageVolumesType2$zodSchema
->;
 
 export type PostStorageVolumesAttributes2 = {
   project: string;
@@ -20,13 +25,11 @@ export type PostStorageVolumesAttributes2 = {
 };
 
 export const PostStorageVolumesAttributes2$zodSchema: z.ZodType<
-  PostStorageVolumesAttributes2,
-  z.ZodTypeDef,
-  unknown
+  PostStorageVolumesAttributes2
 > = z.object({
   name: z.string(),
   project: z.string(),
-  size_in_gb: z.number().int().default(1500),
+  size_in_gb: z.int().default(1500),
 });
 
 export type PostStorageVolumesData2 = {
@@ -35,9 +38,7 @@ export type PostStorageVolumesData2 = {
 };
 
 export const PostStorageVolumesData2$zodSchema: z.ZodType<
-  PostStorageVolumesData2,
-  z.ZodTypeDef,
-  unknown
+  PostStorageVolumesData2
 > = z.object({
   attributes: z.lazy(() => PostStorageVolumesAttributes2$zodSchema),
   type: PostStorageVolumesType2$zodSchema,
@@ -46,9 +47,7 @@ export const PostStorageVolumesData2$zodSchema: z.ZodType<
 export type PostStorageVolumesRequest = { data: PostStorageVolumesData2 };
 
 export const PostStorageVolumesRequest$zodSchema: z.ZodType<
-  PostStorageVolumesRequest,
-  z.ZodTypeDef,
-  unknown
+  PostStorageVolumesRequest
 > = z.object({
   data: z.lazy(() => PostStorageVolumesData2$zodSchema),
 });
@@ -59,27 +58,18 @@ export const PostStorageVolumesRequest$zodSchema: z.ZodType<
 export type PostStorageVolumesResponseBody = { data?: VolumeData | undefined };
 
 export const PostStorageVolumesResponseBody$zodSchema: z.ZodType<
-  PostStorageVolumesResponseBody,
-  z.ZodTypeDef,
-  unknown
+  PostStorageVolumesResponseBody
 > = z.object({
   data: VolumeData$zodSchema.optional(),
 }).describe("Created");
 
-export type PostStorageVolumesResponse = {
-  ContentType: string;
-  StatusCode: number;
-  RawResponse: Response;
-  object?: PostStorageVolumesResponseBody | undefined;
-};
+export type PostStorageVolumesResponse =
+  | PostStorageVolumesResponseBody
+  | ErrorObject;
 
 export const PostStorageVolumesResponse$zodSchema: z.ZodType<
-  PostStorageVolumesResponse,
-  z.ZodTypeDef,
-  unknown
-> = z.object({
-  ContentType: z.string(),
-  RawResponse: z.instanceof(Response),
-  StatusCode: z.number().int(),
-  object: z.lazy(() => PostStorageVolumesResponseBody$zodSchema).optional(),
-});
+  PostStorageVolumesResponse
+> = z.union([
+  z.lazy(() => PostStorageVolumesResponseBody$zodSchema),
+  ErrorObject$zodSchema,
+]);

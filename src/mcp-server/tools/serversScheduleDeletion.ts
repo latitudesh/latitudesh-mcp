@@ -12,7 +12,7 @@ const args = {
 
 export const tool$serversScheduleDeletion: ToolDefinition<typeof args> = {
   name: "servers-schedule-deletion",
-  description: `Schedule the server deletion
+  description: `Schedule server deletion
 
 Schedules the server to be removed at the end of the billing cycle.`,
   annotations: {

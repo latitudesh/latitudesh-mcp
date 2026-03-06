@@ -22,14 +22,16 @@ import { SDKValidationError } from "../models/errors/sdkvalidationerror.js";
 import {
   PostUserDataRequest,
   PostUserDataRequest$zodSchema,
-  PostUserDataResponse,
-  PostUserDataResponse$zodSchema,
 } from "../models/postuserdataop.js";
+import {
+  UserDataObject,
+  UserDataObject$zodSchema,
+} from "../models/userdataobject.js";
 import { APICall, APIPromise } from "../types/async.js";
 import { Result } from "../types/fp.js";
 
 /**
- * Create an User Data
+ * Create user data
  *
  * @remarks
  * Allows you to create User Data in a team, which can be used to perform custom setup on your servers after deploy and reinstall.
@@ -40,7 +42,7 @@ export function userDataCreateNew(
   options?: RequestOptions,
 ): APIPromise<
   Result<
-    PostUserDataResponse,
+    UserDataObject,
     | APIError
     | SDKValidationError
     | UnexpectedClientError
@@ -64,7 +66,7 @@ async function $do(
 ): Promise<
   [
     Result<
-      PostUserDataResponse,
+      UserDataObject,
       | APIError
       | SDKValidationError
       | UnexpectedClientError
@@ -145,7 +147,7 @@ async function $do(
   };
 
   const [result$] = await M.match<
-    PostUserDataResponse,
+    UserDataObject,
     | APIError
     | SDKValidationError
     | UnexpectedClientError
@@ -154,9 +156,9 @@ async function $do(
     | RequestTimeoutError
     | ConnectionError
   >(
-    M.json(201, PostUserDataResponse$zodSchema, {
+    M.json(201, UserDataObject$zodSchema, {
       ctype: "application/vnd.api+json",
-      key: "user_data",
+      key: "user_data_object",
     }),
   )(response, req$, { extraFields: responseFields$ });
 

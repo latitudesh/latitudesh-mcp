@@ -3,14 +3,36 @@
  */
 
 import * as z from "zod";
+import { ClosedEnum } from "../types/enums.js";
 import {
   VpnSessionDataWithPassword,
   VpnSessionDataWithPassword$zodSchema,
 } from "./vpnsessiondatawithpassword.js";
 
+export const FilterLocation = {
+  Ash: "ASH",
+  Bue: "BUE",
+  Chi: "CHI",
+  Dal: "DAL",
+  Fra: "FRA",
+  Lax: "LAX",
+  Lon: "LON",
+  Mex: "MEX",
+  Mex2: "MEX2",
+  Mia: "MIA",
+  Mia2: "MIA2",
+  Nyc: "NYC",
+  Sao: "SAO",
+  Sao2: "SAO2",
+  Sgp: "SGP",
+  Syd: "SYD",
+  Tyo: "TYO",
+  Tyo2: "TYO2",
+} as const;
+export type FilterLocation = ClosedEnum<typeof FilterLocation>;
+
 export const FilterLocation$zodSchema = z.enum([
   "ASH",
-  "BGT",
   "BUE",
   "CHI",
   "DAL",
@@ -22,67 +44,39 @@ export const FilterLocation$zodSchema = z.enum([
   "MIA",
   "MIA2",
   "NYC",
-  "SAN",
   "SAO",
   "SAO2",
+  "SGP",
   "SYD",
   "TYO",
   "TYO2",
 ]);
 
-export type FilterLocation = z.infer<typeof FilterLocation$zodSchema>;
-
 export type GetVpnSessionsRequest = {
   filterLocation?: FilterLocation | undefined;
 };
 
-export const GetVpnSessionsRequest$zodSchema: z.ZodType<
-  GetVpnSessionsRequest,
-  z.ZodTypeDef,
-  unknown
-> = z.object({
-  filterLocation: FilterLocation$zodSchema.optional(),
-});
+export const GetVpnSessionsRequest$zodSchema: z.ZodType<GetVpnSessionsRequest> =
+  z.object({
+    filterLocation: FilterLocation$zodSchema.optional(),
+  });
 
 export type GetVpnSessionsMeta = {};
 
-export const GetVpnSessionsMeta$zodSchema: z.ZodType<
-  GetVpnSessionsMeta,
-  z.ZodTypeDef,
-  unknown
-> = z.object({});
+export const GetVpnSessionsMeta$zodSchema: z.ZodType<GetVpnSessionsMeta> = z
+  .object({});
 
 /**
  * Success
  */
-export type GetVpnSessionsResponseBody = {
+export type GetVpnSessionsResponse = {
   data?: Array<VpnSessionDataWithPassword> | undefined;
   meta?: GetVpnSessionsMeta | undefined;
 };
 
-export const GetVpnSessionsResponseBody$zodSchema: z.ZodType<
-  GetVpnSessionsResponseBody,
-  z.ZodTypeDef,
-  unknown
+export const GetVpnSessionsResponse$zodSchema: z.ZodType<
+  GetVpnSessionsResponse
 > = z.object({
   data: z.array(VpnSessionDataWithPassword$zodSchema).optional(),
   meta: z.lazy(() => GetVpnSessionsMeta$zodSchema).optional(),
 }).describe("Success");
-
-export type GetVpnSessionsResponse = {
-  ContentType: string;
-  StatusCode: number;
-  RawResponse: Response;
-  object?: GetVpnSessionsResponseBody | undefined;
-};
-
-export const GetVpnSessionsResponse$zodSchema: z.ZodType<
-  GetVpnSessionsResponse,
-  z.ZodTypeDef,
-  unknown
-> = z.object({
-  ContentType: z.string(),
-  RawResponse: z.instanceof(Response),
-  StatusCode: z.number().int(),
-  object: z.lazy(() => GetVpnSessionsResponseBody$zodSchema).optional(),
-});

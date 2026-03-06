@@ -12,9 +12,9 @@ const args = {
 
 export const tool$firewallsListAssignments: ToolDefinition<typeof args> = {
   name: "firewalls-list-assignments",
-  description: `Firewall Assignments
+  description: `Firewall assignments
 
-List servers assigned to a firewall`,
+Returns a list of all servers assigned to a particular firewall.`,
   annotations: {
     "title": "",
     "destructiveHint": false,

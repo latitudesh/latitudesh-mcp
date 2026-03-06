@@ -3,25 +3,11 @@
  */
 
 import * as z from "zod";
-import {
-  VirtualMachinePlans,
-  VirtualMachinePlans$zodSchema,
-} from "./virtualmachineplans.js";
 
-export type GetVmPlansResponse = {
-  ContentType: string;
-  StatusCode: number;
-  RawResponse: Response;
-  virtual_machine_plans?: VirtualMachinePlans | undefined;
-};
+export type GetVmPlansRequest = { filterGpu?: boolean | undefined };
 
-export const GetVmPlansResponse$zodSchema: z.ZodType<
-  GetVmPlansResponse,
-  z.ZodTypeDef,
-  unknown
-> = z.object({
-  ContentType: z.string(),
-  RawResponse: z.instanceof(Response),
-  StatusCode: z.number().int(),
-  virtual_machine_plans: VirtualMachinePlans$zodSchema.optional(),
-});
+export const GetVmPlansRequest$zodSchema: z.ZodType<GetVmPlansRequest> = z
+  .object({
+    filterGpu: z.boolean().describe("Filter plans by GPU availability")
+      .optional(),
+  });

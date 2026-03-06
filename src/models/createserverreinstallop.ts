@@ -3,49 +3,63 @@
  */
 
 import * as z from "zod";
+import { ClosedEnum } from "../types/enums.js";
+
+export const CreateServerReinstallType2 = {
+  Reinstalls: "reinstalls",
+} as const;
+export type CreateServerReinstallType2 = ClosedEnum<
+  typeof CreateServerReinstallType2
+>;
 
 export const CreateServerReinstallType2$zodSchema = z.enum([
   "reinstalls",
 ]);
 
-export type CreateServerReinstallType2 = z.infer<
-  typeof CreateServerReinstallType2$zodSchema
->;
-
 /**
  * The OS selected for the reinstall process
  */
+export const CreateServerReinstallOperatingSystem2 = {
+  Centos74X64: "centos_7_4_x64",
+  Centos8X64: "centos_8_x64",
+  Debian10: "debian_10",
+  Debian11: "debian_11",
+  Debian12: "debian_12",
+  Ipxe: "ipxe",
+  Rhel8: "rhel8",
+  Rockylinux8: "rockylinux_8",
+  Ubuntu22MlInABox: "ubuntu22_ml_in_a_box",
+  Ubuntu24MlInABox: "ubuntu24_ml_in_a_box",
+  Ubuntu2004X64Lts: "ubuntu_20_04_x64_lts",
+  Ubuntu2204X64Lts: "ubuntu_22_04_x64_lts",
+  Ubuntu2404X64Lts: "ubuntu_24_04_x64_lts",
+  Windows2022Std: "windows_2022_std",
+  WindowsServer2019StdV1: "windows_server_2019_std_v1",
+} as const;
+/**
+ * The OS selected for the reinstall process
+ */
+export type CreateServerReinstallOperatingSystem2 = ClosedEnum<
+  typeof CreateServerReinstallOperatingSystem2
+>;
+
 export const CreateServerReinstallOperatingSystem2$zodSchema = z.enum([
-  "ipxe",
-  "windows_server_2019_std_v1",
-  "ubuntu_22_04_x64_lts",
-  "debian_11",
-  "debian_10",
-  "rhel8",
-  "windows_server_2012_r2_std_v28",
-  "windows_server_2012_r2_dc_v5",
-  "esxi_6_7",
-  "debian_9_4_x64",
   "centos_7_4_x64",
   "centos_8_x64",
-  "ubuntu_16_04_x64_lts",
-  "ubuntu_20_04_x64_lts",
-  "windows_server_2016_std_v1",
-  "windows_server_2016_dc_v1",
-  "windows_server_2019_dc_v1",
+  "debian_10",
+  "debian_11",
   "debian_12",
-  "ubuntu22_ml_in_a_box",
-  "ubuntu_18_04_x64_lts",
-  "windows_server_2019_std_uefi",
-  "windows_2022_std_uefi",
-  "windows_2022_std",
-  "ubuntu_24_04_x64_lts",
+  "ipxe",
+  "rhel8",
   "rockylinux_8",
+  "ubuntu22_ml_in_a_box",
+  "ubuntu24_ml_in_a_box",
+  "ubuntu_20_04_x64_lts",
+  "ubuntu_22_04_x64_lts",
+  "ubuntu_24_04_x64_lts",
+  "windows_2022_std",
+  "windows_server_2019_std_v1",
 ]).describe("The OS selected for the reinstall process");
-
-export type CreateServerReinstallOperatingSystem2 = z.infer<
-  typeof CreateServerReinstallOperatingSystem2$zodSchema
->;
 
 export type CreateServerReinstallPartition2 = {
   size_in_gb?: number | undefined;
@@ -54,50 +68,55 @@ export type CreateServerReinstallPartition2 = {
 };
 
 export const CreateServerReinstallPartition2$zodSchema: z.ZodType<
-  CreateServerReinstallPartition2,
-  z.ZodTypeDef,
-  unknown
+  CreateServerReinstallPartition2
 > = z.object({
   filesystem_type: z.string().optional(),
   path: z.string().optional(),
-  size_in_gb: z.number().int().optional(),
+  size_in_gb: z.int().optional(),
 });
 
 /**
- * RAID mode for the server
+ * RAID mode for the server. Set to 'raid-0' for RAID 0, 'raid-1' for RAID 1, or omit/null for no RAID configuration
  */
+export const CreateServerReinstallRaid2 = {
+  Raid0: "raid-0",
+  Raid1: "raid-1",
+} as const;
+/**
+ * RAID mode for the server. Set to 'raid-0' for RAID 0, 'raid-1' for RAID 1, or omit/null for no RAID configuration
+ */
+export type CreateServerReinstallRaid2 = ClosedEnum<
+  typeof CreateServerReinstallRaid2
+>;
+
 export const CreateServerReinstallRaid2$zodSchema = z.enum([
   "raid-0",
   "raid-1",
-]).describe("RAID mode for the server");
-
-export type CreateServerReinstallRaid2 = z.infer<
-  typeof CreateServerReinstallRaid2$zodSchema
->;
+]).describe(
+  "RAID mode for the server. Set to 'raid-0' for RAID 0, 'raid-1' for RAID 1, or omit/null for no RAID configuration",
+);
 
 export type CreateServerReinstallAttributes2 = {
   operating_system?: CreateServerReinstallOperatingSystem2 | undefined;
   hostname?: string | undefined;
-  partitions?: Array<CreateServerReinstallPartition2> | undefined;
-  ssh_keys?: Array<string> | undefined;
-  user_data?: string | undefined;
-  raid?: CreateServerReinstallRaid2 | undefined;
-  ipxe?: string | undefined;
+  partitions?: Array<CreateServerReinstallPartition2> | null | undefined;
+  ssh_keys?: Array<string> | null | undefined;
+  user_data?: string | null | undefined;
+  raid?: CreateServerReinstallRaid2 | null | undefined;
+  ipxe?: string | null | undefined;
 };
 
 export const CreateServerReinstallAttributes2$zodSchema: z.ZodType<
-  CreateServerReinstallAttributes2,
-  z.ZodTypeDef,
-  unknown
+  CreateServerReinstallAttributes2
 > = z.object({
   hostname: z.string().optional(),
-  ipxe: z.string().optional(),
+  ipxe: z.string().nullable().optional(),
   operating_system: CreateServerReinstallOperatingSystem2$zodSchema.optional(),
   partitions: z.array(z.lazy(() => CreateServerReinstallPartition2$zodSchema))
-    .optional(),
-  raid: CreateServerReinstallRaid2$zodSchema.optional(),
-  ssh_keys: z.array(z.string()).optional(),
-  user_data: z.string().optional(),
+    .nullable().optional(),
+  raid: CreateServerReinstallRaid2$zodSchema.nullable().optional(),
+  ssh_keys: z.array(z.string()).nullable().optional(),
+  user_data: z.string().nullable().optional(),
 });
 
 export type CreateServerReinstallData2 = {
@@ -106,9 +125,7 @@ export type CreateServerReinstallData2 = {
 };
 
 export const CreateServerReinstallData2$zodSchema: z.ZodType<
-  CreateServerReinstallData2,
-  z.ZodTypeDef,
-  unknown
+  CreateServerReinstallData2
 > = z.object({
   attributes: z.lazy(() => CreateServerReinstallAttributes2$zodSchema)
     .optional(),
@@ -120,9 +137,7 @@ export type CreateServerReinstallRequestBody2 = {
 };
 
 export const CreateServerReinstallRequestBody2$zodSchema: z.ZodType<
-  CreateServerReinstallRequestBody2,
-  z.ZodTypeDef,
-  unknown
+  CreateServerReinstallRequestBody2
 > = z.object({
   data: z.lazy(() => CreateServerReinstallData2$zodSchema),
 });
@@ -133,26 +148,8 @@ export type CreateServerReinstallRequest = {
 };
 
 export const CreateServerReinstallRequest$zodSchema: z.ZodType<
-  CreateServerReinstallRequest,
-  z.ZodTypeDef,
-  unknown
+  CreateServerReinstallRequest
 > = z.object({
   RequestBody: z.lazy(() => CreateServerReinstallRequestBody2$zodSchema),
   server_id: z.string(),
-});
-
-export type CreateServerReinstallResponse = {
-  ContentType: string;
-  StatusCode: number;
-  RawResponse: Response;
-};
-
-export const CreateServerReinstallResponse$zodSchema: z.ZodType<
-  CreateServerReinstallResponse,
-  z.ZodTypeDef,
-  unknown
-> = z.object({
-  ContentType: z.string(),
-  RawResponse: z.instanceof(Response),
-  StatusCode: z.number().int(),
 });

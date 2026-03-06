@@ -3,69 +3,107 @@
  */
 
 import * as z from "zod";
+import { ClosedEnum } from "../types/enums.js";
 
 /**
  * The type of the resource
  */
+export const VirtualMachinePlansType = {
+  VirtualMachinePlans: "virtual_machine_plans",
+} as const;
+/**
+ * The type of the resource
+ */
+export type VirtualMachinePlansType = ClosedEnum<
+  typeof VirtualMachinePlansType
+>;
+
 export const VirtualMachinePlansType$zodSchema = z.enum([
   "virtual_machine_plans",
 ]).describe("The type of the resource");
 
-export type VirtualMachinePlansType = z.infer<
-  typeof VirtualMachinePlansType$zodSchema
->;
-
 /**
- * The type of the disk
+ * Detailed vCPU specifications
  */
-export const TypeLocal$zodSchema = z.enum([
-  "local",
-]).describe("The type of the disk");
+export type Vcpu = {
+  count?: number | null | undefined;
+  clock?: number | null | undefined;
+  type?: string | null | undefined;
+};
 
-export type TypeLocal = z.infer<typeof TypeLocal$zodSchema>;
+export const Vcpu$zodSchema: z.ZodType<Vcpu> = z.object({
+  clock: z.number().nullable().optional(),
+  count: z.int().nullable().optional(),
+  type: z.string().nullable().optional(),
+}).describe("Detailed vCPU specifications");
+
+export type VirtualMachinePlansNic = {
+  type?: string | undefined;
+  count?: string | undefined;
+};
+
+export const VirtualMachinePlansNic$zodSchema: z.ZodType<
+  VirtualMachinePlansNic
+> = z.object({
+  count: z.string().optional(),
+  type: z.string().optional(),
+});
 
 /**
  * The unit of the disk size
  */
+export const VirtualMachinePlansUnit = {
+  Gib: "gib",
+} as const;
+/**
+ * The unit of the disk size
+ */
+export type VirtualMachinePlansUnit = ClosedEnum<
+  typeof VirtualMachinePlansUnit
+>;
+
 export const VirtualMachinePlansUnit$zodSchema = z.enum([
   "gib",
 ]).describe("The unit of the disk size");
-
-export type VirtualMachinePlansUnit = z.infer<
-  typeof VirtualMachinePlansUnit$zodSchema
->;
 
 export type Size = {
   amount?: number | undefined;
   unit?: VirtualMachinePlansUnit | undefined;
 };
 
-export const Size$zodSchema: z.ZodType<Size, z.ZodTypeDef, unknown> = z.object({
-  amount: z.number().int().optional(),
+export const Size$zodSchema: z.ZodType<Size> = z.object({
+  amount: z.int().optional(),
   unit: VirtualMachinePlansUnit$zodSchema.optional(),
 });
 
-export type Disk = { type?: TypeLocal | undefined; size?: Size | undefined };
+export type Disk = { type?: string | undefined; size?: Size | undefined };
 
-export const Disk$zodSchema: z.ZodType<Disk, z.ZodTypeDef, unknown> = z.object({
+export const Disk$zodSchema: z.ZodType<Disk> = z.object({
   size: z.lazy(() => Size$zodSchema).optional(),
-  type: TypeLocal$zodSchema.optional(),
+  type: z.string().optional(),
 });
 
 export type VirtualMachinePlansSpecs = {
   memory?: number | undefined;
+  gpu?: string | undefined;
+  vram_per_gpu?: number | null | undefined;
   vcpus?: number | undefined;
+  vcpu?: Vcpu | undefined;
+  nics?: Array<VirtualMachinePlansNic> | null | undefined;
   disk?: Disk | undefined;
 };
 
 export const VirtualMachinePlansSpecs$zodSchema: z.ZodType<
-  VirtualMachinePlansSpecs,
-  z.ZodTypeDef,
-  unknown
+  VirtualMachinePlansSpecs
 > = z.object({
   disk: z.lazy(() => Disk$zodSchema).optional(),
-  memory: z.number().int().optional(),
-  vcpus: z.number().int().optional(),
+  gpu: z.string().optional(),
+  memory: z.int().optional(),
+  nics: z.array(z.lazy(() => VirtualMachinePlansNic$zodSchema)).nullable()
+    .optional(),
+  vcpu: z.lazy(() => Vcpu$zodSchema).optional(),
+  vcpus: z.int().optional(),
+  vram_per_gpu: z.int().nullable().optional(),
 });
 
 export type VirtualMachinePlansUSD = {
@@ -75,9 +113,7 @@ export type VirtualMachinePlansUSD = {
 };
 
 export const VirtualMachinePlansUSD$zodSchema: z.ZodType<
-  VirtualMachinePlansUSD,
-  z.ZodTypeDef,
-  unknown
+  VirtualMachinePlansUSD
 > = z.object({
   hour: z.number().optional(),
   month: z.number().optional(),
@@ -91,9 +127,7 @@ export type VirtualMachinePlansBRL = {
 };
 
 export const VirtualMachinePlansBRL$zodSchema: z.ZodType<
-  VirtualMachinePlansBRL,
-  z.ZodTypeDef,
-  unknown
+  VirtualMachinePlansBRL
 > = z.object({
   hour: z.number().optional(),
   month: z.number().optional(),
@@ -106,40 +140,87 @@ export type VirtualMachinePlansPricing = {
 };
 
 export const VirtualMachinePlansPricing$zodSchema: z.ZodType<
-  VirtualMachinePlansPricing,
-  z.ZodTypeDef,
-  unknown
+  VirtualMachinePlansPricing
 > = z.object({
   BRL: z.lazy(() => VirtualMachinePlansBRL$zodSchema).optional(),
   USD: z.lazy(() => VirtualMachinePlansUSD$zodSchema).optional(),
 });
 
+export type VirtualMachinePlansLocations = {
+  available?: Array<string> | undefined;
+  in_stock?: Array<string> | undefined;
+};
+
+export const VirtualMachinePlansLocations$zodSchema: z.ZodType<
+  VirtualMachinePlansLocations
+> = z.object({
+  available: z.array(z.string()).optional(),
+  in_stock: z.array(z.string()).optional(),
+});
+
+/**
+ * The stock level in this region
+ */
+export const VirtualMachinePlansRegionStockLevel = {
+  Low: "low",
+  Unavailable: "unavailable",
+  Medium: "medium",
+  High: "high",
+} as const;
+/**
+ * The stock level in this region
+ */
+export type VirtualMachinePlansRegionStockLevel = ClosedEnum<
+  typeof VirtualMachinePlansRegionStockLevel
+>;
+
+export const VirtualMachinePlansRegionStockLevel$zodSchema = z.enum([
+  "low",
+  "unavailable",
+  "medium",
+  "high",
+]).describe("The stock level in this region");
+
 export type VirtualMachinePlansRegion = {
   name?: string | undefined;
   available?: Array<string> | undefined;
   pricing?: VirtualMachinePlansPricing | undefined;
+  locations?: VirtualMachinePlansLocations | undefined;
+  stock_level?: VirtualMachinePlansRegionStockLevel | undefined;
 };
 
 export const VirtualMachinePlansRegion$zodSchema: z.ZodType<
-  VirtualMachinePlansRegion,
-  z.ZodTypeDef,
-  unknown
+  VirtualMachinePlansRegion
 > = z.object({
   available: z.array(z.string()).optional(),
+  locations: z.lazy(() => VirtualMachinePlansLocations$zodSchema).optional(),
   name: z.string().optional(),
   pricing: z.lazy(() => VirtualMachinePlansPricing$zodSchema).optional(),
+  stock_level: VirtualMachinePlansRegionStockLevel$zodSchema.optional(),
 });
 
 /**
  * The stock level of the plan
  */
+export const VirtualMachinePlansStockLevel = {
+  Low: "low",
+  Unavailable: "unavailable",
+  Medium: "medium",
+  High: "high",
+} as const;
+/**
+ * The stock level of the plan
+ */
+export type VirtualMachinePlansStockLevel = ClosedEnum<
+  typeof VirtualMachinePlansStockLevel
+>;
+
 export const VirtualMachinePlansStockLevel$zodSchema = z.enum([
   "low",
+  "unavailable",
+  "medium",
+  "high",
 ]).describe("The stock level of the plan");
-
-export type VirtualMachinePlansStockLevel = z.infer<
-  typeof VirtualMachinePlansStockLevel$zodSchema
->;
 
 export type VirtualMachinePlansAttributes = {
   name?: string | undefined;
@@ -149,9 +230,7 @@ export type VirtualMachinePlansAttributes = {
 };
 
 export const VirtualMachinePlansAttributes$zodSchema: z.ZodType<
-  VirtualMachinePlansAttributes,
-  z.ZodTypeDef,
-  unknown
+  VirtualMachinePlansAttributes
 > = z.object({
   name: z.string().optional(),
   regions: z.array(z.lazy(() => VirtualMachinePlansRegion$zodSchema))
@@ -167,9 +246,7 @@ export type VirtualMachinePlansData = {
 };
 
 export const VirtualMachinePlansData$zodSchema: z.ZodType<
-  VirtualMachinePlansData,
-  z.ZodTypeDef,
-  unknown
+  VirtualMachinePlansData
 > = z.object({
   attributes: z.lazy(() => VirtualMachinePlansAttributes$zodSchema).optional(),
   id: z.string().optional(),
@@ -180,10 +257,7 @@ export type VirtualMachinePlans = {
   data?: Array<VirtualMachinePlansData> | undefined;
 };
 
-export const VirtualMachinePlans$zodSchema: z.ZodType<
-  VirtualMachinePlans,
-  z.ZodTypeDef,
-  unknown
-> = z.object({
-  data: z.array(z.lazy(() => VirtualMachinePlansData$zodSchema)).optional(),
-});
+export const VirtualMachinePlans$zodSchema: z.ZodType<VirtualMachinePlans> = z
+  .object({
+    data: z.array(z.lazy(() => VirtualMachinePlansData$zodSchema)).optional(),
+  });

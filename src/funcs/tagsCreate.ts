@@ -13,9 +13,8 @@ import { pathToFunc } from "../lib/url.js";
 import {
   CreateTagRequest,
   CreateTagRequest$zodSchema,
-  CreateTagResponse,
-  CreateTagResponse$zodSchema,
 } from "../models/createtagop.js";
+import { CustomTag, CustomTag$zodSchema } from "../models/customtag.js";
 import { APIError } from "../models/errors/apierror.js";
 import {
   ConnectionError,
@@ -29,7 +28,7 @@ import { APICall, APIPromise } from "../types/async.js";
 import { Result } from "../types/fp.js";
 
 /**
- * Create a Tag
+ * Create tag
  *
  * @remarks
  * Create a Tag in the team.
@@ -40,7 +39,7 @@ export function tagsCreate(
   options?: RequestOptions,
 ): APIPromise<
   Result<
-    CreateTagResponse,
+    CustomTag,
     | APIError
     | SDKValidationError
     | UnexpectedClientError
@@ -64,7 +63,7 @@ async function $do(
 ): Promise<
   [
     Result<
-      CreateTagResponse,
+      CustomTag,
       | APIError
       | SDKValidationError
       | UnexpectedClientError
@@ -145,7 +144,7 @@ async function $do(
   };
 
   const [result$] = await M.match<
-    CreateTagResponse,
+    CustomTag,
     | APIError
     | SDKValidationError
     | UnexpectedClientError
@@ -154,7 +153,7 @@ async function $do(
     | RequestTimeoutError
     | ConnectionError
   >(
-    M.json(201, CreateTagResponse$zodSchema, {
+    M.json(201, CustomTag$zodSchema, {
       ctype: "application/vnd.api+json",
       key: "custom_tag",
     }),

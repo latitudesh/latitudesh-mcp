@@ -3,6 +3,15 @@
  */
 
 import * as z from "zod";
+import { ClosedEnum } from "../types/enums.js";
+
+export const MembershipRole = {
+  Owner: "owner",
+  Administrator: "administrator",
+  Collaborator: "collaborator",
+  Billing: "billing",
+} as const;
+export type MembershipRole = ClosedEnum<typeof MembershipRole>;
 
 export const MembershipRole$zodSchema = z.enum([
   "owner",
@@ -10,8 +19,6 @@ export const MembershipRole$zodSchema = z.enum([
   "collaborator",
   "billing",
 ]);
-
-export type MembershipRole = z.infer<typeof MembershipRole$zodSchema>;
 
 export type MembershipAttributes = {
   first_name?: string | undefined;
@@ -24,41 +31,30 @@ export type MembershipAttributes = {
   last_login_at?: string | undefined;
 };
 
-export const MembershipAttributes$zodSchema: z.ZodType<
-  MembershipAttributes,
-  z.ZodTypeDef,
-  unknown
-> = z.object({
-  created_at: z.string().datetime({ offset: true }).optional(),
-  email: z.string().optional(),
-  first_name: z.string().optional(),
-  last_login_at: z.string().datetime({ offset: true }).optional(),
-  last_name: z.string().optional(),
-  mfa_enabled: z.boolean().optional(),
-  role: MembershipRole$zodSchema.optional(),
-  updated_at: z.string().datetime({ offset: true }).optional(),
-});
+export const MembershipAttributes$zodSchema: z.ZodType<MembershipAttributes> = z
+  .object({
+    created_at: z.iso.datetime({ offset: true }).optional(),
+    email: z.string().optional(),
+    first_name: z.string().optional(),
+    last_login_at: z.iso.datetime({ offset: true }).optional(),
+    last_name: z.string().optional(),
+    mfa_enabled: z.boolean().optional(),
+    role: MembershipRole$zodSchema.optional(),
+    updated_at: z.iso.datetime({ offset: true }).optional(),
+  });
 
 export type MembershipData = {
   id?: string | undefined;
   attributes?: MembershipAttributes | undefined;
 };
 
-export const MembershipData$zodSchema: z.ZodType<
-  MembershipData,
-  z.ZodTypeDef,
-  unknown
-> = z.object({
+export const MembershipData$zodSchema: z.ZodType<MembershipData> = z.object({
   attributes: z.lazy(() => MembershipAttributes$zodSchema).optional(),
   id: z.string().optional(),
 });
 
 export type Membership = { data?: MembershipData | undefined };
 
-export const Membership$zodSchema: z.ZodType<
-  Membership,
-  z.ZodTypeDef,
-  unknown
-> = z.object({
+export const Membership$zodSchema: z.ZodType<Membership> = z.object({
   data: z.lazy(() => MembershipData$zodSchema).optional(),
 });

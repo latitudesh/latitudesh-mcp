@@ -10,10 +10,6 @@ import { safeParse } from "../lib/schemas.js";
 import { RequestOptions } from "../lib/sdks.js";
 import { extractSecurity, resolveGlobalSecurity } from "../lib/security.js";
 import { pathToFunc } from "../lib/url.js";
-import {
-  CreateVirtualMachineResponse,
-  CreateVirtualMachineResponse$zodSchema,
-} from "../models/createvirtualmachineop.js";
 import { APIError } from "../models/errors/apierror.js";
 import {
   ConnectionError,
@@ -24,6 +20,10 @@ import {
 } from "../models/errors/httpclienterrors.js";
 import { SDKValidationError } from "../models/errors/sdkvalidationerror.js";
 import {
+  VirtualMachine,
+  VirtualMachine$zodSchema,
+} from "../models/virtualmachine.js";
+import {
   VirtualMachinePayload,
   VirtualMachinePayload$zodSchema,
 } from "../models/virtualmachinepayload.js";
@@ -31,7 +31,7 @@ import { APICall, APIPromise } from "../types/async.js";
 import { Result } from "../types/fp.js";
 
 /**
- * Create a Virtual Machine
+ * Create VM
  *
  * @remarks
  * Creates a new Virtual Machine.
@@ -42,7 +42,7 @@ export function virtualMachinesCreate(
   options?: RequestOptions,
 ): APIPromise<
   Result<
-    CreateVirtualMachineResponse,
+    VirtualMachine,
     | APIError
     | SDKValidationError
     | UnexpectedClientError
@@ -66,7 +66,7 @@ async function $do(
 ): Promise<
   [
     Result<
-      CreateVirtualMachineResponse,
+      VirtualMachine,
       | APIError
       | SDKValidationError
       | UnexpectedClientError
@@ -147,7 +147,7 @@ async function $do(
   };
 
   const [result$] = await M.match<
-    CreateVirtualMachineResponse,
+    VirtualMachine,
     | APIError
     | SDKValidationError
     | UnexpectedClientError
@@ -156,7 +156,7 @@ async function $do(
     | RequestTimeoutError
     | ConnectionError
   >(
-    M.json(201, CreateVirtualMachineResponse$zodSchema, {
+    M.json(201, VirtualMachine$zodSchema, {
       ctype: "application/vnd.api+json",
       key: "virtual_machine",
     }),

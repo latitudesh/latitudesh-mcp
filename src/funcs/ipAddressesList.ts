@@ -92,6 +92,7 @@ async function $do(
   const path$ = pathToFunc("/ips")();
   const query$ = encodeFormQuery({
     "extra_fields[ip_addresses]": payload$?.extraFieldsIpAddresses,
+    "filter[additional]": payload$?.filterAdditional,
     "filter[address]": payload$?.filterAddress,
     "filter[family]": payload$?.filterFamily,
     "filter[location]": payload$?.filterLocation,

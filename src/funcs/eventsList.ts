@@ -29,10 +29,10 @@ import { APICall, APIPromise } from "../types/async.js";
 import { Result } from "../types/fp.js";
 
 /**
- * List all Events
+ * List events
  *
  * @remarks
- * Lists all events.
+ * Lists actions performed by users on your account.
  */
 export function eventsList(
   client$: LatitudeshCore,

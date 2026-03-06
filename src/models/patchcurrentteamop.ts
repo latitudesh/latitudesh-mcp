@@ -3,24 +3,30 @@
  */
 
 import * as z from "zod";
+import { ClosedEnum } from "../types/enums.js";
 import { Team, Team$zodSchema } from "./team.js";
+
+export const PatchCurrentTeamType2 = {
+  Teams: "teams",
+} as const;
+export type PatchCurrentTeamType2 = ClosedEnum<typeof PatchCurrentTeamType2>;
 
 export const PatchCurrentTeamType2$zodSchema = z.enum([
   "teams",
 ]);
 
-export type PatchCurrentTeamType2 = z.infer<
-  typeof PatchCurrentTeamType2$zodSchema
+export const PatchCurrentTeamCurrency2 = {
+  Usd: "USD",
+  Brl: "BRL",
+} as const;
+export type PatchCurrentTeamCurrency2 = ClosedEnum<
+  typeof PatchCurrentTeamCurrency2
 >;
 
 export const PatchCurrentTeamCurrency2$zodSchema = z.enum([
   "USD",
   "BRL",
 ]);
-
-export type PatchCurrentTeamCurrency2 = z.infer<
-  typeof PatchCurrentTeamCurrency2$zodSchema
->;
 
 export type PatchCurrentTeamAttributes2 = {
   address?: string | undefined;
@@ -30,9 +36,7 @@ export type PatchCurrentTeamAttributes2 = {
 };
 
 export const PatchCurrentTeamAttributes2$zodSchema: z.ZodType<
-  PatchCurrentTeamAttributes2,
-  z.ZodTypeDef,
-  unknown
+  PatchCurrentTeamAttributes2
 > = z.object({
   address: z.string().optional(),
   currency: PatchCurrentTeamCurrency2$zodSchema.default("USD"),
@@ -46,22 +50,17 @@ export type PatchCurrentTeamData2 = {
   attributes?: PatchCurrentTeamAttributes2 | undefined;
 };
 
-export const PatchCurrentTeamData2$zodSchema: z.ZodType<
-  PatchCurrentTeamData2,
-  z.ZodTypeDef,
-  unknown
-> = z.object({
-  attributes: z.lazy(() => PatchCurrentTeamAttributes2$zodSchema).optional(),
-  id: z.string(),
-  type: PatchCurrentTeamType2$zodSchema,
-});
+export const PatchCurrentTeamData2$zodSchema: z.ZodType<PatchCurrentTeamData2> =
+  z.object({
+    attributes: z.lazy(() => PatchCurrentTeamAttributes2$zodSchema).optional(),
+    id: z.string(),
+    type: PatchCurrentTeamType2$zodSchema,
+  });
 
 export type PatchCurrentTeamRequestBody2 = { data: PatchCurrentTeamData2 };
 
 export const PatchCurrentTeamRequestBody2$zodSchema: z.ZodType<
-  PatchCurrentTeamRequestBody2,
-  z.ZodTypeDef,
-  unknown
+  PatchCurrentTeamRequestBody2
 > = z.object({
   data: z.lazy(() => PatchCurrentTeamData2$zodSchema),
 });
@@ -72,9 +71,7 @@ export type PatchCurrentTeamRequest = {
 };
 
 export const PatchCurrentTeamRequest$zodSchema: z.ZodType<
-  PatchCurrentTeamRequest,
-  z.ZodTypeDef,
-  unknown
+  PatchCurrentTeamRequest
 > = z.object({
   RequestBody: z.lazy(() => PatchCurrentTeamRequestBody2$zodSchema),
   team_id: z.string(),
@@ -83,30 +80,10 @@ export const PatchCurrentTeamRequest$zodSchema: z.ZodType<
 /**
  * Success
  */
-export type PatchCurrentTeamResponseBody = { data?: Team | undefined };
+export type PatchCurrentTeamResponse = { data?: Team | undefined };
 
-export const PatchCurrentTeamResponseBody$zodSchema: z.ZodType<
-  PatchCurrentTeamResponseBody,
-  z.ZodTypeDef,
-  unknown
+export const PatchCurrentTeamResponse$zodSchema: z.ZodType<
+  PatchCurrentTeamResponse
 > = z.object({
   data: Team$zodSchema.optional(),
 }).describe("Success");
-
-export type PatchCurrentTeamResponse = {
-  ContentType: string;
-  StatusCode: number;
-  RawResponse: Response;
-  object?: PatchCurrentTeamResponseBody | undefined;
-};
-
-export const PatchCurrentTeamResponse$zodSchema: z.ZodType<
-  PatchCurrentTeamResponse,
-  z.ZodTypeDef,
-  unknown
-> = z.object({
-  ContentType: z.string(),
-  RawResponse: z.instanceof(Response),
-  StatusCode: z.number().int(),
-  object: z.lazy(() => PatchCurrentTeamResponseBody$zodSchema).optional(),
-});

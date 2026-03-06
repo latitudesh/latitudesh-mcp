@@ -20,16 +20,18 @@ import {
 } from "../models/errors/httpclienterrors.js";
 import { SDKValidationError } from "../models/errors/sdkvalidationerror.js";
 import {
+  ServerScheduleDeletion,
+  ServerScheduleDeletion$zodSchema,
+} from "../models/serverscheduledeletion.js";
+import {
   ServerScheduleDeletionRequest,
   ServerScheduleDeletionRequest$zodSchema,
-  ServerScheduleDeletionResponse,
-  ServerScheduleDeletionResponse$zodSchema,
 } from "../models/serverscheduledeletionop.js";
 import { APICall, APIPromise } from "../types/async.js";
 import { Result } from "../types/fp.js";
 
 /**
- * Schedule the server deletion
+ * Schedule server deletion
  *
  * @remarks
  * Schedules the server to be removed at the end of the billing cycle.
@@ -40,7 +42,7 @@ export function serversScheduleDeletion(
   options?: RequestOptions,
 ): APIPromise<
   Result<
-    ServerScheduleDeletionResponse,
+    ServerScheduleDeletion,
     | APIError
     | SDKValidationError
     | UnexpectedClientError
@@ -64,7 +66,7 @@ async function $do(
 ): Promise<
   [
     Result<
-      ServerScheduleDeletionResponse,
+      ServerScheduleDeletion,
       | APIError
       | SDKValidationError
       | UnexpectedClientError
@@ -153,7 +155,7 @@ async function $do(
   };
 
   const [result$] = await M.match<
-    ServerScheduleDeletionResponse,
+    ServerScheduleDeletion,
     | APIError
     | SDKValidationError
     | UnexpectedClientError
@@ -162,7 +164,7 @@ async function $do(
     | RequestTimeoutError
     | ConnectionError
   >(
-    M.json(201, ServerScheduleDeletionResponse$zodSchema, {
+    M.json(201, ServerScheduleDeletion$zodSchema, {
       ctype: "application/vnd.api+json",
       key: "server_schedule_deletion",
     }),

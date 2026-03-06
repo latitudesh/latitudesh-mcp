@@ -13,8 +13,6 @@ import { pathToFunc } from "../lib/url.js";
 import {
   CreateServerOutOfBandRequest,
   CreateServerOutOfBandRequest$zodSchema,
-  CreateServerOutOfBandResponse,
-  CreateServerOutOfBandResponse$zodSchema,
 } from "../models/createserveroutofbandop.js";
 import { APIError } from "../models/errors/apierror.js";
 import {
@@ -25,11 +23,15 @@ import {
   UnexpectedClientError,
 } from "../models/errors/httpclienterrors.js";
 import { SDKValidationError } from "../models/errors/sdkvalidationerror.js";
+import {
+  OutOfBandConnection,
+  OutOfBandConnection$zodSchema,
+} from "../models/outofbandconnection.js";
 import { APICall, APIPromise } from "../types/async.js";
 import { Result } from "../types/fp.js";
 
 /**
- * Start Out of Band Connection
+ * Create out-of-band connection
  */
 export function serversStartOutOfBandConnection(
   client$: LatitudeshCore,
@@ -37,7 +39,7 @@ export function serversStartOutOfBandConnection(
   options?: RequestOptions,
 ): APIPromise<
   Result<
-    CreateServerOutOfBandResponse,
+    OutOfBandConnection,
     | APIError
     | SDKValidationError
     | UnexpectedClientError
@@ -61,7 +63,7 @@ async function $do(
 ): Promise<
   [
     Result<
-      CreateServerOutOfBandResponse,
+      OutOfBandConnection,
       | APIError
       | SDKValidationError
       | UnexpectedClientError
@@ -151,7 +153,7 @@ async function $do(
   };
 
   const [result$] = await M.match<
-    CreateServerOutOfBandResponse,
+    OutOfBandConnection,
     | APIError
     | SDKValidationError
     | UnexpectedClientError
@@ -160,7 +162,7 @@ async function $do(
     | RequestTimeoutError
     | ConnectionError
   >(
-    M.json(201, CreateServerOutOfBandResponse$zodSchema, {
+    M.json(201, OutOfBandConnection$zodSchema, {
       ctype: "application/vnd.api+json",
       key: "out_of_band_connection",
     }),

@@ -22,14 +22,13 @@ import { SDKValidationError } from "../models/errors/sdkvalidationerror.js";
 import {
   GetUsersDataRequest,
   GetUsersDataRequest$zodSchema,
-  GetUsersDataResponse,
-  GetUsersDataResponse$zodSchema,
 } from "../models/getusersdataop.js";
+import { UserData, UserData$zodSchema } from "../models/userdata.js";
 import { APICall, APIPromise } from "../types/async.js";
 import { Result } from "../types/fp.js";
 
 /**
- * List all User Data
+ * List user data
  *
  * @remarks
  * List all Users Data in the project. These scripts can be used to configure servers with user data.
@@ -40,7 +39,7 @@ export function userDataList(
   options?: RequestOptions,
 ): APIPromise<
   Result<
-    GetUsersDataResponse,
+    UserData,
     | APIError
     | SDKValidationError
     | UnexpectedClientError
@@ -64,7 +63,7 @@ async function $do(
 ): Promise<
   [
     Result<
-      GetUsersDataResponse,
+      UserData,
       | APIError
       | SDKValidationError
       | UnexpectedClientError
@@ -89,6 +88,8 @@ async function $do(
   const path$ = pathToFunc("/user_data")();
   const query$ = encodeFormQuery({
     "extra_fields[user_data]": payload$?.extraFieldsUserData,
+    "filter[project]": payload$?.filterProject,
+    "filter[scope]": payload$?.filterScope,
   });
 
   const headers$ = new Headers(compactMap({
@@ -148,7 +149,7 @@ async function $do(
   };
 
   const [result$] = await M.match<
-    GetUsersDataResponse,
+    UserData,
     | APIError
     | SDKValidationError
     | UnexpectedClientError
@@ -157,9 +158,9 @@ async function $do(
     | RequestTimeoutError
     | ConnectionError
   >(
-    M.json(200, GetUsersDataResponse$zodSchema, {
+    M.json(200, UserData$zodSchema, {
       ctype: "application/vnd.api+json",
-      key: "object",
+      key: "user_data",
     }),
   )(response, req$, { extraFields: responseFields$ });
 

@@ -29,7 +29,7 @@ import { APICall, APIPromise } from "../types/async.js";
 import { Result } from "../types/fp.js";
 
 /**
- * List all Servers
+ * List servers
  *
  * @remarks
  * Returns a list of all servers belonging to the team.

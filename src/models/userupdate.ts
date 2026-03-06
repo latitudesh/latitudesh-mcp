@@ -8,32 +8,25 @@ export type UserUpdateAttributes = {
   first_name?: string | undefined;
   last_name?: string | undefined;
   email?: string | undefined;
-  authentication_factor_id?: string | undefined;
+  authentication_factor_id?: string | null | undefined;
   role?: string | undefined;
 };
 
-export const UserUpdateAttributes$zodSchema: z.ZodType<
-  UserUpdateAttributes,
-  z.ZodTypeDef,
-  unknown
-> = z.object({
-  authentication_factor_id: z.string().optional(),
-  email: z.string().optional(),
-  first_name: z.string().optional(),
-  last_name: z.string().optional(),
-  role: z.string().optional(),
-});
+export const UserUpdateAttributes$zodSchema: z.ZodType<UserUpdateAttributes> = z
+  .object({
+    authentication_factor_id: z.string().nullable().optional(),
+    email: z.string().optional(),
+    first_name: z.string().optional(),
+    last_name: z.string().optional(),
+    role: z.string().optional(),
+  });
 
 export type UserUpdate = {
   id?: string | undefined;
   attributes?: UserUpdateAttributes | undefined;
 };
 
-export const UserUpdate$zodSchema: z.ZodType<
-  UserUpdate,
-  z.ZodTypeDef,
-  unknown
-> = z.object({
+export const UserUpdate$zodSchema: z.ZodType<UserUpdate> = z.object({
   attributes: z.lazy(() => UserUpdateAttributes$zodSchema).optional(),
   id: z.string().optional(),
 });

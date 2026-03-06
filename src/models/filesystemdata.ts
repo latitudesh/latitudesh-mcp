@@ -3,12 +3,16 @@
  */
 
 import * as z from "zod";
+import { ClosedEnum } from "../types/enums.js";
+
+export const FilesystemDataType = {
+  Filesystems: "filesystems",
+} as const;
+export type FilesystemDataType = ClosedEnum<typeof FilesystemDataType>;
 
 export const FilesystemDataType$zodSchema = z.enum([
   "filesystems",
 ]);
-
-export type FilesystemDataType = z.infer<typeof FilesystemDataType$zodSchema>;
 
 export type FilesystemDataProject = {
   id?: string | undefined;
@@ -16,32 +20,27 @@ export type FilesystemDataProject = {
   slug?: string | undefined;
 };
 
-export const FilesystemDataProject$zodSchema: z.ZodType<
-  FilesystemDataProject,
-  z.ZodTypeDef,
-  unknown
-> = z.object({
-  id: z.string().optional(),
-  name: z.string().optional(),
-  slug: z.string().optional(),
-});
+export const FilesystemDataProject$zodSchema: z.ZodType<FilesystemDataProject> =
+  z.object({
+    id: z.string().optional(),
+    name: z.string().optional(),
+    slug: z.string().optional(),
+  });
 
 export type FilesystemDataAttributes = {
   name?: string | undefined;
   size_in_gb?: number | undefined;
-  created_at?: string | undefined;
+  created_at?: string | null | undefined;
   project?: FilesystemDataProject | undefined;
 };
 
 export const FilesystemDataAttributes$zodSchema: z.ZodType<
-  FilesystemDataAttributes,
-  z.ZodTypeDef,
-  unknown
+  FilesystemDataAttributes
 > = z.object({
-  created_at: z.string().datetime({ offset: true }).optional(),
+  created_at: z.iso.datetime({ offset: true }).nullable().optional(),
   name: z.string().optional(),
   project: z.lazy(() => FilesystemDataProject$zodSchema).optional(),
-  size_in_gb: z.number().int().optional(),
+  size_in_gb: z.int().optional(),
 });
 
 export type FilesystemData = {
@@ -50,11 +49,7 @@ export type FilesystemData = {
   attributes?: FilesystemDataAttributes | undefined;
 };
 
-export const FilesystemData$zodSchema: z.ZodType<
-  FilesystemData,
-  z.ZodTypeDef,
-  unknown
-> = z.object({
+export const FilesystemData$zodSchema: z.ZodType<FilesystemData> = z.object({
   attributes: z.lazy(() => FilesystemDataAttributes$zodSchema).optional(),
   id: z.string().optional(),
   type: FilesystemDataType$zodSchema.optional(),

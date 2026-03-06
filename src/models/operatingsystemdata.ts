@@ -3,14 +3,18 @@
  */
 
 import * as z from "zod";
+import { ClosedEnum } from "../types/enums.js";
+
+export const OperatingSystemDataType = {
+  OperatingSystems: "operating_systems",
+} as const;
+export type OperatingSystemDataType = ClosedEnum<
+  typeof OperatingSystemDataType
+>;
 
 export const OperatingSystemDataType$zodSchema = z.enum([
   "operating_systems",
 ]);
-
-export type OperatingSystemDataType = z.infer<
-  typeof OperatingSystemDataType$zodSchema
->;
 
 export type OperatingSystemDataFeatures = {
   raid?: boolean | undefined;
@@ -19,9 +23,7 @@ export type OperatingSystemDataFeatures = {
 };
 
 export const OperatingSystemDataFeatures$zodSchema: z.ZodType<
-  OperatingSystemDataFeatures,
-  z.ZodTypeDef,
-  unknown
+  OperatingSystemDataFeatures
 > = z.object({
   raid: z.boolean().optional(),
   ssh_keys: z.boolean().optional(),
@@ -39,9 +41,7 @@ export type OperatingSystemDataAttributes = {
 };
 
 export const OperatingSystemDataAttributes$zodSchema: z.ZodType<
-  OperatingSystemDataAttributes,
-  z.ZodTypeDef,
-  unknown
+  OperatingSystemDataAttributes
 > = z.object({
   distro: z.string().optional(),
   features: z.lazy(() => OperatingSystemDataFeatures$zodSchema).optional(),
@@ -58,12 +58,10 @@ export type OperatingSystemData = {
   attributes?: OperatingSystemDataAttributes | undefined;
 };
 
-export const OperatingSystemData$zodSchema: z.ZodType<
-  OperatingSystemData,
-  z.ZodTypeDef,
-  unknown
-> = z.object({
-  attributes: z.lazy(() => OperatingSystemDataAttributes$zodSchema).optional(),
-  id: z.string().optional(),
-  type: OperatingSystemDataType$zodSchema.optional(),
-});
+export const OperatingSystemData$zodSchema: z.ZodType<OperatingSystemData> = z
+  .object({
+    attributes: z.lazy(() => OperatingSystemDataAttributes$zodSchema)
+      .optional(),
+    id: z.string().optional(),
+    type: OperatingSystemDataType$zodSchema.optional(),
+  });

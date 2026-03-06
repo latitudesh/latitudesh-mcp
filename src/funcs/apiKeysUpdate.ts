@@ -20,27 +20,28 @@ import {
 } from "../models/errors/httpclienterrors.js";
 import { SDKValidationError } from "../models/errors/sdkvalidationerror.js";
 import {
-  UpdateApiKeyRequest,
-  UpdateApiKeyRequest$zodSchema,
-  UpdateApiKeyResponse,
-  UpdateApiKeyResponse$zodSchema,
-} from "../models/updateapikeyop.js";
+  RotateApiKeyRequest,
+  RotateApiKeyRequest$zodSchema,
+  RotateApiKeyResponse,
+  RotateApiKeyResponse$zodSchema,
+} from "../models/rotateapikeyop.js";
 import { APICall, APIPromise } from "../types/async.js";
 import { Result } from "../types/fp.js";
 
 /**
- * Regenerate API Key
+ * Rotate API key
  *
  * @remarks
- * Regenerate an existing API Key that is tied to the current user. This overrides the previous key.
+ * Rotate an existing API Key, generating a new token. This invalidates the previous key.
+ * Use PATCH to update settings without rotating the token.
  */
 export function apiKeysUpdate(
   client$: LatitudeshCore,
-  request: UpdateApiKeyRequest,
+  request: RotateApiKeyRequest,
   options?: RequestOptions,
 ): APIPromise<
   Result<
-    UpdateApiKeyResponse,
+    RotateApiKeyResponse,
     | APIError
     | SDKValidationError
     | UnexpectedClientError
@@ -59,12 +60,12 @@ export function apiKeysUpdate(
 
 async function $do(
   client$: LatitudeshCore,
-  request: UpdateApiKeyRequest,
+  request: RotateApiKeyRequest,
   options?: RequestOptions,
 ): Promise<
   [
     Result<
-      UpdateApiKeyResponse,
+      RotateApiKeyResponse,
       | APIError
       | SDKValidationError
       | UnexpectedClientError
@@ -78,7 +79,7 @@ async function $do(
 > {
   const parsed$ = safeParse(
     request,
-    (value$) => UpdateApiKeyRequest$zodSchema.parse(value$),
+    (value$) => RotateApiKeyRequest$zodSchema.parse(value$),
     "Input validation failed",
   );
   if (!parsed$.ok) {
@@ -107,7 +108,7 @@ async function $do(
   const context = {
     options: client$._options,
     baseURL: options?.serverURL ?? client$._baseURL ?? "",
-    operationID: "update-api-key",
+    operationID: "rotate-api-key",
     oAuth2Scopes: null,
     resolvedSecurity: requestSecurity,
     securitySource: client$._options.security,
@@ -154,7 +155,7 @@ async function $do(
   };
 
   const [result$] = await M.match<
-    UpdateApiKeyResponse,
+    RotateApiKeyResponse,
     | APIError
     | SDKValidationError
     | UnexpectedClientError
@@ -163,7 +164,7 @@ async function $do(
     | RequestTimeoutError
     | ConnectionError
   >(
-    M.json(200, UpdateApiKeyResponse$zodSchema, {
+    M.json(200, RotateApiKeyResponse$zodSchema, {
       ctype: "application/vnd.api+json",
       key: "object",
     }),

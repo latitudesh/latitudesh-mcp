@@ -3,23 +3,29 @@
  */
 
 import * as z from "zod";
-import { UserData, UserData$zodSchema } from "./userdata.js";
+import { ClosedEnum } from "../types/enums.js";
+
+export const PostUserDataType2 = {
+  UserData: "user_data",
+} as const;
+export type PostUserDataType2 = ClosedEnum<typeof PostUserDataType2>;
 
 export const PostUserDataType2$zodSchema = z.enum([
   "user_data",
 ]);
 
-export type PostUserDataType2 = z.infer<typeof PostUserDataType2$zodSchema>;
-
-export type PostUserDataAttributes2 = { description: string; content: string };
+export type PostUserDataAttributes2 = {
+  description: string;
+  project?: string | undefined;
+  content: string;
+};
 
 export const PostUserDataAttributes2$zodSchema: z.ZodType<
-  PostUserDataAttributes2,
-  z.ZodTypeDef,
-  unknown
+  PostUserDataAttributes2
 > = z.object({
   content: z.string(),
   description: z.string(),
+  project: z.string().optional(),
 });
 
 export type PostUserDataData2 = {
@@ -27,39 +33,15 @@ export type PostUserDataData2 = {
   attributes?: PostUserDataAttributes2 | undefined;
 };
 
-export const PostUserDataData2$zodSchema: z.ZodType<
-  PostUserDataData2,
-  z.ZodTypeDef,
-  unknown
-> = z.object({
-  attributes: z.lazy(() => PostUserDataAttributes2$zodSchema).optional(),
-  type: PostUserDataType2$zodSchema,
-});
+export const PostUserDataData2$zodSchema: z.ZodType<PostUserDataData2> = z
+  .object({
+    attributes: z.lazy(() => PostUserDataAttributes2$zodSchema).optional(),
+    type: PostUserDataType2$zodSchema,
+  });
 
 export type PostUserDataRequest = { data: PostUserDataData2 };
 
-export const PostUserDataRequest$zodSchema: z.ZodType<
-  PostUserDataRequest,
-  z.ZodTypeDef,
-  unknown
-> = z.object({
-  data: z.lazy(() => PostUserDataData2$zodSchema),
-});
-
-export type PostUserDataResponse = {
-  ContentType: string;
-  StatusCode: number;
-  RawResponse: Response;
-  user_data?: UserData | undefined;
-};
-
-export const PostUserDataResponse$zodSchema: z.ZodType<
-  PostUserDataResponse,
-  z.ZodTypeDef,
-  unknown
-> = z.object({
-  ContentType: z.string(),
-  RawResponse: z.instanceof(Response),
-  StatusCode: z.number().int(),
-  user_data: UserData$zodSchema.optional(),
-});
+export const PostUserDataRequest$zodSchema: z.ZodType<PostUserDataRequest> = z
+  .object({
+    data: z.lazy(() => PostUserDataData2$zodSchema),
+  });

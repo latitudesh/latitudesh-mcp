@@ -7,6 +7,6 @@ import { PlanData, PlanData$zodSchema } from "./plandata.js";
 
 export type Plan = { data?: PlanData | undefined };
 
-export const Plan$zodSchema: z.ZodType<Plan, z.ZodTypeDef, unknown> = z.object({
+export const Plan$zodSchema: z.ZodType<Plan> = z.object({
   data: PlanData$zodSchema.optional(),
 });

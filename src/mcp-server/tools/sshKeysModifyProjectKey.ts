@@ -12,7 +12,7 @@ const args = {
 
 export const tool$sshKeysModifyProjectKey: ToolDefinition<typeof args> = {
   name: "SSH-keys-modify-project-key",
-  description: `Update a Project SSH Key
+  description: `Update Project SSH Key
 
 Allow you update SSH Key in a project. These keys can be used to access servers after deploy and reinstall actions.
 `,

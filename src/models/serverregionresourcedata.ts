@@ -13,9 +13,7 @@ export type ServerRegionResourceDataSite = {
 };
 
 export const ServerRegionResourceDataSite$zodSchema: z.ZodType<
-  ServerRegionResourceDataSite,
-  z.ZodTypeDef,
-  unknown
+  ServerRegionResourceDataSite
 > = z.object({
   facility: z.string().optional(),
   id: z.string().optional(),
@@ -31,9 +29,7 @@ export type ServerRegionResourceData = {
 };
 
 export const ServerRegionResourceData$zodSchema: z.ZodType<
-  ServerRegionResourceData,
-  z.ZodTypeDef,
-  unknown
+  ServerRegionResourceData
 > = z.object({
   city: z.string().optional(),
   country: z.string().optional(),

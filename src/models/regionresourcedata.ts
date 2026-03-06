@@ -12,9 +12,7 @@ export type RegionResourceDataSite = {
 };
 
 export const RegionResourceDataSite$zodSchema: z.ZodType<
-  RegionResourceDataSite,
-  z.ZodTypeDef,
-  unknown
+  RegionResourceDataSite
 > = z.object({
   facility: z.string().optional(),
   id: z.string().optional(),
@@ -28,12 +26,9 @@ export type RegionResourceData = {
   site?: RegionResourceDataSite | undefined;
 };
 
-export const RegionResourceData$zodSchema: z.ZodType<
-  RegionResourceData,
-  z.ZodTypeDef,
-  unknown
-> = z.object({
-  city: z.string().optional(),
-  country: z.string().optional(),
-  site: z.lazy(() => RegionResourceDataSite$zodSchema).optional(),
-});
+export const RegionResourceData$zodSchema: z.ZodType<RegionResourceData> = z
+  .object({
+    city: z.string().optional(),
+    country: z.string().optional(),
+    site: z.lazy(() => RegionResourceDataSite$zodSchema).optional(),
+  });

@@ -19,17 +19,16 @@ import {
   UnexpectedClientError,
 } from "../models/errors/httpclienterrors.js";
 import { SDKValidationError } from "../models/errors/sdkvalidationerror.js";
+import { Membership, Membership$zodSchema } from "../models/membership.js";
 import {
   PostTeamMembersRequest,
   PostTeamMembersRequest$zodSchema,
-  PostTeamMembersResponse,
-  PostTeamMembersResponse$zodSchema,
 } from "../models/postteammembersop.js";
 import { APICall, APIPromise } from "../types/async.js";
 import { Result } from "../types/fp.js";
 
 /**
- * Add a Team Member
+ * Create member
  */
 export function teamMembersPostTeamMembers(
   client$: LatitudeshCore,
@@ -37,7 +36,7 @@ export function teamMembersPostTeamMembers(
   options?: RequestOptions,
 ): APIPromise<
   Result<
-    PostTeamMembersResponse,
+    Membership,
     | APIError
     | SDKValidationError
     | UnexpectedClientError
@@ -61,7 +60,7 @@ async function $do(
 ): Promise<
   [
     Result<
-      PostTeamMembersResponse,
+      Membership,
       | APIError
       | SDKValidationError
       | UnexpectedClientError
@@ -142,7 +141,7 @@ async function $do(
   };
 
   const [result$] = await M.match<
-    PostTeamMembersResponse,
+    Membership,
     | APIError
     | SDKValidationError
     | UnexpectedClientError
@@ -151,7 +150,7 @@ async function $do(
     | RequestTimeoutError
     | ConnectionError
   >(
-    M.json(201, PostTeamMembersResponse$zodSchema, {
+    M.json(201, Membership$zodSchema, {
       ctype: "application/vnd.api+json",
       key: "membership",
     }),

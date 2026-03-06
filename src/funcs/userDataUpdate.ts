@@ -22,14 +22,16 @@ import { SDKValidationError } from "../models/errors/sdkvalidationerror.js";
 import {
   PatchUserDataRequest,
   PatchUserDataRequest$zodSchema,
-  PatchUserDataResponse,
-  PatchUserDataResponse$zodSchema,
 } from "../models/patchuserdataop.js";
+import {
+  UserDataObject,
+  UserDataObject$zodSchema,
+} from "../models/userdataobject.js";
 import { APICall, APIPromise } from "../types/async.js";
 import { Result } from "../types/fp.js";
 
 /**
- * Update an User Data
+ * Update user data
  *
  * @remarks
  * Allow you update User Data in a team.
@@ -40,7 +42,7 @@ export function userDataUpdate(
   options?: RequestOptions,
 ): APIPromise<
   Result<
-    PatchUserDataResponse,
+    UserDataObject,
     | APIError
     | SDKValidationError
     | UnexpectedClientError
@@ -64,7 +66,7 @@ async function $do(
 ): Promise<
   [
     Result<
-      PatchUserDataResponse,
+      UserDataObject,
       | APIError
       | SDKValidationError
       | UnexpectedClientError
@@ -154,7 +156,7 @@ async function $do(
   };
 
   const [result$] = await M.match<
-    PatchUserDataResponse,
+    UserDataObject,
     | APIError
     | SDKValidationError
     | UnexpectedClientError
@@ -163,9 +165,9 @@ async function $do(
     | RequestTimeoutError
     | ConnectionError
   >(
-    M.json(200, PatchUserDataResponse$zodSchema, {
+    M.json(200, UserDataObject$zodSchema, {
       ctype: "application/vnd.api+json",
-      key: "user_data",
+      key: "user_data_object",
     }),
   )(response, req$, { extraFields: responseFields$ });
 

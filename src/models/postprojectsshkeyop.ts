@@ -3,15 +3,17 @@
  */
 
 import * as z from "zod";
+import { ClosedEnum } from "../types/enums.js";
 import { SshKeyData, SshKeyData$zodSchema } from "./sshkeydata.js";
+
+export const PostProjectSshKeyType2 = {
+  SshKeys: "ssh_keys",
+} as const;
+export type PostProjectSshKeyType2 = ClosedEnum<typeof PostProjectSshKeyType2>;
 
 export const PostProjectSshKeyType2$zodSchema = z.enum([
   "ssh_keys",
 ]);
-
-export type PostProjectSshKeyType2 = z.infer<
-  typeof PostProjectSshKeyType2$zodSchema
->;
 
 export type PostProjectSshKeyAttributes2 = {
   name?: string | undefined;
@@ -19,9 +21,7 @@ export type PostProjectSshKeyAttributes2 = {
 };
 
 export const PostProjectSshKeyAttributes2$zodSchema: z.ZodType<
-  PostProjectSshKeyAttributes2,
-  z.ZodTypeDef,
-  unknown
+  PostProjectSshKeyAttributes2
 > = z.object({
   name: z.string().optional(),
   public_key: z.string().optional(),
@@ -33,9 +33,7 @@ export type PostProjectSshKeyData2 = {
 };
 
 export const PostProjectSshKeyData2$zodSchema: z.ZodType<
-  PostProjectSshKeyData2,
-  z.ZodTypeDef,
-  unknown
+  PostProjectSshKeyData2
 > = z.object({
   attributes: z.lazy(() => PostProjectSshKeyAttributes2$zodSchema).optional(),
   type: PostProjectSshKeyType2$zodSchema,
@@ -44,9 +42,7 @@ export const PostProjectSshKeyData2$zodSchema: z.ZodType<
 export type PostProjectSshKeyRequestBody2 = { data: PostProjectSshKeyData2 };
 
 export const PostProjectSshKeyRequestBody2$zodSchema: z.ZodType<
-  PostProjectSshKeyRequestBody2,
-  z.ZodTypeDef,
-  unknown
+  PostProjectSshKeyRequestBody2
 > = z.object({
   data: z.lazy(() => PostProjectSshKeyData2$zodSchema),
 });
@@ -57,9 +53,7 @@ export type PostProjectSshKeyRequest = {
 };
 
 export const PostProjectSshKeyRequest$zodSchema: z.ZodType<
-  PostProjectSshKeyRequest,
-  z.ZodTypeDef,
-  unknown
+  PostProjectSshKeyRequest
 > = z.object({
   RequestBody: z.lazy(() => PostProjectSshKeyRequestBody2$zodSchema),
   project_id: z.string().describe("Project ID or Slug"),
@@ -68,30 +62,10 @@ export const PostProjectSshKeyRequest$zodSchema: z.ZodType<
 /**
  * Created
  */
-export type PostProjectSshKeyResponseBody = { data?: SshKeyData | undefined };
+export type PostProjectSshKeyResponse = { data?: SshKeyData | undefined };
 
-export const PostProjectSshKeyResponseBody$zodSchema: z.ZodType<
-  PostProjectSshKeyResponseBody,
-  z.ZodTypeDef,
-  unknown
+export const PostProjectSshKeyResponse$zodSchema: z.ZodType<
+  PostProjectSshKeyResponse
 > = z.object({
   data: SshKeyData$zodSchema.optional(),
 }).describe("Created");
-
-export type PostProjectSshKeyResponse = {
-  ContentType: string;
-  StatusCode: number;
-  RawResponse: Response;
-  object?: PostProjectSshKeyResponseBody | undefined;
-};
-
-export const PostProjectSshKeyResponse$zodSchema: z.ZodType<
-  PostProjectSshKeyResponse,
-  z.ZodTypeDef,
-  unknown
-> = z.object({
-  ContentType: z.string(),
-  RawResponse: z.instanceof(Response),
-  StatusCode: z.number().int(),
-  object: z.lazy(() => PostProjectSshKeyResponseBody$zodSchema).optional(),
-});

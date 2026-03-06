@@ -3,31 +3,35 @@
  */
 
 import * as z from "zod";
+import { ClosedEnum } from "../types/enums.js";
+
+export const VirtualMachinePayloadType = {
+  VirtualMachines: "virtual_machines",
+} as const;
+export type VirtualMachinePayloadType = ClosedEnum<
+  typeof VirtualMachinePayloadType
+>;
 
 export const VirtualMachinePayloadType$zodSchema = z.enum([
   "virtual_machines",
 ]);
 
-export type VirtualMachinePayloadType = z.infer<
-  typeof VirtualMachinePayloadType$zodSchema
->;
-
 export type VirtualMachinePayloadAttributes = {
   name?: string | undefined;
-  plan?: string | undefined;
-  ssh_keys?: Array<string> | undefined;
+  plan?: string | null | undefined;
+  ssh_keys?: Array<string> | null | undefined;
   project?: string | undefined;
+  operating_system?: string | null | undefined;
 };
 
 export const VirtualMachinePayloadAttributes$zodSchema: z.ZodType<
-  VirtualMachinePayloadAttributes,
-  z.ZodTypeDef,
-  unknown
+  VirtualMachinePayloadAttributes
 > = z.object({
   name: z.string().default("my-vm"),
-  plan: z.string().optional(),
+  operating_system: z.string().nullable().optional(),
+  plan: z.string().nullable().optional(),
   project: z.string().default("my-project"),
-  ssh_keys: z.array(z.string()).optional(),
+  ssh_keys: z.array(z.string()).nullable().optional(),
 });
 
 export type VirtualMachinePayloadData = {
@@ -36,9 +40,7 @@ export type VirtualMachinePayloadData = {
 };
 
 export const VirtualMachinePayloadData$zodSchema: z.ZodType<
-  VirtualMachinePayloadData,
-  z.ZodTypeDef,
-  unknown
+  VirtualMachinePayloadData
 > = z.object({
   attributes: z.lazy(() => VirtualMachinePayloadAttributes$zodSchema)
     .optional(),
@@ -49,10 +51,7 @@ export type VirtualMachinePayload = {
   data?: VirtualMachinePayloadData | undefined;
 };
 
-export const VirtualMachinePayload$zodSchema: z.ZodType<
-  VirtualMachinePayload,
-  z.ZodTypeDef,
-  unknown
-> = z.object({
-  data: z.lazy(() => VirtualMachinePayloadData$zodSchema).optional(),
-});
+export const VirtualMachinePayload$zodSchema: z.ZodType<VirtualMachinePayload> =
+  z.object({
+    data: z.lazy(() => VirtualMachinePayloadData$zodSchema).optional(),
+  });

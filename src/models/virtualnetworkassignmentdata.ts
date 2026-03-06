@@ -3,14 +3,18 @@
  */
 
 import * as z from "zod";
+import { ClosedEnum } from "../types/enums.js";
+
+export const VirtualNetworkAssignmentDataType = {
+  VirtualNetworkAssignment: "virtual_network_assignment",
+} as const;
+export type VirtualNetworkAssignmentDataType = ClosedEnum<
+  typeof VirtualNetworkAssignmentDataType
+>;
 
 export const VirtualNetworkAssignmentDataType$zodSchema = z.enum([
   "virtual_network_assignment",
 ]);
-
-export type VirtualNetworkAssignmentDataType = z.infer<
-  typeof VirtualNetworkAssignmentDataType$zodSchema
->;
 
 export type VirtualNetworkAssignmentDataServer = {
   id?: string | undefined;
@@ -21,9 +25,7 @@ export type VirtualNetworkAssignmentDataServer = {
 };
 
 export const VirtualNetworkAssignmentDataServer$zodSchema: z.ZodType<
-  VirtualNetworkAssignmentDataServer,
-  z.ZodTypeDef,
-  unknown
+  VirtualNetworkAssignmentDataServer
 > = z.object({
   hostname: z.string().optional(),
   id: z.string().optional(),
@@ -41,14 +43,12 @@ export type VirtualNetworkAssignmentDataAttributes = {
 };
 
 export const VirtualNetworkAssignmentDataAttributes$zodSchema: z.ZodType<
-  VirtualNetworkAssignmentDataAttributes,
-  z.ZodTypeDef,
-  unknown
+  VirtualNetworkAssignmentDataAttributes
 > = z.object({
   description: z.string().optional(),
   server: z.lazy(() => VirtualNetworkAssignmentDataServer$zodSchema).optional(),
   status: z.string().optional(),
-  vid: z.number().int().optional(),
+  vid: z.int().optional(),
   virtual_network_id: z.string().optional(),
 });
 
@@ -59,9 +59,7 @@ export type VirtualNetworkAssignmentData = {
 };
 
 export const VirtualNetworkAssignmentData$zodSchema: z.ZodType<
-  VirtualNetworkAssignmentData,
-  z.ZodTypeDef,
-  unknown
+  VirtualNetworkAssignmentData
 > = z.object({
   attributes: z.lazy(() => VirtualNetworkAssignmentDataAttributes$zodSchema)
     .optional(),

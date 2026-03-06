@@ -7,25 +7,7 @@ import * as z from "zod";
 export type DestroyTeamMemberRequest = { user_id: string };
 
 export const DestroyTeamMemberRequest$zodSchema: z.ZodType<
-  DestroyTeamMemberRequest,
-  z.ZodTypeDef,
-  unknown
+  DestroyTeamMemberRequest
 > = z.object({
   user_id: z.string().describe("The user ID"),
-});
-
-export type DestroyTeamMemberResponse = {
-  ContentType: string;
-  StatusCode: number;
-  RawResponse: Response;
-};
-
-export const DestroyTeamMemberResponse$zodSchema: z.ZodType<
-  DestroyTeamMemberResponse,
-  z.ZodTypeDef,
-  unknown
-> = z.object({
-  ContentType: z.string(),
-  RawResponse: z.instanceof(Response),
-  StatusCode: z.number().int(),
 });

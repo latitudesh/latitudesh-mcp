@@ -7,16 +7,14 @@ import { Team, Team$zodSchema } from "./team.js";
 
 export type TeamsMeta = {};
 
-export const TeamsMeta$zodSchema: z.ZodType<TeamsMeta, z.ZodTypeDef, unknown> =
-  z.object({});
+export const TeamsMeta$zodSchema: z.ZodType<TeamsMeta> = z.object({});
 
 export type Teams = {
   data?: Array<Team> | undefined;
   meta?: TeamsMeta | undefined;
 };
 
-export const Teams$zodSchema: z.ZodType<Teams, z.ZodTypeDef, unknown> = z
-  .object({
-    data: z.array(Team$zodSchema).optional(),
-    meta: z.lazy(() => TeamsMeta$zodSchema).optional(),
-  });
+export const Teams$zodSchema: z.ZodType<Teams> = z.object({
+  data: z.array(Team$zodSchema).optional(),
+  meta: z.lazy(() => TeamsMeta$zodSchema).optional(),
+});

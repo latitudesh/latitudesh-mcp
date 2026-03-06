@@ -13,8 +13,6 @@ import { pathToFunc } from "../lib/url.js";
 import {
   CreateVirtualNetworkRequest,
   CreateVirtualNetworkRequest$zodSchema,
-  CreateVirtualNetworkResponse,
-  CreateVirtualNetworkResponse$zodSchema,
 } from "../models/createvirtualnetworkop.js";
 import { APIError } from "../models/errors/apierror.js";
 import {
@@ -25,11 +23,15 @@ import {
   UnexpectedClientError,
 } from "../models/errors/httpclienterrors.js";
 import { SDKValidationError } from "../models/errors/sdkvalidationerror.js";
+import {
+  VirtualNetwork,
+  VirtualNetwork$zodSchema,
+} from "../models/virtualnetwork.js";
 import { APICall, APIPromise } from "../types/async.js";
 import { Result } from "../types/fp.js";
 
 /**
- * Create a Virtual Network
+ * Create VLAN
  *
  * @remarks
  * Creates a new Virtual Network.
@@ -40,7 +42,7 @@ export function privateNetworksCreate(
   options?: RequestOptions,
 ): APIPromise<
   Result<
-    CreateVirtualNetworkResponse,
+    VirtualNetwork,
     | APIError
     | SDKValidationError
     | UnexpectedClientError
@@ -64,7 +66,7 @@ async function $do(
 ): Promise<
   [
     Result<
-      CreateVirtualNetworkResponse,
+      VirtualNetwork,
       | APIError
       | SDKValidationError
       | UnexpectedClientError
@@ -145,7 +147,7 @@ async function $do(
   };
 
   const [result$] = await M.match<
-    CreateVirtualNetworkResponse,
+    VirtualNetwork,
     | APIError
     | SDKValidationError
     | UnexpectedClientError
@@ -154,7 +156,7 @@ async function $do(
     | RequestTimeoutError
     | ConnectionError
   >(
-    M.json(201, CreateVirtualNetworkResponse$zodSchema, {
+    M.json(201, VirtualNetwork$zodSchema, {
       ctype: "application/vnd.api+json",
       key: "virtual_network",
     }),

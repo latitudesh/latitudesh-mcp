@@ -6,26 +6,7 @@ import * as z from "zod";
 
 export type DeleteFirewallRequest = { firewall_id: string };
 
-export const DeleteFirewallRequest$zodSchema: z.ZodType<
-  DeleteFirewallRequest,
-  z.ZodTypeDef,
-  unknown
-> = z.object({
-  firewall_id: z.string().describe("The Firewall ID"),
-});
-
-export type DeleteFirewallResponse = {
-  ContentType: string;
-  StatusCode: number;
-  RawResponse: Response;
-};
-
-export const DeleteFirewallResponse$zodSchema: z.ZodType<
-  DeleteFirewallResponse,
-  z.ZodTypeDef,
-  unknown
-> = z.object({
-  ContentType: z.string(),
-  RawResponse: z.instanceof(Response),
-  StatusCode: z.number().int(),
-});
+export const DeleteFirewallRequest$zodSchema: z.ZodType<DeleteFirewallRequest> =
+  z.object({
+    firewall_id: z.string().describe("The Firewall ID"),
+  });

@@ -29,7 +29,7 @@ import { APICall, APIPromise } from "../types/async.js";
 import { Result } from "../types/fp.js";
 
 /**
- * Update a filesystem for a project
+ * Update filesystem
  *
  * @remarks
  * Allow you to upgrade the size of a filesystem.

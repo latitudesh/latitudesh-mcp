@@ -13,8 +13,6 @@ import { pathToFunc } from "../lib/url.js";
 import {
   CreateIpmiSessionRequest,
   CreateIpmiSessionRequest$zodSchema,
-  CreateIpmiSessionResponse,
-  CreateIpmiSessionResponse$zodSchema,
 } from "../models/createipmisessionop.js";
 import { APIError } from "../models/errors/apierror.js";
 import {
@@ -25,11 +23,12 @@ import {
   UnexpectedClientError,
 } from "../models/errors/httpclienterrors.js";
 import { SDKValidationError } from "../models/errors/sdkvalidationerror.js";
+import { IpmiSession, IpmiSession$zodSchema } from "../models/ipmisession.js";
 import { APICall, APIPromise } from "../types/async.js";
 import { Result } from "../types/fp.js";
 
 /**
- * Generate IPMI credentials
+ * Create IPMI credentials
  *
  * @remarks
  * Generates IPMI credentials for a given server. Remote access creates a VPN connection to the internal network of your server so you can connect to its IPMI.
@@ -43,7 +42,7 @@ export function serversCreateIpmiSession(
   options?: RequestOptions,
 ): APIPromise<
   Result<
-    CreateIpmiSessionResponse,
+    IpmiSession,
     | APIError
     | SDKValidationError
     | UnexpectedClientError
@@ -67,7 +66,7 @@ async function $do(
 ): Promise<
   [
     Result<
-      CreateIpmiSessionResponse,
+      IpmiSession,
       | APIError
       | SDKValidationError
       | UnexpectedClientError
@@ -156,7 +155,7 @@ async function $do(
   };
 
   const [result$] = await M.match<
-    CreateIpmiSessionResponse,
+    IpmiSession,
     | APIError
     | SDKValidationError
     | UnexpectedClientError
@@ -165,7 +164,7 @@ async function $do(
     | RequestTimeoutError
     | ConnectionError
   >(
-    M.json(201, CreateIpmiSessionResponse$zodSchema, {
+    M.json(201, IpmiSession$zodSchema, {
       ctype: "application/vnd.api+json",
       key: "ipmi_session",
     }),

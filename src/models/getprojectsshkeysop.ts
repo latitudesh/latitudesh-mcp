@@ -3,7 +3,6 @@
  */
 
 import * as z from "zod";
-import { SshKeys, SshKeys$zodSchema } from "./sshkeys.js";
 
 export type GetProjectSshKeysRequest = {
   project_id: string;
@@ -11,30 +10,10 @@ export type GetProjectSshKeysRequest = {
 };
 
 export const GetProjectSshKeysRequest$zodSchema: z.ZodType<
-  GetProjectSshKeysRequest,
-  z.ZodTypeDef,
-  unknown
+  GetProjectSshKeysRequest
 > = z.object({
   filterTags: z.string().describe(
     "The tags ids to filter by, separated by comma, e.g. `filter[tags]=tag_1,tag_2`will return ssh keys with `tag_1` AND `tag_2`",
   ).optional(),
   project_id: z.string().describe("Project ID or Slug"),
-});
-
-export type GetProjectSshKeysResponse = {
-  ContentType: string;
-  StatusCode: number;
-  RawResponse: Response;
-  ssh_keys?: SshKeys | undefined;
-};
-
-export const GetProjectSshKeysResponse$zodSchema: z.ZodType<
-  GetProjectSshKeysResponse,
-  z.ZodTypeDef,
-  unknown
-> = z.object({
-  ContentType: z.string(),
-  RawResponse: z.instanceof(Response),
-  StatusCode: z.number().int(),
-  ssh_keys: SshKeys$zodSchema.optional(),
 });

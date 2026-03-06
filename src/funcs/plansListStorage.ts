@@ -18,21 +18,21 @@ import {
 } from "../models/errors/httpclienterrors.js";
 import { SDKValidationError } from "../models/errors/sdkvalidationerror.js";
 import {
-  GetStoragePlansResponse,
-  GetStoragePlansResponse$zodSchema,
-} from "../models/getstorageplansop.js";
+  StoragePlans,
+  StoragePlans$zodSchema,
+} from "../models/storageplans.js";
 import { APICall, APIPromise } from "../types/async.js";
 import { Result } from "../types/fp.js";
 
 /**
- * List all Storage Plans
+ * List storage plans
  */
 export function plansListStorage(
   client$: LatitudeshCore,
   options?: RequestOptions,
 ): APIPromise<
   Result<
-    GetStoragePlansResponse,
+    StoragePlans,
     | APIError
     | SDKValidationError
     | UnexpectedClientError
@@ -54,7 +54,7 @@ async function $do(
 ): Promise<
   [
     Result<
-      GetStoragePlansResponse,
+      StoragePlans,
       | APIError
       | SDKValidationError
       | UnexpectedClientError
@@ -123,7 +123,7 @@ async function $do(
   };
 
   const [result$] = await M.match<
-    GetStoragePlansResponse,
+    StoragePlans,
     | APIError
     | SDKValidationError
     | UnexpectedClientError
@@ -132,7 +132,7 @@ async function $do(
     | RequestTimeoutError
     | ConnectionError
   >(
-    M.json(200, GetStoragePlansResponse$zodSchema, {
+    M.json(200, StoragePlans$zodSchema, {
       ctype: "application/vnd.api+json",
       key: "storage_plans",
     }),

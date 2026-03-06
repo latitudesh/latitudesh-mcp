@@ -12,7 +12,7 @@ const args = {
 
 export const tool$regionsGet: ToolDefinition<typeof args> = {
   name: "regions-get",
-  description: `List all Regions
+  description: `List regions
 
 Lists all [available locations](https://latitude.sh/locations). For server availability by location, please see the [Plans API](/reference/get-plans).
 

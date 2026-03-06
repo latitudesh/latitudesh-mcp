@@ -13,8 +13,6 @@ import { pathToFunc } from "../lib/url.js";
 import {
   CreateFirewallRequest,
   CreateFirewallRequest$zodSchema,
-  CreateFirewallResponse,
-  CreateFirewallResponse$zodSchema,
 } from "../models/createfirewallop.js";
 import { APIError } from "../models/errors/apierror.js";
 import {
@@ -25,11 +23,12 @@ import {
   UnexpectedClientError,
 } from "../models/errors/httpclienterrors.js";
 import { SDKValidationError } from "../models/errors/sdkvalidationerror.js";
+import { Firewall, Firewall$zodSchema } from "../models/firewall.js";
 import { APICall, APIPromise } from "../types/async.js";
 import { Result } from "../types/fp.js";
 
 /**
- * Create a firewall
+ * Create firewall
  *
  * @remarks
  * Create a firewall
@@ -40,7 +39,7 @@ export function firewallsCreate(
   options?: RequestOptions,
 ): APIPromise<
   Result<
-    CreateFirewallResponse,
+    Firewall,
     | APIError
     | SDKValidationError
     | UnexpectedClientError
@@ -64,7 +63,7 @@ async function $do(
 ): Promise<
   [
     Result<
-      CreateFirewallResponse,
+      Firewall,
       | APIError
       | SDKValidationError
       | UnexpectedClientError
@@ -145,7 +144,7 @@ async function $do(
   };
 
   const [result$] = await M.match<
-    CreateFirewallResponse,
+    Firewall,
     | APIError
     | SDKValidationError
     | UnexpectedClientError
@@ -154,7 +153,7 @@ async function $do(
     | RequestTimeoutError
     | ConnectionError
   >(
-    M.json(201, CreateFirewallResponse$zodSchema, {
+    M.json(201, Firewall$zodSchema, {
       ctype: "application/vnd.api+json",
       key: "firewall",
     }),

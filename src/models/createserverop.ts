@@ -3,17 +3,46 @@
  */
 
 import * as z from "zod";
-import { Server, Server$zodSchema } from "./server.js";
+import { ClosedEnum } from "../types/enums.js";
+
+export const CreateServerType2 = {
+  Servers: "servers",
+} as const;
+export type CreateServerType2 = ClosedEnum<typeof CreateServerType2>;
 
 export const CreateServerType2$zodSchema = z.enum([
   "servers",
 ]);
 
-export type CreateServerType2 = z.infer<typeof CreateServerType2$zodSchema>;
-
 /**
  * The plan slug to choose server from, defining the specs the server will have
  */
+export const CreateServerPlan2 = {
+  C2LargeX86: "c2-large-x86",
+  C2MediumX86: "c2-medium-x86",
+  C2SmallX86: "c2-small-x86",
+  C3LargeX86: "c3-large-x86",
+  C3MediumX86: "c3-medium-x86",
+  C3SmallX86: "c3-small-x86",
+  C3XlargeX86: "c3-xlarge-x86",
+  G3Gh200: "g3-gh200",
+  G3LargeX86: "g3-large-x86",
+  G3MediumX86: "g3-medium-x86",
+  G3SmallX86: "g3-small-x86",
+  G3XlargeX86: "g3-xlarge-x86",
+  G4Rtx6kproLarge: "g4-rtx6kpro-large",
+  M3LargeX86: "m3-large-x86",
+  M4MetalLarge: "m4-metal-large",
+  M4MetalSmall: "m4-metal-small",
+  Rs4MetalXlarge: "rs4-metal-xlarge",
+  S2SmallX86: "s2-small-x86",
+  S3LargeX86: "s3-large-x86",
+} as const;
+/**
+ * The plan slug to choose server from, defining the specs the server will have
+ */
+export type CreateServerPlan2 = ClosedEnum<typeof CreateServerPlan2>;
+
 export const CreateServerPlan2$zodSchema = z.enum([
   "c2-large-x86",
   "c2-medium-x86",
@@ -22,25 +51,52 @@ export const CreateServerPlan2$zodSchema = z.enum([
   "c3-medium-x86",
   "c3-small-x86",
   "c3-xlarge-x86",
+  "g3-gh200",
   "g3-large-x86",
   "g3-medium-x86",
   "g3-small-x86",
   "g3-xlarge-x86",
+  "g4-rtx6kpro-large",
   "m3-large-x86",
+  "m4-metal-large",
+  "m4-metal-small",
+  "rs4-metal-xlarge",
   "s2-small-x86",
   "s3-large-x86",
 ]).describe(
   "The plan slug to choose server from, defining the specs the server will have",
 );
 
-export type CreateServerPlan2 = z.infer<typeof CreateServerPlan2$zodSchema>;
-
 /**
  * The site slug to deploy the server
  */
+export const CreateServerSite2 = {
+  Ash: "ASH",
+  Bue: "BUE",
+  Chi: "CHI",
+  Dal: "DAL",
+  Fra: "FRA",
+  Lax: "LAX",
+  Lon: "LON",
+  Mex: "MEX",
+  Mex2: "MEX2",
+  Mia: "MIA",
+  Mia2: "MIA2",
+  Nyc: "NYC",
+  Sao: "SAO",
+  Sao2: "SAO2",
+  Sgp: "SGP",
+  Syd: "SYD",
+  Tyo: "TYO",
+  Tyo2: "TYO2",
+} as const;
+/**
+ * The site slug to deploy the server
+ */
+export type CreateServerSite2 = ClosedEnum<typeof CreateServerSite2>;
+
 export const CreateServerSite2$zodSchema = z.enum([
   "ASH",
-  "BGT",
   "BUE",
   "CHI",
   "DAL",
@@ -52,64 +108,91 @@ export const CreateServerSite2$zodSchema = z.enum([
   "MIA",
   "MIA2",
   "NYC",
-  "SAN",
   "SAO",
   "SAO2",
+  "SGP",
   "SYD",
   "TYO",
   "TYO2",
 ]).describe("The site slug to deploy the server");
 
-export type CreateServerSite2 = z.infer<typeof CreateServerSite2$zodSchema>;
-
 /**
  * The operating system slug for the new server
  */
-export const CreateServerOperatingSystem2$zodSchema = z.enum([
-  "ipxe",
-  "windows_server_2019_std_v1",
-  "ubuntu_22_04_x64_lts",
-  "debian_11",
-  "debian_10",
-  "rhel8",
-  "windows_server_2012_r2_std_v28",
-  "windows_server_2012_r2_dc_v5",
-  "esxi_6_7",
-  "debian_9_4_x64",
-  "centos_7_4_x64",
-  "centos_8_x64",
-  "ubuntu_16_04_x64_lts",
-  "ubuntu_20_04_x64_lts",
-  "windows_server_2016_std_v1",
-  "windows_server_2016_dc_v1",
-  "windows_server_2019_dc_v1",
-  "debian_12",
-  "ubuntu22_ml_in_a_box",
-  "ubuntu_18_04_x64_lts",
-  "windows_server_2019_std_uefi",
-  "windows_2022_std_uefi",
-  "windows_2022_std",
-  "ubuntu_24_04_x64_lts",
-  "rockylinux_8",
-]).describe("The operating system slug for the new server");
-
-export type CreateServerOperatingSystem2 = z.infer<
-  typeof CreateServerOperatingSystem2$zodSchema
+export const CreateServerOperatingSystem2 = {
+  Centos74X64: "centos_7_4_x64",
+  Centos8X64: "centos_8_x64",
+  Debian10: "debian_10",
+  Debian11: "debian_11",
+  Debian12: "debian_12",
+  Ipxe: "ipxe",
+  Rhel8: "rhel8",
+  Rockylinux8: "rockylinux_8",
+  Ubuntu22MlInABox: "ubuntu22_ml_in_a_box",
+  Ubuntu24MlInABox: "ubuntu24_ml_in_a_box",
+  Ubuntu2004X64Lts: "ubuntu_20_04_x64_lts",
+  Ubuntu2204X64Lts: "ubuntu_22_04_x64_lts",
+  Ubuntu2404X64Lts: "ubuntu_24_04_x64_lts",
+  Windows2022Std: "windows_2022_std",
+  WindowsServer2019StdV1: "windows_server_2019_std_v1",
+} as const;
+/**
+ * The operating system slug for the new server
+ */
+export type CreateServerOperatingSystem2 = ClosedEnum<
+  typeof CreateServerOperatingSystem2
 >;
 
+export const CreateServerOperatingSystem2$zodSchema = z.enum([
+  "centos_7_4_x64",
+  "centos_8_x64",
+  "debian_10",
+  "debian_11",
+  "debian_12",
+  "ipxe",
+  "rhel8",
+  "rockylinux_8",
+  "ubuntu22_ml_in_a_box",
+  "ubuntu24_ml_in_a_box",
+  "ubuntu_20_04_x64_lts",
+  "ubuntu_22_04_x64_lts",
+  "ubuntu_24_04_x64_lts",
+  "windows_2022_std",
+  "windows_server_2019_std_v1",
+]).describe("The operating system slug for the new server");
+
 /**
- * RAID mode for the server
+ * RAID mode for the server. Set to 'raid-0' for RAID 0, 'raid-1' for RAID 1, or omit/null for no RAID configuration
  */
+export const CreateServerRaid2 = {
+  Raid0: "raid-0",
+  Raid1: "raid-1",
+} as const;
+/**
+ * RAID mode for the server. Set to 'raid-0' for RAID 0, 'raid-1' for RAID 1, or omit/null for no RAID configuration
+ */
+export type CreateServerRaid2 = ClosedEnum<typeof CreateServerRaid2>;
+
 export const CreateServerRaid2$zodSchema = z.enum([
   "raid-0",
   "raid-1",
-]).describe("RAID mode for the server");
-
-export type CreateServerRaid2 = z.infer<typeof CreateServerRaid2$zodSchema>;
+]).describe(
+  "RAID mode for the server. Set to 'raid-0' for RAID 0, 'raid-1' for RAID 1, or omit/null for no RAID configuration",
+);
 
 /**
  * The server billing type. Accepts `hourly` and `monthly` for on demand projects and `yearly` for reserved projects.
  */
+export const CreateServerBilling2 = {
+  Hourly: "hourly",
+  Monthly: "monthly",
+  Yearly: "yearly",
+} as const;
+/**
+ * The server billing type. Accepts `hourly` and `monthly` for on demand projects and `yearly` for reserved projects.
+ */
+export type CreateServerBilling2 = ClosedEnum<typeof CreateServerBilling2>;
+
 export const CreateServerBilling2$zodSchema = z.enum([
   "hourly",
   "monthly",
@@ -118,38 +201,32 @@ export const CreateServerBilling2$zodSchema = z.enum([
   "The server billing type. Accepts `hourly` and `monthly` for on demand projects and `yearly` for reserved projects.",
 );
 
-export type CreateServerBilling2 = z.infer<
-  typeof CreateServerBilling2$zodSchema
->;
-
 export type CreateServerAttributes2 = {
   project?: string | undefined;
   plan?: CreateServerPlan2 | undefined;
   site?: CreateServerSite2 | undefined;
   operating_system?: CreateServerOperatingSystem2 | undefined;
   hostname?: string | undefined;
-  ssh_keys?: Array<string> | undefined;
-  user_data?: string | undefined;
-  raid?: CreateServerRaid2 | undefined;
-  ipxe?: string | undefined;
-  billing?: CreateServerBilling2 | undefined;
+  ssh_keys?: Array<string> | null | undefined;
+  user_data?: string | null | undefined;
+  raid?: CreateServerRaid2 | null | undefined;
+  ipxe?: string | null | undefined;
+  billing?: CreateServerBilling2 | null | undefined;
 };
 
 export const CreateServerAttributes2$zodSchema: z.ZodType<
-  CreateServerAttributes2,
-  z.ZodTypeDef,
-  unknown
+  CreateServerAttributes2
 > = z.object({
-  billing: CreateServerBilling2$zodSchema.optional(),
+  billing: CreateServerBilling2$zodSchema.nullable().optional(),
   hostname: z.string().optional(),
-  ipxe: z.string().optional(),
+  ipxe: z.string().nullable().optional(),
   operating_system: CreateServerOperatingSystem2$zodSchema.optional(),
   plan: CreateServerPlan2$zodSchema.optional(),
   project: z.string().optional(),
-  raid: CreateServerRaid2$zodSchema.optional(),
+  raid: CreateServerRaid2$zodSchema.nullable().optional(),
   site: CreateServerSite2$zodSchema.optional(),
-  ssh_keys: z.array(z.string()).optional(),
-  user_data: z.string().optional(),
+  ssh_keys: z.array(z.string()).nullable().optional(),
+  user_data: z.string().nullable().optional(),
 });
 
 export type CreateServerData2 = {
@@ -157,39 +234,15 @@ export type CreateServerData2 = {
   attributes?: CreateServerAttributes2 | undefined;
 };
 
-export const CreateServerData2$zodSchema: z.ZodType<
-  CreateServerData2,
-  z.ZodTypeDef,
-  unknown
-> = z.object({
-  attributes: z.lazy(() => CreateServerAttributes2$zodSchema).optional(),
-  type: CreateServerType2$zodSchema,
-});
+export const CreateServerData2$zodSchema: z.ZodType<CreateServerData2> = z
+  .object({
+    attributes: z.lazy(() => CreateServerAttributes2$zodSchema).optional(),
+    type: CreateServerType2$zodSchema,
+  });
 
 export type CreateServerRequest = { data?: CreateServerData2 | undefined };
 
-export const CreateServerRequest$zodSchema: z.ZodType<
-  CreateServerRequest,
-  z.ZodTypeDef,
-  unknown
-> = z.object({
-  data: z.lazy(() => CreateServerData2$zodSchema).optional(),
-});
-
-export type CreateServerResponse = {
-  ContentType: string;
-  StatusCode: number;
-  RawResponse: Response;
-  server?: Server | undefined;
-};
-
-export const CreateServerResponse$zodSchema: z.ZodType<
-  CreateServerResponse,
-  z.ZodTypeDef,
-  unknown
-> = z.object({
-  ContentType: z.string(),
-  RawResponse: z.instanceof(Response),
-  StatusCode: z.number().int(),
-  server: Server$zodSchema.optional(),
-});
+export const CreateServerRequest$zodSchema: z.ZodType<CreateServerRequest> = z
+  .object({
+    data: z.lazy(() => CreateServerData2$zodSchema).optional(),
+  });

@@ -12,7 +12,7 @@ const args = {
 
 export const tool$userDataUpdateForProject: ToolDefinition<typeof args> = {
   name: "user-data-update-for-project",
-  description: `Update a Project User Data
+  description: `Update Project user data
 
 Allow you update User Data in a project.
 `,

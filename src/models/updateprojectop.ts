@@ -3,23 +3,32 @@
  */
 
 import * as z from "zod";
+import { ClosedEnum } from "../types/enums.js";
 import { Project, Project$zodSchema } from "./project.js";
+
+export const UpdateProjectType2 = {
+  Projects: "projects",
+} as const;
+export type UpdateProjectType2 = ClosedEnum<typeof UpdateProjectType2>;
 
 export const UpdateProjectType2$zodSchema = z.enum([
   "projects",
 ]);
 
-export type UpdateProjectType2 = z.infer<typeof UpdateProjectType2$zodSchema>;
+export const UpdateProjectEnvironment2 = {
+  Development: "Development",
+  Staging: "Staging",
+  Production: "Production",
+} as const;
+export type UpdateProjectEnvironment2 = ClosedEnum<
+  typeof UpdateProjectEnvironment2
+>;
 
 export const UpdateProjectEnvironment2$zodSchema = z.enum([
   "Development",
   "Staging",
   "Production",
 ]);
-
-export type UpdateProjectEnvironment2 = z.infer<
-  typeof UpdateProjectEnvironment2$zodSchema
->;
 
 export type UpdateProjectAttributes2 = {
   name?: string | undefined;
@@ -30,9 +39,7 @@ export type UpdateProjectAttributes2 = {
 };
 
 export const UpdateProjectAttributes2$zodSchema: z.ZodType<
-  UpdateProjectAttributes2,
-  z.ZodTypeDef,
-  unknown
+  UpdateProjectAttributes2
 > = z.object({
   bandwidth_alert: z.boolean().default(false),
   description: z.string().default(
@@ -49,22 +56,17 @@ export type UpdateProjectData2 = {
   attributes?: UpdateProjectAttributes2 | undefined;
 };
 
-export const UpdateProjectData2$zodSchema: z.ZodType<
-  UpdateProjectData2,
-  z.ZodTypeDef,
-  unknown
-> = z.object({
-  attributes: z.lazy(() => UpdateProjectAttributes2$zodSchema).optional(),
-  id: z.string().default("proj_81EVOtR1N4J2Z"),
-  type: UpdateProjectType2$zodSchema,
-});
+export const UpdateProjectData2$zodSchema: z.ZodType<UpdateProjectData2> = z
+  .object({
+    attributes: z.lazy(() => UpdateProjectAttributes2$zodSchema).optional(),
+    id: z.string().default("proj_81EVOtR1N4J2Z"),
+    type: UpdateProjectType2$zodSchema,
+  });
 
 export type UpdateProjectRequestBody2 = { data: UpdateProjectData2 };
 
 export const UpdateProjectRequestBody2$zodSchema: z.ZodType<
-  UpdateProjectRequestBody2,
-  z.ZodTypeDef,
-  unknown
+  UpdateProjectRequestBody2
 > = z.object({
   data: z.lazy(() => UpdateProjectData2$zodSchema),
 });
@@ -74,42 +76,18 @@ export type UpdateProjectRequest = {
   RequestBody?: UpdateProjectRequestBody2 | undefined;
 };
 
-export const UpdateProjectRequest$zodSchema: z.ZodType<
-  UpdateProjectRequest,
-  z.ZodTypeDef,
-  unknown
-> = z.object({
-  RequestBody: z.lazy(() => UpdateProjectRequestBody2$zodSchema).optional(),
-  project_id: z.string().describe("The project ID or Slug"),
-});
+export const UpdateProjectRequest$zodSchema: z.ZodType<UpdateProjectRequest> = z
+  .object({
+    RequestBody: z.lazy(() => UpdateProjectRequestBody2$zodSchema).optional(),
+    project_id: z.string().describe("The project ID or Slug"),
+  });
 
 /**
  * Success
  */
-export type UpdateProjectResponseBody = { data?: Project | undefined };
+export type UpdateProjectResponse = { data?: Project | undefined };
 
-export const UpdateProjectResponseBody$zodSchema: z.ZodType<
-  UpdateProjectResponseBody,
-  z.ZodTypeDef,
-  unknown
-> = z.object({
-  data: Project$zodSchema.optional(),
-}).describe("Success");
-
-export type UpdateProjectResponse = {
-  ContentType: string;
-  StatusCode: number;
-  RawResponse: Response;
-  object?: UpdateProjectResponseBody | undefined;
-};
-
-export const UpdateProjectResponse$zodSchema: z.ZodType<
-  UpdateProjectResponse,
-  z.ZodTypeDef,
-  unknown
-> = z.object({
-  ContentType: z.string(),
-  RawResponse: z.instanceof(Response),
-  StatusCode: z.number().int(),
-  object: z.lazy(() => UpdateProjectResponseBody$zodSchema).optional(),
-});
+export const UpdateProjectResponse$zodSchema: z.ZodType<UpdateProjectResponse> =
+  z.object({
+    data: Project$zodSchema.optional(),
+  }).describe("Success");

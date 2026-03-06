@@ -7,7 +7,7 @@ import { formatResult, ToolDefinition } from "../tools.js";
 
 export const tool$userProfileListTeams: ToolDefinition = {
   name: "user-profile-list-teams",
-  description: `List User Teams
+  description: `List user teams
 
 Returns a list of all teams the user belongs to
 `,

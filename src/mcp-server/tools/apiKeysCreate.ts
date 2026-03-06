@@ -12,7 +12,7 @@ const args = {
 
 export const tool$apiKeysCreate: ToolDefinition<typeof args> = {
   name: "api-keys-create",
-  description: `Create API Key
+  description: `Create API key
 
 Create a new API Key that is tied to the current user account. The created API key is only listed ONCE upon creation. It can however be regenerated or deleted.
 `,

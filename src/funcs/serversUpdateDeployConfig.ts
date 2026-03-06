@@ -10,6 +10,10 @@ import { safeParse } from "../lib/schemas.js";
 import { RequestOptions } from "../lib/sdks.js";
 import { extractSecurity, resolveGlobalSecurity } from "../lib/security.js";
 import { pathToFunc } from "../lib/url.js";
+import {
+  DeployConfig,
+  DeployConfig$zodSchema,
+} from "../models/deployconfig.js";
 import { APIError } from "../models/errors/apierror.js";
 import {
   ConnectionError,
@@ -22,14 +26,12 @@ import { SDKValidationError } from "../models/errors/sdkvalidationerror.js";
 import {
   UpdateServerDeployConfigRequest,
   UpdateServerDeployConfigRequest$zodSchema,
-  UpdateServerDeployConfigResponse,
-  UpdateServerDeployConfigResponse$zodSchema,
 } from "../models/updateserverdeployconfigop.js";
 import { APICall, APIPromise } from "../types/async.js";
 import { Result } from "../types/fp.js";
 
 /**
- * Update Deploy Config
+ * Update deploy config
  */
 export function serversUpdateDeployConfig(
   client$: LatitudeshCore,
@@ -37,7 +39,7 @@ export function serversUpdateDeployConfig(
   options?: RequestOptions,
 ): APIPromise<
   Result<
-    UpdateServerDeployConfigResponse,
+    DeployConfig,
     | APIError
     | SDKValidationError
     | UnexpectedClientError
@@ -61,7 +63,7 @@ async function $do(
 ): Promise<
   [
     Result<
-      UpdateServerDeployConfigResponse,
+      DeployConfig,
       | APIError
       | SDKValidationError
       | UnexpectedClientError
@@ -151,7 +153,7 @@ async function $do(
   };
 
   const [result$] = await M.match<
-    UpdateServerDeployConfigResponse,
+    DeployConfig,
     | APIError
     | SDKValidationError
     | UnexpectedClientError
@@ -160,7 +162,7 @@ async function $do(
     | RequestTimeoutError
     | ConnectionError
   >(
-    M.json(200, UpdateServerDeployConfigResponse$zodSchema, {
+    M.json(200, DeployConfig$zodSchema, {
       ctype: "application/vnd.api+json",
       key: "deploy_config",
     }),

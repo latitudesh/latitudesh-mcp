@@ -7,25 +7,7 @@ import * as z from "zod";
 export type DeleteStorageFilesystemsRequest = { filesystem_id: string };
 
 export const DeleteStorageFilesystemsRequest$zodSchema: z.ZodType<
-  DeleteStorageFilesystemsRequest,
-  z.ZodTypeDef,
-  unknown
+  DeleteStorageFilesystemsRequest
 > = z.object({
   filesystem_id: z.string(),
-});
-
-export type DeleteStorageFilesystemsResponse = {
-  ContentType: string;
-  StatusCode: number;
-  RawResponse: Response;
-};
-
-export const DeleteStorageFilesystemsResponse$zodSchema: z.ZodType<
-  DeleteStorageFilesystemsResponse,
-  z.ZodTypeDef,
-  unknown
-> = z.object({
-  ContentType: z.string(),
-  RawResponse: z.instanceof(Response),
-  StatusCode: z.number().int(),
 });

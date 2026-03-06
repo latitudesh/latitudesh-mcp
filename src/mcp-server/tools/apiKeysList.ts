@@ -7,9 +7,9 @@ import { formatResult, ToolDefinition } from "../tools.js";
 
 export const tool$apiKeysList: ToolDefinition = {
   name: "api-keys-list",
-  description: `List API Keys
+  description: `List API keys
 
-Returns a list of all API keys from the team members
+Returns a list of all API keys.
 `,
   annotations: {
     "title": "",

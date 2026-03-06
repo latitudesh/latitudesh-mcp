@@ -12,7 +12,7 @@ const args = {
 
 export const tool$storageGetStorageVolume: ToolDefinition<typeof args> = {
   name: "storage-get-storage-volume",
-  description: `Get volume
+  description: `Retrieve volume
 
 Shows details of a specific volume storage.`,
   annotations: {

@@ -8,6 +8,7 @@ import { compactMap } from "../lib/primitives.js";
 import { RequestOptions } from "../lib/sdks.js";
 import { extractSecurity, resolveGlobalSecurity } from "../lib/security.js";
 import { pathToFunc } from "../lib/url.js";
+import { ApiKeys, ApiKeys$zodSchema } from "../models/apikeys.js";
 import { APIError } from "../models/errors/apierror.js";
 import {
   ConnectionError,
@@ -17,25 +18,21 @@ import {
   UnexpectedClientError,
 } from "../models/errors/httpclienterrors.js";
 import { SDKValidationError } from "../models/errors/sdkvalidationerror.js";
-import {
-  GetApiKeysResponse,
-  GetApiKeysResponse$zodSchema,
-} from "../models/getapikeysop.js";
 import { APICall, APIPromise } from "../types/async.js";
 import { Result } from "../types/fp.js";
 
 /**
- * List API Keys
+ * List API keys
  *
  * @remarks
- * Returns a list of all API keys from the team members
+ * Returns a list of all API keys.
  */
 export function apiKeysList(
   client$: LatitudeshCore,
   options?: RequestOptions,
 ): APIPromise<
   Result<
-    GetApiKeysResponse,
+    ApiKeys,
     | APIError
     | SDKValidationError
     | UnexpectedClientError
@@ -57,7 +54,7 @@ async function $do(
 ): Promise<
   [
     Result<
-      GetApiKeysResponse,
+      ApiKeys,
       | APIError
       | SDKValidationError
       | UnexpectedClientError
@@ -126,7 +123,7 @@ async function $do(
   };
 
   const [result$] = await M.match<
-    GetApiKeysResponse,
+    ApiKeys,
     | APIError
     | SDKValidationError
     | UnexpectedClientError
@@ -135,9 +132,9 @@ async function $do(
     | RequestTimeoutError
     | ConnectionError
   >(
-    M.json(200, GetApiKeysResponse$zodSchema, {
+    M.json(200, ApiKeys$zodSchema, {
       ctype: "application/vnd.api+json",
-      key: "api_key",
+      key: "api_keys",
     }),
   )(response, req$, { extraFields: responseFields$ });
 

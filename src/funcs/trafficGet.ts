@@ -22,14 +22,13 @@ import { SDKValidationError } from "../models/errors/sdkvalidationerror.js";
 import {
   GetTrafficConsumptionRequest,
   GetTrafficConsumptionRequest$zodSchema,
-  GetTrafficConsumptionResponse,
-  GetTrafficConsumptionResponse$zodSchema,
 } from "../models/gettrafficconsumptionop.js";
+import { Traffic, Traffic$zodSchema } from "../models/traffic.js";
 import { APICall, APIPromise } from "../types/async.js";
 import { Result } from "../types/fp.js";
 
 /**
- * Retrieve Traffic consumption
+ * Retrieve traffic
  */
 export function trafficGet(
   client$: LatitudeshCore,
@@ -37,7 +36,7 @@ export function trafficGet(
   options?: RequestOptions,
 ): APIPromise<
   Result<
-    GetTrafficConsumptionResponse,
+    Traffic,
     | APIError
     | SDKValidationError
     | UnexpectedClientError
@@ -61,7 +60,7 @@ async function $do(
 ): Promise<
   [
     Result<
-      GetTrafficConsumptionResponse,
+      Traffic,
       | APIError
       | SDKValidationError
       | UnexpectedClientError
@@ -148,7 +147,7 @@ async function $do(
   };
 
   const [result$] = await M.match<
-    GetTrafficConsumptionResponse,
+    Traffic,
     | APIError
     | SDKValidationError
     | UnexpectedClientError
@@ -157,7 +156,7 @@ async function $do(
     | RequestTimeoutError
     | ConnectionError
   >(
-    M.json(200, GetTrafficConsumptionResponse$zodSchema, {
+    M.json(200, Traffic$zodSchema, {
       ctype: "application/vnd.api+json",
       key: "traffic",
     }),

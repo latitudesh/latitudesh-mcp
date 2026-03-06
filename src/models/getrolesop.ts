@@ -10,17 +10,11 @@ export type GetRolesRequest = {
   pageNumber?: number | undefined;
 };
 
-export const GetRolesRequest$zodSchema: z.ZodType<
-  GetRolesRequest,
-  z.ZodTypeDef,
-  unknown
-> = z.object({
-  pageNumber: z.number().int().default(1).describe(
+export const GetRolesRequest$zodSchema: z.ZodType<GetRolesRequest> = z.object({
+  pageNumber: z.int().default(1).describe(
     "Page number to return (starts at 1)",
   ),
-  pageSize: z.number().int().default(20).describe(
-    "Number of items to return per page",
-  ),
+  pageSize: z.int().default(20).describe("Number of items to return per page"),
 });
 
 /**
@@ -28,28 +22,15 @@ export const GetRolesRequest$zodSchema: z.ZodType<
  */
 export type GetRolesResponseBody = { data?: Array<RoleData> | undefined };
 
-export const GetRolesResponseBody$zodSchema: z.ZodType<
-  GetRolesResponseBody,
-  z.ZodTypeDef,
-  unknown
-> = z.object({
-  data: z.array(RoleData$zodSchema).optional(),
-}).describe("Success");
+export const GetRolesResponseBody$zodSchema: z.ZodType<GetRolesResponseBody> = z
+  .object({
+    data: z.array(RoleData$zodSchema).optional(),
+  }).describe("Success");
 
-export type GetRolesResponse = {
-  ContentType: string;
-  StatusCode: number;
-  RawResponse: Response;
-  object?: GetRolesResponseBody | undefined;
-};
+export type GetRolesResponse = { Result: GetRolesResponseBody };
 
-export const GetRolesResponse$zodSchema: z.ZodType<
-  GetRolesResponse,
-  z.ZodTypeDef,
-  unknown
-> = z.object({
-  ContentType: z.string(),
-  RawResponse: z.instanceof(Response),
-  StatusCode: z.number().int(),
-  object: z.lazy(() => GetRolesResponseBody$zodSchema).optional(),
-});
+export const GetRolesResponse$zodSchema: z.ZodType<GetRolesResponse> = z.object(
+  {
+    Result: z.lazy(() => GetRolesResponseBody$zodSchema),
+  },
+);

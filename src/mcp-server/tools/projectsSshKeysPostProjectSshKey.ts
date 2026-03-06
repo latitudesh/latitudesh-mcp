@@ -14,7 +14,7 @@ export const tool$projectsSshKeysPostProjectSshKey: ToolDefinition<
   typeof args
 > = {
   name: "projects-ssh-keys-post-project-ssh-key",
-  description: `Create a Project SSH Key
+  description: `Create SSH Key
 
 Allow you create SSH Keys in a project. These keys can be used to access servers after deploy and reinstall actions.
 `,

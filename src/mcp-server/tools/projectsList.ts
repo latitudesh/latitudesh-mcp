@@ -12,7 +12,7 @@ const args = {
 
 export const tool$projectsList: ToolDefinition<typeof args> = {
   name: "projects-list",
-  description: `List all Projects
+  description: `List projects
 
 Returns a list of all projects for the current team
 `,

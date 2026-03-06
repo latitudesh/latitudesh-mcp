@@ -12,7 +12,7 @@ const args = {
 
 export const tool$trafficGet: ToolDefinition<typeof args> = {
   name: "traffic-get",
-  description: `Retrieve Traffic consumption`,
+  description: `Retrieve traffic`,
   annotations: {
     "title": "",
     "destructiveHint": false,

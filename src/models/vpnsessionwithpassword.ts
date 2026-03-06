@@ -13,9 +13,7 @@ export type VpnSessionWithPassword = {
 };
 
 export const VpnSessionWithPassword$zodSchema: z.ZodType<
-  VpnSessionWithPassword,
-  z.ZodTypeDef,
-  unknown
+  VpnSessionWithPassword
 > = z.object({
   data: VpnSessionDataWithPassword$zodSchema.optional(),
 });

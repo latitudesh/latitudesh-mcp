@@ -19,17 +19,16 @@ import {
   UnexpectedClientError,
 } from "../models/errors/httpclienterrors.js";
 import { SDKValidationError } from "../models/errors/sdkvalidationerror.js";
+import { Server, Server$zodSchema } from "../models/server.js";
 import {
   UpdateServerRequest,
   UpdateServerRequest$zodSchema,
-  UpdateServerResponse,
-  UpdateServerResponse$zodSchema,
 } from "../models/updateserverop.js";
 import { APICall, APIPromise } from "../types/async.js";
 import { Result } from "../types/fp.js";
 
 /**
- * Update Server
+ * Update server
  */
 export function serversUpdate(
   client$: LatitudeshCore,
@@ -37,7 +36,7 @@ export function serversUpdate(
   options?: RequestOptions,
 ): APIPromise<
   Result<
-    UpdateServerResponse,
+    Server,
     | APIError
     | SDKValidationError
     | UnexpectedClientError
@@ -61,7 +60,7 @@ async function $do(
 ): Promise<
   [
     Result<
-      UpdateServerResponse,
+      Server,
       | APIError
       | SDKValidationError
       | UnexpectedClientError
@@ -151,7 +150,7 @@ async function $do(
   };
 
   const [result$] = await M.match<
-    UpdateServerResponse,
+    Server,
     | APIError
     | SDKValidationError
     | UnexpectedClientError
@@ -160,7 +159,7 @@ async function $do(
     | RequestTimeoutError
     | ConnectionError
   >(
-    M.json(200, UpdateServerResponse$zodSchema, {
+    M.json(200, Server$zodSchema, {
       ctype: "application/vnd.api+json",
       key: "server",
     }),

@@ -12,7 +12,7 @@ const args = {
 
 export const tool$userDataDeleteProjectUserData: ToolDefinition<typeof args> = {
   name: "user-data-delete-project-user-data",
-  description: `Delete a Project User Data
+  description: `Delete Project user data
 
 Allow you remove User Data in a project.
 `,

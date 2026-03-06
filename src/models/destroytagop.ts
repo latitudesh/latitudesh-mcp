@@ -6,26 +6,7 @@ import * as z from "zod";
 
 export type DestroyTagRequest = { tag_id: string };
 
-export const DestroyTagRequest$zodSchema: z.ZodType<
-  DestroyTagRequest,
-  z.ZodTypeDef,
-  unknown
-> = z.object({
-  tag_id: z.string(),
-});
-
-export type DestroyTagResponse = {
-  ContentType: string;
-  StatusCode: number;
-  RawResponse: Response;
-};
-
-export const DestroyTagResponse$zodSchema: z.ZodType<
-  DestroyTagResponse,
-  z.ZodTypeDef,
-  unknown
-> = z.object({
-  ContentType: z.string(),
-  RawResponse: z.instanceof(Response),
-  StatusCode: z.number().int(),
-});
+export const DestroyTagRequest$zodSchema: z.ZodType<DestroyTagRequest> = z
+  .object({
+    tag_id: z.string(),
+  });

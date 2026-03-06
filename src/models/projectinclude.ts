@@ -5,20 +5,17 @@
 import * as z from "zod";
 
 export type ProjectIncludeBilling = {
-  subscription_id?: string | undefined;
+  subscription_id?: string | null | undefined;
   type?: string | undefined;
   method?: string | undefined;
 };
 
-export const ProjectIncludeBilling$zodSchema: z.ZodType<
-  ProjectIncludeBilling,
-  z.ZodTypeDef,
-  unknown
-> = z.object({
-  method: z.string().optional(),
-  subscription_id: z.string().optional(),
-  type: z.string().optional(),
-});
+export const ProjectIncludeBilling$zodSchema: z.ZodType<ProjectIncludeBilling> =
+  z.object({
+    method: z.string().optional(),
+    subscription_id: z.string().nullable().optional(),
+    type: z.string().optional(),
+  });
 
 export type ProjectIncludeStats = {
   ip_addresses?: number | undefined;
@@ -27,45 +24,38 @@ export type ProjectIncludeStats = {
   vlans?: number | undefined;
 };
 
-export const ProjectIncludeStats$zodSchema: z.ZodType<
-  ProjectIncludeStats,
-  z.ZodTypeDef,
-  unknown
-> = z.object({
-  ip_addresses: z.number().int().optional(),
-  prefixes: z.number().int().optional(),
-  servers: z.number().int().optional(),
-  vlans: z.number().int().optional(),
-});
+export const ProjectIncludeStats$zodSchema: z.ZodType<ProjectIncludeStats> = z
+  .object({
+    ip_addresses: z.int().optional(),
+    prefixes: z.int().optional(),
+    servers: z.int().optional(),
+    vlans: z.int().optional(),
+  });
 
 export type ProjectInclude = {
   id?: string | undefined;
   name?: string | undefined;
   slug?: string | undefined;
-  description?: string | undefined;
-  billing_type?: string | undefined;
-  provisioning_type?: string | undefined;
-  billing_method?: string | undefined;
+  description?: string | null | undefined;
+  billing_type?: string | null | undefined;
+  provisioning_type?: string | null | undefined;
+  billing_method?: string | null | undefined;
   bandwidth_alert?: boolean | undefined;
-  environment?: string | undefined;
+  environment?: string | null | undefined;
   billing?: ProjectIncludeBilling | undefined;
   stats?: ProjectIncludeStats | undefined;
 };
 
-export const ProjectInclude$zodSchema: z.ZodType<
-  ProjectInclude,
-  z.ZodTypeDef,
-  unknown
-> = z.object({
+export const ProjectInclude$zodSchema: z.ZodType<ProjectInclude> = z.object({
   bandwidth_alert: z.boolean().optional(),
   billing: z.lazy(() => ProjectIncludeBilling$zodSchema).optional(),
-  billing_method: z.string().optional(),
-  billing_type: z.string().optional(),
-  description: z.string().optional(),
-  environment: z.string().optional(),
+  billing_method: z.string().nullable().optional(),
+  billing_type: z.string().nullable().optional(),
+  description: z.string().nullable().optional(),
+  environment: z.string().nullable().optional(),
   id: z.string().optional(),
   name: z.string().optional(),
-  provisioning_type: z.string().optional(),
+  provisioning_type: z.string().nullable().optional(),
   slug: z.string().optional(),
   stats: z.lazy(() => ProjectIncludeStats$zodSchema).optional(),
 });

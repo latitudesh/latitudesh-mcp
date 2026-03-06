@@ -12,7 +12,7 @@ const args = {
 
 export const tool$privateNetworksList: ToolDefinition<typeof args> = {
   name: "private-networks-list",
-  description: `List all Virtual Networks
+  description: `List VLANs
 
 Lists virtual networks assigned to a project
 `,

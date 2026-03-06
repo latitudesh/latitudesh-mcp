@@ -22,14 +22,13 @@ import { SDKValidationError } from "../models/errors/sdkvalidationerror.js";
 import {
   GetRegionRequest,
   GetRegionRequest$zodSchema,
-  GetRegionResponse,
-  GetRegionResponse$zodSchema,
 } from "../models/getregionop.js";
+import { Region, Region$zodSchema } from "../models/region.js";
 import { APICall, APIPromise } from "../types/async.js";
 import { Result } from "../types/fp.js";
 
 /**
- * Retrieve a Region
+ * Retrieve region
  */
 export function regionsFetch(
   client$: LatitudeshCore,
@@ -37,7 +36,7 @@ export function regionsFetch(
   options?: RequestOptions,
 ): APIPromise<
   Result<
-    GetRegionResponse,
+    Region,
     | APIError
     | SDKValidationError
     | UnexpectedClientError
@@ -61,7 +60,7 @@ async function $do(
 ): Promise<
   [
     Result<
-      GetRegionResponse,
+      Region,
       | APIError
       | SDKValidationError
       | UnexpectedClientError
@@ -150,7 +149,7 @@ async function $do(
   };
 
   const [result$] = await M.match<
-    GetRegionResponse,
+    Region,
     | APIError
     | SDKValidationError
     | UnexpectedClientError
@@ -159,7 +158,7 @@ async function $do(
     | RequestTimeoutError
     | ConnectionError
   >(
-    M.json(200, GetRegionResponse$zodSchema, {
+    M.json(200, Region$zodSchema, {
       ctype: "application/vnd.api+json",
       key: "region",
     }),

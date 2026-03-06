@@ -10,22 +10,15 @@ import {
 
 export type BandwidthPlansMeta = {};
 
-export const BandwidthPlansMeta$zodSchema: z.ZodType<
-  BandwidthPlansMeta,
-  z.ZodTypeDef,
-  unknown
-> = z.object({});
+export const BandwidthPlansMeta$zodSchema: z.ZodType<BandwidthPlansMeta> = z
+  .object({});
 
 export type BandwidthPlans = {
   data?: Array<BandwidthPlanData> | undefined;
   meta?: BandwidthPlansMeta | undefined;
 };
 
-export const BandwidthPlans$zodSchema: z.ZodType<
-  BandwidthPlans,
-  z.ZodTypeDef,
-  unknown
-> = z.object({
+export const BandwidthPlans$zodSchema: z.ZodType<BandwidthPlans> = z.object({
   data: z.array(BandwidthPlanData$zodSchema).optional(),
   meta: z.lazy(() => BandwidthPlansMeta$zodSchema).optional(),
 });

@@ -3,19 +3,21 @@
  */
 
 import * as z from "zod";
+import { ClosedEnum } from "../types/enums.js";
+
+export const StoragePlanDataType = {
+  StoragePlans: "storage_plans",
+} as const;
+export type StoragePlanDataType = ClosedEnum<typeof StoragePlanDataType>;
 
 export const StoragePlanDataType$zodSchema = z.enum([
   "storage_plans",
 ]);
 
-export type StoragePlanDataType = z.infer<typeof StoragePlanDataType$zodSchema>;
-
 export type StoragePlanDataPricing = { month?: number | undefined };
 
 export const StoragePlanDataPricing$zodSchema: z.ZodType<
-  StoragePlanDataPricing,
-  z.ZodTypeDef,
-  unknown
+  StoragePlanDataPricing
 > = z.object({
   month: z.number().optional(),
 });
@@ -27,9 +29,7 @@ export type StoragePlanDataAttributes = {
 };
 
 export const StoragePlanDataAttributes$zodSchema: z.ZodType<
-  StoragePlanDataAttributes,
-  z.ZodTypeDef,
-  unknown
+  StoragePlanDataAttributes
 > = z.object({
   locations: z.array(z.string()).optional(),
   name: z.string().optional(),
@@ -42,11 +42,7 @@ export type StoragePlanData = {
   attributes?: StoragePlanDataAttributes | undefined;
 };
 
-export const StoragePlanData$zodSchema: z.ZodType<
-  StoragePlanData,
-  z.ZodTypeDef,
-  unknown
-> = z.object({
+export const StoragePlanData$zodSchema: z.ZodType<StoragePlanData> = z.object({
   attributes: z.lazy(() => StoragePlanDataAttributes$zodSchema).optional(),
   id: z.string().optional(),
   type: StoragePlanDataType$zodSchema.optional(),

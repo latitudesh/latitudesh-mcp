@@ -29,7 +29,7 @@ import { APICall, APIPromise } from "../types/async.js";
 import { Result } from "../types/fp.js";
 
 /**
- * List all Virtual Networks
+ * List VLANs
  *
  * @remarks
  * Lists virtual networks assigned to a project

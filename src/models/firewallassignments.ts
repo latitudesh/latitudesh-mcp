@@ -11,9 +11,7 @@ import {
 export type FirewallAssignmentsMeta = {};
 
 export const FirewallAssignmentsMeta$zodSchema: z.ZodType<
-  FirewallAssignmentsMeta,
-  z.ZodTypeDef,
-  unknown
+  FirewallAssignmentsMeta
 > = z.object({});
 
 export type FirewallAssignments = {
@@ -21,11 +19,8 @@ export type FirewallAssignments = {
   meta?: FirewallAssignmentsMeta | undefined;
 };
 
-export const FirewallAssignments$zodSchema: z.ZodType<
-  FirewallAssignments,
-  z.ZodTypeDef,
-  unknown
-> = z.object({
-  data: z.array(FirewallAssignmentData$zodSchema).optional(),
-  meta: z.lazy(() => FirewallAssignmentsMeta$zodSchema).optional(),
-});
+export const FirewallAssignments$zodSchema: z.ZodType<FirewallAssignments> = z
+  .object({
+    data: z.array(FirewallAssignmentData$zodSchema).optional(),
+    meta: z.lazy(() => FirewallAssignmentsMeta$zodSchema).optional(),
+  });

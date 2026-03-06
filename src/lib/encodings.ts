@@ -102,8 +102,9 @@ export function encodeLabel(
       });
       encValue = mapped?.join("").slice(1);
     } else {
-      const k =
-        options?.explode && isPlainObject(value) ? `${encodeString(pk)}=` : "";
+      const k = options?.explode && isPlainObject(value)
+        ? `${encodeString(pk)}=`
+        : "";
       encValue = `${k}${encodeValue(pv)}`;
     }
 
@@ -365,6 +366,12 @@ function serializeValue(value: unknown): string {
   } else if (value instanceof Uint8Array) {
     return bytesToBase64(value);
   } else if (typeof value === "object") {
+    if (
+      "toJSON" in value
+      && typeof value.toJSON === "function"
+    ) {
+      return String(value.toJSON());
+    }
     return JSON.stringify(value, jsonReplacer);
   }
 
@@ -374,6 +381,8 @@ function serializeValue(value: unknown): string {
 function jsonReplacer(_: string, value: unknown): unknown {
   if (value instanceof Uint8Array) {
     return bytesToBase64(value);
+  } else if (typeof value === "bigint") {
+    return value.toString();
   } else {
     return value;
   }
@@ -440,7 +449,7 @@ type BulkQueryEncoder = (
 ) => string;
 
 export function queryEncoder(f: QueryEncoder): BulkQueryEncoder {
-  const bulkEncode = function (
+  const bulkEncode = function(
     values: Record<string, unknown>,
     options?: QueryEncoderOptions,
   ): string {

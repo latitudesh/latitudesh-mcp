@@ -3,38 +3,15 @@
  */
 
 import * as z from "zod";
-import { IpAddress, IpAddress$zodSchema } from "./ipaddress.js";
 
 export type GetIpRequest = {
   ip_id: string;
   extraFieldsIpAddresses?: string | undefined;
 };
 
-export const GetIpRequest$zodSchema: z.ZodType<
-  GetIpRequest,
-  z.ZodTypeDef,
-  unknown
-> = z.object({
+export const GetIpRequest$zodSchema: z.ZodType<GetIpRequest> = z.object({
   extraFieldsIpAddresses: z.string().describe(
     "The `region` and `server` are provided as extra attributes that are lazy loaded. To request it, just set `extra_fields[ip_addresses]=region,server` in the query string.",
   ).optional(),
   ip_id: z.string().describe("The IP Address ID"),
-});
-
-export type GetIpResponse = {
-  ContentType: string;
-  StatusCode: number;
-  RawResponse: Response;
-  ip_address?: IpAddress | undefined;
-};
-
-export const GetIpResponse$zodSchema: z.ZodType<
-  GetIpResponse,
-  z.ZodTypeDef,
-  unknown
-> = z.object({
-  ContentType: z.string(),
-  RawResponse: z.instanceof(Response),
-  StatusCode: z.number().int(),
-  ip_address: IpAddress$zodSchema.optional(),
 });

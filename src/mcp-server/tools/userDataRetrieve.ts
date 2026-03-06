@@ -12,7 +12,7 @@ const args = {
 
 export const tool$userDataRetrieve: ToolDefinition<typeof args> = {
   name: "user-data-retrieve",
-  description: `Retrieve an User Data
+  description: `Retrieve user data
 
 Get User Data in the project. These scripts can be used to configure servers with user data.
 `,

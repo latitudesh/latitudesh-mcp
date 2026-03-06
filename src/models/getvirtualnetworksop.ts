@@ -17,9 +17,7 @@ export type GetVirtualNetworksRequest = {
 };
 
 export const GetVirtualNetworksRequest$zodSchema: z.ZodType<
-  GetVirtualNetworksRequest,
-  z.ZodTypeDef,
-  unknown
+  GetVirtualNetworksRequest
 > = z.object({
   filterLocation: z.string().describe("The location slug to filter by")
     .optional(),
@@ -28,28 +26,16 @@ export const GetVirtualNetworksRequest$zodSchema: z.ZodType<
   filterTags: z.string().describe(
     "The tags ids to filter by, separated by comma, e.g. `filter[tags]=tag_1,tag_2`will return ssh keys with `tag_1` AND `tag_2`",
   ).optional(),
-  pageNumber: z.number().int().default(1).describe(
+  pageNumber: z.int().default(1).describe(
     "Page number to return (starts at 1)",
   ),
-  pageSize: z.number().int().default(20).describe(
-    "Number of items to return per page",
-  ),
+  pageSize: z.int().default(20).describe("Number of items to return per page"),
 });
 
-export type GetVirtualNetworksResponse = {
-  ContentType: string;
-  StatusCode: number;
-  RawResponse: Response;
-  virtual_networks?: VirtualNetworks | undefined;
-};
+export type GetVirtualNetworksResponse = { Result: VirtualNetworks };
 
 export const GetVirtualNetworksResponse$zodSchema: z.ZodType<
-  GetVirtualNetworksResponse,
-  z.ZodTypeDef,
-  unknown
+  GetVirtualNetworksResponse
 > = z.object({
-  ContentType: z.string(),
-  RawResponse: z.instanceof(Response),
-  StatusCode: z.number().int(),
-  virtual_networks: VirtualNetworks$zodSchema.optional(),
+  Result: VirtualNetworks$zodSchema,
 });

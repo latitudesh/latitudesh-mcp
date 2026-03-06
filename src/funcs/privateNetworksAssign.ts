@@ -13,8 +13,6 @@ import { pathToFunc } from "../lib/url.js";
 import {
   AssignServerVirtualNetworkRequest,
   AssignServerVirtualNetworkRequest$zodSchema,
-  AssignServerVirtualNetworkResponse,
-  AssignServerVirtualNetworkResponse$zodSchema,
 } from "../models/assignservervirtualnetworkop.js";
 import { APIError } from "../models/errors/apierror.js";
 import {
@@ -25,11 +23,15 @@ import {
   UnexpectedClientError,
 } from "../models/errors/httpclienterrors.js";
 import { SDKValidationError } from "../models/errors/sdkvalidationerror.js";
+import {
+  VirtualNetworkAssignment,
+  VirtualNetworkAssignment$zodSchema,
+} from "../models/virtualnetworkassignment.js";
 import { APICall, APIPromise } from "../types/async.js";
 import { Result } from "../types/fp.js";
 
 /**
- * Assign Virtual network
+ * Assign VLAN
  */
 export function privateNetworksAssign(
   client$: LatitudeshCore,
@@ -37,7 +39,7 @@ export function privateNetworksAssign(
   options?: RequestOptions,
 ): APIPromise<
   Result<
-    AssignServerVirtualNetworkResponse,
+    VirtualNetworkAssignment,
     | APIError
     | SDKValidationError
     | UnexpectedClientError
@@ -61,7 +63,7 @@ async function $do(
 ): Promise<
   [
     Result<
-      AssignServerVirtualNetworkResponse,
+      VirtualNetworkAssignment,
       | APIError
       | SDKValidationError
       | UnexpectedClientError
@@ -142,7 +144,7 @@ async function $do(
   };
 
   const [result$] = await M.match<
-    AssignServerVirtualNetworkResponse,
+    VirtualNetworkAssignment,
     | APIError
     | SDKValidationError
     | UnexpectedClientError
@@ -151,7 +153,7 @@ async function $do(
     | RequestTimeoutError
     | ConnectionError
   >(
-    M.json(201, AssignServerVirtualNetworkResponse$zodSchema, {
+    M.json(201, VirtualNetworkAssignment$zodSchema, {
       ctype: "application/vnd.api+json",
       key: "virtual_network_assignment",
     }),

@@ -12,13 +12,12 @@ export type UserRole = {
   updated_at?: string | undefined;
 };
 
-export const UserRole$zodSchema: z.ZodType<UserRole, z.ZodTypeDef, unknown> = z
-  .object({
-    created_at: z.string().datetime({ offset: true }).optional(),
-    id: z.string().optional(),
-    name: z.string().optional(),
-    updated_at: z.string().datetime({ offset: true }).optional(),
-  });
+export const UserRole$zodSchema: z.ZodType<UserRole> = z.object({
+  created_at: z.iso.datetime({ offset: true }).optional(),
+  id: z.string().optional(),
+  name: z.string().optional(),
+  updated_at: z.iso.datetime({ offset: true }).optional(),
+});
 
 export type UserAttributes = {
   first_name?: string | undefined;
@@ -29,11 +28,7 @@ export type UserAttributes = {
   teams?: Array<TeamInclude> | undefined;
 };
 
-export const UserAttributes$zodSchema: z.ZodType<
-  UserAttributes,
-  z.ZodTypeDef,
-  unknown
-> = z.object({
+export const UserAttributes$zodSchema: z.ZodType<UserAttributes> = z.object({
   authentication_factor_id: z.string().optional(),
   email: z.string().optional(),
   first_name: z.string().optional(),
@@ -47,7 +42,7 @@ export type User = {
   attributes?: UserAttributes | undefined;
 };
 
-export const User$zodSchema: z.ZodType<User, z.ZodTypeDef, unknown> = z.object({
+export const User$zodSchema: z.ZodType<User> = z.object({
   attributes: z.lazy(() => UserAttributes$zodSchema).optional(),
   id: z.string().optional(),
 });

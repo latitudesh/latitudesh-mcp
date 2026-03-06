@@ -3,12 +3,16 @@
  */
 
 import * as z from "zod";
+import { ClosedEnum } from "../types/enums.js";
+
+export const EventDataType = {
+  Events: "events",
+} as const;
+export type EventDataType = ClosedEnum<typeof EventDataType>;
 
 export const EventDataType$zodSchema = z.enum([
   "events",
 ]);
-
-export type EventDataType = z.infer<typeof EventDataType$zodSchema>;
 
 export type Author = {
   id?: string | undefined;
@@ -16,12 +20,11 @@ export type Author = {
   email?: string | undefined;
 };
 
-export const Author$zodSchema: z.ZodType<Author, z.ZodTypeDef, unknown> = z
-  .object({
-    email: z.string().optional(),
-    id: z.string().optional(),
-    name: z.string().optional(),
-  });
+export const Author$zodSchema: z.ZodType<Author> = z.object({
+  email: z.string().optional(),
+  id: z.string().optional(),
+  name: z.string().optional(),
+});
 
 export type EventDataProject = {
   id?: string | undefined;
@@ -29,37 +32,38 @@ export type EventDataProject = {
   slug?: string | undefined;
 };
 
-export const EventDataProject$zodSchema: z.ZodType<
-  EventDataProject,
-  z.ZodTypeDef,
-  unknown
-> = z.object({
-  id: z.string().optional(),
-  name: z.string().optional(),
-  slug: z.string().optional(),
-});
+export const EventDataProject$zodSchema: z.ZodType<EventDataProject> = z.object(
+  {
+    id: z.string().optional(),
+    name: z.string().optional(),
+    slug: z.string().optional(),
+  },
+);
 
 export type EventDataTeam = {
   id?: string | undefined;
   name?: string | undefined;
 };
 
-export const EventDataTeam$zodSchema: z.ZodType<
-  EventDataTeam,
-  z.ZodTypeDef,
-  unknown
-> = z.object({
+export const EventDataTeam$zodSchema: z.ZodType<EventDataTeam> = z.object({
   id: z.string().optional(),
   name: z.string().optional(),
 });
 
 export type Target = { id?: string | undefined; name?: string | undefined };
 
-export const Target$zodSchema: z.ZodType<Target, z.ZodTypeDef, unknown> = z
-  .object({
-    id: z.string().optional(),
-    name: z.string().optional(),
-  });
+export const Target$zodSchema: z.ZodType<Target> = z.object({
+  id: z.string().optional(),
+  name: z.string().optional(),
+});
+
+/**
+ * Additional event-specific data
+ */
+export type Properties = {};
+
+export const Properties$zodSchema: z.ZodType<Properties> = z.object({})
+  .describe("Additional event-specific data");
 
 export type EventDataAttributes = {
   action?: string | undefined;
@@ -68,20 +72,19 @@ export type EventDataAttributes = {
   project?: EventDataProject | undefined;
   team?: EventDataTeam | undefined;
   target?: Target | undefined;
+  properties?: Properties | null | undefined;
 };
 
-export const EventDataAttributes$zodSchema: z.ZodType<
-  EventDataAttributes,
-  z.ZodTypeDef,
-  unknown
-> = z.object({
-  action: z.string().optional(),
-  author: z.lazy(() => Author$zodSchema).optional(),
-  created_at: z.string().optional(),
-  project: z.lazy(() => EventDataProject$zodSchema).optional(),
-  target: z.lazy(() => Target$zodSchema).optional(),
-  team: z.lazy(() => EventDataTeam$zodSchema).optional(),
-});
+export const EventDataAttributes$zodSchema: z.ZodType<EventDataAttributes> = z
+  .object({
+    action: z.string().optional(),
+    author: z.lazy(() => Author$zodSchema).optional(),
+    created_at: z.string().optional(),
+    project: z.lazy(() => EventDataProject$zodSchema).optional(),
+    properties: z.lazy(() => Properties$zodSchema).nullable().optional(),
+    target: z.lazy(() => Target$zodSchema).optional(),
+    team: z.lazy(() => EventDataTeam$zodSchema).optional(),
+  });
 
 export type EventData = {
   id?: string | undefined;
@@ -89,9 +92,8 @@ export type EventData = {
   attributes?: EventDataAttributes | undefined;
 };
 
-export const EventData$zodSchema: z.ZodType<EventData, z.ZodTypeDef, unknown> =
-  z.object({
-    attributes: z.lazy(() => EventDataAttributes$zodSchema).optional(),
-    id: z.string().optional(),
-    type: EventDataType$zodSchema.optional(),
-  });
+export const EventData$zodSchema: z.ZodType<EventData> = z.object({
+  attributes: z.lazy(() => EventDataAttributes$zodSchema).optional(),
+  id: z.string().optional(),
+  type: EventDataType$zodSchema.optional(),
+});
