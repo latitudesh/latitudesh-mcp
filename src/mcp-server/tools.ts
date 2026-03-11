@@ -433,7 +433,7 @@ export function buildSDK(
     ...cliFlags,
     "bearer": resolveHeader(
       headers,
-      "Bearer",
+      "bearer",
       z.string(),
       cliFlags["bearer"],
       disableStaticAuth,
@@ -444,7 +444,13 @@ export function buildSDK(
     security: { Bearer: flags.bearer ?? "" },
     serverURL: cliFlags["server-url"],
     serverIdx: cliFlags["server-index"],
-    latitude_api_key: cliFlags["latitude-api-key"],
+    latitude_api_key: resolveHeader(
+      headers,
+      "latitude-api-key",
+      z.string(),
+      cliFlags["latitude-api-key"],
+      disableStaticAuth,
+    ),
     debugLogger: logger.level === "debug"
       ? {
         log: (...args) => console.log(...args),

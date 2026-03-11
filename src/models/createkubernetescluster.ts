@@ -17,11 +17,11 @@ export const CreateKubernetesClusterType$zodSchema = z.enum([
 ]);
 
 export type CreateKubernetesClusterAttributes = {
-  name: string;
+  name?: string | null | undefined;
   project_id: string;
   site: string;
   plan: string;
-  ssh_key_id: string;
+  ssh_keys?: Array<string> | null | undefined;
   worker_plan?: string | null | undefined;
   kubernetes_version?: string | null | undefined;
   control_plane_count?: number | null | undefined;
@@ -34,12 +34,12 @@ export const CreateKubernetesClusterAttributes$zodSchema: z.ZodType<
 > = z.object({
   control_plane_count: z.int().nullable().optional(),
   kubernetes_version: z.string().nullable().optional(),
-  name: z.string(),
+  name: z.string().nullable().optional(),
   operating_system: z.string().nullable().optional(),
   plan: z.string(),
   project_id: z.string(),
   site: z.string(),
-  ssh_key_id: z.string(),
+  ssh_keys: z.array(z.string()).nullable().optional(),
   worker_count: z.int().nullable().optional(),
   worker_plan: z.string().nullable().optional(),
 });
