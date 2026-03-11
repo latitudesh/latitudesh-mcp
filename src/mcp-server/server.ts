@@ -150,7 +150,7 @@ export function createMCPServer(deps: {
 }) {
   const server = new McpServer({
     name: "Latitudesh",
-    version: "0.1.0",
+    version: "0.1.1",
   });
 
   const getClient = deps.getSDK || (() =>

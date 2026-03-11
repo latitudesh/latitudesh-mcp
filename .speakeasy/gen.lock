@@ -1,24 +1,24 @@
 lockVersion: 2.0.0
 id: 14ad660b-1b20-4e74-9900-f561baa97606
 management:
-  docChecksum: 15cae4f4ee8afa9c2590020120db2d6f
+  docChecksum: ae9fecd0be4153977f757be2506cacfb
   docVersion: "2023-06-01"
-  speakeasyVersion: 1.744.0
-  generationVersion: 2.850.3
-  releaseVersion: 0.1.0
-  configChecksum: 691a388ab702118de679a08b531f3fdd
+  speakeasyVersion: 1.751.0
+  generationVersion: 2.858.2
+  releaseVersion: 0.1.1
+  configChecksum: b160fa5a1c50dfa817217421bbe5ead3
   repoURL: https://github.com/latitudesh/latitudesh-mcp.git
   installationURL: https://github.com/latitudesh/latitudesh-mcp
   published: true
 persistentEdits:
-  generation_id: 6f473201-2afb-4b1e-9598-f9a1232cc13c
-  pristine_commit_hash: 24a22aebfb427d7355092e53af46cd55e37cf14c
-  pristine_tree_hash: fe87495a6d3bda0800d3a78785ac799a8c861403
+  generation_id: c415bbfd-7993-494d-ac61-e80187c8d422
+  pristine_commit_hash: c4697c736840955979077b3182ef6506edae7438
+  pristine_tree_hash: b0c29675d0aa16feb26f9badfc13da415ef70ebd
 features:
   mcp-typescript:
     additionalDependencies: 0.1.0
     constsAndDefaults: 0.1.2
-    core: 1.2.21
+    core: 1.2.22
     defaultEnabledRetries: 0.1.0
     deprecations: 0.1.0
     enumUnions: 0.1.0
@@ -49,12 +49,12 @@ trackedFiles:
     pristine_git_object: 4f9e60a9462fc4def738d60c3aaadf8232ef185f
   manifest.json:
     id: ca642a226869
-    last_write_checksum: sha1:2e4ba374376a2b9ca4fb7ba6fbd853b04c8d889d
-    pristine_git_object: ca310ff342d7c6927178a064072f5629324b6e2a
+    last_write_checksum: sha1:ff88b05d17e0a8f51d5a818ff93f726e10c6bcfe
+    pristine_git_object: 27555c5aaa01d0dfd2ccefd9f16c79eb00086146
   package.json:
     id: 7030d0b2f71b
-    last_write_checksum: sha1:1ce77b2c5318fd8b38159d8ab603d7d759f66ad1
-    pristine_git_object: 83119670c1fdfbb28f8a16b17621d676fd2911ce
+    last_write_checksum: sha1:cc727588c612ce03adf1b1bf72706d3da3ef807f
+    pristine_git_object: ca733f0c6b6b0e13c1795cb5a94df1cede82b72d
   src/core.ts:
     id: f431fdbcd144
     last_write_checksum: sha1:9bb7b3807363b77f27dbdb87d6d10e9605f723d6
@@ -561,16 +561,16 @@ trackedFiles:
     pristine_git_object: 9c36bf01332084f735909a71036c3544cc4c7e3a
   src/landing-page.ts:
     id: ef64a6ee46d7
-    last_write_checksum: sha1:dd4b1c5ab2db3f5f9d5be75d701ce4290ed2ac0b
-    pristine_git_object: b9e6b0d92ce3225ac8b528f50e73339246d54f39
+    last_write_checksum: sha1:46f28ebef02243b2c8849c5b5f1f7253d3a0bab2
+    pristine_git_object: 850f66e2c7712e377b3ac93e8b253f4bd091ff75
   src/lib/base64.ts:
     id: "598522066688"
     last_write_checksum: sha1:e9f04a037018040361043104960982f7c22db52d
     pristine_git_object: d4bd8b341290e7a828a171d840bd0b0fff7c7cd7
   src/lib/config.ts:
     id: 320761608fb3
-    last_write_checksum: sha1:2727e50d35180bbeb0e9774e108dc928f93d796c
-    pristine_git_object: f23e8d131c0210e2829c14adf546bd0311a92107
+    last_write_checksum: sha1:8c7f05a3a24d350b6822d5c578770dfb19841620
+    pristine_git_object: 7c4a27fdebdf08245de1462178da0ff986f8b498
   src/lib/dlv.ts:
     id: b1988214835a
     last_write_checksum: sha1:1dd3e3fbb4550c4bf31f5ef997faff355d6f3250
@@ -669,8 +669,8 @@ trackedFiles:
     pristine_git_object: 984fcc1999528ce044faa465c4daf61dda769683
   src/mcp-server/mcp-server.ts:
     id: aabbc4ab07c1
-    last_write_checksum: sha1:567efe3b470557548f6eacb999337311cac075d7
-    pristine_git_object: 62f0e4dc8a591d529f7e4400881c5f906504926b
+    last_write_checksum: sha1:73c34040d2f3587c16e256ba3a6ce8a0bc63e508
+    pristine_git_object: 30665176b0430909b671cfb7dec33f46505dc1ff
   src/mcp-server/prompts.ts:
     id: 26f3d73cbf31
     last_write_checksum: sha1:0b128f67546d289549b2d6668fc554f9747a3566
@@ -685,16 +685,16 @@ trackedFiles:
     pristine_git_object: c25696d4c4f70e081fa5d87ad6891874c509a577
   src/mcp-server/server.ts:
     id: 2784dd48e82a
-    last_write_checksum: sha1:be32c8bdc22fc3669f291e9e1b59673ddfb2cb36
-    pristine_git_object: 1398854d755277ef690295a53c4e052d82fe0177
+    last_write_checksum: sha1:a76c11cf06297cac6f1a6bbe570ddf6fe21dacf5
+    pristine_git_object: 90af1d62a16c6ab07cf9115df0b67eeb77b0b598
   src/mcp-server/shared.ts:
     id: 074e80d4be1e
     last_write_checksum: sha1:19c9034032819a14f15c430de4350c8aba99d725
     pristine_git_object: bb74a74788ebd7d11262f5f63b8fdd29ab817f48
   src/mcp-server/tools.ts:
     id: 654d5d1f2062
-    last_write_checksum: sha1:cabf805a854389b8eb2d09328d50dd06122ad14b
-    pristine_git_object: f27520cbf9b264b7c35b1ab1c0cc77e3b5c0c8fa
+    last_write_checksum: sha1:a5ed9e83dec7ded2b694173af797d03efee0f201
+    pristine_git_object: efa34f0a8dde8583026be20959bea49f3a23ef2d
   src/mcp-server/tools/apiKeysCreate.ts:
     id: 8dc2b097406b
     last_write_checksum: sha1:62623f2a97cac2bc57ed4cb5e067cc19dab97f94
@@ -1241,8 +1241,8 @@ trackedFiles:
     pristine_git_object: a455543eb37ea9ad103c6a3c97bf12319b980edb
   src/models/createkubernetescluster.ts:
     id: 517b1dba9c81
-    last_write_checksum: sha1:1ef12ac06c580d0fef95f0ca6602810bc769f3d0
-    pristine_git_object: d243d4009099e6d89881eb7d6a5dfa5856571dcb
+    last_write_checksum: sha1:980b55c1447ec64c359ff5910bce78c26f14c8f2
+    pristine_git_object: 1f56be63ae42afef8e578d742c08f6500cedf7ba
   src/models/createkubernetesclusterop.ts:
     id: b952be684c73
     last_write_checksum: sha1:6676c27a64d71b700620e355d60c05958f78ed71
@@ -2432,13 +2432,21 @@ examples:
   create-kubernetes-cluster:
     Created:
       requestBody:
-        application/vnd.api+json: {"data": {"type": "kubernetes_clusters", "attributes": {"name": "my-cluster", "project_id": "proj_6059EqYkOQj8p", "site": "SAN3", "plan": "c2-small-x86", "ssh_key_id": "ssh_VkE1DwV37dnZJ"}}}
+        application/vnd.api+json: {"data": {"type": "kubernetes_clusters", "attributes": {"name": "my-cluster", "project_id": "proj_6059EqYkOQj8p", "site": "SAN3", "plan": "c2-small-x86", "ssh_keys": ["ssh_VkE1DwV37dnZJ"]}}}
       responses:
         "201":
           application/vnd.api+json: {"data": {"id": "my-cluster", "type": "kubernetes_clusters", "attributes": {"name": "my-cluster", "status": "provisioning", "control_plane_endpoint": "https://api.my-cluster.example.com:6443"}}}
     ValidationError:
       requestBody:
-        application/vnd.api+json: {"data": {"type": "kubernetes_clusters", "attributes": {"name": "<value>", "project_id": "<id>", "site": "<value>", "plan": "<value>", "ssh_key_id": "<id>"}}}
+        application/vnd.api+json: {"data": {"type": "kubernetes_clusters", "attributes": {"project_id": "<id>", "site": "<value>", "plan": "<value>"}}}
+      responses:
+        "400":
+          application/vnd.api+json: {"errors": [{"code": "VALIDATION_ERROR"}]}
+        "503":
+          application/vnd.api+json: {"errors": [{"code": "VALIDATION_ERROR"}]}
+    InvalidSshKeys:
+      requestBody:
+        application/vnd.api+json: {"data": {"type": "kubernetes_clusters", "attributes": {"project_id": "<id>", "site": "<value>", "plan": "<value>"}}}
       responses:
         "400":
           application/vnd.api+json: {"errors": [{"code": "VALIDATION_ERROR"}]}
@@ -3278,7 +3286,7 @@ examples:
         path:
           vpn_session_id: "<id>"
 examplesVersion: 1.0.2
-releaseNotes: "## Mcp-typescript SDK Changes:\n* `Latitudesh.Servers.unlock()`:  `response.data.attributes` **Changed** (Breaking ⚠️)\n* `Latitudesh.Storage.createFilesystem()`:  `response` **Changed** (Breaking ⚠️)\n* `Latitudesh.vpnSessions.create()`: \n  *  `request.data.attributes.site` **Changed** (Breaking ⚠️)\n* `Latitudesh.vpnSessions.list()`: \n  *  `request.filter[location]` **Changed** (Breaking ⚠️)\n* `Latitudesh.privateNetworks.update()`:  `response.data.attributes` **Changed** (Breaking ⚠️)\n* `Latitudesh.privateNetworks.get()`:  `response` **Changed** (Breaking ⚠️)\n* `Latitudesh.privateNetworks.create()`: \n  *  `request.data.attributes.site` **Changed** (Breaking ⚠️)\n  *  `response.data.attributes` **Changed** (Breaking ⚠️)\n* `Latitudesh.privateNetworks.list()`:  `response.data[].attributes` **Changed** (Breaking ⚠️)\n* `Latitudesh.virtualMachines.create()`: \n  *  `request.data.attributes` **Changed**\n  *  `response.data.attributes` **Changed** (Breaking ⚠️)\n* `Latitudesh.userProfile.listTeams()`:  `response.data[].attributes` **Changed** (Breaking ⚠️)\n* `Latitudesh.userProfile.update()`:  `response.data.attributes.authentication_factor_id` **Changed** (Breaking ⚠️)\n* `Latitudesh.userProfile.get()`:  `response.data.attributes.teams[].description` **Changed** (Breaking ⚠️)\n* `Latitudesh.Traffic.getQuota()`:  `response.data.attributes.quota_per_project[].price` **Changed** (Breaking ⚠️)\n* `Latitudesh.Teams.update()`:  `response.data.attributes` **Changed** (Breaking ⚠️)\n* `Latitudesh.Teams.create()`:  `response.data.attributes` **Changed** (Breaking ⚠️)\n* `Latitudesh.Teams.get()`:  `response.data[].attributes` **Changed** (Breaking ⚠️)\n* `Latitudesh.Tags.update()`: \n  *  `request.RequestBody.data.attributes.description` **Changed**\n  *  `response.data.attributes.team.description` **Changed** (Breaking ⚠️)\n* `Latitudesh.Tags.create()`: \n  *  `request.data.attributes.description` **Changed**\n  *  `response.data.attributes.team.description` **Changed** (Breaking ⚠️)\n* `Latitudesh.Tags.list()`:  `response.data[].attributes.team.description` **Changed** (Breaking ⚠️)\n* `Latitudesh.Storage.get-storage-volume()`:  `response.data.attributes` **Changed** (Breaking ⚠️)\n* `Latitudesh.Storage.post-storage-volumes()`:  `response` **Changed** (Breaking ⚠️)\n* `Latitudesh.Storage.get-storage-volumes()`:  `response.data[].attributes` **Changed** (Breaking ⚠️)\n* `Latitudesh.Storage.updateFilesystem()`:  `response.data.attributes.created_at` **Changed** (Breaking ⚠️)\n* `Latitudesh.Servers.reinstall()`: \n  *  `request.RequestBody.data.attributes` **Changed** (Breaking ⚠️)\n* `Latitudesh.Servers.lock()`:  `response.data.attributes` **Changed** (Breaking ⚠️)\n* `Latitudesh.Servers.updateDeployConfig()`: \n  *  `request.RequestBody.attributes` **Changed** (Breaking ⚠️)\n  *  `response.data.attributes.partitions` **Changed** (Breaking ⚠️)\n* `Latitudesh.teams.members.get-team-members()`:  `response.data[]` **Changed** (Breaking ⚠️)\n* `Latitudesh.Servers.getDeployConfig()`:  `response.data.attributes.partitions` **Changed** (Breaking ⚠️)\n* `Latitudesh.Servers.update()`: \n  *  `request.RequestBody.data.attributes` **Changed**\n  *  `response.data.attributes` **Changed** (Breaking ⚠️)\n* `Latitudesh.Servers.get()`:  `response.data.attributes` **Changed** (Breaking ⚠️)\n* `Latitudesh.Servers.create()`: \n  *  `request.data.attributes` **Changed** (Breaking ⚠️)\n  *  `response.data.attributes` **Changed** (Breaking ⚠️)\n* `Latitudesh.Servers.list()`:  `response.data[].attributes` **Changed** (Breaking ⚠️)\n* `Latitudesh.projects.sshKeys.post-project-ssh-key()`:  `response.data.attributes` **Changed** (Breaking ⚠️)\n* `Latitudesh.apiKeys.list()`:  `response` **Changed** (Breaking ⚠️)\n* `Latitudesh.apiKeys.create()`: \n  *  `request.data.attributes` **Changed**\n  *  `response.data.attributes` **Changed** (Breaking ⚠️)\n* `Latitudesh.apiKeys.update()`: \n  *  `request.update_api_key.data.attributes` **Changed** (Breaking ⚠️)\n  *  `response.data.attributes` **Changed** (Breaking ⚠️)\n* `Latitudesh.Billing.listUsage()`:  `response.data.attributes` **Changed** (Breaking ⚠️)\n* `Latitudesh.SSH Keys.update()`:  `response.data.attributes` **Changed** (Breaking ⚠️)\n* `Latitudesh.SSH Keys.retrieve()`:  `response.data.attributes` **Changed** (Breaking ⚠️)\n* `Latitudesh.SSH Keys.create()`: \n  *  `request.data.attributes.project` **Added**\n  *  `response.data.attributes` **Changed** (Breaking ⚠️)\n* `Latitudesh.Plans.list()`:  `response.data[].attributes` **Changed** (Breaking ⚠️)\n* `Latitudesh.SSH Keys.modifyProjectKey()`:  `response.data.attributes` **Changed** (Breaking ⚠️)\n* `Latitudesh.ipAddresses.list()`: \n  *  `request.filter[additional]` **Added**\n  *  `response.data[].attributes` **Changed** (Breaking ⚠️)\n* `Latitudesh.ipAddresses.get()`:  `response.attributes` **Changed** (Breaking ⚠️)\n* `Latitudesh.SSH Keys.get()`:  `response.data.attributes` **Changed** (Breaking ⚠️)\n* `Latitudesh.SSH Keys.listAll()`: \n  *  `request` **Changed**\n  *  `response.data[].attributes` **Changed** (Breaking ⚠️)\n* `Latitudesh.Projects.update()`:  `response.data.attributes` **Changed** (Breaking ⚠️)\n* `Latitudesh.plans.vm.list()`: \n  *  `request` **Added**\n  *  `response.data[].attributes` **Changed** (Breaking ⚠️)\n* `Latitudesh.Projects.list()`:  `response.data[].attributes` **Changed** (Breaking ⚠️)\n* `Latitudesh.Projects.create()`:  `response.data.attributes` **Changed** (Breaking ⚠️)\n* `Latitudesh.Plans.get()`:  `response.data.attributes` **Changed** (Breaking ⚠️)\n* `Latitudesh.SSH Keys.list()`:  `response.data[].attributes` **Changed** (Breaking ⚠️)\n* `Latitudesh.User Data.get-project-users-data()`: **Removed** (Breaking ⚠️)\n* `Latitudesh.User data.createNew()`: **Added**\n* `Latitudesh.Firewalls.get()`:  `response.data.attributes.rules[].description` **Added**\n* `Latitudesh.Firewalls.create()`: \n  *  `request.data.attributes.rules[].description` **Added**\n  *  `response.data.attributes.rules[].description` **Added**\n* `Latitudesh.Firewalls.list()`:  `response.data[].attributes.rules[].description` **Added**\n* `Latitudesh.Events.list()`:  `response.data[].data[].attributes.properties` **Added**\n* `Latitudesh.User Data.update()`: **Removed** (Breaking ⚠️)\n* `Latitudesh.User Data.delete()`: **Removed** (Breaking ⚠️)\n* `Latitudesh.User Data.retrieve()`: **Removed** (Breaking ⚠️)\n* `Latitudesh.User data.update()`: **Added**\n* `Latitudesh.User Data.list()`: **Removed** (Breaking ⚠️)\n* `Latitudesh.User Data.updateForProject()`: **Removed** (Breaking ⚠️)\n* `Latitudesh.User Data.delete-project-user-data()`: **Removed** (Breaking ⚠️)\n* `Latitudesh.User Data.get-project-user-data()`: **Removed** (Breaking ⚠️)\n* `Latitudesh.apiKeys.update-api-key()`: **Added**\n* `Latitudesh.virtualMachines.update-virtual-machine()`: **Added**\n* `Latitudesh.Elastic Ips.list-elastic-ips()`: **Added**\n* `Latitudesh.User Data.create()`: **Removed** (Breaking ⚠️)\n* `Latitudesh.Firewalls.update()`: \n  *  `request.RequestBody.data.attributes.rules[].description` **Added**\n  *  `response.data.attributes.rules[].description` **Added**\n* `Latitudesh.Plans.get-containers-plan()`: **Removed** (Breaking ⚠️)\n* `Latitudesh.User Data.createNew()`: **Removed** (Breaking ⚠️)\n* `Latitudesh.User data.retrieve()`: **Added**\n* `Latitudesh.User data.delete()`: **Added**\n* `Latitudesh.User data.list()`: **Added**\n* `Latitudesh.User data.updateForProject()`: **Added**\n* `Latitudesh.User data.create()`: **Added**\n* `Latitudesh.User data.delete-project-user-data()`: **Added**\n* `Latitudesh.User data.get-project-user-data()`: **Added**\n* `Latitudesh.User data.get-project-users-data()`: **Added**\n* `Latitudesh.Kubernetes Clusters.get-kubernetes-cluster-kubeconfig()`: **Added**\n* `Latitudesh.Kubernetes Clusters.delete-kubernetes-cluster()`: **Added**\n* `Latitudesh.Kubernetes Clusters.get-kubernetes-cluster()`: **Added**\n* `Latitudesh.Kubernetes Clusters.create-kubernetes-cluster()`: **Added**\n* `Latitudesh.Kubernetes Clusters.list-kubernetes-clusters()`: **Added**\n* `Latitudesh.Elastic Ips.update-elastic-ip()`: **Added**\n* `Latitudesh.Elastic Ips.delete-elastic-ip()`: **Added**\n* `Latitudesh.Elastic Ips.get-elastic-ip()`: **Added**\n* `Latitudesh.Elastic Ips.create-elastic-ip()`: **Added**\n"
+releaseNotes: "## Mcp-typescript SDK Changes:\n* `Latitudesh.Kubernetes Clusters.create-kubernetes-cluster()`: \n  *  `request.data.attributes` **Changed** (Breaking ⚠️)\n"
 generatedFiles:
   - .dxtignore
   - .gitattributes
