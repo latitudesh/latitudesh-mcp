@@ -70,6 +70,32 @@ claude mcp add latitudesh npx latitudesh start -- --bearer YOUR_LATITUDE_API_TOK
 
 </details>
 <details>
+<summary>Codex</summary>
+
+Add the MCP server with the Codex CLI:
+
+```bash
+codex mcp add Latitudesh -- npx latitudesh start --bearer YOUR_LATITUDE_API_TOKEN
+```
+
+Or add it directly to `~/.codex/config.toml`:
+
+```toml
+[mcp_servers.Latitudesh]
+command = "npx"
+args = ["latitudesh", "start", "--bearer", "YOUR_LATITUDE_API_TOKEN"]
+```
+
+Verify it is configured:
+
+```bash
+codex mcp list
+```
+
+**Note:** Replace `YOUR_LATITUDE_API_TOKEN` with your actual Latitude.sh bearer token.
+
+</details>
+<details>
 <summary>Windsurf</summary>
 
 Refer to [Official Windsurf documentation](https://docs.windsurf.com/windsurf/cascade/mcp#adding-a-new-mcp-plugin) for latest information
@@ -366,6 +392,30 @@ claude mcp add Latitudesh -- npx -y latitudesh start --server-index 0 --latitude
 
 ```bash
 gemini mcp add Latitudesh -- npx -y latitudesh start --server-index 0 --latitude-api-key <insert your api key here> --bearer 
+```
+
+</details>
+<details>
+<summary>Codex</summary>
+
+Add the MCP server with the Codex CLI:
+
+```bash
+codex mcp add Latitudesh -- npx -y latitudesh start --server-index 0 --latitude-api-key <insert your api key here> --bearer <insert your bearer token here>
+```
+
+Or add it directly to `~/.codex/config.toml`:
+
+```toml
+[mcp_servers.Latitudesh]
+command = "npx"
+args = ["-y", "latitudesh", "start", "--server-index", "0", "--latitude-api-key", "<insert your api key here>", "--bearer", "<insert your bearer token here>"]
+```
+
+Verify it is configured:
+
+```bash
+codex mcp list
 ```
 
 </details>
