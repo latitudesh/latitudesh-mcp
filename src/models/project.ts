@@ -56,11 +56,21 @@ export type ProjectStats = {
 };
 
 export const ProjectStats$zodSchema: z.ZodType<ProjectStats> = z.object({
-  containers: z.number().optional(),
-  ip_addresses: z.number().optional(),
-  prefixes: z.number().optional(),
-  servers: z.number().optional(),
-  vlans: z.number().optional(),
+  containers: z.number().optional().describe(
+    "The number of containers assigned to the project",
+  ),
+  ip_addresses: z.number().optional().describe(
+    "The number of IP addresses assigned to the project",
+  ),
+  prefixes: z.number().optional().describe(
+    "The IP address prefixes in the project",
+  ),
+  servers: z.number().optional().describe(
+    "The number of servers assigned to the project",
+  ),
+  vlans: z.number().optional().describe(
+    "The number of VLANs assigned to the project",
+  ),
 });
 
 export type ProjectBilling = {
@@ -97,10 +107,12 @@ export const ProjectAttributes$zodSchema: z.ZodType<ProjectAttributes> = z
     billing_type: BillingType$zodSchema.nullable().optional(),
     cost: z.string().nullable().optional(),
     created_at: z.string().optional(),
-    description: z.string().nullable().optional(),
+    description: z.string().nullable().optional().describe(
+      "The project description",
+    ),
     environment: Environment$zodSchema.nullable().optional(),
-    name: z.string().optional(),
-    slug: z.string().optional(),
+    name: z.string().optional().describe("The project name"),
+    slug: z.string().optional().describe("A unique project identifier"),
     stats: z.lazy(() => ProjectStats$zodSchema).optional(),
     team: TeamInclude$zodSchema.optional(),
     updated_at: z.string().optional(),
@@ -113,5 +125,5 @@ export type Project = {
 
 export const Project$zodSchema: z.ZodType<Project> = z.object({
   attributes: z.lazy(() => ProjectAttributes$zodSchema).optional(),
-  id: z.string().optional(),
+  id: z.string().optional().describe("The project ID"),
 });

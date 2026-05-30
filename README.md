@@ -338,9 +338,9 @@ Latitude.sh API: The Latitude.sh API is a RESTful API to manage your Latitude.sh
 <details>
 <summary>Claude Desktop</summary>
 
-Install the MCP server as a Desktop Extension using the pre-built [`mcp-server.mcpb`](https://github.com/latitudesh/latitudesh-mcp/releases/download/v0.1.1/mcp-server.mcpb) file:
+Install the MCP server as a Desktop Extension using the pre-built [`mcp-server.mcpb`](https://github.com/latitudesh/latitudesh-mcp/releases/download/v0.1.2/mcp-server.mcpb) file:
 
-Simply drag and drop the [`mcp-server.mcpb`](https://github.com/latitudesh/latitudesh-mcp/releases/download/v0.1.1/mcp-server.mcpb) file onto Claude Desktop to install the extension.
+Simply drag and drop the [`mcp-server.mcpb`](https://github.com/latitudesh/latitudesh-mcp/releases/download/v0.1.2/mcp-server.mcpb) file onto Claude Desktop to install the extension.
 
 The MCP bundle package includes the MCP server and all necessary configuration. Once installed, the server will be available without additional setup.
 
@@ -392,30 +392,6 @@ claude mcp add Latitudesh -- npx -y latitudesh start --server-index 0 --latitude
 
 ```bash
 gemini mcp add Latitudesh -- npx -y latitudesh start --server-index 0 --latitude-api-key <insert your api key here> --bearer 
-```
-
-</details>
-<details>
-<summary>Codex</summary>
-
-Add the MCP server with the Codex CLI:
-
-```bash
-codex mcp add Latitudesh -- npx -y latitudesh start --server-index 0 --latitude-api-key <insert your api key here> --bearer <insert your bearer token here>
-```
-
-Or add it directly to `~/.codex/config.toml`:
-
-```toml
-[mcp_servers.Latitudesh]
-command = "npx"
-args = ["-y", "latitudesh", "start", "--server-index", "0", "--latitude-api-key", "<insert your api key here>", "--bearer", "<insert your bearer token here>"]
-```
-
-Verify it is configured:
-
-```bash
-codex mcp list
 ```
 
 </details>
@@ -515,8 +491,8 @@ To enable dynamic mode, pass the `--mode dynamic` flag when starting your server
 In dynamic mode, the server registers only the following meta-tools instead of every individual tool:
 
 - **`list_tools`**: Lists all available tools with their names and descriptions.
-- **`describe_tool`**: Returns the input schema for one or more tools by name.
-- **`execute_tool`**: Executes a tool by name with the provided input parameters.
+- **`describe_tool_input`**: Returns the input schema for one or more tools by name.
+- **`execute_tool`**: Executes a tool by name with its arguments.
 
 This approach significantly reduces the number of tokens sent to the LLM on each request, which is especially useful for servers with a large number of tools.
 <!-- End Progressive Discovery [dynamic-mode] -->

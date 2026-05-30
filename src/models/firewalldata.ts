@@ -23,11 +23,17 @@ export type Rule = {
 };
 
 export const Rule$zodSchema: z.ZodType<Rule> = z.object({
-  description: z.string().nullable().optional(),
-  from: z.string().optional(),
+  description: z.string().nullable().optional().describe(
+    "Optional description explaining the purpose of this rule",
+  ),
+  from: z.string().optional().describe(
+    "Source IP address, IP range in CIDR notation, or 'ANY' (e.g., \"192.168.1.1\", \"192.168.1.0/24\", \"ANY\")",
+  ),
   port: z.string().optional(),
   protocol: z.string().optional(),
-  to: z.string().optional(),
+  to: z.string().optional().describe(
+    "Destination IP address, IP range in CIDR notation, or 'ANY' (e.g., \"192.168.1.1\", \"192.168.1.0/24\", \"ANY\")",
+  ),
 });
 
 export type FirewallDataProject = {

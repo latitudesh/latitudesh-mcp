@@ -22,8 +22,8 @@ export type PatchUserDataAttributes2 = {
 export const PatchUserDataAttributes2$zodSchema: z.ZodType<
   PatchUserDataAttributes2
 > = z.object({
-  content: z.string().optional(),
-  description: z.string().optional(),
+  content: z.string().optional().describe("encoded content of the User Data"),
+  description: z.string().optional().describe("description dummy user data"),
 });
 
 export type PatchUserDataData2 = {

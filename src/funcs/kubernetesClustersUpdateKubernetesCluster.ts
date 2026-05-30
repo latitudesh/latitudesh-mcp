@@ -3,7 +3,7 @@
  */
 
 import { LatitudeshCore } from "../core.js";
-import { encodeJSON } from "../lib/encodings.js";
+import { encodeJSON, encodeSimple } from "../lib/encodings.js";
 import * as M from "../lib/matchers.js";
 import { compactMap } from "../lib/primitives.js";
 import { safeParse } from "../lib/schemas.js";
@@ -20,27 +20,48 @@ import {
 } from "../models/errors/httpclienterrors.js";
 import { SDKValidationError } from "../models/errors/sdkvalidationerror.js";
 import {
-  PostStorageFilesystemsRequest,
-  PostStorageFilesystemsRequest$zodSchema,
-  PostStorageFilesystemsResponse,
-  PostStorageFilesystemsResponse$zodSchema,
-} from "../models/poststoragefilesystemsop.js";
+  UpdateKubernetesClusterRequest,
+  UpdateKubernetesClusterRequest$zodSchema,
+  UpdateKubernetesClusterResponse,
+  UpdateKubernetesClusterResponse$zodSchema,
+} from "../models/updatekubernetesclusterop.js";
 import { APICall, APIPromise } from "../types/async.js";
 import { Result } from "../types/fp.js";
 
 /**
- * Create filesystem
+ * Update Kubernetes Cluster
  *
  * @remarks
- * Allows you to add persistent storage to a project. These filesystems can be used to store data across your servers.
+ * Updates a Kubernetes cluster by scaling nodes or upgrading the Kubernetes version. The cluster must be in `Provisioned` phase to accept updates.
+ *
+ * ## Scaling Operations
+ *
+ * Exactly one of `worker_count` or `control_plane_count` must be provided per request. You cannot scale workers and control plane nodes in the same request.
+ *
+ * When scaling up, the API validates that sufficient server stock is available for the requested delta (e.g., scaling from 2 to 5 workers checks for 3 available servers).
+ *
+ * When scaling from 0 workers, you must provide a `worker_plan` since there is no existing configuration to inherit the plan from.
+ *
+ * Control plane scaling has a minimum of 1 node. You cannot scale control plane nodes to zero.
+ *
+ * ## Version Upgrades
+ *
+ * Provide a `kubernetes_version` parameter to upgrade the cluster to a new Kubernetes version. Version upgrades follow these rules:
+ *
+ * - **No downgrades**: You cannot downgrade to a lower version than currently installed
+ * - **One minor version at a time**: You can only upgrade one minor version at a time (e.g., from 1.34 to 1.35, not from 1.34 to 1.36)
+ * - **Mutually exclusive**: Version upgrades cannot be combined with scaling operations in the same request
+ * - **Available versions only**: The target version must be in the list returned by `GET /kubernetes_clusters/available_versions`
+ *
+ * Returns 202 Accepted when an update operation is triggered. Poll the GET endpoint to monitor progress. Returns 200 OK if no change is needed (no-op).
  */
-export function storageCreateFilesystem(
+export function kubernetesClustersUpdateKubernetesCluster(
   client$: LatitudeshCore,
-  request: PostStorageFilesystemsRequest,
+  request: UpdateKubernetesClusterRequest,
   options?: RequestOptions,
 ): APIPromise<
   Result<
-    PostStorageFilesystemsResponse,
+    UpdateKubernetesClusterResponse,
     | APIError
     | SDKValidationError
     | UnexpectedClientError
@@ -59,12 +80,12 @@ export function storageCreateFilesystem(
 
 async function $do(
   client$: LatitudeshCore,
-  request: PostStorageFilesystemsRequest,
+  request: UpdateKubernetesClusterRequest,
   options?: RequestOptions,
 ): Promise<
   [
     Result<
-      PostStorageFilesystemsResponse,
+      UpdateKubernetesClusterResponse,
       | APIError
       | SDKValidationError
       | UnexpectedClientError
@@ -78,18 +99,30 @@ async function $do(
 > {
   const parsed$ = safeParse(
     request,
-    (value$) => PostStorageFilesystemsRequest$zodSchema.parse(value$),
+    (value$) => UpdateKubernetesClusterRequest$zodSchema.parse(value$),
     "Input validation failed",
   );
   if (!parsed$.ok) {
     return [parsed$, { status: "invalid" }];
   }
   const payload$ = parsed$.value;
-  const body$ = encodeJSON("body", payload$, { explode: true });
-  const path$ = pathToFunc("/storage/filesystems")();
+  const body$ = encodeJSON("body", payload$.update_kubernetes_cluster, {
+    explode: true,
+  });
+
+  const pathParams$ = {
+    kubernetes_cluster_id: encodeSimple(
+      "kubernetes_cluster_id",
+      payload$.kubernetes_cluster_id,
+      { explode: false, charEncoding: "percent" },
+    ),
+  };
+  const path$ = pathToFunc("/kubernetes_clusters/{kubernetes_cluster_id}")(
+    pathParams$,
+  );
 
   const headers$ = new Headers(compactMap({
-    "Content-Type": "application/json",
+    "Content-Type": "application/vnd.api+json",
     Accept: "application/vnd.api+json",
   }));
   const securityInput = await extractSecurity(client$._options.security);
@@ -98,7 +131,7 @@ async function $do(
   const context = {
     options: client$._options,
     baseURL: options?.serverURL ?? client$._baseURL ?? "",
-    operationID: "post-storage-filesystems",
+    operationID: "update-kubernetes-cluster",
     oAuth2Scopes: null,
     resolvedSecurity: requestSecurity,
     securitySource: client$._options.security,
@@ -116,7 +149,7 @@ async function $do(
 
   const requestRes = client$._createRequest(context, {
     security: requestSecurity,
-    method: "POST",
+    method: "PATCH",
     baseURL: options?.serverURL,
     path: path$,
     headers: headers$,
@@ -145,7 +178,7 @@ async function $do(
   };
 
   const [result$] = await M.match<
-    PostStorageFilesystemsResponse,
+    UpdateKubernetesClusterResponse,
     | APIError
     | SDKValidationError
     | UnexpectedClientError
@@ -154,11 +187,15 @@ async function $do(
     | RequestTimeoutError
     | ConnectionError
   >(
-    M.json(201, PostStorageFilesystemsResponse$zodSchema, {
+    M.json([200, 202], UpdateKubernetesClusterResponse$zodSchema, {
       ctype: "application/vnd.api+json",
-      key: "object",
+      key: "kubernetes_cluster_update_response",
     }),
-    M.json(503, PostStorageFilesystemsResponse$zodSchema, {
+    M.json([400, 403, 404, 422], UpdateKubernetesClusterResponse$zodSchema, {
+      ctype: "application/vnd.api+json",
+      key: "error_object",
+    }),
+    M.json(503, UpdateKubernetesClusterResponse$zodSchema, {
       ctype: "application/vnd.api+json",
       key: "error_object",
     }),

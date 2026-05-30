@@ -64,6 +64,9 @@ export const IpAddressRegion$zodSchema: z.ZodType<IpAddressRegion> = z.object({
   name: z.string().optional(),
 });
 
+/**
+ * Server assignment information. Returns an empty object when the IP is not assigned to an active server (e.g., when the server is decommissioning or deleted).
+ */
 export type Assignment = {
   server_id?: string | undefined;
   hostname?: string | undefined;
@@ -74,7 +77,9 @@ export const Assignment$zodSchema: z.ZodType<Assignment> = z.object({
   assigned_at: z.string().optional(),
   hostname: z.string().optional(),
   server_id: z.string().optional(),
-});
+}).describe(
+  "Server assignment information. Returns an empty object when the IP is not assigned to an active server (e.g., when the server is decommissioning or deleted).",
+);
 
 export type IpAddressAttributes = {
   address?: string | undefined;
@@ -96,7 +101,9 @@ export const IpAddressAttributes$zodSchema: z.ZodType<IpAddressAttributes> = z
   .object({
     additional: z.boolean().optional(),
     address: z.string().optional(),
-    assignment: z.lazy(() => Assignment$zodSchema).optional(),
+    assignment: z.lazy(() => Assignment$zodSchema).optional().describe(
+      "Server assignment information. Returns an empty object when the IP is not assigned to an active server (e.g., when the server is decommissioning or deleted).",
+    ),
     available: z.boolean().optional(),
     cidr: z.string().nullable().optional(),
     family: IpAddressFamily$zodSchema.optional(),

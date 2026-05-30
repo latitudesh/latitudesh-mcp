@@ -28,8 +28,12 @@ export const VirtualMachinePayloadAttributes$zodSchema: z.ZodType<
   VirtualMachinePayloadAttributes
 > = z.object({
   name: z.string().default("my-vm"),
-  operating_system: z.string().nullable().optional(),
-  plan: z.string().nullable().optional(),
+  operating_system: z.string().nullable().optional().describe(
+    "The operating system slug for the Virtual Machine. If not specified, defaults to ubuntu-24-04 for CPU plans or ubuntu24_ml_in_a_box for GPU plans.",
+  ),
+  plan: z.string().nullable().optional().describe(
+    "The plan ID or Slug for the Virtual Machine",
+  ),
   project: z.string().default("my-project"),
   ssh_keys: z.array(z.string()).nullable().optional(),
 });

@@ -21,7 +21,9 @@ export type PostStorageVolumesMountAttributes = { nqn: string };
 export const PostStorageVolumesMountAttributes$zodSchema: z.ZodType<
   PostStorageVolumesMountAttributes
 > = z.object({
-  nqn: z.string(),
+  nqn: z.string().describe(
+    "NVMe Qualified Name (NQN) of the client/server that will access the volume storage. Format: nqn.YYYY-MM.domain:identifier (e.g., \"nqn.2024-01.com.example:server01\"). This uniquely identifies the NVMe client and must be configured on the client server.",
+  ),
 });
 
 export type PostStorageVolumesMountData = {

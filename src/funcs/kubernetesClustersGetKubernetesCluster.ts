@@ -32,7 +32,7 @@ import { Result } from "../types/fp.js";
  * Get a Kubernetes Cluster
  *
  * @remarks
- * Retrieves detailed information about a Kubernetes cluster including its status, control plane, and worker node details.
+ * Retrieves detailed information about a Kubernetes cluster including its status, control plane, worker node details, and individual node information.
  */
 export function kubernetesClustersGetKubernetesCluster(
   client$: LatitudeshCore,
@@ -167,7 +167,7 @@ async function $do(
       ctype: "application/vnd.api+json",
       key: "kubernetes_cluster",
     }),
-    M.json([401, 403, 404], GetKubernetesClusterResponse$zodSchema, {
+    M.json([401, 404], GetKubernetesClusterResponse$zodSchema, {
       ctype: "application/vnd.api+json",
       key: "error_object",
     }),

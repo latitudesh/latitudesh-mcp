@@ -93,9 +93,11 @@ export type Gpu = {
 
 export const Gpu$zodSchema: z.ZodType<Gpu> = z.object({
   count: z.number().optional(),
-  interconnect: z.string().nullable().optional(),
+  interconnect: z.string().nullable().optional().describe(
+    "GPU interconnection type (e.g., NVLink, PCIe)",
+  ),
   type: z.string().optional(),
-  vram_per_gpu: z.number().nullable().optional(),
+  vram_per_gpu: z.number().nullable().optional().describe("VRAM per GPU in GB"),
 });
 
 export type PlanDataSpecs = {
@@ -200,7 +202,9 @@ export type PlanDataAttributes = {
 
 export const PlanDataAttributes$zodSchema: z.ZodType<PlanDataAttributes> = z
   .object({
-    features: z.array(Feature$zodSchema).optional(),
+    features: z.array(Feature$zodSchema).optional().describe(
+      "List of available features for the plan",
+    ),
     name: z.string().optional(),
     regions: z.array(z.lazy(() => PlanDataRegion$zodSchema)).optional(),
     slug: z.string().optional(),

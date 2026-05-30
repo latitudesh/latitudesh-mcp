@@ -39,9 +39,16 @@ export const serveCommand = buildCommand({
       mode: {
         kind: "enum",
         brief:
-          "Server mode (dynamic: expose list_tools, describe_tool, and execute_tool instead of individual tools)",
+          "Server mode (dynamic: expose list_tools, describe_tool_input, and execute_tool instead of individual tools)",
         values: ["dynamic"],
         optional: true,
+      },
+      "tool-annotations": {
+        kind: "parsed",
+        brief:
+          "Filter tools by annotations (comma-separated: readOnly, destructive, idempotent, openWorld). Listed = required true, unlisted = required false.",
+        optional: true,
+        parse: (value) => value.split(",").map(s => s.trim()),
       },
       bearer: {
         kind: "parsed",

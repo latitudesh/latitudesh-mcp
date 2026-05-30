@@ -63,12 +63,16 @@ export const GetIpsRequest$zodSchema: z.ZodType<GetIpsRequest> = z.object({
   filterAddress: z.string().describe(
     "The address of IP to filter by starts_with",
   ).optional(),
-  filterFamily: FilterFamily$zodSchema.optional(),
+  filterFamily: FilterFamily$zodSchema.optional().describe(
+    "The protocol family to filter by",
+  ),
   filterLocation: z.string().describe("The site slug to filter by").optional(),
   filterProject: z.string().describe("The project ID or Slug to filter by")
     .optional(),
   filterServer: z.string().describe("The server ID to filter by").optional(),
-  filterType: FilterType$zodSchema.optional(),
+  filterType: FilterType$zodSchema.optional().describe(
+    "The protocol type to filter by",
+  ),
   pageNumber: z.int().default(1).describe(
     "Page number to return (starts at 1)",
   ),

@@ -4,6 +4,8 @@
 
 import * as z from "zod";
 import { ClosedEnum } from "../types/enums.js";
+import { CustomTag, CustomTag$zodSchema } from "./customtag.js";
+import { ErrorObject, ErrorObject$zodSchema } from "./errorobject.js";
 
 export const CreateTagType2 = {
   Tags: "tags",
@@ -22,9 +24,11 @@ export type CreateTagAttributes2 = {
 
 export const CreateTagAttributes2$zodSchema: z.ZodType<CreateTagAttributes2> = z
   .object({
-    color: z.string().default("#ffffff"),
-    description: z.string().nullable().optional(),
-    name: z.string().optional(),
+    color: z.string().default("#ffffff").describe("Color of the Tag"),
+    description: z.string().nullable().optional().describe(
+      "Description of the Tag",
+    ),
+    name: z.string().optional().describe("Name of the Tag"),
   });
 
 export type CreateTagData2 = {
@@ -44,3 +48,11 @@ export const CreateTagRequest$zodSchema: z.ZodType<CreateTagRequest> = z.object(
     data: z.lazy(() => CreateTagData2$zodSchema).optional(),
   },
 );
+
+export type CreateTagResponse = CustomTag | ErrorObject;
+
+export const CreateTagResponse$zodSchema: z.ZodType<CreateTagResponse> = z
+  .union([
+    CustomTag$zodSchema,
+    ErrorObject$zodSchema,
+  ]);

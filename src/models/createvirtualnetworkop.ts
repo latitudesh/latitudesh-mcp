@@ -77,8 +77,10 @@ export const CreateVirtualNetworkAttributes2$zodSchema: z.ZodType<
   CreateVirtualNetworkAttributes2
 > = z.object({
   description: z.string(),
-  project: z.string(),
-  site: CreateVirtualNetworkSite2$zodSchema.optional(),
+  project: z.string().describe("Project ID or slug"),
+  site: CreateVirtualNetworkSite2$zodSchema.optional().describe(
+    "Site ID or slug",
+  ),
 });
 
 export type CreateVirtualNetworkData2 = {

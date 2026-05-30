@@ -3,7 +3,7 @@
  */
 
 import { LatitudeshCore } from "../core.js";
-import { encodeJSON, encodeSimple } from "../lib/encodings.js";
+import { encodeJSON } from "../lib/encodings.js";
 import * as M from "../lib/matchers.js";
 import { compactMap } from "../lib/primitives.js";
 import { safeParse } from "../lib/schemas.js";
@@ -20,27 +20,27 @@ import {
 } from "../models/errors/httpclienterrors.js";
 import { SDKValidationError } from "../models/errors/sdkvalidationerror.js";
 import {
-  PatchStorageFilesystemsRequest,
-  PatchStorageFilesystemsRequest$zodSchema,
-  PatchStorageFilesystemsResponse,
-  PatchStorageFilesystemsResponse$zodSchema,
-} from "../models/patchstoragefilesystemsop.js";
+  PostStorageVolumesRequest,
+  PostStorageVolumesRequest$zodSchema,
+  PostStorageVolumesResponse,
+  PostStorageVolumesResponse$zodSchema,
+} from "../models/poststoragevolumesop.js";
 import { APICall, APIPromise } from "../types/async.js";
 import { Result } from "../types/fp.js";
 
 /**
- * Update filesystem
+ * Create volume
  *
  * @remarks
- * Allow you to upgrade the size of a filesystem.
+ * Allows you to add persistent storage to a project. These volumes can be used to store data across your servers.
  */
-export function storageUpdateFilesystem(
+export function blockStoragePostStorageVolumes(
   client$: LatitudeshCore,
-  request: PatchStorageFilesystemsRequest,
+  request: PostStorageVolumesRequest,
   options?: RequestOptions,
 ): APIPromise<
   Result<
-    PatchStorageFilesystemsResponse,
+    PostStorageVolumesResponse,
     | APIError
     | SDKValidationError
     | UnexpectedClientError
@@ -59,12 +59,12 @@ export function storageUpdateFilesystem(
 
 async function $do(
   client$: LatitudeshCore,
-  request: PatchStorageFilesystemsRequest,
+  request: PostStorageVolumesRequest,
   options?: RequestOptions,
 ): Promise<
   [
     Result<
-      PatchStorageFilesystemsResponse,
+      PostStorageVolumesResponse,
       | APIError
       | SDKValidationError
       | UnexpectedClientError
@@ -78,24 +78,15 @@ async function $do(
 > {
   const parsed$ = safeParse(
     request,
-    (value$) => PatchStorageFilesystemsRequest$zodSchema.parse(value$),
+    (value$) => PostStorageVolumesRequest$zodSchema.parse(value$),
     "Input validation failed",
   );
   if (!parsed$.ok) {
     return [parsed$, { status: "invalid" }];
   }
   const payload$ = parsed$.value;
-  const body$ = encodeJSON("body", payload$.RequestBody, { explode: true });
-
-  const pathParams$ = {
-    filesystem_id: encodeSimple("filesystem_id", payload$.filesystem_id, {
-      explode: false,
-      charEncoding: "percent",
-    }),
-  };
-  const path$ = pathToFunc("/storage/filesystems/{filesystem_id}")(
-    pathParams$,
-  );
+  const body$ = encodeJSON("body", payload$, { explode: true });
+  const path$ = pathToFunc("/storage/volumes")();
 
   const headers$ = new Headers(compactMap({
     "Content-Type": "application/json",
@@ -107,7 +98,7 @@ async function $do(
   const context = {
     options: client$._options,
     baseURL: options?.serverURL ?? client$._baseURL ?? "",
-    operationID: "patch-storage-filesystems",
+    operationID: "post-storage-volumes",
     oAuth2Scopes: null,
     resolvedSecurity: requestSecurity,
     securitySource: client$._options.security,
@@ -125,7 +116,7 @@ async function $do(
 
   const requestRes = client$._createRequest(context, {
     security: requestSecurity,
-    method: "PATCH",
+    method: "POST",
     baseURL: options?.serverURL,
     path: path$,
     headers: headers$,
@@ -154,7 +145,7 @@ async function $do(
   };
 
   const [result$] = await M.match<
-    PatchStorageFilesystemsResponse,
+    PostStorageVolumesResponse,
     | APIError
     | SDKValidationError
     | UnexpectedClientError
@@ -163,9 +154,13 @@ async function $do(
     | RequestTimeoutError
     | ConnectionError
   >(
-    M.json(200, PatchStorageFilesystemsResponse$zodSchema, {
+    M.json(201, PostStorageVolumesResponse$zodSchema, {
       ctype: "application/vnd.api+json",
       key: "object",
+    }),
+    M.json(503, PostStorageVolumesResponse$zodSchema, {
+      ctype: "application/vnd.api+json",
+      key: "error_object",
     }),
   )(response, req$, { extraFields: responseFields$ });
 

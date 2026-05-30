@@ -49,8 +49,10 @@ export const OutOfBandConnectionAttributes$zodSchema: z.ZodType<
 > = z.object({
   access_ip: z.string().optional(),
   created_at: z.string().optional(),
-  credentials: z.lazy(() => OutOfBandConnectionCredentials$zodSchema)
-    .optional(),
+  credentials: z.lazy(() => OutOfBandConnectionCredentials$zodSchema).optional()
+    .describe(
+      "credentials are valid only when the server is deployed with ssh keys",
+    ),
   port: z.string().optional(),
   server_id: z.string().optional(),
   ssh_key: z.lazy(() => SshKey$zodSchema).optional(),

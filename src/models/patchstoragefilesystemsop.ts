@@ -24,7 +24,9 @@ export type PatchStorageFilesystemsAttributes2 = {
 export const PatchStorageFilesystemsAttributes2$zodSchema: z.ZodType<
   PatchStorageFilesystemsAttributes2
 > = z.object({
-  size_in_gb: z.int().default(1500),
+  size_in_gb: z.int().default(1500).describe(
+    "Size in GB (not required, default is 1500)",
+  ),
 });
 
 export type PatchStorageFilesystemsData2 = {
@@ -37,7 +39,7 @@ export const PatchStorageFilesystemsData2$zodSchema: z.ZodType<
   PatchStorageFilesystemsData2
 > = z.object({
   attributes: z.lazy(() => PatchStorageFilesystemsAttributes2$zodSchema),
-  id: z.string(),
+  id: z.string().describe("Filesystem ID"),
   type: PatchStorageFilesystemsType2$zodSchema,
 });
 

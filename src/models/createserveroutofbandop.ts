@@ -23,7 +23,9 @@ export type CreateServerOutOfBandAttributes2 = {
 export const CreateServerOutOfBandAttributes2$zodSchema: z.ZodType<
   CreateServerOutOfBandAttributes2
 > = z.object({
-  ssh_key_id: z.string().optional(),
+  ssh_key_id: z.string().optional().describe(
+    "SSH Key ID to set for out of band",
+  ),
 });
 
 export type CreateServerOutOfBandData2 = {

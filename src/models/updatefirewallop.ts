@@ -37,9 +37,13 @@ export type UpdateFirewallRule2 = {
 
 export const UpdateFirewallRule2$zodSchema: z.ZodType<UpdateFirewallRule2> = z
   .object({
-    description: z.string().nullable().optional(),
+    description: z.string().nullable().optional().describe(
+      "Optional description explaining the purpose of this rule",
+    ),
     from: z.string().optional(),
-    port: z.string().optional(),
+    port: z.string().optional().describe(
+      "Port number or range (e.g., \"80\", \"80-443\")",
+    ),
     protocol: UpdateFirewallProtocol2$zodSchema.optional(),
     to: z.string().optional(),
   });
