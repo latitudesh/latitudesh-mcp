@@ -29,10 +29,10 @@ export type SshKeyDataAttributes = {
 export const SshKeyDataAttributes$zodSchema: z.ZodType<SshKeyDataAttributes> = z
   .object({
     created_at: z.string().optional(),
-    fingerprint: z.string().optional(),
-    name: z.string().optional(),
+    fingerprint: z.string().optional().describe("SSH Key fingerprint"),
+    name: z.string().optional().describe("Name of the SSH Key"),
     project: ProjectInclude$zodSchema.optional(),
-    public_key: z.string().optional(),
+    public_key: z.string().optional().describe("SSH Public Key"),
     updated_at: z.string().optional(),
     user: UserInclude$zodSchema.optional(),
   });

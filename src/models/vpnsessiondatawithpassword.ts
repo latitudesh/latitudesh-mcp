@@ -55,14 +55,16 @@ export const VpnSessionDataWithPasswordAttributes$zodSchema: z.ZodType<
   VpnSessionDataWithPasswordAttributes
 > = z.object({
   created_at: z.string().optional(),
-  expires_at: z.string().optional(),
-  host: z.string().optional(),
-  password: z.string().optional(),
-  port: z.string().optional(),
+  expires_at: z.string().optional().describe("Time to expiry"),
+  host: z.string().optional().describe("VPN host"),
+  password: z.string().optional().describe("VPN password"),
+  port: z.string().optional().describe("VPN port"),
   region: RegionResourceData$zodSchema.optional(),
-  status: VpnSessionDataWithPasswordStatus$zodSchema.optional(),
+  status: VpnSessionDataWithPasswordStatus$zodSchema.optional().describe(
+    "from Firewall Response",
+  ),
   updated_at: z.string().optional(),
-  user_name: z.string().optional(),
+  user_name: z.string().optional().describe("VPN username"),
 });
 
 export type VpnSessionDataWithPassword = {

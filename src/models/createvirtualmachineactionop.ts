@@ -44,7 +44,9 @@ export type CreateVirtualMachineActionAttributes2 = {
 export const CreateVirtualMachineActionAttributes2$zodSchema: z.ZodType<
   CreateVirtualMachineActionAttributes2
 > = z.object({
-  action: CreateVirtualMachineActionAction2$zodSchema,
+  action: CreateVirtualMachineActionAction2$zodSchema.describe(
+    "The action to perform on the virtual machine",
+  ),
 });
 
 export type CreateVirtualMachineActionRequestBody2 = {

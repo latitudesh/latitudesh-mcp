@@ -96,6 +96,65 @@ export const CreateServerReinstallRaid2$zodSchema = z.enum([
   "RAID mode for the server. Set to 'raid-0' for RAID 0, 'raid-1' for RAID 1, or omit/null for no RAID configuration",
 );
 
+export const CreateServerReinstallRole2 = {
+  Os: "os",
+  Storage: "storage",
+  Raw: "raw",
+} as const;
+export type CreateServerReinstallRole2 = ClosedEnum<
+  typeof CreateServerReinstallRole2
+>;
+
+export const CreateServerReinstallRole2$zodSchema = z.enum([
+  "os",
+  "storage",
+  "raw",
+]);
+
+export const CreateServerReinstallRaidLevel2 = {
+  Raid0: "raid-0",
+  Raid1: "raid-1",
+} as const;
+export type CreateServerReinstallRaidLevel2 = ClosedEnum<
+  typeof CreateServerReinstallRaidLevel2
+>;
+
+export const CreateServerReinstallRaidLevel2$zodSchema = z.enum([
+  "raid-0",
+  "raid-1",
+]);
+
+export const CreateServerReinstallFilesystem2 = {
+  Ext4: "ext4",
+  Xfs: "xfs",
+} as const;
+export type CreateServerReinstallFilesystem2 = ClosedEnum<
+  typeof CreateServerReinstallFilesystem2
+>;
+
+export const CreateServerReinstallFilesystem2$zodSchema = z.enum([
+  "ext4",
+  "xfs",
+]);
+
+export type CreateServerReinstallDiskLayout2 = {
+  count: number;
+  role: CreateServerReinstallRole2;
+  raid_level?: CreateServerReinstallRaidLevel2 | null | undefined;
+  filesystem?: CreateServerReinstallFilesystem2 | null | undefined;
+  mount_point?: string | null | undefined;
+};
+
+export const CreateServerReinstallDiskLayout2$zodSchema: z.ZodType<
+  CreateServerReinstallDiskLayout2
+> = z.object({
+  count: z.int(),
+  filesystem: CreateServerReinstallFilesystem2$zodSchema.nullable().optional(),
+  mount_point: z.string().nullable().optional(),
+  raid_level: CreateServerReinstallRaidLevel2$zodSchema.nullable().optional(),
+  role: CreateServerReinstallRole2$zodSchema,
+});
+
 export type CreateServerReinstallAttributes2 = {
   operating_system?: CreateServerReinstallOperatingSystem2 | undefined;
   hostname?: string | undefined;
@@ -103,20 +162,34 @@ export type CreateServerReinstallAttributes2 = {
   ssh_keys?: Array<string> | null | undefined;
   user_data?: string | null | undefined;
   raid?: CreateServerReinstallRaid2 | null | undefined;
+  disk_layout?: Array<CreateServerReinstallDiskLayout2> | null | undefined;
   ipxe?: string | null | undefined;
 };
 
 export const CreateServerReinstallAttributes2$zodSchema: z.ZodType<
   CreateServerReinstallAttributes2
 > = z.object({
-  hostname: z.string().optional(),
-  ipxe: z.string().nullable().optional(),
-  operating_system: CreateServerReinstallOperatingSystem2$zodSchema.optional(),
+  disk_layout: z.array(z.lazy(() => CreateServerReinstallDiskLayout2$zodSchema))
+    .nullable().optional(),
+  hostname: z.string().optional().describe(
+    "The server hostname to set upon reinstall",
+  ),
+  ipxe: z.string().nullable().optional().describe(
+    "URL where iPXE script is stored on, OR the iPXE script encoded in base64. This attribute is required when operating system iPXE is selected.",
+  ),
+  operating_system: CreateServerReinstallOperatingSystem2$zodSchema.optional()
+    .describe("The OS selected for the reinstall process"),
   partitions: z.array(z.lazy(() => CreateServerReinstallPartition2$zodSchema))
     .nullable().optional(),
-  raid: CreateServerReinstallRaid2$zodSchema.nullable().optional(),
-  ssh_keys: z.array(z.string()).nullable().optional(),
-  user_data: z.string().nullable().optional(),
+  raid: CreateServerReinstallRaid2$zodSchema.nullable().optional().describe(
+    "RAID mode for the server. Set to 'raid-0' for RAID 0, 'raid-1' for RAID 1, or omit/null for no RAID configuration",
+  ),
+  ssh_keys: z.array(z.string()).nullable().optional().describe(
+    "SSH Key IDs to set upon reinstall",
+  ),
+  user_data: z.string().nullable().optional().describe(
+    "User data ID to set upon reinstall",
+  ),
 });
 
 export type CreateServerReinstallData2 = {

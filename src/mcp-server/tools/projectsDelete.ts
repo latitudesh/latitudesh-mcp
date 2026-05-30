@@ -12,7 +12,9 @@ const args = {
 
 export const tool$projectsDelete: ToolDefinition<typeof args> = {
   name: "projects-delete",
-  description: `Delete project`,
+  description: `Delete project
+
+Deletes a project and releases associated resources. Any Elastic IPs assigned to the project are automatically released and returned to the available pool.`,
   annotations: {
     "title": "",
     "destructiveHint": true,

@@ -14,7 +14,9 @@ export type GetKubernetesClusterRequest = { kubernetes_cluster_id: string };
 export const GetKubernetesClusterRequest$zodSchema: z.ZodType<
   GetKubernetesClusterRequest
 > = z.object({
-  kubernetes_cluster_id: z.string().describe("The cluster name"),
+  kubernetes_cluster_id: z.string().describe(
+    "The cluster ID (format: kc_<hash>) or cluster name. Both formats are accepted for backward compatibility.",
+  ),
 });
 
 export type GetKubernetesClusterResponse = KubernetesCluster | ErrorObject;

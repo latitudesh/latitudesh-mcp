@@ -68,7 +68,7 @@ export const ElasticIpDataStatus$zodSchema = z.enum([
 ]).describe("The current status of the Elastic IP");
 
 /**
- * The server this Elastic IP is assigned to
+ * The server this Elastic IP is assigned to. Returns null when the Elastic IP is not assigned to a server or when the assigned server is not active (e.g., decommissioning or deleted).
  */
 export type ElasticIpDataServer = {
   id?: string | undefined;
@@ -83,7 +83,9 @@ export const ElasticIpDataServer$zodSchema: z.ZodType<ElasticIpDataServer> = z
     id: z.string().optional(),
     operating_system: z.string().nullable().optional(),
     primary_ipv4: z.string().optional(),
-  }).describe("The server this Elastic IP is assigned to");
+  }).describe(
+    "The server this Elastic IP is assigned to. Returns null when the Elastic IP is not assigned to a server or when the assigned server is not active (e.g., decommissioning or deleted).",
+  );
 
 /**
  * The project this Elastic IP belongs to
@@ -112,9 +114,9 @@ export type ElasticIpDataLocation = {
 
 export const ElasticIpDataLocation$zodSchema: z.ZodType<ElasticIpDataLocation> =
   z.object({
-    id: z.string().optional(),
-    name: z.string().optional(),
-    slug: z.string().optional(),
+    id: z.string().optional().describe("The site ID"),
+    name: z.string().optional().describe("The site name"),
+    slug: z.string().optional().describe("The site slug"),
   }).describe("The site/location within the region");
 
 /**
@@ -128,9 +130,11 @@ export type ElasticIpDataRegion = {
 
 export const ElasticIpDataRegion$zodSchema: z.ZodType<ElasticIpDataRegion> = z
   .object({
-    id: z.string().optional(),
-    location: z.lazy(() => ElasticIpDataLocation$zodSchema).optional(),
-    name: z.string().optional(),
+    id: z.string().optional().describe("The region ID"),
+    location: z.lazy(() => ElasticIpDataLocation$zodSchema).optional().describe(
+      "The site/location within the region",
+    ),
+    name: z.string().optional().describe("The region name"),
   }).describe("The region where this Elastic IP is located");
 
 export type ElasticIpDataAttributes = {
@@ -148,15 +152,31 @@ export type ElasticIpDataAttributes = {
 export const ElasticIpDataAttributes$zodSchema: z.ZodType<
   ElasticIpDataAttributes
 > = z.object({
-  address: z.string().optional(),
-  created_at: z.iso.datetime({ offset: true }).optional(),
-  family: ElasticIpDataFamily$zodSchema.optional(),
-  mode: Mode$zodSchema.optional(),
-  prefix_length: z.int().optional(),
-  project: z.lazy(() => ElasticIpDataProject$zodSchema).optional(),
-  region: z.lazy(() => ElasticIpDataRegion$zodSchema).nullable().optional(),
-  server: z.lazy(() => ElasticIpDataServer$zodSchema).nullable().optional(),
-  status: ElasticIpDataStatus$zodSchema.optional(),
+  address: z.string().optional().describe("The IP address"),
+  created_at: z.iso.datetime({ offset: true }).optional().describe(
+    "The timestamp when the Elastic IP was created",
+  ),
+  family: ElasticIpDataFamily$zodSchema.optional().describe(
+    "The IP address family",
+  ),
+  mode: Mode$zodSchema.optional().describe(
+    "The routing mode for this Elastic IP",
+  ),
+  prefix_length: z.int().optional().describe(
+    "The prefix length (e.g., 32 for a single IP)",
+  ),
+  project: z.lazy(() => ElasticIpDataProject$zodSchema).optional().describe(
+    "The project this Elastic IP belongs to",
+  ),
+  region: z.lazy(() => ElasticIpDataRegion$zodSchema).nullable().optional()
+    .describe("The region where this Elastic IP is located"),
+  server: z.lazy(() => ElasticIpDataServer$zodSchema).nullable().optional()
+    .describe(
+      "The server this Elastic IP is assigned to. Returns null when the Elastic IP is not assigned to a server or when the assigned server is not active (e.g., decommissioning or deleted).",
+    ),
+  status: ElasticIpDataStatus$zodSchema.optional().describe(
+    "The current status of the Elastic IP",
+  ),
 });
 
 export type ElasticIpData = {
@@ -167,6 +187,8 @@ export type ElasticIpData = {
 
 export const ElasticIpData$zodSchema: z.ZodType<ElasticIpData> = z.object({
   attributes: z.lazy(() => ElasticIpDataAttributes$zodSchema).optional(),
-  id: z.string().nullable().optional(),
+  id: z.string().nullable().optional().describe(
+    "The Elastic IP ID. May be null during initial provisioning.",
+  ),
   type: ElasticIpDataType$zodSchema.optional(),
 });

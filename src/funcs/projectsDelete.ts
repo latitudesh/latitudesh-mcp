@@ -29,6 +29,9 @@ import { Result } from "../types/fp.js";
 
 /**
  * Delete project
+ *
+ * @remarks
+ * Deletes a project and releases associated resources. Any Elastic IPs assigned to the project are automatically released and returned to the available pool.
  */
 export function projectsDelete(
   client$: LatitudeshCore,

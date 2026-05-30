@@ -14,9 +14,7 @@ export const tool$elasticIpsUpdateElasticIp: ToolDefinition<typeof args> = {
   name: "elastic-ips-update-elastic-ip",
   description: `Move an Elastic IP
 
-Moves an Elastic IP to a different server within the same project. The reassignment is performed asynchronously.
-
-**Note:** This feature requires the \`elastic_ips\` feature flag to be enabled for your team. The Elastic IP must be in \`active\` status and the target server must belong to the same project.
+Moves an Elastic IP to a different server within the same project and site. The reassignment is performed asynchronously. The Elastic IP must be in \`active\` status, the target server must belong to the same project, and the target server must be in the same site as the currently assigned server.
 `,
   annotations: {
     "title": "",

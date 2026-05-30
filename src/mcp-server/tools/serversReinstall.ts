@@ -35,6 +35,8 @@ export const tool$serversReinstall: ToolDefinition<typeof args> = {
       };
     }
 
-    return formatResult(void 0, apiCall);
+    const value = result.value;
+
+    return formatResult(value, apiCall);
   },
 };

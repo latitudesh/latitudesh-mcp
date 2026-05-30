@@ -21,7 +21,9 @@ export type VirtualMachineUpdatePayloadAttributes = { name: string };
 export const VirtualMachineUpdatePayloadAttributes$zodSchema: z.ZodType<
   VirtualMachineUpdatePayloadAttributes
 > = z.object({
-  name: z.string(),
+  name: z.string().describe(
+    "The new display name (hostname) for the Virtual Machine",
+  ),
 });
 
 export type VirtualMachineUpdatePayloadData = {

@@ -4,9 +4,13 @@
 
 import * as z from "zod";
 
-export type Source = { pointer?: string | undefined };
+export type Source = {
+  pointer?: string | undefined;
+  parameter?: string | undefined;
+};
 
 export const Source$zodSchema: z.ZodType<Source> = z.object({
+  parameter: z.string().optional(),
   pointer: z.string().optional(),
 });
 

@@ -73,14 +73,20 @@ export type VirtualNetworkDataAttributes = {
 export const VirtualNetworkDataAttributes$zodSchema: z.ZodType<
   VirtualNetworkDataAttributes
 > = z.object({
-  assignments_count: z.int().optional(),
+  assignments_count: z.int().optional().describe(
+    "Amount of devices assigned to the virtual network",
+  ),
   created_at: z.iso.datetime({ offset: true }).nullable().optional(),
-  description: z.string().optional(),
-  name: z.string().optional(),
+  description: z.string().optional().describe(
+    "Description of the virtual network",
+  ),
+  name: z.string().optional().describe("Name of the virtual network"),
   project: ProjectInclude$zodSchema.optional(),
   region: z.lazy(() => VirtualNetworkDataRegion$zodSchema).optional(),
-  tags: z.array(z.lazy(() => Tag$zodSchema)).optional(),
-  vid: z.int().optional(),
+  tags: z.array(z.lazy(() => Tag$zodSchema)).optional().describe(
+    "Tags associated with the virtual network",
+  ),
+  vid: z.int().optional().describe("vlan ID of the virtual network"),
 });
 
 export type VirtualNetworkData = {

@@ -31,6 +31,27 @@ export const KubernetesClusterDataPhase$zodSchema = z.enum([
 ]).describe("The current phase of the cluster lifecycle");
 
 /**
+ * The cluster's version status relative to available upgrades
+ */
+export const VersionStatus = {
+  UpToDate: "up_to_date",
+  UpgradeAvailable: "upgrade_available",
+  Unsupported: "unsupported",
+  Unknown: "unknown",
+} as const;
+/**
+ * The cluster's version status relative to available upgrades
+ */
+export type VersionStatus = ClosedEnum<typeof VersionStatus>;
+
+export const VersionStatus$zodSchema = z.enum([
+  "up_to_date",
+  "upgrade_available",
+  "unsupported",
+  "unknown",
+]).describe("The cluster's version status relative to available upgrades");
+
+/**
  * Control plane status information
  */
 export type ControlPlane = {
@@ -61,6 +82,50 @@ export const Workers$zodSchema: z.ZodType<Workers> = z.object({
 }).describe("Worker nodes status information");
 
 /**
+ * Current status of worker nodes. 'idle' when 0 workers, 'ready' when all workers are ready, 'scaling' when workers are being provisioned/removed, 'error' when a worker has failed.
+ */
+export const WorkerStatus = {
+  Idle: "idle",
+  Ready: "ready",
+  Scaling: "scaling",
+  Error: "error",
+} as const;
+/**
+ * Current status of worker nodes. 'idle' when 0 workers, 'ready' when all workers are ready, 'scaling' when workers are being provisioned/removed, 'error' when a worker has failed.
+ */
+export type WorkerStatus = ClosedEnum<typeof WorkerStatus>;
+
+export const WorkerStatus$zodSchema = z.enum([
+  "idle",
+  "ready",
+  "scaling",
+  "error",
+]).describe(
+  "Current status of worker nodes. 'idle' when 0 workers, 'ready' when all workers are ready, 'scaling' when workers are being provisioned/removed, 'error' when a worker has failed.",
+);
+
+/**
+ * Current status of control plane nodes. 'ready' when control plane is operational, 'scaling' when nodes are being provisioned/removed, 'error' when a control plane node has failed.
+ */
+export const ControlPlaneStatus = {
+  Ready: "ready",
+  Scaling: "scaling",
+  Error: "error",
+} as const;
+/**
+ * Current status of control plane nodes. 'ready' when control plane is operational, 'scaling' when nodes are being provisioned/removed, 'error' when a control plane node has failed.
+ */
+export type ControlPlaneStatus = ClosedEnum<typeof ControlPlaneStatus>;
+
+export const ControlPlaneStatus$zodSchema = z.enum([
+  "ready",
+  "scaling",
+  "error",
+]).describe(
+  "Current status of control plane nodes. 'ready' when control plane is operational, 'scaling' when nodes are being provisioned/removed, 'error' when a control plane node has failed.",
+);
+
+/**
  * Step identifier
  */
 export const KubernetesClusterDataName = {
@@ -84,7 +149,7 @@ export const KubernetesClusterDataName$zodSchema = z.enum([
 /**
  * Current status of this step
  */
-export const KubernetesClusterDataStatus = {
+export const KubernetesClusterDataStepStatus = {
   Pending: "pending",
   InProgress: "in_progress",
   Completed: "completed",
@@ -92,11 +157,11 @@ export const KubernetesClusterDataStatus = {
 /**
  * Current status of this step
  */
-export type KubernetesClusterDataStatus = ClosedEnum<
-  typeof KubernetesClusterDataStatus
+export type KubernetesClusterDataStepStatus = ClosedEnum<
+  typeof KubernetesClusterDataStepStatus
 >;
 
-export const KubernetesClusterDataStatus$zodSchema = z.enum([
+export const KubernetesClusterDataStepStatus$zodSchema = z.enum([
   "pending",
   "in_progress",
   "completed",
@@ -104,15 +169,114 @@ export const KubernetesClusterDataStatus$zodSchema = z.enum([
 
 export type KubernetesClusterDataStep = {
   name?: KubernetesClusterDataName | undefined;
-  status?: KubernetesClusterDataStatus | undefined;
+  status?: KubernetesClusterDataStepStatus | undefined;
 };
 
 export const KubernetesClusterDataStep$zodSchema: z.ZodType<
   KubernetesClusterDataStep
 > = z.object({
-  name: KubernetesClusterDataName$zodSchema.optional(),
-  status: KubernetesClusterDataStatus$zodSchema.optional(),
+  name: KubernetesClusterDataName$zodSchema.optional().describe(
+    "Step identifier",
+  ),
+  status: KubernetesClusterDataStepStatus$zodSchema.optional().describe(
+    "Current status of this step",
+  ),
 });
+
+/**
+ * The role of this node in the cluster
+ */
+export const KubernetesClusterDataType = {
+  ControlPlane: "control_plane",
+  Worker: "worker",
+} as const;
+/**
+ * The role of this node in the cluster
+ */
+export type KubernetesClusterDataType = ClosedEnum<
+  typeof KubernetesClusterDataType
+>;
+
+export const KubernetesClusterDataType$zodSchema = z.enum([
+  "control_plane",
+  "worker",
+]).describe("The role of this node in the cluster");
+
+/**
+ * Current status of the node
+ */
+export const NodeStatus = {
+  Ready: "ready",
+  Pending: "pending",
+  Failed: "failed",
+  Deleting: "deleting",
+} as const;
+/**
+ * Current status of the node
+ */
+export type NodeStatus = ClosedEnum<typeof NodeStatus>;
+
+export const NodeStatus$zodSchema = z.enum([
+  "ready",
+  "pending",
+  "failed",
+  "deleting",
+]).describe("Current status of the node");
+
+export type Node = {
+  id?: string | undefined;
+  name?: string | undefined;
+  hostname?: string | null | undefined;
+  server_id?: string | null | undefined;
+  type?: KubernetesClusterDataType | undefined;
+  status?: NodeStatus | undefined;
+  ip?: string | null | undefined;
+  internal_ip?: string | null | undefined;
+  external_ip?: string | null | undefined;
+};
+
+export const Node$zodSchema: z.ZodType<Node> = z.object({
+  external_ip: z.string().nullable().optional().describe(
+    "External/public IP address",
+  ),
+  hostname: z.string().nullable().optional().describe("Hostname of the node"),
+  id: z.string().optional().describe(
+    "Unique identifier for the node (machine name)",
+  ),
+  internal_ip: z.string().nullable().optional().describe(
+    "Internal/private IP address",
+  ),
+  ip: z.string().nullable().optional().describe(
+    "Primary IP address (external if available, otherwise internal)",
+  ),
+  name: z.string().optional().describe("Name of the node"),
+  server_id: z.string().nullable().optional().describe(
+    "The Latitude server ID associated with this node",
+  ),
+  status: NodeStatus$zodSchema.optional().describe(
+    "Current status of the node",
+  ),
+  type: KubernetesClusterDataType$zodSchema.optional().describe(
+    "The role of this node in the cluster",
+  ),
+});
+
+/**
+ * The project this cluster belongs to
+ */
+export type KubernetesClusterDataProject = {
+  id?: string | undefined;
+  name?: string | undefined;
+  slug?: string | undefined;
+};
+
+export const KubernetesClusterDataProject$zodSchema: z.ZodType<
+  KubernetesClusterDataProject
+> = z.object({
+  id: z.string().optional().describe("The project ID"),
+  name: z.string().optional().describe("The project name"),
+  slug: z.string().optional().describe("The project slug"),
+}).describe("The project this cluster belongs to");
 
 export type KubernetesClusterDataAttributes = {
   name?: string | undefined;
@@ -121,10 +285,19 @@ export type KubernetesClusterDataAttributes = {
   control_plane_endpoint?: string | null | undefined;
   kubeconfig_url?: string | null | undefined;
   location?: string | undefined;
+  load_balancer_ips?: Array<string> | undefined;
   kubernetes_version?: string | undefined;
+  version_status?: VersionStatus | undefined;
+  available_upgrade?: string | null | undefined;
   created_at?: string | undefined;
+  plan?: string | undefined;
+  worker_plan?: string | null | undefined;
+  control_plane_count?: number | undefined;
+  worker_count?: number | undefined;
   control_plane?: ControlPlane | null | undefined;
   workers?: Workers | null | undefined;
+  worker_status?: WorkerStatus | null | undefined;
+  control_plane_status?: ControlPlaneStatus | undefined;
   infrastructure_ready?: boolean | undefined;
   control_plane_ready?: boolean | undefined;
   message?: string | undefined;
@@ -132,28 +305,91 @@ export type KubernetesClusterDataAttributes = {
   last_status_change?: string | null | undefined;
   failure_message?: string | null | undefined;
   failure_reason?: string | null | undefined;
+  nodes?: Array<Node> | undefined;
+  project?: KubernetesClusterDataProject | undefined;
 };
 
 export const KubernetesClusterDataAttributes$zodSchema: z.ZodType<
   KubernetesClusterDataAttributes
 > = z.object({
-  control_plane: z.lazy(() => ControlPlane$zodSchema).nullable().optional(),
-  control_plane_endpoint: z.string().nullable().optional(),
-  control_plane_ready: z.boolean().optional(),
-  created_at: z.iso.datetime({ offset: true }).optional(),
-  failure_message: z.string().nullable().optional(),
-  failure_reason: z.string().nullable().optional(),
-  infrastructure_ready: z.boolean().optional(),
-  kubeconfig_url: z.string().nullable().optional(),
-  kubernetes_version: z.string().optional(),
-  last_status_change: z.iso.datetime({ offset: true }).nullable().optional(),
-  location: z.string().optional(),
-  message: z.string().optional(),
-  name: z.string().optional(),
-  phase: KubernetesClusterDataPhase$zodSchema.optional(),
-  ready: z.boolean().optional(),
-  steps: z.array(z.lazy(() => KubernetesClusterDataStep$zodSchema)).optional(),
-  workers: z.lazy(() => Workers$zodSchema).nullable().optional(),
+  available_upgrade: z.string().nullable().optional().describe(
+    "The next available Kubernetes version for upgrade. Null if the cluster is already on the latest version, or if version status is unknown or unsupported.",
+  ),
+  control_plane: z.lazy(() => ControlPlane$zodSchema).nullable().optional()
+    .describe("Control plane status information"),
+  control_plane_count: z.int().optional().describe(
+    "Number of control plane node replicas",
+  ),
+  control_plane_endpoint: z.string().nullable().optional().describe(
+    "The URL endpoint for the Kubernetes API server",
+  ),
+  control_plane_ready: z.boolean().optional().describe(
+    "Whether the control plane is ready",
+  ),
+  control_plane_status: ControlPlaneStatus$zodSchema.optional().describe(
+    "Current status of control plane nodes. 'ready' when control plane is operational, 'scaling' when nodes are being provisioned/removed, 'error' when a control plane node has failed.",
+  ),
+  created_at: z.iso.datetime({ offset: true }).optional().describe(
+    "When the cluster was created",
+  ),
+  failure_message: z.string().nullable().optional().describe(
+    "Error message if the cluster has failed",
+  ),
+  failure_reason: z.string().nullable().optional().describe(
+    "Reason code for cluster failure",
+  ),
+  infrastructure_ready: z.boolean().optional().describe(
+    "Whether the underlying infrastructure is ready",
+  ),
+  kubeconfig_url: z.string().nullable().optional().describe(
+    "The URL to retrieve the kubeconfig file",
+  ),
+  kubernetes_version: z.string().optional().describe(
+    "The Kubernetes version running on the cluster",
+  ),
+  last_status_change: z.iso.datetime({ offset: true }).nullable().optional()
+    .describe("Timestamp of the most recent status condition change"),
+  load_balancer_ips: z.array(z.string()).optional().describe(
+    "IP addresses assigned to the cluster's load balancer",
+  ),
+  location: z.string().optional().describe(
+    "The site/region where the cluster is deployed",
+  ),
+  message: z.string().optional().describe(
+    "Human-readable status message describing the current provisioning state",
+  ),
+  name: z.string().optional().describe("The cluster name"),
+  nodes: z.array(z.lazy(() => Node$zodSchema)).optional().describe(
+    "List of nodes (servers) in the cluster",
+  ),
+  phase: KubernetesClusterDataPhase$zodSchema.optional().describe(
+    "The current phase of the cluster lifecycle",
+  ),
+  plan: z.string().optional().describe(
+    "The machine plan slug for control plane nodes",
+  ),
+  project: z.lazy(() => KubernetesClusterDataProject$zodSchema).optional()
+    .describe("The project this cluster belongs to"),
+  ready: z.boolean().optional().describe(
+    "Whether the cluster is ready to accept workloads",
+  ),
+  steps: z.array(z.lazy(() => KubernetesClusterDataStep$zodSchema)).optional()
+    .describe("Provisioning progress steps for dashboard display"),
+  version_status: VersionStatus$zodSchema.optional().describe(
+    "The cluster's version status relative to available upgrades",
+  ),
+  worker_count: z.int().optional().describe(
+    "Number of worker node replicas. Returns 0 if no workers exist.",
+  ),
+  worker_plan: z.string().nullable().optional().describe(
+    "The machine plan slug for worker nodes. Null if no workers exist.",
+  ),
+  worker_status: WorkerStatus$zodSchema.nullable().optional().describe(
+    "Current status of worker nodes. 'idle' when 0 workers, 'ready' when all workers are ready, 'scaling' when workers are being provisioned/removed, 'error' when a worker has failed.",
+  ),
+  workers: z.lazy(() => Workers$zodSchema).nullable().optional().describe(
+    "Worker nodes status information",
+  ),
 });
 
 export type KubernetesClusterData = {
@@ -166,6 +402,8 @@ export const KubernetesClusterData$zodSchema: z.ZodType<KubernetesClusterData> =
   z.object({
     attributes: z.lazy(() => KubernetesClusterDataAttributes$zodSchema)
       .optional(),
-    id: z.string().optional(),
+    id: z.string().optional().describe(
+      "The cluster ID in hashed format (kc_<hash>)",
+    ),
     type: z.string().optional(),
   });

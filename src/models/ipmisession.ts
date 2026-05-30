@@ -22,9 +22,9 @@ export type IpmiSessionAttributes = {
 
 export const IpmiSessionAttributes$zodSchema: z.ZodType<IpmiSessionAttributes> =
   z.object({
-    ipmi_address: z.string().optional(),
-    ipmi_password: z.string().optional(),
-    ipmi_username: z.string().optional(),
+    ipmi_address: z.string().optional().describe("The IPMI IP Address"),
+    ipmi_password: z.string().optional().describe("The IPMI password"),
+    ipmi_username: z.string().optional().describe("The IPMI username"),
   });
 
 export type IpmiSessionData = {

@@ -27,9 +27,11 @@ export type PostStorageFilesystemsAttributes2 = {
 export const PostStorageFilesystemsAttributes2$zodSchema: z.ZodType<
   PostStorageFilesystemsAttributes2
 > = z.object({
-  name: z.string(),
-  project: z.string(),
-  size_in_gb: z.int().default(1500),
+  name: z.string().describe("Storage name"),
+  project: z.string().describe("Project ID or slug"),
+  size_in_gb: z.int().default(1500).describe(
+    "Size in GB (not required, default is 1500)",
+  ),
 });
 
 export type PostStorageFilesystemsData2 = {

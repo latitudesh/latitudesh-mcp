@@ -12,8 +12,10 @@ export type KubernetesClusterKubeconfigAttributes = {
 export const KubernetesClusterKubeconfigAttributes$zodSchema: z.ZodType<
   KubernetesClusterKubeconfigAttributes
 > = z.object({
-  cluster_name: z.string().optional(),
-  kubeconfig: z.string().optional(),
+  cluster_name: z.string().optional().describe("The cluster name"),
+  kubeconfig: z.string().optional().describe(
+    "The kubeconfig YAML content for connecting to the cluster",
+  ),
 });
 
 export type KubernetesClusterKubeconfigData = {
@@ -27,7 +29,7 @@ export const KubernetesClusterKubeconfigData$zodSchema: z.ZodType<
 > = z.object({
   attributes: z.lazy(() => KubernetesClusterKubeconfigAttributes$zodSchema)
     .optional(),
-  id: z.string().optional(),
+  id: z.string().optional().describe("The cluster name"),
   type: z.string().optional(),
 });
 

@@ -13,9 +13,13 @@ export type KubernetesClusterCreateResponseAttributes = {
 export const KubernetesClusterCreateResponseAttributes$zodSchema: z.ZodType<
   KubernetesClusterCreateResponseAttributes
 > = z.object({
-  control_plane_endpoint: z.string().nullable().optional(),
-  name: z.string().optional(),
-  status: z.string().optional(),
+  control_plane_endpoint: z.string().nullable().optional().describe(
+    "The URL endpoint for the Kubernetes API server",
+  ),
+  name: z.string().optional().describe("The cluster name"),
+  status: z.string().optional().describe(
+    "The cluster status (always 'provisioning' on creation)",
+  ),
 });
 
 export type KubernetesClusterCreateResponseData = {
@@ -29,7 +33,9 @@ export const KubernetesClusterCreateResponseData$zodSchema: z.ZodType<
 > = z.object({
   attributes: z.lazy(() => KubernetesClusterCreateResponseAttributes$zodSchema)
     .optional(),
-  id: z.string().optional(),
+  id: z.string().optional().describe(
+    "The cluster ID in hashed format (kc_<hash>)",
+  ),
   type: z.string().optional(),
 });
 

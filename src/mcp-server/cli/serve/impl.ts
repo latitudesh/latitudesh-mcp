@@ -12,6 +12,7 @@ import {
 } from "../../console-logger.js";
 import { MCPServerFlags } from "../../flags.js";
 import { createMCPServer } from "../../server.js";
+import { buildAnnotationFilter } from "../../tools.js";
 import { buildSDK } from "../../tools.js";
 
 import { landingPageExpress } from "../../../landing-page.js";
@@ -39,7 +40,7 @@ async function startStreamableHTTP(cliFlags: ServeCommandFlags) {
   app.use((req, res, next) => {
     res.header("Access-Control-Allow-Origin", "*");
     res.header("Access-Control-Allow-Methods", "GET, POST, OPTIONS");
-    res.header("Access-Control-Allow-Headers", "Content-Type, *");
+    res.header("Access-Control-Allow-Headers", "*");
     if (req.method === "OPTIONS") {
       res.sendStatus(204);
       return;
@@ -65,6 +66,7 @@ async function startStreamableHTTP(cliFlags: ServeCommandFlags) {
       logger,
       allowedTools: cliFlags.tool,
       dynamic: cliFlags.mode === "dynamic",
+      annotationFilter: buildAnnotationFilter(cliFlags["tool-annotations"]),
       serverURL: cliFlags["server-url"],
       getSDK: () =>
         buildSDK(headers, cliFlags, cliFlags["disable-static-auth"], logger),

@@ -26,9 +26,9 @@ export type UserDataPropertiesAttributes = {
 export const UserDataPropertiesAttributes$zodSchema: z.ZodType<
   UserDataPropertiesAttributes
 > = z.object({
-  content: z.string().optional(),
+  content: z.string().optional().describe("content of the User Data"),
   created_at: z.string().optional(),
-  description: z.string().optional(),
+  description: z.string().optional().describe("description of the User Data"),
   project: ProjectInclude$zodSchema.optional(),
   updated_at: z.string().optional(),
 });

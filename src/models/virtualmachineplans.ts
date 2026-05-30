@@ -32,9 +32,11 @@ export type Vcpu = {
 };
 
 export const Vcpu$zodSchema: z.ZodType<Vcpu> = z.object({
-  clock: z.number().nullable().optional(),
-  count: z.int().nullable().optional(),
-  type: z.string().nullable().optional(),
+  clock: z.number().nullable().optional().describe(
+    "The CPU clock speed in GHz",
+  ),
+  count: z.int().nullable().optional().describe("The number of virtual CPUs"),
+  type: z.string().nullable().optional().describe("The CPU type/model"),
 }).describe("Detailed vCPU specifications");
 
 export type VirtualMachinePlansNic = {
@@ -45,8 +47,8 @@ export type VirtualMachinePlansNic = {
 export const VirtualMachinePlansNic$zodSchema: z.ZodType<
   VirtualMachinePlansNic
 > = z.object({
-  count: z.string().optional(),
-  type: z.string().optional(),
+  count: z.string().optional().describe("Number of NICs"),
+  type: z.string().optional().describe("NIC speed/type"),
 });
 
 /**
@@ -72,15 +74,19 @@ export type Size = {
 };
 
 export const Size$zodSchema: z.ZodType<Size> = z.object({
-  amount: z.int().optional(),
-  unit: VirtualMachinePlansUnit$zodSchema.optional(),
+  amount: z.int().optional().describe("The total size of the disk"),
+  unit: VirtualMachinePlansUnit$zodSchema.optional().describe(
+    "The unit of the disk size",
+  ),
 });
 
 export type Disk = { type?: string | undefined; size?: Size | undefined };
 
 export const Disk$zodSchema: z.ZodType<Disk> = z.object({
   size: z.lazy(() => Size$zodSchema).optional(),
-  type: z.string().optional(),
+  type: z.string().optional().describe(
+    "The type of the disk (e.g., local SSD, local NVMe)",
+  ),
 });
 
 export type VirtualMachinePlansSpecs = {
@@ -97,13 +103,17 @@ export const VirtualMachinePlansSpecs$zodSchema: z.ZodType<
   VirtualMachinePlansSpecs
 > = z.object({
   disk: z.lazy(() => Disk$zodSchema).optional(),
-  gpu: z.string().optional(),
-  memory: z.int().optional(),
+  gpu: z.string().optional().describe("The GPU type"),
+  memory: z.int().optional().describe("The total memory"),
   nics: z.array(z.lazy(() => VirtualMachinePlansNic$zodSchema)).nullable()
-    .optional(),
-  vcpu: z.lazy(() => Vcpu$zodSchema).optional(),
-  vcpus: z.int().optional(),
-  vram_per_gpu: z.int().nullable().optional(),
+    .optional().describe("Network interface cards"),
+  vcpu: z.lazy(() => Vcpu$zodSchema).optional().describe(
+    "Detailed vCPU specifications",
+  ),
+  vcpus: z.int().optional().describe(
+    "The number of virtual CPUs (legacy field)",
+  ),
+  vram_per_gpu: z.int().nullable().optional().describe("VRAM per GPU in GB"),
 });
 
 export type VirtualMachinePlansUSD = {
@@ -154,8 +164,12 @@ export type VirtualMachinePlansLocations = {
 export const VirtualMachinePlansLocations$zodSchema: z.ZodType<
   VirtualMachinePlansLocations
 > = z.object({
-  available: z.array(z.string()).optional(),
-  in_stock: z.array(z.string()).optional(),
+  available: z.array(z.string()).optional().describe(
+    "Sites with clusters that support this plan",
+  ),
+  in_stock: z.array(z.string()).optional().describe(
+    "Sites with available capacity for this plan",
+  ),
 });
 
 /**
@@ -196,7 +210,8 @@ export const VirtualMachinePlansRegion$zodSchema: z.ZodType<
   locations: z.lazy(() => VirtualMachinePlansLocations$zodSchema).optional(),
   name: z.string().optional(),
   pricing: z.lazy(() => VirtualMachinePlansPricing$zodSchema).optional(),
-  stock_level: VirtualMachinePlansRegionStockLevel$zodSchema.optional(),
+  stock_level: VirtualMachinePlansRegionStockLevel$zodSchema.optional()
+    .describe("The stock level in this region"),
 });
 
 /**
@@ -227,16 +242,22 @@ export type VirtualMachinePlansAttributes = {
   specs?: VirtualMachinePlansSpecs | undefined;
   regions?: Array<VirtualMachinePlansRegion> | undefined;
   stock_level?: VirtualMachinePlansStockLevel | undefined;
+  available_operating_systems?: Array<string> | undefined;
 };
 
 export const VirtualMachinePlansAttributes$zodSchema: z.ZodType<
   VirtualMachinePlansAttributes
 > = z.object({
-  name: z.string().optional(),
+  available_operating_systems: z.array(z.string()).optional().describe(
+    "List of operating system slugs that are compatible with this plan",
+  ),
+  name: z.string().optional().describe("The name of the plan"),
   regions: z.array(z.lazy(() => VirtualMachinePlansRegion$zodSchema))
     .optional(),
   specs: z.lazy(() => VirtualMachinePlansSpecs$zodSchema).optional(),
-  stock_level: VirtualMachinePlansStockLevel$zodSchema.optional(),
+  stock_level: VirtualMachinePlansStockLevel$zodSchema.optional().describe(
+    "The stock level of the plan",
+  ),
 });
 
 export type VirtualMachinePlansData = {
@@ -249,8 +270,10 @@ export const VirtualMachinePlansData$zodSchema: z.ZodType<
   VirtualMachinePlansData
 > = z.object({
   attributes: z.lazy(() => VirtualMachinePlansAttributes$zodSchema).optional(),
-  id: z.string().optional(),
-  type: VirtualMachinePlansType$zodSchema.optional(),
+  id: z.string().optional().describe("The ID of the plan"),
+  type: VirtualMachinePlansType$zodSchema.optional().describe(
+    "The type of the resource",
+  ),
 });
 
 export type VirtualMachinePlans = {

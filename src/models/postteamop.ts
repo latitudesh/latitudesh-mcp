@@ -38,7 +38,9 @@ export const PostTeamAttributes2$zodSchema: z.ZodType<PostTeamAttributes2> = z
     address: z.string().optional(),
     currency: PostTeamCurrency2$zodSchema,
     name: z.string(),
-    referred_code: z.string().optional(),
+    referred_code: z.string().optional().describe(
+      "Supported only for first team creation",
+    ),
   });
 
 export type PostTeamData2 = {

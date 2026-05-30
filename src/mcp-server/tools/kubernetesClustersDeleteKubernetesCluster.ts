@@ -17,6 +17,8 @@ export const tool$kubernetesClustersDeleteKubernetesCluster: ToolDefinition<
   description: `Delete a Kubernetes Cluster
 
 Deletes a Kubernetes cluster. This action is irreversible and will destroy all cluster resources.
+
+**Note:** Only users with the \`owner\`, \`administrator\`, or \`collaborator\` role can delete clusters. Users with the \`billing\` role cannot perform this action.
 `,
   annotations: {
     "title": "",
