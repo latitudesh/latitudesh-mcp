@@ -4,6 +4,8 @@ sources:
     Latitudesh-OAS:
         inputs:
             - location: registry.speakeasyapi.dev/latitude/latitude/latitudesh-oas:main
+        overlays:
+            - location: .speakeasy/mcp-naming-overlay.yaml
         output: .speakeasy/out.openapi.yaml
         registry:
             location: registry.speakeasyapi.dev/latitude/latitude/latitudesh-oas

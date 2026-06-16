@@ -1,17 +1,18 @@
-speakeasyVersion: 1.778.0
+speakeasyVersion: 1.780.0
 sources:
     Latitudesh-OAS:
         sourceNamespace: latitudesh-oas
-        sourceRevisionDigest: sha256:63f82d9da89168ce6b53bb00c6bf3f179892e606556448b676738a6d5cccfadc
-        sourceBlobDigest: sha256:8bfba1e656c5b15a7bd1cf30ee6df1bf2f919df2a4b4c4faf6465e396f779de1
+        sourceRevisionDigest: sha256:a7caa5431af8ec6095147ca6c271ed23af2d914bc2544281994d202b92078d0a
+        sourceBlobDigest: sha256:329b9ee512231aab7d33e4a730a2361d2c132d0ca861cb021a9359e55ee78148
         tags:
             - latest
+            - "2023-06-01"
 targets:
     latitudesh:
         source: Latitudesh-OAS
         sourceNamespace: latitudesh-oas
-        sourceRevisionDigest: sha256:63f82d9da89168ce6b53bb00c6bf3f179892e606556448b676738a6d5cccfadc
-        sourceBlobDigest: sha256:8bfba1e656c5b15a7bd1cf30ee6df1bf2f919df2a4b4c4faf6465e396f779de1
+        sourceRevisionDigest: sha256:a7caa5431af8ec6095147ca6c271ed23af2d914bc2544281994d202b92078d0a
+        sourceBlobDigest: sha256:329b9ee512231aab7d33e4a730a2361d2c132d0ca861cb021a9359e55ee78148
 workflow:
     workflowVersion: 1.0.0
     speakeasyVersion: latest
@@ -19,6 +20,8 @@ workflow:
         Latitudesh-OAS:
             inputs:
                 - location: registry.speakeasyapi.dev/latitude/latitude/latitudesh-oas:main
+            overlays:
+                - location: .speakeasy/mcp-naming-overlay.yaml
             output: .speakeasy/out.openapi.yaml
             registry:
                 location: registry.speakeasyapi.dev/latitude/latitude/latitudesh-oas

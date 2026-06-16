@@ -90,24 +90,24 @@
       "description": "List firewall assignments\n\nReturns a list of all servers assigned to one or more firewalls."
     },
     {
-      "name": "firewalls-create",
-      "description": "Create firewall\n\nCreate a firewall"
-    },
-    {
       "name": "firewalls-list",
       "description": "List firewalls\n\nList firewalls"
+    },
+    {
+      "name": "firewalls-create",
+      "description": "Create firewall\n\nCreate a firewall"
     },
     {
       "name": "firewalls-get",
       "description": "Retrieve firewall\n\nReturns a single firewall by its ID."
     },
     {
-      "name": "firewalls-update",
-      "description": "Update firewall\n\nUpdates a firewall by its ID."
-    },
-    {
       "name": "firewalls-delete",
       "description": "Delete firewall"
+    },
+    {
+      "name": "firewalls-update",
+      "description": "Update firewall\n\nUpdates a firewall by its ID."
     },
     {
       "name": "firewalls-list-assignments",
@@ -174,7 +174,7 @@
       "description": "Create a Kubernetes Cluster\n\nCreates a new managed Kubernetes cluster. Maximum of 1 cluster per project.\n\n**Note:** Only users with the `owner`, `administrator`, or `collaborator` role can create clusters. Users with the `billing` role cannot perform this action.\n\nCluster names must follow Kubernetes naming rules: lowercase alphanumeric characters or hyphens, must start and end with an alphanumeric character, and be at most 63 characters long.\n"
     },
     {
-      "name": "kubernetes-clusters-list-kubernetes-available-ed6",
+      "name": "kubernetes-clusters-list-available-versions",
       "description": "List Available Kubernetes Versions\n\nReturns the list of available Kubernetes versions for cluster creation and upgrades. Versions are sourced from the RKE2 release channels and cached for 24 hours.\n\nEach version object includes:\n- `latest`: The full version string (e.g., `v1.35.3+rke2r1`)\n- `minor`: The minor version number (e.g., `1.35`)\n\nThe API returns the latest 5 supported minor versions. When upgrading clusters, you can only upgrade one minor version at a time (e.g., from 1.34 to 1.35).\n"
     },
     {
@@ -226,12 +226,12 @@
       "description": "Create project"
     },
     {
-      "name": "projects-update",
-      "description": "Update project"
-    },
-    {
       "name": "projects-delete",
       "description": "Delete project\n\nDeletes a project and releases associated resources. Any Elastic IPs assigned to the project are automatically released and returned to the available pool."
+    },
+    {
+      "name": "projects-update",
+      "description": "Update project"
     },
     {
       "name": "SSH-keys-list",
@@ -242,12 +242,12 @@
       "description": "Retrieve Project SSH Key\n\nList all SSH Keys in the project. These keys can be used to access servers after deploy and reinstall actions.\n"
     },
     {
-      "name": "SSH-keys-modify-project-key",
-      "description": "Update Project SSH Key\n\nAllow you update SSH Key in a project. These keys can be used to access servers after deploy and reinstall actions.\n"
-    },
-    {
       "name": "SSH-keys-remove-from-project",
       "description": "Delete Project SSH Key\n\nAllow you remove SSH Keys in a project. Remove a SSH Key from the project won't revoke the SSH Keys access for previously deploy and reinstall actions.\n"
+    },
+    {
+      "name": "SSH-keys-modify-project-key",
+      "description": "Update Project SSH Key\n\nAllow you update SSH Key in a project. These keys can be used to access servers after deploy and reinstall actions.\n"
     },
     {
       "name": "SSH-keys-list-all",
@@ -262,12 +262,12 @@
       "description": "Retrieve SSH Key\n\nList all SSH Keys in the project. These keys can be used to access servers after deploy and reinstall actions.\n"
     },
     {
-      "name": "SSH-keys-update",
-      "description": "Update SSH Key\n\nAllows you update SSH Key in a project. These keys can be used to access servers after deploy and reinstall actions.\n"
-    },
-    {
       "name": "SSH-keys-delete",
       "description": "Delete SSH Key\n\nAllows you remove SSH Keys in a project. Remove a SSH Key from the project won't revoke the SSH Keys access for previously deploy and reinstall actions.\n"
+    },
+    {
+      "name": "SSH-keys-update",
+      "description": "Update SSH Key\n\nAllows you update SSH Key in a project. These keys can be used to access servers after deploy and reinstall actions.\n"
     },
     {
       "name": "projects-ssh-keys-post-project-ssh-key",
@@ -306,12 +306,12 @@
       "description": "Retrieve user data\n\nGet User Data in the project. These scripts can be used to configure servers with user data.\n"
     },
     {
-      "name": "user-data-update",
-      "description": "Update user data\n\nAllow you update User Data in a team.\n"
-    },
-    {
       "name": "user-data-delete",
       "description": "Delete user data"
+    },
+    {
+      "name": "user-data-update",
+      "description": "Update user data\n\nAllow you update User Data in a team.\n"
     },
     {
       "name": "regions-get",
@@ -342,12 +342,12 @@
       "description": "Retrieve server\n\nReturns a server that belongs to the team.\n"
     },
     {
-      "name": "servers-update",
-      "description": "Update server"
-    },
-    {
       "name": "servers-delete",
       "description": "Remove server"
+    },
+    {
+      "name": "servers-update",
+      "description": "Update server"
     },
     {
       "name": "servers-get-deploy-config",
@@ -366,12 +366,12 @@
       "description": "Unlock server\n\nUnlocks the server. A locked server cannot be deleted or modified and no actions can be performed on it."
     },
     {
-      "name": "servers-start-out-of-band-connection",
-      "description": "Create out-of-band connection"
-    },
-    {
       "name": "servers-get-out-of-band",
       "description": "List out-of-band connections"
+    },
+    {
+      "name": "servers-start-out-of-band-connection",
+      "description": "Create out-of-band connection"
     },
     {
       "name": "servers-run-action",
@@ -402,12 +402,12 @@
       "description": "Run Server Reinstall"
     },
     {
-      "name": "filesystem-storage-create-filesystem",
-      "description": "Create filesystem\n\nAllows you to add persistent storage to a project. These filesystems can be used to store data across your servers."
-    },
-    {
       "name": "filesystem-storage-list-filesystems",
       "description": "List filesystems\n\nLists all the filesystems from a team."
+    },
+    {
+      "name": "filesystem-storage-create-filesystem",
+      "description": "Create filesystem\n\nAllows you to add persistent storage to a project. These filesystems can be used to store data across your servers."
     },
     {
       "name": "filesystem-storage-delete-filesystem",
@@ -462,12 +462,12 @@
       "description": "Create tag\n\nCreate a Tag in the team.\n"
     },
     {
-      "name": "tags-update",
-      "description": "Update tag\n\nUpdate a Tag in the team.\n"
-    },
-    {
       "name": "tags-delete",
       "description": "Delete tag\n\nUpdate a Tag in the team.\n"
+    },
+    {
+      "name": "tags-update",
+      "description": "Update tag\n\nUpdate a Tag in the team.\n"
     },
     {
       "name": "teams-get",
@@ -502,12 +502,12 @@
       "description": "List user teams\n\nReturns a list of all teams the user belongs to\n"
     },
     {
-      "name": "virtual-machines-create",
-      "description": "Create VM\n\nCreates a new Virtual Machine.\n"
-    },
-    {
       "name": "virtual-machines-list",
       "description": "List VMs\n\nShow all Team's Virtual Machines.\n"
+    },
+    {
+      "name": "virtual-machines-create",
+      "description": "Create VM\n\nCreates a new Virtual Machine.\n"
     },
     {
       "name": "virtual-machines-get",
@@ -550,12 +550,12 @@
       "description": "Create VLAN\n\nCreates a new Virtual Network.\n"
     },
     {
-      "name": "private-networks-update",
-      "description": "Update VLAN\n\nUpdate a Virtual Network.\n"
-    },
-    {
       "name": "private-networks-get",
       "description": "Retrieve VLAN\n\nRetrieve a Virtual Network.\n"
+    },
+    {
+      "name": "private-networks-update",
+      "description": "Update VLAN\n\nUpdate a Virtual Network.\n"
     },
     {
       "name": "private-networks-list-assignments",
