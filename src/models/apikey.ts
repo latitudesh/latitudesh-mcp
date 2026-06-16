@@ -42,16 +42,35 @@ export type ApiKeyAttributes = {
 
 export const ApiKeyAttributes$zodSchema: z.ZodType<ApiKeyAttributes> = z.object(
   {
-    allowed_ips: z.array(z.string()).nullable().optional(),
-    api_version: z.string().optional(),
-    created_at: z.iso.datetime({ offset: true }).optional(),
-    last_used_at: z.iso.datetime({ offset: true }).nullable().optional(),
-    name: z.string().optional(),
-    read_only: z.boolean().nullable().optional(),
-    token: z.string().optional(),
-    token_last_slice: z.string().optional(),
-    updated_at: z.iso.datetime({ offset: true }).optional(),
-    user: z.lazy(() => ApiKeyUser$zodSchema).optional(),
+    allowed_ips: z.array(z.string()).nullable().optional().describe(
+      "List of allowed IP addresses for this API Key",
+    ),
+    api_version: z.string().optional().describe(
+      "The API version associated with this API Key",
+    ),
+    created_at: z.iso.datetime({ offset: true }).optional().describe(
+      "The time when the API Key was created",
+    ),
+    last_used_at: z.iso.datetime({ offset: true }).nullable().optional()
+      .describe(
+        "The last time a request was made to the API using this API Key",
+      ),
+    name: z.string().optional().describe("Name of the API Key"),
+    read_only: z.boolean().nullable().optional().describe(
+      "Whether this API Key is read-only",
+    ),
+    token: z.string().optional().describe(
+      "The full token (only returned on create or rotate)",
+    ),
+    token_last_slice: z.string().optional().describe(
+      "The last 5 characters of the token created for this API Key",
+    ),
+    updated_at: z.iso.datetime({ offset: true }).optional().describe(
+      "The time when the API Key was updated",
+    ),
+    user: z.lazy(() => ApiKeyUser$zodSchema).optional().describe(
+      "The owner of the API Key",
+    ),
   },
 );
 

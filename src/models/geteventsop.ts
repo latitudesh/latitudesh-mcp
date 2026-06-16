@@ -51,19 +51,9 @@ export const GetEventsRequest$zodSchema: z.ZodType<GetEventsRequest> = z.object(
   },
 );
 
-/**
- * Success
- */
-export type GetEventsResponseBody = { data?: Array<Events> | undefined };
-
-export const GetEventsResponseBody$zodSchema: z.ZodType<GetEventsResponseBody> =
-  z.object({
-    data: z.array(Events$zodSchema).optional(),
-  }).describe("Success");
-
-export type GetEventsResponse = { Result: GetEventsResponseBody };
+export type GetEventsResponse = { Result: Events };
 
 export const GetEventsResponse$zodSchema: z.ZodType<GetEventsResponse> = z
   .object({
-    Result: z.lazy(() => GetEventsResponseBody$zodSchema),
+    Result: Events$zodSchema,
   });

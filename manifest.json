@@ -1,7 +1,7 @@
 {
   "manifest_version": "0.3",
   "name": "latitudesh",
-  "version": "0.1.1",
+  "version": "0.2.0",
   "description": "",
   "long_description": "Latitude.sh API: The Latitude.sh API is a RESTful API to manage your Latitude.sh account. It allows you to perform the same actions as the Latitude.sh dashboard.",
   "author": {
@@ -90,24 +90,24 @@
       "description": "List firewall assignments\n\nReturns a list of all servers assigned to one or more firewalls."
     },
     {
-      "name": "firewalls-create",
-      "description": "Create firewall\n\nCreate a firewall"
-    },
-    {
       "name": "firewalls-list",
       "description": "List firewalls\n\nList firewalls"
+    },
+    {
+      "name": "firewalls-create",
+      "description": "Create firewall\n\nCreate a firewall"
     },
     {
       "name": "firewalls-get",
       "description": "Retrieve firewall\n\nReturns a single firewall by its ID."
     },
     {
-      "name": "firewalls-update",
-      "description": "Update firewall\n\nUpdates a firewall by its ID."
-    },
-    {
       "name": "firewalls-delete",
       "description": "Delete firewall"
+    },
+    {
+      "name": "firewalls-update",
+      "description": "Update firewall\n\nUpdates a firewall by its ID."
     },
     {
       "name": "firewalls-list-assignments",
@@ -119,23 +119,23 @@
     },
     {
       "name": "elastic-ips-list-elastic-ips",
-      "description": "List Elastic IPs\n\nList all Elastic IPs for the authenticated team. Elastic IPs are static public IP addresses that can be assigned to servers and moved between servers within the same project.\n\n**Note:** This feature requires the `elastic_ips` feature flag to be enabled for your team. When the flag is disabled, the endpoint returns an empty list.\n"
+      "description": "List Elastic IPs\n\nList all Elastic IPs for the authenticated team. Elastic IPs are static public IP addresses that can be assigned to servers and moved between servers within the same project.\n"
     },
     {
       "name": "elastic-ips-create-elastic-ip",
-      "description": "Create an Elastic IP\n\nCreates a new Elastic IP and assigns it to the specified server. The IP is provisioned asynchronously—the response will show status `configuring` and the `id` will be `null` until provisioning completes.\n\n**Note:** This feature requires the `elastic_ips` feature flag to be enabled for your team. Currently only IPv4 /32 addresses in routed mode are supported.\n"
+      "description": "Create an Elastic IP\n\nCreates a new Elastic IP and assigns it to the specified server. The IP is provisioned asynchronously—the response will show status `configuring` and the `id` will be `null` until provisioning completes. Currently only IPv4 /32 addresses in routed mode are supported.\n"
     },
     {
       "name": "elastic-ips-get-elastic-ip",
-      "description": "Retrieve an Elastic IP\n\nReturns a single Elastic IP by its ID.\n\n**Note:** This feature requires the `elastic_ips` feature flag to be enabled for your team.\n"
+      "description": "Retrieve an Elastic IP\n\nReturns a single Elastic IP by its ID.\n"
     },
     {
       "name": "elastic-ips-delete-elastic-ip",
-      "description": "Release an Elastic IP\n\nReleases an Elastic IP, returning it to the available pool. The IP will transition to `releasing` status before being fully removed.\n\n**Note:** This feature requires the `elastic_ips` feature flag to be enabled for your team. Only Elastic IPs with status `active` or `error` can be released.\n"
+      "description": "Release an Elastic IP\n\nReleases an Elastic IP, returning it to the available pool. The IP will transition to `releasing` status before being fully removed. Only Elastic IPs with status `active` or `error` can be released.\n"
     },
     {
       "name": "elastic-ips-update-elastic-ip",
-      "description": "Move an Elastic IP\n\nMoves an Elastic IP to a different server within the same project. The reassignment is performed asynchronously.\n\n**Note:** This feature requires the `elastic_ips` feature flag to be enabled for your team. The Elastic IP must be in `active` status and the target server must belong to the same project.\n"
+      "description": "Move an Elastic IP\n\nMoves an Elastic IP to a different server within the same project and site. The reassignment is performed asynchronously. The Elastic IP must be in `active` status, the target server must belong to the same project, and the target server must be in the same site as the currently assigned server.\n"
     },
     {
       "name": "firewalls-assignments-create",
@@ -171,19 +171,27 @@
     },
     {
       "name": "kubernetes-clusters-create-kubernetes-cluster",
-      "description": "Create a Kubernetes Cluster\n\nCreates a new managed Kubernetes cluster. The cluster will be provisioned using Cluster API (CAPI) on the Management Cluster.\n\n**Note:** This feature requires the `managed_k8s_clusters_api` feature flag to be enabled for your team. Maximum of 1 cluster per project.\n\nCluster names must follow Kubernetes naming rules: lowercase alphanumeric characters or hyphens, must start and end with an alphanumeric character, and be at most 63 characters long.\n"
+      "description": "Create a Kubernetes Cluster\n\nCreates a new managed Kubernetes cluster. Maximum of 1 cluster per project.\n\n**Note:** Only users with the `owner`, `administrator`, or `collaborator` role can create clusters. Users with the `billing` role cannot perform this action.\n\nCluster names must follow Kubernetes naming rules: lowercase alphanumeric characters or hyphens, must start and end with an alphanumeric character, and be at most 63 characters long.\n"
+    },
+    {
+      "name": "kubernetes-clusters-list-available-versions",
+      "description": "List Available Kubernetes Versions\n\nReturns the list of available Kubernetes versions for cluster creation and upgrades. Versions are sourced from the RKE2 release channels and cached for 24 hours.\n\nEach version object includes:\n- `latest`: The full version string (e.g., `v1.35.3+rke2r1`)\n- `minor`: The minor version number (e.g., `1.35`)\n\nThe API returns the latest 5 supported minor versions. When upgrading clusters, you can only upgrade one minor version at a time (e.g., from 1.34 to 1.35).\n"
     },
     {
       "name": "kubernetes-clusters-get-kubernetes-cluster",
-      "description": "Get a Kubernetes Cluster\n\nRetrieves detailed information about a Kubernetes cluster including its status, control plane, and worker node details.\n"
+      "description": "Get a Kubernetes Cluster\n\nRetrieves detailed information about a Kubernetes cluster including its status, control plane, worker node details, and individual node information.\n"
     },
     {
       "name": "kubernetes-clusters-delete-kubernetes-cluster",
-      "description": "Delete a Kubernetes Cluster\n\nDeletes a Kubernetes cluster. This action is irreversible and will destroy all cluster resources.\n"
+      "description": "Delete a Kubernetes Cluster\n\nDeletes a Kubernetes cluster. This action is irreversible and will destroy all cluster resources.\n\n**Note:** Only users with the `owner`, `administrator`, or `collaborator` role can delete clusters. Users with the `billing` role cannot perform this action.\n"
+    },
+    {
+      "name": "kubernetes-clusters-update-kubernetes-cluster",
+      "description": "Update Kubernetes Cluster\n\nUpdates a Kubernetes cluster by scaling nodes or upgrading the Kubernetes version. The cluster must be in `Provisioned` phase to accept updates.\n\n## Scaling Operations\n\nExactly one of `worker_count` or `control_plane_count` must be provided per request. You cannot scale workers and control plane nodes in the same request.\n\nWhen scaling up, the API validates that sufficient server stock is available for the requested delta (e.g., scaling from 2 to 5 workers checks for 3 available servers).\n\nWhen scaling from 0 workers, you must provide a `worker_plan` since there is no existing configuration to inherit the plan from.\n\nControl plane scaling has a minimum of 1 node. You cannot scale control plane nodes to zero.\n\n## Version Upgrades\n\nProvide a `kubernetes_version` parameter to upgrade the cluster to a new Kubernetes version. Version upgrades follow these rules:\n\n- **No downgrades**: You cannot downgrade to a lower version than currently installed\n- **One minor version at a time**: You can only upgrade one minor version at a time (e.g., from 1.34 to 1.35, not from 1.34 to 1.36)\n- **Mutually exclusive**: Version upgrades cannot be combined with scaling operations in the same request\n- **Available versions only**: The target version must be in the list returned by `GET /kubernetes_clusters/available_versions`\n\nReturns 202 Accepted when an update operation is triggered. Poll the GET endpoint to monitor progress. Returns 200 OK if no change is needed (no-op).\n"
     },
     {
       "name": "kubernetes-clusters-get-kubernetes-cluster-fbb",
-      "description": "Get Kubernetes Cluster Kubeconfig\n\nRetrieves the kubeconfig file for a Kubernetes cluster. The kubeconfig is only available once the cluster is fully provisioned.\n"
+      "description": "Get Kubernetes Cluster Kubeconfig\n\nRetrieves the kubeconfig file for a Kubernetes cluster. The kubeconfig is only available once the cluster is fully provisioned.\n\n**Note:** Only users with the `owner`, `administrator`, or `collaborator` role can access cluster credentials. Users with the `billing` role cannot perform this action.\n"
     },
     {
       "name": "plans-list",
@@ -218,12 +226,12 @@
       "description": "Create project"
     },
     {
-      "name": "projects-update",
-      "description": "Update project"
+      "name": "projects-delete",
+      "description": "Delete project\n\nDeletes a project and releases associated resources. Any Elastic IPs assigned to the project are automatically released and returned to the available pool."
     },
     {
-      "name": "projects-delete",
-      "description": "Delete project"
+      "name": "projects-update",
+      "description": "Update project"
     },
     {
       "name": "SSH-keys-list",
@@ -234,12 +242,12 @@
       "description": "Retrieve Project SSH Key\n\nList all SSH Keys in the project. These keys can be used to access servers after deploy and reinstall actions.\n"
     },
     {
-      "name": "SSH-keys-modify-project-key",
-      "description": "Update Project SSH Key\n\nAllow you update SSH Key in a project. These keys can be used to access servers after deploy and reinstall actions.\n"
-    },
-    {
       "name": "SSH-keys-remove-from-project",
       "description": "Delete Project SSH Key\n\nAllow you remove SSH Keys in a project. Remove a SSH Key from the project won't revoke the SSH Keys access for previously deploy and reinstall actions.\n"
+    },
+    {
+      "name": "SSH-keys-modify-project-key",
+      "description": "Update Project SSH Key\n\nAllow you update SSH Key in a project. These keys can be used to access servers after deploy and reinstall actions.\n"
     },
     {
       "name": "SSH-keys-list-all",
@@ -254,12 +262,12 @@
       "description": "Retrieve SSH Key\n\nList all SSH Keys in the project. These keys can be used to access servers after deploy and reinstall actions.\n"
     },
     {
-      "name": "SSH-keys-update",
-      "description": "Update SSH Key\n\nAllows you update SSH Key in a project. These keys can be used to access servers after deploy and reinstall actions.\n"
-    },
-    {
       "name": "SSH-keys-delete",
       "description": "Delete SSH Key\n\nAllows you remove SSH Keys in a project. Remove a SSH Key from the project won't revoke the SSH Keys access for previously deploy and reinstall actions.\n"
+    },
+    {
+      "name": "SSH-keys-update",
+      "description": "Update SSH Key\n\nAllows you update SSH Key in a project. These keys can be used to access servers after deploy and reinstall actions.\n"
     },
     {
       "name": "projects-ssh-keys-post-project-ssh-key",
@@ -298,12 +306,12 @@
       "description": "Retrieve user data\n\nGet User Data in the project. These scripts can be used to configure servers with user data.\n"
     },
     {
-      "name": "user-data-update",
-      "description": "Update user data\n\nAllow you update User Data in a team.\n"
-    },
-    {
       "name": "user-data-delete",
       "description": "Delete user data"
+    },
+    {
+      "name": "user-data-update",
+      "description": "Update user data\n\nAllow you update User Data in a team.\n"
     },
     {
       "name": "regions-get",
@@ -334,12 +342,12 @@
       "description": "Retrieve server\n\nReturns a server that belongs to the team.\n"
     },
     {
-      "name": "servers-update",
-      "description": "Update server"
-    },
-    {
       "name": "servers-delete",
       "description": "Remove server"
+    },
+    {
+      "name": "servers-update",
+      "description": "Update server"
     },
     {
       "name": "servers-get-deploy-config",
@@ -358,12 +366,12 @@
       "description": "Unlock server\n\nUnlocks the server. A locked server cannot be deleted or modified and no actions can be performed on it."
     },
     {
-      "name": "servers-start-out-of-band-connection",
-      "description": "Create out-of-band connection"
-    },
-    {
       "name": "servers-get-out-of-band",
       "description": "List out-of-band connections"
+    },
+    {
+      "name": "servers-start-out-of-band-connection",
+      "description": "Create out-of-band connection"
     },
     {
       "name": "servers-run-action",
@@ -394,40 +402,56 @@
       "description": "Run Server Reinstall"
     },
     {
-      "name": "storage-create-filesystem",
-      "description": "Create filesystem\n\nAllows you to add persistent storage to a project. These filesystems can be used to store data across your servers."
-    },
-    {
-      "name": "storage-list-filesystems",
+      "name": "filesystem-storage-list-filesystems",
       "description": "List filesystems\n\nLists all the filesystems from a team."
     },
     {
-      "name": "storage-delete-filesystem",
-      "description": "Delete filesystem\n\nAllows you to remove persistent storage from a project."
+      "name": "filesystem-storage-create-filesystem",
+      "description": "Create filesystem\n\nAllows you to add persistent storage to a project. These filesystems can be used to store data across your servers."
     },
     {
-      "name": "storage-update-filesystem",
+      "name": "filesystem-storage-delete-filesystem",
+      "description": "Delete filesystem\n\nAllows you to remove a filesystem from a project."
+    },
+    {
+      "name": "filesystem-storage-update-filesystem",
       "description": "Update filesystem\n\nAllow you to upgrade the size of a filesystem."
     },
     {
-      "name": "storage-get-storage-volumes",
+      "name": "block-storage-get-storage-volumes",
       "description": "List volumes\n\nLists all the volumes from a team."
     },
     {
-      "name": "storage-post-storage-volumes",
+      "name": "block-storage-post-storage-volumes",
       "description": "Create volume\n\nAllows you to add persistent storage to a project. These volumes can be used to store data across your servers."
     },
     {
-      "name": "storage-get-storage-volume",
-      "description": "Retrieve volume\n\nShows details of a specific volume storage."
+      "name": "block-storage-get-storage-volume",
+      "description": "Retrieve volume\n\nShows details of a specific volume."
     },
     {
-      "name": "storage-delete-storage-volumes",
-      "description": "Delete volume\n\nAllows you to remove persistent storage from a project."
+      "name": "block-storage-delete-storage-volumes",
+      "description": "Delete volume\n\nAllows you to remove a volume from a project."
     },
     {
-      "name": "storage-post-storage-volumes-mount",
-      "description": "Mount volume\n\nMounts volume storage by adding the client to an allowed list"
+      "name": "block-storage-post-storage-volumes-mount",
+      "description": "Mount volume\n\nMounts a volume by adding the client to an allowed list"
+    },
+    {
+      "name": "object-storage-get-storage-buckets",
+      "description": "List buckets\n\nLists all object storages from a team."
+    },
+    {
+      "name": "object-storage-post-storage-buckets",
+      "description": "Create bucket\n\nCreates a new object storage bucket for a project."
+    },
+    {
+      "name": "object-storage-get-storage-bucket",
+      "description": "Retrieve bucket\n\nShows details of a specific object storage."
+    },
+    {
+      "name": "object-storage-delete-storage-buckets",
+      "description": "Delete bucket\n\nAllows you to remove an object storage from a project."
     },
     {
       "name": "tags-list",
@@ -438,12 +462,12 @@
       "description": "Create tag\n\nCreate a Tag in the team.\n"
     },
     {
-      "name": "tags-update",
-      "description": "Update tag\n\nUpdate a Tag in the team.\n"
-    },
-    {
       "name": "tags-delete",
       "description": "Delete tag\n\nUpdate a Tag in the team.\n"
+    },
+    {
+      "name": "tags-update",
+      "description": "Update tag\n\nUpdate a Tag in the team.\n"
     },
     {
       "name": "teams-get",
@@ -478,12 +502,12 @@
       "description": "List user teams\n\nReturns a list of all teams the user belongs to\n"
     },
     {
-      "name": "virtual-machines-create",
-      "description": "Create VM\n\nCreates a new Virtual Machine.\n"
-    },
-    {
       "name": "virtual-machines-list",
       "description": "List VMs\n\nShow all Team's Virtual Machines.\n"
+    },
+    {
+      "name": "virtual-machines-create",
+      "description": "Create VM\n\nCreates a new Virtual Machine.\n"
     },
     {
       "name": "virtual-machines-get",
@@ -502,6 +526,22 @@
       "description": "Run VM power action\n\nPerforms a power action on a given virtual machine:\n- `power_on` - Starts the virtual machine\n- `power_off` - Stops the virtual machine\n- `reboot` - Restarts the virtual machine\n"
     },
     {
+      "name": "virtual-machines-show-virtual-machine-metrics",
+      "description": "Retrieve VM metrics\n\nRetrieve a time series for a single metric of a Virtual Machine."
+    },
+    {
+      "name": "virtual-machines-list-virtual-machine-network-1c7",
+      "description": "List VM network attachments\n\nLists the secondary network attachments currently configured for a Virtual Machine.\n"
+    },
+    {
+      "name": "virtual-machines-create-virtual-machine-network-3b8",
+      "description": "Attach a network to a VM\n\nAttaches a virtual network (VLAN) to a Virtual Machine. Work runs asynchronously and returns 202 Accepted.\n"
+    },
+    {
+      "name": "virtual-machines-destroy-virtual-machine-network-97a",
+      "description": "Detach a network from a VM\n\nDetaches a virtual network (VLAN) from a Virtual Machine. Work runs asynchronously and returns 202 Accepted.\n"
+    },
+    {
       "name": "private-networks-list",
       "description": "List VLANs\n\nLists virtual networks assigned to a project\n"
     },
@@ -510,12 +550,12 @@
       "description": "Create VLAN\n\nCreates a new Virtual Network.\n"
     },
     {
-      "name": "private-networks-update",
-      "description": "Update VLAN\n\nUpdate a Virtual Network.\n"
-    },
-    {
       "name": "private-networks-get",
       "description": "Retrieve VLAN\n\nRetrieve a Virtual Network.\n"
+    },
+    {
+      "name": "private-networks-update",
+      "description": "Update VLAN\n\nUpdate a Virtual Network.\n"
     },
     {
       "name": "private-networks-list-assignments",

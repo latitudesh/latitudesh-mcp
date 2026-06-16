@@ -45,10 +45,14 @@ export type UpdateServerAttributes2 = {
 export const UpdateServerAttributes2$zodSchema: z.ZodType<
   UpdateServerAttributes2
 > = z.object({
-  billing: UpdateServerBilling2$zodSchema.nullable().optional(),
+  billing: UpdateServerBilling2$zodSchema.nullable().optional().describe(
+    "The server billing type. Accepts `hourly` and `monthly` for on demand projects and `yearly` for reserved projects.",
+  ),
   hostname: z.string().default("new-hostname"),
-  project: z.string().optional(),
-  tags: z.array(z.string()).nullable().optional(),
+  project: z.string().optional().describe(
+    "Project ID or slug to move the server to",
+  ),
+  tags: z.array(z.string()).nullable().optional().describe("List of Tag IDs"),
 });
 
 export type UpdateServerData2 = {

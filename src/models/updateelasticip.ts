@@ -19,7 +19,7 @@ export type UpdateElasticIpAttributes = { server_id: string };
 export const UpdateElasticIpAttributes$zodSchema: z.ZodType<
   UpdateElasticIpAttributes
 > = z.object({
-  server_id: z.string(),
+  server_id: z.string().describe("The server ID to move the Elastic IP to"),
 });
 
 export type UpdateElasticIpData = {

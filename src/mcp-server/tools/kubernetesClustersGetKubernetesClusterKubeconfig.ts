@@ -16,6 +16,8 @@ export const tool$kubernetesClustersGetKubernetesClusterKubeconfig:
     description: `Get Kubernetes Cluster Kubeconfig
 
 Retrieves the kubeconfig file for a Kubernetes cluster. The kubeconfig is only available once the cluster is fully provisioned.
+
+**Note:** Only users with the \`owner\`, \`administrator\`, or \`collaborator\` role can access cluster credentials. Users with the \`billing\` role cannot perform this action.
 `,
     annotations: {
       "title": "",

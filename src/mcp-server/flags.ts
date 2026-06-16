@@ -11,6 +11,7 @@ import { SDKOptions } from "../lib/config.js";
 export interface MCPServerFlags {
   readonly tool?: string[];
   readonly mode?: "dynamic" | undefined;
+  readonly "tool-annotations"?: string[] | undefined;
   readonly bearer?: string | undefined;
   readonly "server-url"?: string | undefined;
   readonly "server-index"?: SDKOptions["serverIdx"];

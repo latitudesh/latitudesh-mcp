@@ -25,9 +25,11 @@ export type UpdatePlansBandwidthAttributes2 = {
 export const UpdatePlansBandwidthAttributes2$zodSchema: z.ZodType<
   UpdatePlansBandwidthAttributes2
 > = z.object({
-  project: z.string().optional(),
-  quantity: z.int().optional(),
-  region_slug: z.string().optional(),
+  project: z.string().optional().describe(
+    "The project (ID or Slug) to add bandwidth",
+  ),
+  quantity: z.int().optional().describe("The total amount you want to have"),
+  region_slug: z.string().optional().describe("The region to add bandwidth"),
 });
 
 export type UpdatePlansBandwidthData2 = {

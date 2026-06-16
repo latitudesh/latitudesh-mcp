@@ -22,25 +22,10 @@ export const GetPlansOperatingSystemRequest$zodSchema: z.ZodType<
   pageSize: z.int().default(20).describe("Number of items to return per page"),
 });
 
-/**
- * Success
- */
-export type GetPlansOperatingSystemResponseBody = {
-  data?: Array<OperatingSystems> | undefined;
-};
-
-export const GetPlansOperatingSystemResponseBody$zodSchema: z.ZodType<
-  GetPlansOperatingSystemResponseBody
-> = z.object({
-  data: z.array(OperatingSystems$zodSchema).optional(),
-}).describe("Success");
-
-export type GetPlansOperatingSystemResponse = {
-  Result: GetPlansOperatingSystemResponseBody;
-};
+export type GetPlansOperatingSystemResponse = { Result: OperatingSystems };
 
 export const GetPlansOperatingSystemResponse$zodSchema: z.ZodType<
   GetPlansOperatingSystemResponse
 > = z.object({
-  Result: z.lazy(() => GetPlansOperatingSystemResponseBody$zodSchema),
+  Result: OperatingSystems$zodSchema,
 });

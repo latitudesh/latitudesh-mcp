@@ -76,6 +76,67 @@ export const UpdateServerDeployConfigRaid2$zodSchema = z.enum([
   "RAID mode for the server. Set to 'raid-0' for RAID 0, 'raid-1' for RAID 1, or omit/null for no RAID configuration",
 );
 
+export const UpdateServerDeployConfigRole2 = {
+  Os: "os",
+  Storage: "storage",
+  Raw: "raw",
+} as const;
+export type UpdateServerDeployConfigRole2 = ClosedEnum<
+  typeof UpdateServerDeployConfigRole2
+>;
+
+export const UpdateServerDeployConfigRole2$zodSchema = z.enum([
+  "os",
+  "storage",
+  "raw",
+]);
+
+export const UpdateServerDeployConfigRaidLevel2 = {
+  Raid0: "raid-0",
+  Raid1: "raid-1",
+} as const;
+export type UpdateServerDeployConfigRaidLevel2 = ClosedEnum<
+  typeof UpdateServerDeployConfigRaidLevel2
+>;
+
+export const UpdateServerDeployConfigRaidLevel2$zodSchema = z.enum([
+  "raid-0",
+  "raid-1",
+]);
+
+export const UpdateServerDeployConfigFilesystem2 = {
+  Ext4: "ext4",
+  Xfs: "xfs",
+} as const;
+export type UpdateServerDeployConfigFilesystem2 = ClosedEnum<
+  typeof UpdateServerDeployConfigFilesystem2
+>;
+
+export const UpdateServerDeployConfigFilesystem2$zodSchema = z.enum([
+  "ext4",
+  "xfs",
+]);
+
+export type UpdateServerDeployConfigDiskLayout2 = {
+  count: number;
+  role: UpdateServerDeployConfigRole2;
+  raid_level?: UpdateServerDeployConfigRaidLevel2 | null | undefined;
+  filesystem?: UpdateServerDeployConfigFilesystem2 | null | undefined;
+  mount_point?: string | null | undefined;
+};
+
+export const UpdateServerDeployConfigDiskLayout2$zodSchema: z.ZodType<
+  UpdateServerDeployConfigDiskLayout2
+> = z.object({
+  count: z.int(),
+  filesystem: UpdateServerDeployConfigFilesystem2$zodSchema.nullable()
+    .optional(),
+  mount_point: z.string().nullable().optional(),
+  raid_level: UpdateServerDeployConfigRaidLevel2$zodSchema.nullable()
+    .optional(),
+  role: UpdateServerDeployConfigRole2$zodSchema,
+});
+
 export type UpdateServerDeployConfigPartition2 = {
   size_in_gb?: number | undefined;
   path?: string | undefined;
@@ -97,6 +158,7 @@ export type UpdateServerDeployConfigAttributes2 = {
     | null
     | undefined;
   raid?: UpdateServerDeployConfigRaid2 | null | undefined;
+  disk_layout?: Array<UpdateServerDeployConfigDiskLayout2> | null | undefined;
   user_data?: string | null | undefined;
   ssh_keys?: Array<string> | null | undefined;
   partitions?: Array<UpdateServerDeployConfigPartition2> | null | undefined;
@@ -106,16 +168,25 @@ export type UpdateServerDeployConfigAttributes2 = {
 export const UpdateServerDeployConfigAttributes2$zodSchema: z.ZodType<
   UpdateServerDeployConfigAttributes2
 > = z.object({
+  disk_layout: z.array(
+    z.lazy(() => UpdateServerDeployConfigDiskLayout2$zodSchema),
+  ).nullable().optional(),
   hostname: z.string().nullable().optional(),
-  ipxe_url: z.string().nullable().optional(),
+  ipxe_url: z.string().nullable().optional().describe(
+    "URL where iPXE script is stored on, necessary for custom image deployments. This attribute is required when operating system iPXE is selected.",
+  ),
   operating_system: UpdateServerDeployConfigOperatingSystem2$zodSchema
     .nullable().optional(),
   partitions: z.array(
     z.lazy(() => UpdateServerDeployConfigPartition2$zodSchema),
   ).nullable().optional(),
-  raid: UpdateServerDeployConfigRaid2$zodSchema.nullable().optional(),
+  raid: UpdateServerDeployConfigRaid2$zodSchema.nullable().optional().describe(
+    "RAID mode for the server. Set to 'raid-0' for RAID 0, 'raid-1' for RAID 1, or omit/null for no RAID configuration",
+  ),
   ssh_keys: z.array(z.string()).nullable().optional(),
-  user_data: z.string().nullable().optional(),
+  user_data: z.string().nullable().optional().describe(
+    "User data to configure the server",
+  ),
 });
 
 export type UpdateServerDeployConfigRequestBody2 = {

@@ -27,9 +27,11 @@ export type PostStorageVolumesAttributes2 = {
 export const PostStorageVolumesAttributes2$zodSchema: z.ZodType<
   PostStorageVolumesAttributes2
 > = z.object({
-  name: z.string(),
-  project: z.string(),
-  size_in_gb: z.int().default(1500),
+  name: z.string().describe("Volume name"),
+  project: z.string().describe("Project ID or slug"),
+  size_in_gb: z.int().default(1500).describe(
+    "Size in GB (not required, default is 1500)",
+  ),
 });
 
 export type PostStorageVolumesData2 = {

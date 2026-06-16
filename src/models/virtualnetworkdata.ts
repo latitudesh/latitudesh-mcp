@@ -45,19 +45,20 @@ export const VirtualNetworkDataRegion$zodSchema: z.ZodType<
   site: z.lazy(() => VirtualNetworkDataSite$zodSchema).optional(),
 });
 
-export type Tag = {
+export type VirtualNetworkDataTag = {
   id?: string | undefined;
   name?: string | undefined;
   description?: string | undefined;
   color?: string | undefined;
 };
 
-export const Tag$zodSchema: z.ZodType<Tag> = z.object({
-  color: z.string().optional(),
-  description: z.string().optional(),
-  id: z.string().optional(),
-  name: z.string().optional(),
-});
+export const VirtualNetworkDataTag$zodSchema: z.ZodType<VirtualNetworkDataTag> =
+  z.object({
+    color: z.string().optional(),
+    description: z.string().optional(),
+    id: z.string().optional(),
+    name: z.string().optional(),
+  });
 
 export type VirtualNetworkDataAttributes = {
   vid?: number | undefined;
@@ -67,20 +68,25 @@ export type VirtualNetworkDataAttributes = {
   region?: VirtualNetworkDataRegion | undefined;
   created_at?: string | null | undefined;
   assignments_count?: number | undefined;
-  tags?: Array<Tag> | undefined;
+  tags?: Array<VirtualNetworkDataTag> | undefined;
 };
 
 export const VirtualNetworkDataAttributes$zodSchema: z.ZodType<
   VirtualNetworkDataAttributes
 > = z.object({
-  assignments_count: z.int().optional(),
+  assignments_count: z.int().optional().describe(
+    "Amount of devices assigned to the virtual network",
+  ),
   created_at: z.iso.datetime({ offset: true }).nullable().optional(),
-  description: z.string().optional(),
-  name: z.string().optional(),
+  description: z.string().optional().describe(
+    "Description of the virtual network",
+  ),
+  name: z.string().optional().describe("Name of the virtual network"),
   project: ProjectInclude$zodSchema.optional(),
   region: z.lazy(() => VirtualNetworkDataRegion$zodSchema).optional(),
-  tags: z.array(z.lazy(() => Tag$zodSchema)).optional(),
-  vid: z.int().optional(),
+  tags: z.array(z.lazy(() => VirtualNetworkDataTag$zodSchema)).optional()
+    .describe("Tags associated with the virtual network"),
+  vid: z.int().optional().describe("vlan ID of the virtual network"),
 });
 
 export type VirtualNetworkData = {

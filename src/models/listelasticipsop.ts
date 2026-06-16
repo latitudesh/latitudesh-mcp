@@ -42,7 +42,9 @@ export const ListElasticIpsRequest$zodSchema: z.ZodType<ListElasticIpsRequest> =
     filterProject: z.string().describe("The project ID or slug to filter by")
       .optional(),
     filterServer: z.string().describe("The server ID to filter by").optional(),
-    filterStatus: FilterStatus$zodSchema.optional(),
+    filterStatus: FilterStatus$zodSchema.optional().describe(
+      "The status to filter by",
+    ),
     pageNumber: z.int().default(1).describe(
       "Page number to return (starts at 1)",
     ),

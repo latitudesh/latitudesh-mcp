@@ -16,7 +16,22 @@ export const SshKeyDataType$zodSchema = z.enum([
   "ssh_keys",
 ]);
 
+export type SshKeyDataTag = {
+  id?: string | undefined;
+  name?: string | undefined;
+  description?: string | null | undefined;
+  color?: string | null | undefined;
+};
+
+export const SshKeyDataTag$zodSchema: z.ZodType<SshKeyDataTag> = z.object({
+  color: z.string().nullable().optional(),
+  description: z.string().nullable().optional(),
+  id: z.string().optional(),
+  name: z.string().optional(),
+});
+
 export type SshKeyDataAttributes = {
+  tags?: Array<SshKeyDataTag> | undefined;
   name?: string | undefined;
   public_key?: string | undefined;
   fingerprint?: string | undefined;
@@ -29,10 +44,11 @@ export type SshKeyDataAttributes = {
 export const SshKeyDataAttributes$zodSchema: z.ZodType<SshKeyDataAttributes> = z
   .object({
     created_at: z.string().optional(),
-    fingerprint: z.string().optional(),
-    name: z.string().optional(),
+    fingerprint: z.string().optional().describe("SSH Key fingerprint"),
+    name: z.string().optional().describe("Name of the SSH Key"),
     project: ProjectInclude$zodSchema.optional(),
-    public_key: z.string().optional(),
+    public_key: z.string().optional().describe("SSH Public Key"),
+    tags: z.array(z.lazy(() => SshKeyDataTag$zodSchema)).optional(),
     updated_at: z.string().optional(),
     user: UserInclude$zodSchema.optional(),
   });

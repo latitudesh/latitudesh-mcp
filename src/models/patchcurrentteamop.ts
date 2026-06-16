@@ -15,33 +15,18 @@ export const PatchCurrentTeamType2$zodSchema = z.enum([
   "teams",
 ]);
 
-export const PatchCurrentTeamCurrency2 = {
-  Usd: "USD",
-  Brl: "BRL",
-} as const;
-export type PatchCurrentTeamCurrency2 = ClosedEnum<
-  typeof PatchCurrentTeamCurrency2
->;
-
-export const PatchCurrentTeamCurrency2$zodSchema = z.enum([
-  "USD",
-  "BRL",
-]);
-
 export type PatchCurrentTeamAttributes2 = {
   address?: string | undefined;
   name?: string | undefined;
-  currency?: PatchCurrentTeamCurrency2 | undefined;
-  referred_code?: string | undefined;
+  enforce_mfa?: boolean | undefined;
 };
 
 export const PatchCurrentTeamAttributes2$zodSchema: z.ZodType<
   PatchCurrentTeamAttributes2
 > = z.object({
   address: z.string().optional(),
-  currency: PatchCurrentTeamCurrency2$zodSchema.default("USD"),
+  enforce_mfa: z.boolean().optional(),
   name: z.string().optional(),
-  referred_code: z.string().optional(),
 });
 
 export type PatchCurrentTeamData2 = {

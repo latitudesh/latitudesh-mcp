@@ -23,9 +23,9 @@ export type PostSshKeyAttributes2 = {
 
 export const PostSshKeyAttributes2$zodSchema: z.ZodType<PostSshKeyAttributes2> =
   z.object({
-    name: z.string().optional(),
-    project: z.string().optional(),
-    public_key: z.string().optional(),
+    name: z.string().optional().describe("Name of the SSH Key"),
+    project: z.string().optional().describe("Project ID or slug"),
+    public_key: z.string().optional().describe("SSH Public Key"),
   });
 
 export type PostSshKeyData2 = {

@@ -44,7 +44,9 @@ export type CreateServerActionAttributes2 = {
 export const CreateServerActionAttributes2$zodSchema: z.ZodType<
   CreateServerActionAttributes2
 > = z.object({
-  action: CreateServerActionAction2$zodSchema,
+  action: CreateServerActionAction2$zodSchema.describe(
+    "The action to perform on the server",
+  ),
 });
 
 export type CreateServerActionData2 = {

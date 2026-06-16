@@ -14,9 +14,7 @@ export const tool$elasticIpsCreateElasticIp: ToolDefinition<typeof args> = {
   name: "elastic-ips-create-elastic-ip",
   description: `Create an Elastic IP
 
-Creates a new Elastic IP and assigns it to the specified server. The IP is provisioned asynchronously—the response will show status \`configuring\` and the \`id\` will be \`null\` until provisioning completes.
-
-**Note:** This feature requires the \`elastic_ips\` feature flag to be enabled for your team. Currently only IPv4 /32 addresses in routed mode are supported.
+Creates a new Elastic IP and assigns it to the specified server. The IP is provisioned asynchronously—the response will show status \`configuring\` and the \`id\` will be \`null\` until provisioning completes. Currently only IPv4 /32 addresses in routed mode are supported.
 `,
   annotations: {
     "title": "",

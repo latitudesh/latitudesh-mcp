@@ -6,6 +6,7 @@ import * as z from "zod";
 
 export type IndexVirtualMachineRequest = {
   filterProject?: string | undefined;
+  filterTags?: string | undefined;
   extraFieldsVirtualMachines?: string | undefined;
 };
 
@@ -13,8 +14,11 @@ export const IndexVirtualMachineRequest$zodSchema: z.ZodType<
   IndexVirtualMachineRequest
 > = z.object({
   extraFieldsVirtualMachines: z.string().describe(
-    "The `credentials` are provided as extra attributes that are lazy loaded. To request it, just set `extra_fields[virtual_machines]=credentials` in the query string.",
+    "Comma-separated extra attributes that are lazy-loaded. Supported values: `credentials`, `pending_restart`. Example: `extra_fields[virtual_machines]=credentials,pending_restart`.",
   ).optional(),
   filterProject: z.string().describe("The project ID or Slug to filter by")
     .optional(),
+  filterTags: z.string().describe(
+    "The tag IDs to filter by, separated by comma, e.g. `filter[tags]=tag_1,tag_2` will return VMs with `tag_1` AND `tag_2`.",
+  ).optional(),
 });

@@ -3,118 +3,18 @@
  */
 
 import * as z from "zod";
-import { ClosedEnum } from "../types/enums.js";
+import { IpAddressData, IpAddressData$zodSchema } from "./ipaddressdata.js";
 
-export const IpAddressFamily = {
-  IPv4: "IPv4",
-  IPv6: "IPv6",
-} as const;
-export type IpAddressFamily = ClosedEnum<typeof IpAddressFamily>;
+export type IpAddressMeta = {};
 
-export const IpAddressFamily$zodSchema = z.enum([
-  "IPv4",
-  "IPv6",
-]);
-
-export const IpAddressType = {
-  Public: "Public",
-  Private: "Private",
-} as const;
-export type IpAddressType = ClosedEnum<typeof IpAddressType>;
-
-export const IpAddressType$zodSchema = z.enum([
-  "Public",
-  "Private",
-]);
-
-export type IpAddressProject = {
-  id?: string | undefined;
-  name?: string | undefined;
-};
-
-export const IpAddressProject$zodSchema: z.ZodType<IpAddressProject> = z.object(
-  {
-    id: z.string().optional(),
-    name: z.string().optional(),
-  },
-);
-
-export type IpAddressLocation = {
-  id?: string | undefined;
-  name?: string | undefined;
-  slug?: string | undefined;
-};
-
-export const IpAddressLocation$zodSchema: z.ZodType<IpAddressLocation> = z
-  .object({
-    id: z.string().optional(),
-    name: z.string().optional(),
-    slug: z.string().optional(),
-  });
-
-export type IpAddressRegion = {
-  id?: string | undefined;
-  name?: string | undefined;
-  location?: IpAddressLocation | undefined;
-};
-
-export const IpAddressRegion$zodSchema: z.ZodType<IpAddressRegion> = z.object({
-  id: z.string().optional(),
-  location: z.lazy(() => IpAddressLocation$zodSchema).optional(),
-  name: z.string().optional(),
-});
-
-export type Assignment = {
-  server_id?: string | undefined;
-  hostname?: string | undefined;
-  assigned_at?: string | undefined;
-};
-
-export const Assignment$zodSchema: z.ZodType<Assignment> = z.object({
-  assigned_at: z.string().optional(),
-  hostname: z.string().optional(),
-  server_id: z.string().optional(),
-});
-
-export type IpAddressAttributes = {
-  address?: string | undefined;
-  cidr?: string | null | undefined;
-  family?: IpAddressFamily | undefined;
-  gateway?: string | null | undefined;
-  netmask?: string | undefined;
-  type?: IpAddressType | undefined;
-  public?: boolean | undefined;
-  management?: boolean | undefined;
-  additional?: boolean | undefined;
-  project?: IpAddressProject | undefined;
-  region?: IpAddressRegion | undefined;
-  available?: boolean | undefined;
-  assignment?: Assignment | undefined;
-};
-
-export const IpAddressAttributes$zodSchema: z.ZodType<IpAddressAttributes> = z
-  .object({
-    additional: z.boolean().optional(),
-    address: z.string().optional(),
-    assignment: z.lazy(() => Assignment$zodSchema).optional(),
-    available: z.boolean().optional(),
-    cidr: z.string().nullable().optional(),
-    family: IpAddressFamily$zodSchema.optional(),
-    gateway: z.string().nullable().optional(),
-    management: z.boolean().optional(),
-    netmask: z.string().optional(),
-    project: z.lazy(() => IpAddressProject$zodSchema).optional(),
-    public: z.boolean().optional(),
-    region: z.lazy(() => IpAddressRegion$zodSchema).optional(),
-    type: IpAddressType$zodSchema.optional(),
-  });
+export const IpAddressMeta$zodSchema: z.ZodType<IpAddressMeta> = z.object({});
 
 export type IpAddress = {
-  id?: string | undefined;
-  attributes?: IpAddressAttributes | undefined;
+  data?: IpAddressData | undefined;
+  meta?: IpAddressMeta | undefined;
 };
 
 export const IpAddress$zodSchema: z.ZodType<IpAddress> = z.object({
-  attributes: z.lazy(() => IpAddressAttributes$zodSchema).optional(),
-  id: z.string().optional(),
+  data: IpAddressData$zodSchema.optional(),
+  meta: z.lazy(() => IpAddressMeta$zodSchema).optional(),
 });

@@ -14,9 +14,7 @@ export const tool$elasticIpsDeleteElasticIp: ToolDefinition<typeof args> = {
   name: "elastic-ips-delete-elastic-ip",
   description: `Release an Elastic IP
 
-Releases an Elastic IP, returning it to the available pool. The IP will transition to \`releasing\` status before being fully removed.
-
-**Note:** This feature requires the \`elastic_ips\` feature flag to be enabled for your team. Only Elastic IPs with status \`active\` or \`error\` can be released.
+Releases an Elastic IP, returning it to the available pool. The IP will transition to \`releasing\` status before being fully removed. Only Elastic IPs with status \`active\` or \`error\` can be released.
 `,
   annotations: {
     "title": "",

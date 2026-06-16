@@ -77,10 +77,12 @@ export type ServerDataPlan = {
 };
 
 export const ServerDataPlan$zodSchema: z.ZodType<ServerDataPlan> = z.object({
-  billing: z.string().nullable().optional(),
-  id: z.string().optional(),
-  name: z.string().optional(),
-  slug: z.string().optional(),
+  billing: z.string().nullable().optional().describe(
+    "hourly/monthly pricing. Defaults to `hourly`. Appliable for `on_demand` projects only.",
+  ),
+  id: z.string().optional().describe("The plan ID"),
+  name: z.string().optional().describe("The plan name"),
+  slug: z.string().optional().describe("The plan slug"),
 });
 
 export type ServerDataFeatures = {
@@ -96,32 +98,36 @@ export const ServerDataFeatures$zodSchema: z.ZodType<ServerDataFeatures> = z
     user_data: z.boolean().optional(),
   });
 
-export type Distro = {
+export type ServerDataDistro = {
   name?: string | undefined;
   slug?: string | undefined;
   series?: string | undefined;
 };
 
-export const Distro$zodSchema: z.ZodType<Distro> = z.object({
-  name: z.string().optional(),
-  series: z.string().optional(),
-  slug: z.string().optional(),
-});
+export const ServerDataDistro$zodSchema: z.ZodType<ServerDataDistro> = z.object(
+  {
+    name: z.string().optional().describe("The OS Distro name"),
+    series: z.string().optional().describe("The OS Distro Series"),
+    slug: z.string().optional().describe("The OS Distro slug"),
+  },
+);
 
-export type OperatingSystem = {
+export type ServerDataOperatingSystem = {
   name?: string | undefined;
   slug?: string | undefined;
   version?: string | undefined;
   features?: ServerDataFeatures | undefined;
-  distro?: Distro | undefined;
+  distro?: ServerDataDistro | undefined;
 };
 
-export const OperatingSystem$zodSchema: z.ZodType<OperatingSystem> = z.object({
-  distro: z.lazy(() => Distro$zodSchema).optional(),
+export const ServerDataOperatingSystem$zodSchema: z.ZodType<
+  ServerDataOperatingSystem
+> = z.object({
+  distro: z.lazy(() => ServerDataDistro$zodSchema).optional(),
   features: z.lazy(() => ServerDataFeatures$zodSchema).optional(),
-  name: z.string().optional(),
-  slug: z.string().optional(),
-  version: z.string().optional(),
+  name: z.string().optional().describe("The OS name"),
+  slug: z.string().optional().describe("The OS slug"),
+  version: z.string().optional().describe("The OS description"),
 });
 
 export type ServerDataSpecs = {
@@ -133,11 +139,15 @@ export type ServerDataSpecs = {
 };
 
 export const ServerDataSpecs$zodSchema: z.ZodType<ServerDataSpecs> = z.object({
-  cpu: z.string().optional(),
-  disk: z.string().optional(),
-  gpu: z.string().nullable().optional(),
-  nic: z.string().optional(),
-  ram: z.string().optional(),
+  cpu: z.string().optional().describe("CPU model"),
+  disk: z.string().optional().describe(
+    "Disk quantity and size in GB (e.g. 2 x 500GB)",
+  ),
+  gpu: z.string().nullable().optional().describe(
+    "GPU model and quantity, if present",
+  ),
+  nic: z.string().optional().describe("NIC quantity and speed"),
+  ram: z.string().optional().describe("RAM size in GB"),
 });
 
 export const ServerDataRole = {
@@ -158,13 +168,13 @@ export const ServerDataRole$zodSchema = z.enum([
 export type Interface = {
   role?: ServerDataRole | undefined;
   name?: string | undefined;
-  mac_address?: string | undefined;
+  mac_address?: string | null | undefined;
   description?: string | undefined;
 };
 
 export const Interface$zodSchema: z.ZodType<Interface> = z.object({
   description: z.string().optional(),
-  mac_address: z.string().optional(),
+  mac_address: z.string().nullable().optional(),
   name: z.string().optional(),
   role: ServerDataRole$zodSchema.optional(),
 });
@@ -183,7 +193,7 @@ export type ServerDataAttributes = {
   created_at?: string | null | undefined;
   scheduled_deletion_at?: string | null | undefined;
   plan?: ServerDataPlan | undefined;
-  operating_system?: OperatingSystem | undefined;
+  operating_system?: ServerDataOperatingSystem | undefined;
   region?: ServerRegionResourceData | undefined;
   specs?: ServerDataSpecs | undefined;
   interfaces?: Array<Interface> | undefined;
@@ -197,20 +207,23 @@ export const ServerDataAttributes$zodSchema: z.ZodType<ServerDataAttributes> = z
     hostname: z.string().optional(),
     interfaces: z.array(z.lazy(() => Interface$zodSchema)).optional(),
     ipmi_status: IpmiStatus$zodSchema.optional(),
-    label: z.string().optional(),
+    label: z.string().optional().describe("The server label"),
     locked: z.boolean().optional(),
-    operating_system: z.lazy(() => OperatingSystem$zodSchema).optional(),
+    operating_system: z.lazy(() => ServerDataOperatingSystem$zodSchema)
+      .optional(),
     plan: z.lazy(() => ServerDataPlan$zodSchema).optional(),
     primary_ipv4: z.string().nullable().optional(),
     primary_ipv6: z.string().nullable().optional(),
     project: ProjectInclude$zodSchema.optional(),
     region: ServerRegionResourceData$zodSchema.optional(),
     rescue_allowed: z.boolean().optional(),
-    role: z.string().optional(),
+    role: z.string().optional().describe("The server role (e.g. Bare Metal)"),
     scheduled_deletion_at: z.string().nullable().optional(),
     site: z.string().optional(),
     specs: z.lazy(() => ServerDataSpecs$zodSchema).optional(),
-    status: ServerDataStatus$zodSchema.optional(),
+    status: ServerDataStatus$zodSchema.optional().describe(
+      "`on` - The server is powered ON\n`off` - The server is powered OFF\n`unknown` - The server power status is unknown\n`disk_erasing` - The server is in reinstalling state `disk_erasing`\n`deploying` - The server is deploying or reinstalling\n`failed_deployment` - The server has failed deployment or reinstall\n`rescue_mode` - The server is in rescue mode\n",
+    ),
     team: TeamInclude$zodSchema.optional(),
   });
 

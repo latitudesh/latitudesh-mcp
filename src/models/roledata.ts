@@ -18,7 +18,7 @@ export type RoleDataAttributes = { name?: string | undefined };
 
 export const RoleDataAttributes$zodSchema: z.ZodType<RoleDataAttributes> = z
   .object({
-    name: z.string().optional(),
+    name: z.string().optional().describe("Name of the Role"),
   });
 
 export type RoleData = {

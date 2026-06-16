@@ -32,16 +32,36 @@ export type CreateKubernetesClusterAttributes = {
 export const CreateKubernetesClusterAttributes$zodSchema: z.ZodType<
   CreateKubernetesClusterAttributes
 > = z.object({
-  control_plane_count: z.int().nullable().optional(),
-  kubernetes_version: z.string().nullable().optional(),
-  name: z.string().nullable().optional(),
-  operating_system: z.string().nullable().optional(),
-  plan: z.string(),
-  project_id: z.string(),
-  site: z.string(),
-  ssh_keys: z.array(z.string()).nullable().optional(),
-  worker_count: z.int().nullable().optional(),
-  worker_plan: z.string().nullable().optional(),
+  control_plane_count: z.int().nullable().optional().describe(
+    "Number of control plane nodes. Defaults to 1.",
+  ),
+  kubernetes_version: z.string().nullable().optional().describe(
+    "The Kubernetes version to install. Defaults to v1.34.3+rke2r1.",
+  ),
+  name: z.string().nullable().optional().describe(
+    "The cluster name. Must follow Kubernetes naming rules: lowercase alphanumeric or hyphens, must start and end with alphanumeric, max 63 characters. Auto-generated if omitted.",
+  ),
+  operating_system: z.string().nullable().optional().describe(
+    "The operating system for the nodes. Defaults to ubuntu_24_04_x64_lts.",
+  ),
+  plan: z.string().describe(
+    "The machine plan for control plane nodes (e.g., c2-small-x86)",
+  ),
+  project_id: z.string().describe(
+    "The project ID where the cluster will be created",
+  ),
+  site: z.string().describe(
+    "The site/region code where to deploy the cluster (e.g., SAN3)",
+  ),
+  ssh_keys: z.array(z.string()).nullable().optional().describe(
+    "Array of SSH key IDs to use for node access. All keys must exist and belong to your team.",
+  ),
+  worker_count: z.int().nullable().optional().describe(
+    "Number of worker nodes. Defaults to 1.",
+  ),
+  worker_plan: z.string().nullable().optional().describe(
+    "The machine plan for worker nodes. Defaults to the control plane plan if not specified.",
+  ),
 });
 
 export type CreateKubernetesClusterData = {

@@ -1,0 +1,14 @@
+overlay: 1.0.0
+info:
+  title: MCP tool naming fixes
+  version: 1.0.0
+actions:
+  # GET /kubernetes_clusters/available_versions is the only Kubernetes operation
+  # without an explicit name override, so its derived MCP tool name
+  # ("kubernetes-clusters-list-kubernetes-available-versions", 54 chars) exceeds
+  # Speakeasy's tool-name length limit and is truncated to a hashed name
+  # ("kubernetes-clusters-list-kubernetes-available-ed6"). A short method name
+  # yields a clean, stable tool name: "kubernetes-clusters-list-available-versions".
+  - target: "$.paths['/kubernetes_clusters/available_versions'].get"
+    update:
+      x-speakeasy-name-override: listAvailableVersions

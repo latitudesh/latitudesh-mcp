@@ -6,14 +6,14 @@ import * as z from "zod";
 import { ClosedEnum } from "../types/enums.js";
 
 export const OperatingSystemDataType = {
-  OperatingSystems: "operating_systems",
+  OperatingSystem: "operating_system",
 } as const;
 export type OperatingSystemDataType = ClosedEnum<
   typeof OperatingSystemDataType
 >;
 
 export const OperatingSystemDataType$zodSchema = z.enum([
-  "operating_systems",
+  "operating_system",
 ]);
 
 export type OperatingSystemDataFeatures = {

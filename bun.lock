@@ -6,7 +6,6 @@
       "dependencies": {
         "@modelcontextprotocol/sdk": "1.26.0",
         "@stricli/core": "^1.1.2",
-        "bun": "^1.2.12",
         "express": "^5.1.0",
         "zod": "^4.0.0",
       },
@@ -16,6 +15,7 @@
         "@types/bun": "^1.2.13",
         "@types/express": "^5.0.1",
         "@types/node": "^18.19.3",
+        "bun": "^1.2.12",
         "eslint": "^9.26.0",
         "globals": "^16.0.0",
         "typescript": "~5.8.3",

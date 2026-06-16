@@ -26,10 +26,10 @@ export type CustomTagDataAttributes = {
 export const CustomTagDataAttributes$zodSchema: z.ZodType<
   CustomTagDataAttributes
 > = z.object({
-  color: z.string().optional(),
-  description: z.string().optional(),
-  name: z.string().optional(),
-  slug: z.string().optional(),
+  color: z.string().optional().describe("Color of the Tag"),
+  description: z.string().optional().describe("Description of the Tag"),
+  name: z.string().optional().describe("Name of the Tag"),
+  slug: z.string().optional().describe("Slug of the Tag"),
   team: TeamInclude$zodSchema.optional(),
 });
 

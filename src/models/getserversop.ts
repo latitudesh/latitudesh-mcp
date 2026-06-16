@@ -18,7 +18,9 @@ export type GetServersRequest = {
   filterRamEql?: number | undefined;
   filterRamGte?: number | undefined;
   filterRamLte?: number | undefined;
-  filterDisk?: number | undefined;
+  filterDiskEql?: number | undefined;
+  filterDiskGte?: number | undefined;
+  filterDiskLte?: number | undefined;
   filterTags?: string | undefined;
   extraFieldsServers?: string | undefined;
   pageSize?: number | undefined;
@@ -36,8 +38,14 @@ export const GetServersRequest$zodSchema: z.ZodType<GetServersRequest> = z
     filterCreatedAtLte: z.string().describe(
       "The created at less than equal date to filter by",
     ).optional(),
-    filterDisk: z.int().describe(
-      "The disk size in Gigabytes to filter by, should be used with the following options:\n                              [eql] to filter for values equal to the provided value.\n                              [gte] to filter for values greater than or equal to the provided value.\n                              [lte] to filter by values lower than or equal to the provided value.",
+    filterDiskEql: z.int().describe(
+      "Filter servers with disk size (in GB) equal to the provided value.",
+    ).optional(),
+    filterDiskGte: z.int().describe(
+      "Filter servers with disk size (in GB) greater than or equal to the provided value.",
+    ).optional(),
+    filterDiskLte: z.int().describe(
+      "Filter servers with disk size (in GB) less than or equal to the provided value.",
     ).optional(),
     filterGpu: z.boolean().describe(
       "Filter by the existence of an associated GPU",

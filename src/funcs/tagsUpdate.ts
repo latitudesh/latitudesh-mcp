@@ -10,7 +10,6 @@ import { safeParse } from "../lib/schemas.js";
 import { RequestOptions } from "../lib/sdks.js";
 import { extractSecurity, resolveGlobalSecurity } from "../lib/security.js";
 import { pathToFunc } from "../lib/url.js";
-import { CustomTag, CustomTag$zodSchema } from "../models/customtag.js";
 import { APIError } from "../models/errors/apierror.js";
 import {
   ConnectionError,
@@ -23,6 +22,8 @@ import { SDKValidationError } from "../models/errors/sdkvalidationerror.js";
 import {
   UpdateTagRequest,
   UpdateTagRequest$zodSchema,
+  UpdateTagResponse,
+  UpdateTagResponse$zodSchema,
 } from "../models/updatetagop.js";
 import { APICall, APIPromise } from "../types/async.js";
 import { Result } from "../types/fp.js";
@@ -39,7 +40,7 @@ export function tagsUpdate(
   options?: RequestOptions,
 ): APIPromise<
   Result<
-    CustomTag,
+    UpdateTagResponse,
     | APIError
     | SDKValidationError
     | UnexpectedClientError
@@ -63,7 +64,7 @@ async function $do(
 ): Promise<
   [
     Result<
-      CustomTag,
+      UpdateTagResponse,
       | APIError
       | SDKValidationError
       | UnexpectedClientError
@@ -153,7 +154,7 @@ async function $do(
   };
 
   const [result$] = await M.match<
-    CustomTag,
+    UpdateTagResponse,
     | APIError
     | SDKValidationError
     | UnexpectedClientError
@@ -162,9 +163,13 @@ async function $do(
     | RequestTimeoutError
     | ConnectionError
   >(
-    M.json(200, CustomTag$zodSchema, {
+    M.json(200, UpdateTagResponse$zodSchema, {
       ctype: "application/vnd.api+json",
       key: "custom_tag",
+    }),
+    M.json(422, UpdateTagResponse$zodSchema, {
+      ctype: "application/vnd.api+json",
+      key: "error_object",
     }),
   )(response, req$, { extraFields: responseFields$ });
 

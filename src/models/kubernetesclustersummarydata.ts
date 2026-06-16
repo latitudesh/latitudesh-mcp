@@ -80,8 +80,12 @@ export type KubernetesClusterSummaryDataStep = {
 export const KubernetesClusterSummaryDataStep$zodSchema: z.ZodType<
   KubernetesClusterSummaryDataStep
 > = z.object({
-  name: KubernetesClusterSummaryDataName$zodSchema.optional(),
-  status: KubernetesClusterSummaryDataStatus$zodSchema.optional(),
+  name: KubernetesClusterSummaryDataName$zodSchema.optional().describe(
+    "Step identifier",
+  ),
+  status: KubernetesClusterSummaryDataStatus$zodSchema.optional().describe(
+    "Current status of this step",
+  ),
 });
 
 export type KubernetesClusterSummaryDataAttributes = {
@@ -99,16 +103,29 @@ export type KubernetesClusterSummaryDataAttributes = {
 export const KubernetesClusterSummaryDataAttributes$zodSchema: z.ZodType<
   KubernetesClusterSummaryDataAttributes
 > = z.object({
-  control_plane_ready: z.boolean().optional(),
-  created_at: z.iso.datetime({ offset: true }).optional(),
-  infrastructure_ready: z.boolean().optional(),
-  last_status_change: z.iso.datetime({ offset: true }).nullable().optional(),
-  message: z.string().optional(),
-  name: z.string().optional(),
-  phase: KubernetesClusterSummaryDataPhase$zodSchema.optional(),
-  ready: z.boolean().optional(),
+  control_plane_ready: z.boolean().optional().describe(
+    "Whether the control plane is ready",
+  ),
+  created_at: z.iso.datetime({ offset: true }).optional().describe(
+    "When the cluster was created",
+  ),
+  infrastructure_ready: z.boolean().optional().describe(
+    "Whether the underlying infrastructure is ready",
+  ),
+  last_status_change: z.iso.datetime({ offset: true }).nullable().optional()
+    .describe("Timestamp of the most recent status condition change"),
+  message: z.string().optional().describe(
+    "Human-readable status message describing the current provisioning state",
+  ),
+  name: z.string().optional().describe("The cluster name"),
+  phase: KubernetesClusterSummaryDataPhase$zodSchema.optional().describe(
+    "The current phase of the cluster lifecycle",
+  ),
+  ready: z.boolean().optional().describe(
+    "Whether the cluster is ready to accept workloads",
+  ),
   steps: z.array(z.lazy(() => KubernetesClusterSummaryDataStep$zodSchema))
-    .optional(),
+    .optional().describe("Provisioning progress steps for dashboard display"),
 });
 
 /**
@@ -125,6 +142,8 @@ export const KubernetesClusterSummaryData$zodSchema: z.ZodType<
 > = z.object({
   attributes: z.lazy(() => KubernetesClusterSummaryDataAttributes$zodSchema)
     .optional(),
-  id: z.string().optional(),
+  id: z.string().optional().describe(
+    "The cluster ID in hashed format (kc_<hash>)",
+  ),
   type: z.string().optional(),
 }).describe("Summary representation of a cluster (used in list responses)");
