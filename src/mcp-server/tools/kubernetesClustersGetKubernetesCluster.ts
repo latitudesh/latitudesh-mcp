@@ -16,7 +16,7 @@ export const tool$kubernetesClustersGetKubernetesCluster: ToolDefinition<
   name: "kubernetes-clusters-get-kubernetes-cluster",
   description: `Get a Kubernetes Cluster
 
-Retrieves detailed information about a Kubernetes cluster including its status, control plane, and worker node details.
+Retrieves detailed information about a Kubernetes cluster including its status, control plane, worker node details, and individual node information.
 `,
   annotations: {
     "title": "",

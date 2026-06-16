@@ -12,19 +12,32 @@ import {
   createRegisterResourceTemplate,
 } from "./resources.js";
 import { MCPScope } from "./scopes.js";
-import { createRegisterTool, registerDynamicTools } from "./tools.js";
+import {
+  createRegisterTool,
+  MCPToolAnnotationFilter,
+  registerDynamicTools,
+} from "./tools.js";
 import { tool$apiKeysCreate } from "./tools/apiKeysCreate.js";
 import { tool$apiKeysDelete } from "./tools/apiKeysDelete.js";
 import { tool$apiKeysList } from "./tools/apiKeysList.js";
 import { tool$apiKeysUpdate } from "./tools/apiKeysUpdate.js";
 import { tool$apiKeysUpdateApiKey } from "./tools/apiKeysUpdateApiKey.js";
 import { tool$billingListUsage } from "./tools/billingListUsage.js";
+import { tool$blockStorageDeleteStorageVolumes } from "./tools/blockStorageDeleteStorageVolumes.js";
+import { tool$blockStorageGetStorageVolume } from "./tools/blockStorageGetStorageVolume.js";
+import { tool$blockStorageGetStorageVolumes } from "./tools/blockStorageGetStorageVolumes.js";
+import { tool$blockStoragePostStorageVolumes } from "./tools/blockStoragePostStorageVolumes.js";
+import { tool$blockStoragePostStorageVolumesMount } from "./tools/blockStoragePostStorageVolumesMount.js";
 import { tool$elasticIpsCreateElasticIp } from "./tools/elasticIpsCreateElasticIp.js";
 import { tool$elasticIpsDeleteElasticIp } from "./tools/elasticIpsDeleteElasticIp.js";
 import { tool$elasticIpsGetElasticIp } from "./tools/elasticIpsGetElasticIp.js";
 import { tool$elasticIpsListElasticIps } from "./tools/elasticIpsListElasticIps.js";
 import { tool$elasticIpsUpdateElasticIp } from "./tools/elasticIpsUpdateElasticIp.js";
 import { tool$eventsList } from "./tools/eventsList.js";
+import { tool$filesystemStorageCreateFilesystem } from "./tools/filesystemStorageCreateFilesystem.js";
+import { tool$filesystemStorageDeleteFilesystem } from "./tools/filesystemStorageDeleteFilesystem.js";
+import { tool$filesystemStorageListFilesystems } from "./tools/filesystemStorageListFilesystems.js";
+import { tool$filesystemStorageUpdateFilesystem } from "./tools/filesystemStorageUpdateFilesystem.js";
 import { tool$firewallsAssignmentsCreate } from "./tools/firewallsAssignmentsCreate.js";
 import { tool$firewallsCreate } from "./tools/firewallsCreate.js";
 import { tool$firewallsDelete } from "./tools/firewallsDelete.js";
@@ -40,7 +53,13 @@ import { tool$kubernetesClustersCreateKubernetesCluster } from "./tools/kubernet
 import { tool$kubernetesClustersDeleteKubernetesCluster } from "./tools/kubernetesClustersDeleteKubernetesCluster.js";
 import { tool$kubernetesClustersGetKubernetesCluster } from "./tools/kubernetesClustersGetKubernetesCluster.js";
 import { tool$kubernetesClustersGetKubernetesClusterKubeconfig } from "./tools/kubernetesClustersGetKubernetesClusterKubeconfig.js";
+import { tool$kubernetesClustersListKubernetesAvailableVersions } from "./tools/kubernetesClustersListKubernetesAvailableVersions.js";
 import { tool$kubernetesClustersListKubernetesClusters } from "./tools/kubernetesClustersListKubernetesClusters.js";
+import { tool$kubernetesClustersUpdateKubernetesCluster } from "./tools/kubernetesClustersUpdateKubernetesCluster.js";
+import { tool$objectStorageDeleteStorageBuckets } from "./tools/objectStorageDeleteStorageBuckets.js";
+import { tool$objectStorageGetStorageBucket } from "./tools/objectStorageGetStorageBucket.js";
+import { tool$objectStorageGetStorageBuckets } from "./tools/objectStorageGetStorageBuckets.js";
+import { tool$objectStoragePostStorageBuckets } from "./tools/objectStoragePostStorageBuckets.js";
 import { tool$operatingSystemsListPlans } from "./tools/operatingSystemsListPlans.js";
 import { tool$plansGet } from "./tools/plansGet.js";
 import { tool$plansGetBandwidth } from "./tools/plansGetBandwidth.js";
@@ -91,15 +110,6 @@ import { tool$sshKeysModifyProjectKey } from "./tools/sshKeysModifyProjectKey.js
 import { tool$sshKeysRemoveFromProject } from "./tools/sshKeysRemoveFromProject.js";
 import { tool$sshKeysRetrieve } from "./tools/sshKeysRetrieve.js";
 import { tool$sshKeysUpdate } from "./tools/sshKeysUpdate.js";
-import { tool$storageCreateFilesystem } from "./tools/storageCreateFilesystem.js";
-import { tool$storageDeleteFilesystem } from "./tools/storageDeleteFilesystem.js";
-import { tool$storageDeleteStorageVolumes } from "./tools/storageDeleteStorageVolumes.js";
-import { tool$storageGetStorageVolume } from "./tools/storageGetStorageVolume.js";
-import { tool$storageGetStorageVolumes } from "./tools/storageGetStorageVolumes.js";
-import { tool$storageListFilesystems } from "./tools/storageListFilesystems.js";
-import { tool$storagePostStorageVolumes } from "./tools/storagePostStorageVolumes.js";
-import { tool$storagePostStorageVolumesMount } from "./tools/storagePostStorageVolumesMount.js";
-import { tool$storageUpdateFilesystem } from "./tools/storageUpdateFilesystem.js";
 import { tool$tagsCreate } from "./tools/tagsCreate.js";
 import { tool$tagsDelete } from "./tools/tagsDelete.js";
 import { tool$tagsList } from "./tools/tagsList.js";
@@ -127,9 +137,13 @@ import { tool$userProfileListTeams } from "./tools/userProfileListTeams.js";
 import { tool$userProfileUpdate } from "./tools/userProfileUpdate.js";
 import { tool$virtualMachinesCreate } from "./tools/virtualMachinesCreate.js";
 import { tool$virtualMachinesCreateVirtualMachineAction } from "./tools/virtualMachinesCreateVirtualMachineAction.js";
+import { tool$virtualMachinesCreateVirtualMachineNetworkAttachment } from "./tools/virtualMachinesCreateVirtualMachineNetworkAttachment.js";
 import { tool$virtualMachinesDelete } from "./tools/virtualMachinesDelete.js";
+import { tool$virtualMachinesDestroyVirtualMachineNetworkAttachment } from "./tools/virtualMachinesDestroyVirtualMachineNetworkAttachment.js";
 import { tool$virtualMachinesGet } from "./tools/virtualMachinesGet.js";
 import { tool$virtualMachinesList } from "./tools/virtualMachinesList.js";
+import { tool$virtualMachinesListVirtualMachineNetworkAttachments } from "./tools/virtualMachinesListVirtualMachineNetworkAttachments.js";
+import { tool$virtualMachinesShowVirtualMachineMetrics } from "./tools/virtualMachinesShowVirtualMachineMetrics.js";
 import { tool$virtualMachinesUpdateVirtualMachine } from "./tools/virtualMachinesUpdateVirtualMachine.js";
 import { tool$virtualNetworksDelete } from "./tools/virtualNetworksDelete.js";
 import { tool$vpnSessionsCreate } from "./tools/vpnSessionsCreate.js";
@@ -142,6 +156,7 @@ export function createMCPServer(deps: {
   allowedTools?: string[] | undefined;
   dynamic?: boolean | undefined;
   scopes?: MCPScope[] | undefined;
+  annotationFilter?: MCPToolAnnotationFilter | undefined;
   getSDK?: () => LatitudeshCore;
   serverURL?: string | undefined;
   security?: SDKOptions["security"] | undefined;
@@ -150,7 +165,7 @@ export function createMCPServer(deps: {
 }) {
   const server = new McpServer({
     name: "Latitudesh",
-    version: "0.1.1",
+    version: "0.2.0",
   });
 
   const getClient = deps.getSDK || (() =>
@@ -178,6 +193,7 @@ export function createMCPServer(deps: {
     scopes,
     allowedTools,
     deps.dynamic,
+    deps.annotationFilter,
   );
   const resource = createRegisterResource(
     deps.logger,
@@ -224,8 +240,10 @@ export function createMCPServer(deps: {
   tool(tool$operatingSystemsListPlans);
   tool(tool$kubernetesClustersListKubernetesClusters);
   tool(tool$kubernetesClustersCreateKubernetesCluster);
+  tool(tool$kubernetesClustersListKubernetesAvailableVersions);
   tool(tool$kubernetesClustersGetKubernetesCluster);
   tool(tool$kubernetesClustersDeleteKubernetesCluster);
+  tool(tool$kubernetesClustersUpdateKubernetesCluster);
   tool(tool$kubernetesClustersGetKubernetesClusterKubeconfig);
   tool(tool$plansList);
   tool(tool$plansGet);
@@ -279,15 +297,19 @@ export function createMCPServer(deps: {
   tool(tool$serversScheduleDeletion);
   tool(tool$serversUnscheduleDeletion);
   tool(tool$serversReinstall);
-  tool(tool$storageCreateFilesystem);
-  tool(tool$storageListFilesystems);
-  tool(tool$storageDeleteFilesystem);
-  tool(tool$storageUpdateFilesystem);
-  tool(tool$storageGetStorageVolumes);
-  tool(tool$storagePostStorageVolumes);
-  tool(tool$storageGetStorageVolume);
-  tool(tool$storageDeleteStorageVolumes);
-  tool(tool$storagePostStorageVolumesMount);
+  tool(tool$filesystemStorageCreateFilesystem);
+  tool(tool$filesystemStorageListFilesystems);
+  tool(tool$filesystemStorageDeleteFilesystem);
+  tool(tool$filesystemStorageUpdateFilesystem);
+  tool(tool$blockStorageGetStorageVolumes);
+  tool(tool$blockStoragePostStorageVolumes);
+  tool(tool$blockStorageGetStorageVolume);
+  tool(tool$blockStorageDeleteStorageVolumes);
+  tool(tool$blockStoragePostStorageVolumesMount);
+  tool(tool$objectStorageGetStorageBuckets);
+  tool(tool$objectStoragePostStorageBuckets);
+  tool(tool$objectStorageGetStorageBucket);
+  tool(tool$objectStorageDeleteStorageBuckets);
   tool(tool$tagsList);
   tool(tool$tagsCreate);
   tool(tool$tagsUpdate);
@@ -306,6 +328,10 @@ export function createMCPServer(deps: {
   tool(tool$virtualMachinesDelete);
   tool(tool$virtualMachinesUpdateVirtualMachine);
   tool(tool$virtualMachinesCreateVirtualMachineAction);
+  tool(tool$virtualMachinesShowVirtualMachineMetrics);
+  tool(tool$virtualMachinesListVirtualMachineNetworkAttachments);
+  tool(tool$virtualMachinesCreateVirtualMachineNetworkAttachment);
+  tool(tool$virtualMachinesDestroyVirtualMachineNetworkAttachment);
   tool(tool$privateNetworksList);
   tool(tool$privateNetworksCreate);
   tool(tool$privateNetworksUpdate);

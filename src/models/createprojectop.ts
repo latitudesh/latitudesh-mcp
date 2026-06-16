@@ -57,10 +57,12 @@ export type CreateProjectAttributes2 = {
 export const CreateProjectAttributes2$zodSchema: z.ZodType<
   CreateProjectAttributes2
 > = z.object({
-  description: z.string().optional(),
+  description: z.string().optional().describe("The project description."),
   environment: CreateProjectEnvironment2$zodSchema.optional(),
-  name: z.string(),
-  provisioning_type: ProvisioningType2$zodSchema,
+  name: z.string().describe("The project name. Must be unique."),
+  provisioning_type: ProvisioningType2$zodSchema.describe(
+    "The provisioning type of the project. Default: on_demand",
+  ),
 });
 
 export type CreateProjectData2 = {

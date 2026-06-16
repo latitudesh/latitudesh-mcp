@@ -9,5 +9,7 @@ export type DeleteKubernetesClusterRequest = { kubernetes_cluster_id: string };
 export const DeleteKubernetesClusterRequest$zodSchema: z.ZodType<
   DeleteKubernetesClusterRequest
 > = z.object({
-  kubernetes_cluster_id: z.string().describe("The cluster name"),
+  kubernetes_cluster_id: z.string().describe(
+    "The cluster ID (format: kc_<hash>) or cluster name. Both formats are accepted for backward compatibility.",
+  ),
 });

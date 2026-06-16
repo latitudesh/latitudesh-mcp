@@ -3,6 +3,58 @@
  */
 
 import * as z from "zod";
+import { ClosedEnum } from "../types/enums.js";
+
+export const DeployConfigRole = {
+  Os: "os",
+  Storage: "storage",
+  Raw: "raw",
+} as const;
+export type DeployConfigRole = ClosedEnum<typeof DeployConfigRole>;
+
+export const DeployConfigRole$zodSchema = z.enum([
+  "os",
+  "storage",
+  "raw",
+]);
+
+export const RaidLevel = {
+  Raid0: "raid-0",
+  Raid1: "raid-1",
+} as const;
+export type RaidLevel = ClosedEnum<typeof RaidLevel>;
+
+export const RaidLevel$zodSchema = z.enum([
+  "raid-0",
+  "raid-1",
+]);
+
+export const Filesystem = {
+  Ext4: "ext4",
+  Xfs: "xfs",
+} as const;
+export type Filesystem = ClosedEnum<typeof Filesystem>;
+
+export const Filesystem$zodSchema = z.enum([
+  "ext4",
+  "xfs",
+]);
+
+export type DiskLayout = {
+  count: number;
+  role: DeployConfigRole;
+  raid_level?: RaidLevel | null | undefined;
+  filesystem?: Filesystem | null | undefined;
+  mount_point?: string | null | undefined;
+};
+
+export const DiskLayout$zodSchema: z.ZodType<DiskLayout> = z.object({
+  count: z.int(),
+  filesystem: Filesystem$zodSchema.nullable().optional(),
+  mount_point: z.string().nullable().optional(),
+  raid_level: RaidLevel$zodSchema.nullable().optional(),
+  role: DeployConfigRole$zodSchema,
+});
 
 export type Partition = {
   path?: string | undefined;
@@ -20,6 +72,7 @@ export type DeployConfigAttributes = {
   operating_system?: string | undefined;
   hostname?: string | undefined;
   raid?: string | undefined;
+  disk_layout?: Array<DiskLayout> | null | undefined;
   user_data?: string | undefined;
   ssh_keys?: Array<string> | undefined;
   partitions?: Array<Partition> | null | undefined;
@@ -28,6 +81,8 @@ export type DeployConfigAttributes = {
 export const DeployConfigAttributes$zodSchema: z.ZodType<
   DeployConfigAttributes
 > = z.object({
+  disk_layout: z.array(z.lazy(() => DiskLayout$zodSchema)).nullable()
+    .optional(),
   hostname: z.string().optional(),
   operating_system: z.string().optional(),
   partitions: z.array(z.lazy(() => Partition$zodSchema)).nullable().optional(),

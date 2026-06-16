@@ -99,6 +99,9 @@ async function $do(
   );
   const query$ = encodeFormQuery({
     "filter[tags]": payload$.filterTags,
+    "page[number]": payload$.pageNumber,
+    "page[size]": payload$.pageSize,
+    "stats[total]": payload$.statsTotal,
   });
 
   const headers$ = new Headers(compactMap({

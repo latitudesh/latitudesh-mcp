@@ -10,7 +10,7 @@ export type GetStorageVolumeRequest = { id: string };
 export const GetStorageVolumeRequest$zodSchema: z.ZodType<
   GetStorageVolumeRequest
 > = z.object({
-  id: z.string().describe("The volume storage ID"),
+  id: z.string().describe("The volume ID"),
 });
 
 /**

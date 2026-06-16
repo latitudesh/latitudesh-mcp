@@ -32,6 +32,8 @@ import { Result } from "../types/fp.js";
  *
  * @remarks
  * Deletes a Kubernetes cluster. This action is irreversible and will destroy all cluster resources.
+ *
+ * **Note:** Only users with the `owner`, `administrator`, or `collaborator` role can delete clusters. Users with the `billing` role cannot perform this action.
  */
 export function kubernetesClustersDeleteKubernetesCluster(
   client$: LatitudeshCore,

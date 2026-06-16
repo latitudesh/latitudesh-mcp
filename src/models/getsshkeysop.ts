@@ -8,6 +8,9 @@ export type GetSshKeysRequest = {
   filterProject?: string | undefined;
   filterScope?: string | undefined;
   filterTags?: string | undefined;
+  statsTotal?: string | undefined;
+  pageNumber?: number | undefined;
+  pageSize?: number | undefined;
 };
 
 export const GetSshKeysRequest$zodSchema: z.ZodType<GetSshKeysRequest> = z
@@ -18,5 +21,10 @@ export const GetSshKeysRequest$zodSchema: z.ZodType<GetSshKeysRequest> = z
     ).optional(),
     filterTags: z.string().describe(
       "The tags ids to filter by, separated by comma, e.g. `filter[tags]=tag_1,tag_2`will return ssh keys with `tag_1` AND `tag_2`",
+    ).optional(),
+    pageNumber: z.int().describe("Page number for pagination").optional(),
+    pageSize: z.int().describe("Number of items per page").optional(),
+    statsTotal: z.string().describe(
+      "Request aggregate stats in the response `meta`. Use `count` to get the total number of records, returned as `meta.stats.total.count`.",
     ).optional(),
   });

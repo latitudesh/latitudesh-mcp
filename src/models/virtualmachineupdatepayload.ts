@@ -16,12 +16,20 @@ export const VirtualMachineUpdatePayloadType$zodSchema = z.enum([
   "virtual_machines",
 ]);
 
-export type VirtualMachineUpdatePayloadAttributes = { name: string };
+export type VirtualMachineUpdatePayloadAttributes = {
+  name?: string | undefined;
+  tags?: Array<string> | null | undefined;
+};
 
 export const VirtualMachineUpdatePayloadAttributes$zodSchema: z.ZodType<
   VirtualMachineUpdatePayloadAttributes
 > = z.object({
-  name: z.string(),
+  name: z.string().optional().describe(
+    "The new display name (hostname) for the Virtual Machine",
+  ),
+  tags: z.array(z.string()).nullable().optional().describe(
+    "Array of tag IDs to assign to the VM. Replaces all existing tags.",
+  ),
 });
 
 export type VirtualMachineUpdatePayloadData = {

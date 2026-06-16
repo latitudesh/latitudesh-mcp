@@ -23,9 +23,15 @@ export type CreateApiKeyAttributes = {
 export const CreateApiKeyAttributes$zodSchema: z.ZodType<
   CreateApiKeyAttributes
 > = z.object({
-  allowed_ips: z.array(z.string()).optional(),
-  name: z.string().default("Name of the API Key"),
-  read_only: z.boolean().optional(),
+  allowed_ips: z.array(z.string()).optional().describe(
+    "List of allowed IP addresses or CIDR ranges (e.g., \"192.168.1.100\", \"10.0.0.0/24\")",
+  ),
+  name: z.string().default("Name of the API Key").describe(
+    "Name of the API Key",
+  ),
+  read_only: z.boolean().optional().describe(
+    "Whether the API Key is read-only. Read-only keys can only perform GET requests.",
+  ),
 });
 
 export type CreateApiKeyData = {

@@ -24,8 +24,8 @@ export type PutProjectUserDataAttributes2 = {
 export const PutProjectUserDataAttributes2$zodSchema: z.ZodType<
   PutProjectUserDataAttributes2
 > = z.object({
-  content: z.string().optional(),
-  description: z.string().optional(),
+  content: z.string().optional().describe("encoded content of the User Data"),
+  description: z.string().optional().describe("description dummy user data"),
 });
 
 export type PutProjectUserDataData2 = {

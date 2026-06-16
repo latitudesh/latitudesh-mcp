@@ -55,9 +55,11 @@ export type Discount = {
 };
 
 export const Discount$zodSchema: z.ZodType<Discount> = z.object({
-  description: z.string(),
-  type: BillingUsageType$zodSchema,
-  value: z.number(),
+  description: z.string().describe("Description of the discount"),
+  type: BillingUsageType$zodSchema.describe(
+    "Type of discount (percentage or fixed amount)",
+  ),
+  value: z.number().describe("Value of the discount (percentage or amount)"),
 });
 
 export const BillingUsageUnit = {
@@ -126,13 +128,17 @@ export const Product$zodSchema: z.ZodType<Product> = z.object({
   id: z.string().optional(),
   metadata: z.lazy(() => Metadata$zodSchema).optional(),
   name: z.string().optional(),
-  price: z.number().optional(),
+  price: z.number().optional().describe(
+    "The total usage price of the product in cents",
+  ),
   proration: z.boolean().optional(),
   quantity: z.number().optional(),
   resource: z.string().optional(),
   start: z.iso.datetime({ offset: true }).optional(),
   unit: BillingUsageUnit$zodSchema.optional(),
-  unit_price: z.number().optional(),
+  unit_price: z.number().optional().describe(
+    "The unit price of the product in cents",
+  ),
   usage_type: UsageType$zodSchema.optional(),
 });
 
@@ -148,12 +154,20 @@ export type BillingUsageAttributes = {
 export const BillingUsageAttributes$zodSchema: z.ZodType<
   BillingUsageAttributes
 > = z.object({
-  available_credit_balance: z.int().optional(),
-  period: z.lazy(() => Period$zodSchema).optional(),
-  price: z.number().optional(),
+  available_credit_balance: z.int().optional().describe(
+    "The available credit balance in cents",
+  ),
+  period: z.lazy(() => Period$zodSchema).optional().describe(
+    "The period from the returned billing cycle",
+  ),
+  price: z.number().optional().describe("The total usage price in cents"),
   products: z.array(z.lazy(() => Product$zodSchema)).optional(),
-  project: z.lazy(() => BillingUsageProject$zodSchema).optional(),
-  threshold: z.number().nullable().optional(),
+  project: z.lazy(() => BillingUsageProject$zodSchema).optional().describe(
+    "The project in which the returned usage belongs to",
+  ),
+  threshold: z.number().nullable().optional().describe(
+    "The threshold which we use to charge your usage, in cents",
+  ),
 });
 
 export type BillingUsageData = {

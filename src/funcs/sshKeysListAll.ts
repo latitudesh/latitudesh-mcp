@@ -90,6 +90,9 @@ async function $do(
     "filter[project]": payload$?.filterProject,
     "filter[scope]": payload$?.filterScope,
     "filter[tags]": payload$?.filterTags,
+    "page[number]": payload$?.pageNumber,
+    "page[size]": payload$?.pageSize,
+    "stats[total]": payload$?.statsTotal,
   });
 
   const headers$ = new Headers(compactMap({

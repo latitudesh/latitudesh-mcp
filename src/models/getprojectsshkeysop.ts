@@ -7,6 +7,9 @@ import * as z from "zod";
 export type GetProjectSshKeysRequest = {
   project_id: string;
   filterTags?: string | undefined;
+  statsTotal?: string | undefined;
+  pageNumber?: number | undefined;
+  pageSize?: number | undefined;
 };
 
 export const GetProjectSshKeysRequest$zodSchema: z.ZodType<
@@ -15,5 +18,10 @@ export const GetProjectSshKeysRequest$zodSchema: z.ZodType<
   filterTags: z.string().describe(
     "The tags ids to filter by, separated by comma, e.g. `filter[tags]=tag_1,tag_2`will return ssh keys with `tag_1` AND `tag_2`",
   ).optional(),
+  pageNumber: z.int().describe("Page number for pagination").optional(),
+  pageSize: z.int().describe("Number of items per page").optional(),
   project_id: z.string().describe("Project ID or Slug"),
+  statsTotal: z.string().describe(
+    "Request aggregate stats in the response `meta`. Use `count` to get the total number of records, returned as `meta.stats.total.count`.",
+  ).optional(),
 });

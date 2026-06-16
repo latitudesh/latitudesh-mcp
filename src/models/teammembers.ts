@@ -7,15 +7,11 @@ import * as z from "zod";
 export type TeamMembersRole = {
   id?: string | undefined;
   name?: string | undefined;
-  created_at?: string | undefined;
-  updated_at?: string | undefined;
 };
 
 export const TeamMembersRole$zodSchema: z.ZodType<TeamMembersRole> = z.object({
-  created_at: z.string().optional(),
   id: z.string().optional(),
   name: z.string().optional(),
-  updated_at: z.string().optional(),
 });
 
 export type TeamMembersAttributes = {
@@ -53,8 +49,18 @@ export const TeamMembersData$zodSchema: z.ZodType<TeamMembersData> = z.object({
   type: z.string().optional(),
 });
 
-export type TeamMembers = { data?: Array<TeamMembersData> | undefined };
+export type TeamMembersMeta = {};
+
+export const TeamMembersMeta$zodSchema: z.ZodType<TeamMembersMeta> = z.object(
+  {},
+);
+
+export type TeamMembers = {
+  data?: Array<TeamMembersData> | undefined;
+  meta?: TeamMembersMeta | undefined;
+};
 
 export const TeamMembers$zodSchema: z.ZodType<TeamMembers> = z.object({
   data: z.array(z.lazy(() => TeamMembersData$zodSchema)).optional(),
+  meta: z.lazy(() => TeamMembersMeta$zodSchema).optional(),
 });

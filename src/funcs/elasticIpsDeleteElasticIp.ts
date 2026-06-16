@@ -31,9 +31,7 @@ import { Result } from "../types/fp.js";
  * Release an Elastic IP
  *
  * @remarks
- * Releases an Elastic IP, returning it to the available pool. The IP will transition to `releasing` status before being fully removed.
- *
- * **Note:** This feature requires the `elastic_ips` feature flag to be enabled for your team. Only Elastic IPs with status `active` or `error` can be released.
+ * Releases an Elastic IP, returning it to the available pool. The IP will transition to `releasing` status before being fully removed. Only Elastic IPs with status `active` or `error` can be released.
  */
 export function elasticIpsDeleteElasticIp(
   client$: LatitudeshCore,
@@ -164,7 +162,7 @@ async function $do(
     | ConnectionError
   >(
     M.nil(204, ErrorObject$zodSchema),
-    M.json([403, 404, 422], ErrorObject$zodSchema, {
+    M.json([404, 422], ErrorObject$zodSchema, {
       ctype: "application/vnd.api+json",
       key: "error_object",
     }),

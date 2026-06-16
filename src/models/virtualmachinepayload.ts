@@ -16,22 +16,49 @@ export const VirtualMachinePayloadType$zodSchema = z.enum([
   "virtual_machines",
 ]);
 
+/**
+ * A user data record reference (encoded id_hash, e.g. 'ud_xxx', or raw integer id) to apply as cloud-init configuration
+ */
+export type UserDataUnion = number | string;
+
+export const UserDataUnion$zodSchema: z.ZodType<UserDataUnion> = z.union([
+  z.int(),
+  z.string(),
+]).describe(
+  "A user data record reference (encoded id_hash, e.g. 'ud_xxx', or raw integer id) to apply as cloud-init configuration",
+);
+
 export type VirtualMachinePayloadAttributes = {
   name?: string | undefined;
   plan?: string | null | undefined;
   ssh_keys?: Array<string> | null | undefined;
   project?: string | undefined;
   operating_system?: string | null | undefined;
+  user_data?: number | string | null | undefined;
+  tags?: Array<string> | null | undefined;
 };
 
 export const VirtualMachinePayloadAttributes$zodSchema: z.ZodType<
   VirtualMachinePayloadAttributes
 > = z.object({
   name: z.string().default("my-vm"),
-  operating_system: z.string().nullable().optional(),
-  plan: z.string().nullable().optional(),
+  operating_system: z.string().nullable().optional().describe(
+    "The operating system slug for the Virtual Machine. If not specified, defaults to ubuntu-24-04 for CPU plans or ubuntu24_ml_in_a_box for GPU plans.",
+  ),
+  plan: z.string().nullable().optional().describe(
+    "The plan ID or Slug for the Virtual Machine",
+  ),
   project: z.string().default("my-project"),
   ssh_keys: z.array(z.string()).nullable().optional(),
+  tags: z.array(z.string()).nullable().optional().describe(
+    "Array of tag IDs to assign to the VM.",
+  ),
+  user_data: z.union([
+    z.int(),
+    z.string(),
+  ]).nullable().optional().describe(
+    "A user data record reference (encoded id_hash, e.g. 'ud_xxx', or raw integer id) to apply as cloud-init configuration",
+  ),
 });
 
 export type VirtualMachinePayloadData = {

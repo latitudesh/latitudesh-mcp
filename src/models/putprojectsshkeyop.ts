@@ -23,7 +23,7 @@ export type PutProjectSshKeyAttributes2 = {
 export const PutProjectSshKeyAttributes2$zodSchema: z.ZodType<
   PutProjectSshKeyAttributes2
 > = z.object({
-  name: z.string().default("New SSH Key Name"),
+  name: z.string().default("New SSH Key Name").describe("Name of the SSH Key"),
   tags: z.array(z.string()).optional(),
 });
 

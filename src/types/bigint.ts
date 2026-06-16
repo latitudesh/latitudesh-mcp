@@ -24,23 +24,24 @@ export function bigint(): z.ZodType<bigint | string> {
 }
 
 export function bigintOptional(): z.ZodType<bigint | string | undefined> {
-  return z.union([
-    z.bigint().transform((v) => String(v)),
-    z.string().transform((v, ctx) => {
-      try {
-        return BigInt(v);
-      } catch {
-        ctx.addIssue({
-          code: z.ZodIssueCode.custom,
-          message: "Invalid bigint value",
-        });
-        return z.NEVER;
-      }
-    }),
-    z.number().transform((v) => BigInt(Math.trunc(v))),
-    z.undefined(),
-    z.null().transform(() => undefined),
-  ]);
+  return z
+    .union([
+      z.bigint().transform((v) => String(v)),
+      z.string().transform((v, ctx) => {
+        try {
+          return BigInt(v);
+        } catch {
+          ctx.addIssue({
+            code: z.ZodIssueCode.custom,
+            message: "Invalid bigint value",
+          });
+          return z.NEVER;
+        }
+      }),
+      z.number().transform((v) => BigInt(Math.trunc(v))),
+      z.null().transform(() => undefined),
+    ])
+    .optional();
 }
 
 export function bigintNullable(): z.ZodType<bigint | string | null> {

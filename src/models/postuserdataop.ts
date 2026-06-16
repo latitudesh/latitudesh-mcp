@@ -23,9 +23,9 @@ export type PostUserDataAttributes2 = {
 export const PostUserDataAttributes2$zodSchema: z.ZodType<
   PostUserDataAttributes2
 > = z.object({
-  content: z.string(),
-  description: z.string(),
-  project: z.string().optional(),
+  content: z.string().describe("base64 encoded content of the User Data"),
+  description: z.string().describe("description of the User Data"),
+  project: z.string().optional().describe("Project ID or slug"),
 });
 
 export type PostUserDataData2 = {

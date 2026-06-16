@@ -3,18 +3,15 @@
  */
 
 import * as z from "zod";
+import { PaginationMeta, PaginationMeta$zodSchema } from "./paginationmeta.js";
 import { SshKeyData, SshKeyData$zodSchema } from "./sshkeydata.js";
-
-export type SshKeysMeta = {};
-
-export const SshKeysMeta$zodSchema: z.ZodType<SshKeysMeta> = z.object({});
 
 export type SshKeys = {
   data?: Array<SshKeyData> | undefined;
-  meta?: SshKeysMeta | undefined;
+  meta?: PaginationMeta | undefined;
 };
 
 export const SshKeys$zodSchema: z.ZodType<SshKeys> = z.object({
   data: z.array(SshKeyData$zodSchema).optional(),
-  meta: z.lazy(() => SshKeysMeta$zodSchema).optional(),
+  meta: PaginationMeta$zodSchema.optional(),
 });

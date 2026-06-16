@@ -180,6 +180,61 @@ export const CreateServerRaid2$zodSchema = z.enum([
   "RAID mode for the server. Set to 'raid-0' for RAID 0, 'raid-1' for RAID 1, or omit/null for no RAID configuration",
 );
 
+export const CreateServerRole2 = {
+  Os: "os",
+  Storage: "storage",
+  Raw: "raw",
+} as const;
+export type CreateServerRole2 = ClosedEnum<typeof CreateServerRole2>;
+
+export const CreateServerRole2$zodSchema = z.enum([
+  "os",
+  "storage",
+  "raw",
+]);
+
+export const CreateServerRaidLevel2 = {
+  Raid0: "raid-0",
+  Raid1: "raid-1",
+} as const;
+export type CreateServerRaidLevel2 = ClosedEnum<typeof CreateServerRaidLevel2>;
+
+export const CreateServerRaidLevel2$zodSchema = z.enum([
+  "raid-0",
+  "raid-1",
+]);
+
+export const CreateServerFilesystem2 = {
+  Ext4: "ext4",
+  Xfs: "xfs",
+} as const;
+export type CreateServerFilesystem2 = ClosedEnum<
+  typeof CreateServerFilesystem2
+>;
+
+export const CreateServerFilesystem2$zodSchema = z.enum([
+  "ext4",
+  "xfs",
+]);
+
+export type CreateServerDiskLayout2 = {
+  count: number;
+  role: CreateServerRole2;
+  raid_level?: CreateServerRaidLevel2 | null | undefined;
+  filesystem?: CreateServerFilesystem2 | null | undefined;
+  mount_point?: string | null | undefined;
+};
+
+export const CreateServerDiskLayout2$zodSchema: z.ZodType<
+  CreateServerDiskLayout2
+> = z.object({
+  count: z.int(),
+  filesystem: CreateServerFilesystem2$zodSchema.nullable().optional(),
+  mount_point: z.string().nullable().optional(),
+  raid_level: CreateServerRaidLevel2$zodSchema.nullable().optional(),
+  role: CreateServerRole2$zodSchema,
+});
+
 /**
  * The server billing type. Accepts `hourly` and `monthly` for on demand projects and `yearly` for reserved projects.
  */
@@ -210,6 +265,7 @@ export type CreateServerAttributes2 = {
   ssh_keys?: Array<string> | null | undefined;
   user_data?: string | null | undefined;
   raid?: CreateServerRaid2 | null | undefined;
+  disk_layout?: Array<CreateServerDiskLayout2> | null | undefined;
   ipxe?: string | null | undefined;
   billing?: CreateServerBilling2 | null | undefined;
 };
@@ -217,16 +273,36 @@ export type CreateServerAttributes2 = {
 export const CreateServerAttributes2$zodSchema: z.ZodType<
   CreateServerAttributes2
 > = z.object({
-  billing: CreateServerBilling2$zodSchema.nullable().optional(),
-  hostname: z.string().optional(),
-  ipxe: z.string().nullable().optional(),
-  operating_system: CreateServerOperatingSystem2$zodSchema.optional(),
-  plan: CreateServerPlan2$zodSchema.optional(),
-  project: z.string().optional(),
-  raid: CreateServerRaid2$zodSchema.nullable().optional(),
-  site: CreateServerSite2$zodSchema.optional(),
-  ssh_keys: z.array(z.string()).nullable().optional(),
-  user_data: z.string().nullable().optional(),
+  billing: CreateServerBilling2$zodSchema.nullable().optional().describe(
+    "The server billing type. Accepts `hourly` and `monthly` for on demand projects and `yearly` for reserved projects.",
+  ),
+  disk_layout: z.array(z.lazy(() => CreateServerDiskLayout2$zodSchema))
+    .nullable().optional(),
+  hostname: z.string().optional().describe("The server hostname"),
+  ipxe: z.string().nullable().optional().describe(
+    "URL where iPXE script is stored on, OR the iPXE script encoded in base64. This attribute is required when iPXE is selected as operating system.",
+  ),
+  operating_system: CreateServerOperatingSystem2$zodSchema.optional().describe(
+    "The operating system slug for the new server",
+  ),
+  plan: CreateServerPlan2$zodSchema.optional().describe(
+    "The plan slug to choose server from, defining the specs the server will have",
+  ),
+  project: z.string().optional().describe(
+    "The project (ID or Slug) to deploy the server",
+  ),
+  raid: CreateServerRaid2$zodSchema.nullable().optional().describe(
+    "RAID mode for the server. Set to 'raid-0' for RAID 0, 'raid-1' for RAID 1, or omit/null for no RAID configuration",
+  ),
+  site: CreateServerSite2$zodSchema.optional().describe(
+    "The site slug to deploy the server",
+  ),
+  ssh_keys: z.array(z.string()).nullable().optional().describe(
+    "SSH Keys to set on the server",
+  ),
+  user_data: z.string().nullable().optional().describe(
+    "User data ID to set on the server. This is a custom script that will run after the deploy",
+  ),
 });
 
 export type CreateServerData2 = {

@@ -22,8 +22,8 @@ export type CreateElasticIpAttributes = {
 export const CreateElasticIpAttributes$zodSchema: z.ZodType<
   CreateElasticIpAttributes
 > = z.object({
-  project_id: z.string(),
-  server_id: z.string(),
+  project_id: z.string().describe("The project ID or slug"),
+  server_id: z.string().describe("The server ID to assign the Elastic IP to"),
 });
 
 export type CreateElasticIpData = {

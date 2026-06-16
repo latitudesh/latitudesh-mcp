@@ -57,7 +57,9 @@ export const GetPlansRequest$zodSchema: z.ZodType<GetPlansRequest> = z.object({
     "The ram size in Gigabytes to filter by, should be used with the following options:\n                              [eql] to filter for values equal to the provided value.\n                              [gte] to filter for values greater or equal to the provided value.\n                              [lte] to filter by values lower or equal to the provided value.",
   ).optional(),
   filterSlug: z.string().describe("The plan slug to filter by").optional(),
-  filterStockLevel: FilterStockLevel$zodSchema.optional(),
+  filterStockLevel: FilterStockLevel$zodSchema.optional().describe(
+    "The stock level at the site to filter by",
+  ),
 });
 
 /**

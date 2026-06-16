@@ -161,7 +161,7 @@ async function $do(
       ctype: "application/vnd.api+json",
       key: "kubernetes_clusters",
     }),
-    M.json([400, 401, 403], ListKubernetesClustersResponse$zodSchema, {
+    M.json([400, 401], ListKubernetesClustersResponse$zodSchema, {
       ctype: "application/vnd.api+json",
       key: "error_object",
     }),

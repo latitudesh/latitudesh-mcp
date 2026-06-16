@@ -15,8 +15,6 @@ export const tool$elasticIpsGetElasticIp: ToolDefinition<typeof args> = {
   description: `Retrieve an Elastic IP
 
 Returns a single Elastic IP by its ID.
-
-**Note:** This feature requires the \`elastic_ips\` feature flag to be enabled for your team.
 `,
   annotations: {
     "title": "",

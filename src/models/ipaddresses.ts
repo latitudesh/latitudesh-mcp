@@ -3,10 +3,20 @@
  */
 
 import * as z from "zod";
-import { IpAddress, IpAddress$zodSchema } from "./ipaddress.js";
+import { IpAddressData, IpAddressData$zodSchema } from "./ipaddressdata.js";
 
-export type IpAddresses = { data?: Array<IpAddress> | undefined };
+export type IpAddressesMeta = {};
+
+export const IpAddressesMeta$zodSchema: z.ZodType<IpAddressesMeta> = z.object(
+  {},
+);
+
+export type IpAddresses = {
+  data?: Array<IpAddressData> | undefined;
+  meta?: IpAddressesMeta | undefined;
+};
 
 export const IpAddresses$zodSchema: z.ZodType<IpAddresses> = z.object({
-  data: z.array(IpAddress$zodSchema).optional(),
+  data: z.array(IpAddressData$zodSchema).optional(),
+  meta: z.lazy(() => IpAddressesMeta$zodSchema).optional(),
 });

@@ -24,6 +24,7 @@ export const VirtualMachineAttributesStatus = {
   Starting: "Starting",
   Scheduling: "Scheduling",
   Scheduled: "Scheduled",
+  Destroying: "Destroying",
 } as const;
 export type VirtualMachineAttributesStatus = ClosedEnum<
   typeof VirtualMachineAttributesStatus
@@ -35,8 +36,73 @@ export const VirtualMachineAttributesStatus$zodSchema = z.enum([
   "Starting",
   "Scheduling",
   "Scheduled",
+  "Destroying",
 ]);
 
+/**
+ * Features supported by this operating system
+ */
+export type VirtualMachineAttributesFeatures = {
+  raid?: boolean | undefined;
+  ssh_keys?: boolean | undefined;
+  user_data?: boolean | undefined;
+};
+
+export const VirtualMachineAttributesFeatures$zodSchema: z.ZodType<
+  VirtualMachineAttributesFeatures
+> = z.object({
+  raid: z.boolean().optional().describe("Whether RAID is supported"),
+  ssh_keys: z.boolean().optional().describe("Whether SSH keys are supported"),
+  user_data: z.boolean().optional().describe("Whether user data is supported"),
+}).describe("Features supported by this operating system");
+
+/**
+ * Distribution information
+ */
+export type VirtualMachineAttributesDistro = {
+  name?: string | undefined;
+  slug?: string | undefined;
+  series?: string | undefined;
+};
+
+export const VirtualMachineAttributesDistro$zodSchema: z.ZodType<
+  VirtualMachineAttributesDistro
+> = z.object({
+  name: z.string().optional().describe("The name of the Linux distribution"),
+  series: z.string().optional().describe("The distribution series code name"),
+  slug: z.string().optional().describe("The slug of the Linux distribution"),
+}).describe("Distribution information");
+
+/**
+ * The operating system installed on the virtual machine
+ */
+export type VirtualMachineAttributesOperatingSystem = {
+  name?: string | undefined;
+  slug?: string | undefined;
+  version?: string | undefined;
+  features?: VirtualMachineAttributesFeatures | undefined;
+  distro?: VirtualMachineAttributesDistro | undefined;
+};
+
+export const VirtualMachineAttributesOperatingSystem$zodSchema: z.ZodType<
+  VirtualMachineAttributesOperatingSystem
+> = z.object({
+  distro: z.lazy(() => VirtualMachineAttributesDistro$zodSchema).optional()
+    .describe("Distribution information"),
+  features: z.lazy(() => VirtualMachineAttributesFeatures$zodSchema).optional()
+    .describe("Features supported by this operating system"),
+  name: z.string().optional().describe("The full name of the operating system"),
+  slug: z.string().optional().describe(
+    "The unique slug identifier for the operating system",
+  ),
+  version: z.string().optional().describe(
+    "The version of the operating system",
+  ),
+}).describe("The operating system installed on the virtual machine");
+
+/**
+ * SSH credentials for connecting to the virtual machine. Only available when the VM is running.
+ */
 export type VirtualMachineAttributesCredentials = {
   username?: string | undefined;
   host?: string | undefined;
@@ -50,8 +116,12 @@ export const VirtualMachineAttributesCredentials$zodSchema: z.ZodType<
   host: z.string().optional(),
   password: z.string().optional(),
   ssh_keys: z.array(z.string()).optional(),
-  username: z.string().optional(),
-});
+  username: z.string().optional().describe(
+    "The SSH username for the VM, determined by the operating system (e.g., ubuntu, centos, ec2-user). Defaults to ubuntu if not specified by the OS.",
+  ),
+}).describe(
+  "SSH credentials for connecting to the virtual machine. Only available when the VM is running.",
+);
 
 export type VirtualMachineAttributesPlan = {
   id?: string | undefined;
@@ -83,33 +153,69 @@ export const VirtualMachineAttributesSpecs$zodSchema: z.ZodType<
   vcpu: z.int().nullable().optional(),
 });
 
+export type VirtualMachineAttributesTag = {
+  id?: string | undefined;
+  name?: string | undefined;
+  description?: string | null | undefined;
+  color?: string | null | undefined;
+};
+
+export const VirtualMachineAttributesTag$zodSchema: z.ZodType<
+  VirtualMachineAttributesTag
+> = z.object({
+  color: z.string().nullable().optional(),
+  description: z.string().nullable().optional(),
+  id: z.string().optional(),
+  name: z.string().optional(),
+});
+
 export type VirtualMachineAttributesAttributes = {
   name?: string | undefined;
   created_at?: string | undefined;
   status?: VirtualMachineAttributesStatus | undefined;
   primary_ipv4?: string | null | undefined;
-  operating_system?: string | null | undefined;
+  operating_system?: VirtualMachineAttributesOperatingSystem | null | undefined;
   credentials?: VirtualMachineAttributesCredentials | null | undefined;
+  site?: string | null | undefined;
+  billing?: string | null | undefined;
+  user_data?: string | null | undefined;
   plan?: VirtualMachineAttributesPlan | undefined;
   specs?: VirtualMachineAttributesSpecs | undefined;
+  tags?: Array<VirtualMachineAttributesTag> | undefined;
   team?: TeamInclude | undefined;
   project?: ProjectInclude | undefined;
+  pending_restart?: boolean | undefined;
 };
 
 export const VirtualMachineAttributesAttributes$zodSchema: z.ZodType<
   VirtualMachineAttributesAttributes
 > = z.object({
+  billing: z.string().nullable().optional(),
   created_at: z.string().optional(),
   credentials: z.lazy(() => VirtualMachineAttributesCredentials$zodSchema)
-    .nullable().optional(),
+    .nullable().optional().describe(
+      "SSH credentials for connecting to the virtual machine. Only available when the VM is running.",
+    ),
   name: z.string().optional(),
-  operating_system: z.string().nullable().optional(),
+  operating_system: z.lazy(() =>
+    VirtualMachineAttributesOperatingSystem$zodSchema
+  ).nullable().optional().describe(
+    "The operating system installed on the virtual machine",
+  ),
+  pending_restart: z.boolean().optional().describe(
+    "Opt-in extra field. Request via `extra_fields[virtual_machines]=pending_restart`.",
+  ),
   plan: z.lazy(() => VirtualMachineAttributesPlan$zodSchema).optional(),
   primary_ipv4: z.string().nullable().optional(),
   project: ProjectInclude$zodSchema.optional(),
+  site: z.string().nullable().optional(),
   specs: z.lazy(() => VirtualMachineAttributesSpecs$zodSchema).optional(),
   status: VirtualMachineAttributesStatus$zodSchema.optional(),
+  tags: z.array(z.lazy(() => VirtualMachineAttributesTag$zodSchema)).optional(),
   team: TeamInclude$zodSchema.optional(),
+  user_data: z.string().nullable().optional().describe(
+    "Encoded ID of the user data record applied to this VM, if any",
+  ),
 });
 
 export type VirtualMachineAttributes = {

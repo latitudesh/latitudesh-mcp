@@ -33,8 +33,6 @@ import { Result } from "../types/fp.js";
  *
  * @remarks
  * List all Elastic IPs for the authenticated team. Elastic IPs are static public IP addresses that can be assigned to servers and moved between servers within the same project.
- *
- * **Note:** This feature requires the `elastic_ips` feature flag to be enabled for your team. When the flag is disabled, the endpoint returns an empty list.
  */
 export function elasticIpsListElasticIps(
   client$: LatitudeshCore,

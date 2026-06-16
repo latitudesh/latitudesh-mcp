@@ -81,7 +81,8 @@ export const EventDataAttributes$zodSchema: z.ZodType<EventDataAttributes> = z
     author: z.lazy(() => Author$zodSchema).optional(),
     created_at: z.string().optional(),
     project: z.lazy(() => EventDataProject$zodSchema).optional(),
-    properties: z.lazy(() => Properties$zodSchema).nullable().optional(),
+    properties: z.lazy(() => Properties$zodSchema).nullable().optional()
+      .describe("Additional event-specific data"),
     target: z.lazy(() => Target$zodSchema).optional(),
     team: z.lazy(() => EventDataTeam$zodSchema).optional(),
   });
