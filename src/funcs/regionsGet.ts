@@ -160,7 +160,7 @@ async function $do(
   >(
     M.json(200, GetRegionsResponse$zodSchema, {
       ctype: "application/vnd.api+json",
-      key: "regions",
+      key: "Result",
     }),
   )(response, req$, { extraFields: responseFields$ });
 

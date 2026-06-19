@@ -161,7 +161,7 @@ async function $do(
   >(
     M.json(200, GetPlansOperatingSystemResponse$zodSchema, {
       ctype: "application/vnd.api+json",
-      key: "operating_systems",
+      key: "Result",
     }),
   )(response, req$, { extraFields: responseFields$ });
 

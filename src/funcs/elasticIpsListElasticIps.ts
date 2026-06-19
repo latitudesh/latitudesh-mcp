@@ -163,7 +163,7 @@ async function $do(
   >(
     M.json(200, ListElasticIpsResponse$zodSchema, {
       ctype: "application/vnd.api+json",
-      key: "elastic_ips",
+      key: "Result",
     }),
   )(response, req$, { extraFields: responseFields$ });
 

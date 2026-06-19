@@ -171,7 +171,7 @@ async function $do(
   >(
     M.json(200, GetIpsResponse$zodSchema, {
       ctype: "application/vnd.api+json",
-      key: "ip_addresses",
+      key: "Result",
     }),
   )(response, req$, { extraFields: responseFields$ });
 

@@ -165,7 +165,7 @@ async function $do(
   >(
     M.json(200, GetBandwidthPlansResponse$zodSchema, {
       ctype: "application/vnd.api+json",
-      key: "bandwidth_plans",
+      key: "Result",
     }),
   )(response, req$, { extraFields: responseFields$ });
 

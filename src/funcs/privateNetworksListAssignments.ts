@@ -164,7 +164,7 @@ async function $do(
   >(
     M.json(200, GetVirtualNetworksAssignmentsResponse$zodSchema, {
       ctype: "application/vnd.api+json",
-      key: "virtual_network_assignments",
+      key: "Result",
     }),
   )(response, req$, { extraFields: responseFields$ });
 

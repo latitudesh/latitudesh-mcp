@@ -168,7 +168,7 @@ async function $do(
   >(
     M.json(200, GetEventsResponse$zodSchema, {
       ctype: "application/vnd.api+json",
-      key: "events",
+      key: "Result",
     }),
   )(response, req$, { extraFields: responseFields$ });
 

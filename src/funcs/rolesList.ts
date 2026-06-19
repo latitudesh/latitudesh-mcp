@@ -160,7 +160,7 @@ async function $do(
   >(
     M.json(200, GetRolesResponse$zodSchema, {
       ctype: "application/vnd.api+json",
-      key: "object",
+      key: "Result",
     }),
   )(response, req$, { extraFields: responseFields$ });
 

@@ -162,7 +162,7 @@ async function $do(
   >(
     M.json(200, GetAllFirewallAssignmentsResponse$zodSchema, {
       ctype: "application/vnd.api+json",
-      key: "firewall_assignments",
+      key: "Result",
     }),
   )(response, req$, { extraFields: responseFields$ });
 
