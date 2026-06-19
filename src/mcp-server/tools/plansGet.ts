@@ -22,7 +22,7 @@ export const tool$plansGet: ToolDefinition<typeof args> = {
   },
   args,
   tool: async (client, args, ctx) => {
-    const [result, apiCall] = await plansGet(
+    const [result] = await plansGet(
       client,
       args.request,
       { fetchOptions: { signal: ctx.signal } },
@@ -35,8 +35,6 @@ export const tool$plansGet: ToolDefinition<typeof args> = {
       };
     }
 
-    const value = result.value;
-
-    return formatResult(value, apiCall);
+    return formatResult(result.value);
   },
 };

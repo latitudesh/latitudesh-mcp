@@ -25,7 +25,7 @@ Creates a new Elastic IP and assigns it to the specified server. The IP is provi
   },
   args,
   tool: async (client, args, ctx) => {
-    const [result, apiCall] = await elasticIpsCreateElasticIp(
+    const [result] = await elasticIpsCreateElasticIp(
       client,
       args.request,
       { fetchOptions: { signal: ctx.signal } },
@@ -38,8 +38,6 @@ Creates a new Elastic IP and assigns it to the specified server. The IP is provi
       };
     }
 
-    const value = result.value;
-
-    return formatResult(value, apiCall);
+    return formatResult(result.value);
   },
 };

@@ -24,7 +24,7 @@ Deletes a project and releases associated resources. Any Elastic IPs assigned to
   },
   args,
   tool: async (client, args, ctx) => {
-    const [result, apiCall] = await projectsDelete(
+    const [result] = await projectsDelete(
       client,
       args.request,
       { fetchOptions: { signal: ctx.signal } },
@@ -37,6 +37,6 @@ Deletes a project and releases associated resources. Any Elastic IPs assigned to
       };
     }
 
-    return formatResult(void 0, apiCall);
+    return formatResult(result.value);
   },
 };

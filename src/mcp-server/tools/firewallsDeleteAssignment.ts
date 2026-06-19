@@ -24,7 +24,7 @@ Removes a server from a firewall by its ID.`,
   },
   args,
   tool: async (client, args, ctx) => {
-    const [result, apiCall] = await firewallsDeleteAssignment(
+    const [result] = await firewallsDeleteAssignment(
       client,
       args.request,
       { fetchOptions: { signal: ctx.signal } },
@@ -37,6 +37,6 @@ Removes a server from a firewall by its ID.`,
       };
     }
 
-    return formatResult(void 0, apiCall);
+    return formatResult(result.value);
   },
 };

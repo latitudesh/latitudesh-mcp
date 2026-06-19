@@ -25,7 +25,7 @@ Allow you remove SSH Keys in a project. Remove a SSH Key from the project won't 
   },
   args,
   tool: async (client, args, ctx) => {
-    const [result, apiCall] = await sshKeysRemoveFromProject(
+    const [result] = await sshKeysRemoveFromProject(
       client,
       args.request,
       { fetchOptions: { signal: ctx.signal } },
@@ -38,6 +38,6 @@ Allow you remove SSH Keys in a project. Remove a SSH Key from the project won't 
       };
     }
 
-    return formatResult(void 0, apiCall);
+    return formatResult(result.value);
   },
 };

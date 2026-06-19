@@ -25,7 +25,7 @@ Lists all plans. Availability by region is included in \`attributes.regions.loca
   },
   args,
   tool: async (client, args, ctx) => {
-    const [result, apiCall] = await plansList(
+    const [result] = await plansList(
       client,
       args.request,
       { fetchOptions: { signal: ctx.signal } },
@@ -38,8 +38,6 @@ Lists all plans. Availability by region is included in \`attributes.regions.loca
       };
     }
 
-    const value = result.value;
-
-    return formatResult(value, apiCall);
+    return formatResult(result.value);
   },
 };

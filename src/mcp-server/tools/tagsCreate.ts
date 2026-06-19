@@ -25,7 +25,7 @@ Create a Tag in the team.
   },
   args,
   tool: async (client, args, ctx) => {
-    const [result, apiCall] = await tagsCreate(
+    const [result] = await tagsCreate(
       client,
       args.request,
       { fetchOptions: { signal: ctx.signal } },
@@ -38,8 +38,6 @@ Create a Tag in the team.
       };
     }
 
-    const value = result.value;
-
-    return formatResult(value, apiCall);
+    return formatResult(result.value);
   },
 };

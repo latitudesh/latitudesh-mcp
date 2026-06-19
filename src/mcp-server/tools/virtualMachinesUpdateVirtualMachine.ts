@@ -27,7 +27,7 @@ Updates a Virtual Machine's display name (hostname).
   },
   args,
   tool: async (client, args, ctx) => {
-    const [result, apiCall] = await virtualMachinesUpdateVirtualMachine(
+    const [result] = await virtualMachinesUpdateVirtualMachine(
       client,
       args.request,
       { fetchOptions: { signal: ctx.signal } },
@@ -40,8 +40,6 @@ Updates a Virtual Machine's display name (hostname).
       };
     }
 
-    const value = result.value;
-
-    return formatResult(value, apiCall);
+    return formatResult(result.value);
   },
 };

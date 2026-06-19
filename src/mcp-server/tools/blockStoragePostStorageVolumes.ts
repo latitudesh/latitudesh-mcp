@@ -25,7 +25,7 @@ Allows you to add persistent storage to a project. These volumes can be used to 
     },
     args,
     tool: async (client, args, ctx) => {
-      const [result, apiCall] = await blockStoragePostStorageVolumes(
+      const [result] = await blockStoragePostStorageVolumes(
         client,
         args.request,
         { fetchOptions: { signal: ctx.signal } },
@@ -38,8 +38,6 @@ Allows you to add persistent storage to a project. These volumes can be used to 
         };
       }
 
-      const value = result.value;
-
-      return formatResult(value, apiCall);
+      return formatResult(result.value);
     },
   };

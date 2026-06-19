@@ -24,7 +24,7 @@ Lists all bandwidth plans.`,
   },
   args,
   tool: async (client, args, ctx) => {
-    const [result, apiCall] = await plansGetBandwidth(
+    const [result] = await plansGetBandwidth(
       client,
       args.request,
       { fetchOptions: { signal: ctx.signal } },
@@ -37,8 +37,6 @@ Lists all bandwidth plans.`,
       };
     }
 
-    const value = result.value;
-
-    return formatResult(value, apiCall);
+    return formatResult(result.value);
   },
 };

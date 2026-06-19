@@ -26,7 +26,7 @@ Mounts a volume by adding the client to an allowed list`,
   },
   args,
   tool: async (client, args, ctx) => {
-    const [result, apiCall] = await blockStoragePostStorageVolumesMount(
+    const [result] = await blockStoragePostStorageVolumesMount(
       client,
       args.request,
       { fetchOptions: { signal: ctx.signal } },
@@ -39,6 +39,6 @@ Mounts a volume by adding the client to an allowed list`,
       };
     }
 
-    return formatResult(void 0, apiCall);
+    return formatResult(result.value);
   },
 };

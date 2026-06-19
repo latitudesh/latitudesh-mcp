@@ -26,7 +26,7 @@ Allows you to add persistent storage to a project. These filesystems can be used
   },
   args,
   tool: async (client, args, ctx) => {
-    const [result, apiCall] = await filesystemStorageCreateFilesystem(
+    const [result] = await filesystemStorageCreateFilesystem(
       client,
       args.request,
       { fetchOptions: { signal: ctx.signal } },
@@ -39,8 +39,6 @@ Allows you to add persistent storage to a project. These filesystems can be used
       };
     }
 
-    const value = result.value;
-
-    return formatResult(value, apiCall);
+    return formatResult(result.value);
   },
 };

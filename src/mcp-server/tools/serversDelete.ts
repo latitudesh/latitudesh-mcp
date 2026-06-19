@@ -22,7 +22,7 @@ export const tool$serversDelete: ToolDefinition<typeof args> = {
   },
   args,
   tool: async (client, args, ctx) => {
-    const [result, apiCall] = await serversDelete(
+    const [result] = await serversDelete(
       client,
       args.request,
       { fetchOptions: { signal: ctx.signal } },
@@ -35,6 +35,6 @@ export const tool$serversDelete: ToolDefinition<typeof args> = {
       };
     }
 
-    return formatResult(void 0, apiCall);
+    return formatResult(result.value);
   },
 };

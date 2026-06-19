@@ -25,7 +25,7 @@ Returns a list of all servers belonging to the team.
   },
   args,
   tool: async (client, args, ctx) => {
-    const [result, apiCall] = await serversList(
+    const [result] = await serversList(
       client,
       args.request,
       { fetchOptions: { signal: ctx.signal } },
@@ -38,8 +38,6 @@ Returns a list of all servers belonging to the team.
       };
     }
 
-    const value = result.value;
-
-    return formatResult(value, apiCall);
+    return formatResult(result.value);
   },
 };

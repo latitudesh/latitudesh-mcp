@@ -26,7 +26,7 @@ Allows you to remove a volume from a project.`,
   },
   args,
   tool: async (client, args, ctx) => {
-    const [result, apiCall] = await blockStorageDeleteStorageVolumes(
+    const [result] = await blockStorageDeleteStorageVolumes(
       client,
       args.request,
       { fetchOptions: { signal: ctx.signal } },
@@ -39,6 +39,6 @@ Allows you to remove a volume from a project.`,
       };
     }
 
-    return formatResult(void 0, apiCall);
+    return formatResult(result.value);
   },
 };

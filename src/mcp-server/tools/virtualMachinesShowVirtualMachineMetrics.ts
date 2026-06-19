@@ -26,7 +26,7 @@ Retrieve a time series for a single metric of a Virtual Machine.`,
   },
   args,
   tool: async (client, args, ctx) => {
-    const [result, apiCall] = await virtualMachinesShowVirtualMachineMetrics(
+    const [result] = await virtualMachinesShowVirtualMachineMetrics(
       client,
       args.request,
       { fetchOptions: { signal: ctx.signal } },
@@ -39,8 +39,6 @@ Retrieve a time series for a single metric of a Virtual Machine.`,
       };
     }
 
-    const value = result.value;
-
-    return formatResult(value, apiCall);
+    return formatResult(result.value);
   },
 };

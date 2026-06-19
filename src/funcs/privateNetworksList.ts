@@ -4,7 +4,6 @@
 
 import { LatitudeshCore } from "../core.js";
 import { encodeFormQuery } from "../lib/encodings.js";
-import * as M from "../lib/matchers.js";
 import { compactMap } from "../lib/primitives.js";
 import { safeParse } from "../lib/schemas.js";
 import { RequestOptions } from "../lib/sdks.js";
@@ -22,8 +21,6 @@ import { SDKValidationError } from "../models/errors/sdkvalidationerror.js";
 import {
   GetVirtualNetworksRequest,
   GetVirtualNetworksRequest$zodSchema,
-  GetVirtualNetworksResponse,
-  GetVirtualNetworksResponse$zodSchema,
 } from "../models/getvirtualnetworksop.js";
 import { APICall, APIPromise } from "../types/async.js";
 import { Result } from "../types/fp.js";
@@ -40,7 +37,7 @@ export function privateNetworksList(
   options?: RequestOptions,
 ): APIPromise<
   Result<
-    GetVirtualNetworksResponse,
+    Response,
     | APIError
     | SDKValidationError
     | UnexpectedClientError
@@ -64,7 +61,7 @@ async function $do(
 ): Promise<
   [
     Result<
-      GetVirtualNetworksResponse,
+      Response,
       | APIError
       | SDKValidationError
       | UnexpectedClientError
@@ -146,26 +143,9 @@ async function $do(
   if (!doResult.ok) {
     return [doResult, { status: "request-error", request: req$ }];
   }
-  const response = doResult.value;
-  const responseFields$ = {
-    HttpMeta: { Response: response, Request: req$ },
-  };
-
-  const [result$] = await M.match<
-    GetVirtualNetworksResponse,
-    | APIError
-    | SDKValidationError
-    | UnexpectedClientError
-    | InvalidRequestError
-    | RequestAbortedError
-    | RequestTimeoutError
-    | ConnectionError
-  >(
-    M.json(200, GetVirtualNetworksResponse$zodSchema, {
-      ctype: "application/vnd.api+json",
-      key: "virtual_networks",
-    }),
-  )(response, req$, { extraFields: responseFields$ });
-
-  return [result$, { status: "complete", request: req$, response }];
+  return [doResult, {
+    status: "complete",
+    "request": req$,
+    response: doResult.value,
+  }];
 }

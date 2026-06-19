@@ -27,7 +27,7 @@ Allow you create SSH Keys in a project. These keys can be used to access servers
   },
   args,
   tool: async (client, args, ctx) => {
-    const [result, apiCall] = await projectsSshKeysPostProjectSshKey(
+    const [result] = await projectsSshKeysPostProjectSshKey(
       client,
       args.request,
       { fetchOptions: { signal: ctx.signal } },
@@ -40,8 +40,6 @@ Allow you create SSH Keys in a project. These keys can be used to access servers
       };
     }
 
-    const value = result.value;
-
-    return formatResult(value, apiCall);
+    return formatResult(result.value);
   },
 };

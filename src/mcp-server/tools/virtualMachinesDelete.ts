@@ -25,7 +25,7 @@ Destroys a Virtual Machine.
   },
   args,
   tool: async (client, args, ctx) => {
-    const [result, apiCall] = await virtualMachinesDelete(
+    const [result] = await virtualMachinesDelete(
       client,
       args.request,
       { fetchOptions: { signal: ctx.signal } },
@@ -38,6 +38,6 @@ Destroys a Virtual Machine.
       };
     }
 
-    return formatResult(void 0, apiCall);
+    return formatResult(result.value);
   },
 };

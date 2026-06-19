@@ -24,7 +24,7 @@ Starts rescue mode on a given server.`,
   },
   args,
   tool: async (client, args, ctx) => {
-    const [result, apiCall] = await serversStartRescueMode(
+    const [result] = await serversStartRescueMode(
       client,
       args.request,
       { fetchOptions: { signal: ctx.signal } },
@@ -37,8 +37,6 @@ Starts rescue mode on a given server.`,
       };
     }
 
-    const value = result.value;
-
-    return formatResult(value, apiCall);
+    return formatResult(result.value);
   },
 };

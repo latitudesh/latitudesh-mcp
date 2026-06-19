@@ -25,7 +25,7 @@ Returns the billing usage of a project
   },
   args,
   tool: async (client, args, ctx) => {
-    const [result, apiCall] = await billingListUsage(
+    const [result] = await billingListUsage(
       client,
       args.request,
       { fetchOptions: { signal: ctx.signal } },
@@ -38,8 +38,6 @@ Returns the billing usage of a project
       };
     }
 
-    const value = result.value;
-
-    return formatResult(value, apiCall);
+    return formatResult(result.value);
   },
 };

@@ -25,7 +25,7 @@ Returns a list of all roles that can be assigned to users
   },
   args,
   tool: async (client, args, ctx) => {
-    const [result, apiCall] = await rolesList(
+    const [result] = await rolesList(
       client,
       args.request,
       { fetchOptions: { signal: ctx.signal } },
@@ -38,8 +38,6 @@ Returns a list of all roles that can be assigned to users
       };
     }
 
-    const value = result.value;
-
-    return formatResult(value, apiCall);
+    return formatResult(result.value);
   },
 };

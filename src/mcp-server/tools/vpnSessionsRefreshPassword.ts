@@ -25,7 +25,7 @@ Refreshing an existing VPN Session will create new credentials for that session
   },
   args,
   tool: async (client, args, ctx) => {
-    const [result, apiCall] = await vpnSessionsRefreshPassword(
+    const [result] = await vpnSessionsRefreshPassword(
       client,
       args.request,
       { fetchOptions: { signal: ctx.signal } },
@@ -38,8 +38,6 @@ Refreshing an existing VPN Session will create new credentials for that session
       };
     }
 
-    const value = result.value;
-
-    return formatResult(value, apiCall);
+    return formatResult(result.value);
   },
 };

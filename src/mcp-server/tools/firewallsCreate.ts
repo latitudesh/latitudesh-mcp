@@ -24,7 +24,7 @@ Create a firewall`,
   },
   args,
   tool: async (client, args, ctx) => {
-    const [result, apiCall] = await firewallsCreate(
+    const [result] = await firewallsCreate(
       client,
       args.request,
       { fetchOptions: { signal: ctx.signal } },
@@ -37,8 +37,6 @@ Create a firewall`,
       };
     }
 
-    const value = result.value;
-
-    return formatResult(value, apiCall);
+    return formatResult(result.value);
   },
 };

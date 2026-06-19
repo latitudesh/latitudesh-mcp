@@ -24,7 +24,7 @@ Lists all the volumes from a team.`,
   },
   args,
   tool: async (client, args, ctx) => {
-    const [result, apiCall] = await blockStorageGetStorageVolumes(
+    const [result] = await blockStorageGetStorageVolumes(
       client,
       args.request,
       { fetchOptions: { signal: ctx.signal } },
@@ -37,8 +37,6 @@ Lists all the volumes from a team.`,
       };
     }
 
-    const value = result.value;
-
-    return formatResult(value, apiCall);
+    return formatResult(result.value);
   },
 };

@@ -4,7 +4,6 @@
 
 import { LatitudeshCore } from "../core.js";
 import { encodeSimple } from "../lib/encodings.js";
-import * as M from "../lib/matchers.js";
 import { compactMap } from "../lib/primitives.js";
 import { safeParse } from "../lib/schemas.js";
 import { RequestOptions } from "../lib/sdks.js";
@@ -23,10 +22,6 @@ import {
   PutVpnSessionRequest,
   PutVpnSessionRequest$zodSchema,
 } from "../models/putvpnsessionop.js";
-import {
-  VpnSessionWithPassword,
-  VpnSessionWithPassword$zodSchema,
-} from "../models/vpnsessionwithpassword.js";
 import { APICall, APIPromise } from "../types/async.js";
 import { Result } from "../types/fp.js";
 
@@ -42,7 +37,7 @@ export function vpnSessionsRefreshPassword(
   options?: RequestOptions,
 ): APIPromise<
   Result<
-    VpnSessionWithPassword,
+    Response,
     | APIError
     | SDKValidationError
     | UnexpectedClientError
@@ -66,7 +61,7 @@ async function $do(
 ): Promise<
   [
     Result<
-      VpnSessionWithPassword,
+      Response,
       | APIError
       | SDKValidationError
       | UnexpectedClientError
@@ -149,26 +144,9 @@ async function $do(
   if (!doResult.ok) {
     return [doResult, { status: "request-error", request: req$ }];
   }
-  const response = doResult.value;
-  const responseFields$ = {
-    HttpMeta: { Response: response, Request: req$ },
-  };
-
-  const [result$] = await M.match<
-    VpnSessionWithPassword,
-    | APIError
-    | SDKValidationError
-    | UnexpectedClientError
-    | InvalidRequestError
-    | RequestAbortedError
-    | RequestTimeoutError
-    | ConnectionError
-  >(
-    M.json(200, VpnSessionWithPassword$zodSchema, {
-      ctype: "application/vnd.api+json",
-      key: "vpn_session_with_password",
-    }),
-  )(response, req$, { extraFields: responseFields$ });
-
-  return [result$, { status: "complete", request: req$, response }];
+  return [doResult, {
+    status: "complete",
+    "request": req$,
+    response: doResult.value,
+  }];
 }

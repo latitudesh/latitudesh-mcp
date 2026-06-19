@@ -25,7 +25,7 @@ Update a Tag in the team.
   },
   args,
   tool: async (client, args, ctx) => {
-    const [result, apiCall] = await tagsDelete(
+    const [result] = await tagsDelete(
       client,
       args.request,
       { fetchOptions: { signal: ctx.signal } },
@@ -38,6 +38,6 @@ Update a Tag in the team.
       };
     }
 
-    return formatResult(void 0, apiCall);
+    return formatResult(result.value);
   },
 };

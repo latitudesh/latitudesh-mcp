@@ -4,7 +4,6 @@
 
 import { LatitudeshCore } from "../core.js";
 import { encodeJSON } from "../lib/encodings.js";
-import * as M from "../lib/matchers.js";
 import { compactMap } from "../lib/primitives.js";
 import { safeParse } from "../lib/schemas.js";
 import { RequestOptions } from "../lib/sdks.js";
@@ -13,8 +12,6 @@ import { pathToFunc } from "../lib/url.js";
 import {
   CreateTagRequest,
   CreateTagRequest$zodSchema,
-  CreateTagResponse,
-  CreateTagResponse$zodSchema,
 } from "../models/createtagop.js";
 import { APIError } from "../models/errors/apierror.js";
 import {
@@ -40,7 +37,7 @@ export function tagsCreate(
   options?: RequestOptions,
 ): APIPromise<
   Result<
-    CreateTagResponse,
+    Response,
     | APIError
     | SDKValidationError
     | UnexpectedClientError
@@ -64,7 +61,7 @@ async function $do(
 ): Promise<
   [
     Result<
-      CreateTagResponse,
+      Response,
       | APIError
       | SDKValidationError
       | UnexpectedClientError
@@ -139,30 +136,9 @@ async function $do(
   if (!doResult.ok) {
     return [doResult, { status: "request-error", request: req$ }];
   }
-  const response = doResult.value;
-  const responseFields$ = {
-    HttpMeta: { Response: response, Request: req$ },
-  };
-
-  const [result$] = await M.match<
-    CreateTagResponse,
-    | APIError
-    | SDKValidationError
-    | UnexpectedClientError
-    | InvalidRequestError
-    | RequestAbortedError
-    | RequestTimeoutError
-    | ConnectionError
-  >(
-    M.json(201, CreateTagResponse$zodSchema, {
-      ctype: "application/vnd.api+json",
-      key: "custom_tag",
-    }),
-    M.json(422, CreateTagResponse$zodSchema, {
-      ctype: "application/vnd.api+json",
-      key: "error_object",
-    }),
-  )(response, req$, { extraFields: responseFields$ });
-
-  return [result$, { status: "complete", request: req$, response }];
+  return [doResult, {
+    status: "complete",
+    "request": req$,
+    response: doResult.value,
+  }];
 }

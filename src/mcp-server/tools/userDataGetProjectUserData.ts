@@ -25,7 +25,7 @@ Get User Data in the project. These scripts can be used to configure servers wit
   },
   args,
   tool: async (client, args, ctx) => {
-    const [result, apiCall] = await userDataGetProjectUserData(
+    const [result] = await userDataGetProjectUserData(
       client,
       args.request,
       { fetchOptions: { signal: ctx.signal } },
@@ -38,8 +38,6 @@ Get User Data in the project. These scripts can be used to configure servers wit
       };
     }
 
-    const value = result.value;
-
-    return formatResult(value, apiCall);
+    return formatResult(result.value);
   },
 };

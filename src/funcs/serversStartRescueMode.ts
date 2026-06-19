@@ -4,7 +4,6 @@
 
 import { LatitudeshCore } from "../core.js";
 import { encodeSimple } from "../lib/encodings.js";
-import * as M from "../lib/matchers.js";
 import { compactMap } from "../lib/primitives.js";
 import { safeParse } from "../lib/schemas.js";
 import { RequestOptions } from "../lib/sdks.js";
@@ -19,10 +18,6 @@ import {
   UnexpectedClientError,
 } from "../models/errors/httpclienterrors.js";
 import { SDKValidationError } from "../models/errors/sdkvalidationerror.js";
-import {
-  ServerRescue,
-  ServerRescue$zodSchema,
-} from "../models/serverrescue.js";
 import {
   ServerStartRescueModeRequest,
   ServerStartRescueModeRequest$zodSchema,
@@ -42,7 +37,7 @@ export function serversStartRescueMode(
   options?: RequestOptions,
 ): APIPromise<
   Result<
-    ServerRescue,
+    Response,
     | APIError
     | SDKValidationError
     | UnexpectedClientError
@@ -66,7 +61,7 @@ async function $do(
 ): Promise<
   [
     Result<
-      ServerRescue,
+      Response,
       | APIError
       | SDKValidationError
       | UnexpectedClientError
@@ -149,26 +144,9 @@ async function $do(
   if (!doResult.ok) {
     return [doResult, { status: "request-error", request: req$ }];
   }
-  const response = doResult.value;
-  const responseFields$ = {
-    HttpMeta: { Response: response, Request: req$ },
-  };
-
-  const [result$] = await M.match<
-    ServerRescue,
-    | APIError
-    | SDKValidationError
-    | UnexpectedClientError
-    | InvalidRequestError
-    | RequestAbortedError
-    | RequestTimeoutError
-    | ConnectionError
-  >(
-    M.json(201, ServerRescue$zodSchema, {
-      ctype: "application/vnd.api+json",
-      key: "server_rescue",
-    }),
-  )(response, req$, { extraFields: responseFields$ });
-
-  return [result$, { status: "complete", request: req$, response }];
+  return [doResult, {
+    status: "complete",
+    "request": req$,
+    response: doResult.value,
+  }];
 }

@@ -28,7 +28,7 @@ List all Management and Additional IP Addresses.
   },
   args,
   tool: async (client, args, ctx) => {
-    const [result, apiCall] = await ipAddressesList(
+    const [result] = await ipAddressesList(
       client,
       args.request,
       { fetchOptions: { signal: ctx.signal } },
@@ -41,8 +41,6 @@ List all Management and Additional IP Addresses.
       };
     }
 
-    const value = result.value;
-
-    return formatResult(value, apiCall);
+    return formatResult(result.value);
   },
 };

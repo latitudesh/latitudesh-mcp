@@ -48,7 +48,7 @@ Returns 202 Accepted when an update operation is triggered. Poll the GET endpoin
   },
   args,
   tool: async (client, args, ctx) => {
-    const [result, apiCall] = await kubernetesClustersUpdateKubernetesCluster(
+    const [result] = await kubernetesClustersUpdateKubernetesCluster(
       client,
       args.request,
       { fetchOptions: { signal: ctx.signal } },
@@ -61,8 +61,6 @@ Returns 202 Accepted when an update operation is triggered. Poll the GET endpoin
       };
     }
 
-    const value = result.value;
-
-    return formatResult(value, apiCall);
+    return formatResult(result.value);
   },
 };

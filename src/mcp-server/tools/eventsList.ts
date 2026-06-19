@@ -25,7 +25,7 @@ Lists actions performed by users on your account.
   },
   args,
   tool: async (client, args, ctx) => {
-    const [result, apiCall] = await eventsList(
+    const [result] = await eventsList(
       client,
       args.request,
       { fetchOptions: { signal: ctx.signal } },
@@ -38,8 +38,6 @@ Lists actions performed by users on your account.
       };
     }
 
-    const value = result.value;
-
-    return formatResult(value, apiCall);
+    return formatResult(result.value);
   },
 };

@@ -26,7 +26,7 @@ Returns a list of all servers assigned to one or more firewalls.`,
   },
   args,
   tool: async (client, args, ctx) => {
-    const [result, apiCall] = await firewallsGetAllFirewallAssignments(
+    const [result] = await firewallsGetAllFirewallAssignments(
       client,
       args.request,
       { fetchOptions: { signal: ctx.signal } },
@@ -39,8 +39,6 @@ Returns a list of all servers assigned to one or more firewalls.`,
       };
     }
 
-    const value = result.value;
-
-    return formatResult(value, apiCall);
+    return formatResult(result.value);
   },
 };

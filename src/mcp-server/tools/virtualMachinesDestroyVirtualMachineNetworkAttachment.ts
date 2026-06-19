@@ -12,21 +12,21 @@ const args = {
 
 export const tool$virtualMachinesDestroyVirtualMachineNetworkAttachment:
   ToolDefinition<typeof args> = {
-    name: "virtual-machines-destroy-virtual-machine-network-97a",
+    name: "virtual-machines-destroy-network-attachment",
     description: `Detach a network from a VM
 
 Detaches a virtual network (VLAN) from a Virtual Machine. Work runs asynchronously and returns 202 Accepted.
 `,
     annotations: {
       "title": "",
-      "destructiveHint": true,
+      "destructiveHint": false,
       "idempotentHint": false,
       "openWorldHint": false,
       "readOnlyHint": false,
     },
     args,
     tool: async (client, args, ctx) => {
-      const [result, apiCall] =
+      const [result] =
         await virtualMachinesDestroyVirtualMachineNetworkAttachment(
           client,
           args.request,
@@ -40,8 +40,6 @@ Detaches a virtual network (VLAN) from a Virtual Machine. Work runs asynchronous
         };
       }
 
-      const value = result.value;
-
-      return formatResult(value, apiCall);
+      return formatResult(result.value);
     },
   };

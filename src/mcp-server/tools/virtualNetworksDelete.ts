@@ -25,7 +25,7 @@ Delete virtual network
   },
   args,
   tool: async (client, args, ctx) => {
-    const [result, apiCall] = await virtualNetworksDelete(
+    const [result] = await virtualNetworksDelete(
       client,
       args.request,
       { fetchOptions: { signal: ctx.signal } },
@@ -38,6 +38,6 @@ Delete virtual network
       };
     }
 
-    return formatResult(void 0, apiCall);
+    return formatResult(result.value);
   },
 };

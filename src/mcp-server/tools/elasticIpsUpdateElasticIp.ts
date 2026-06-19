@@ -25,7 +25,7 @@ Moves an Elastic IP to a different server within the same project and site. The 
   },
   args,
   tool: async (client, args, ctx) => {
-    const [result, apiCall] = await elasticIpsUpdateElasticIp(
+    const [result] = await elasticIpsUpdateElasticIp(
       client,
       args.request,
       { fetchOptions: { signal: ctx.signal } },
@@ -38,8 +38,6 @@ Moves an Elastic IP to a different server within the same project and site. The 
       };
     }
 
-    const value = result.value;
-
-    return formatResult(value, apiCall);
+    return formatResult(result.value);
   },
 };

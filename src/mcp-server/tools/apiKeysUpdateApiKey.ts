@@ -26,7 +26,7 @@ Use PUT to rotate the token.
   },
   args,
   tool: async (client, args, ctx) => {
-    const [result, apiCall] = await apiKeysUpdateApiKey(
+    const [result] = await apiKeysUpdateApiKey(
       client,
       args.request,
       { fetchOptions: { signal: ctx.signal } },
@@ -39,8 +39,6 @@ Use PUT to rotate the token.
       };
     }
 
-    const value = result.value;
-
-    return formatResult(value, apiCall);
+    return formatResult(result.value);
   },
 };

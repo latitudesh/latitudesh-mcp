@@ -25,7 +25,7 @@ Allows you to create User Data in a team, which can be used to perform custom se
   },
   args,
   tool: async (client, args, ctx) => {
-    const [result, apiCall] = await userDataCreateNew(
+    const [result] = await userDataCreateNew(
       client,
       args.request,
       { fetchOptions: { signal: ctx.signal } },
@@ -38,8 +38,6 @@ Allows you to create User Data in a team, which can be used to perform custom se
       };
     }
 
-    const value = result.value;
-
-    return formatResult(value, apiCall);
+    return formatResult(result.value);
   },
 };

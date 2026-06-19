@@ -24,7 +24,7 @@ List firewalls`,
   },
   args,
   tool: async (client, args, ctx) => {
-    const [result, apiCall] = await firewallsList(
+    const [result] = await firewallsList(
       client,
       args.request,
       { fetchOptions: { signal: ctx.signal } },
@@ -37,8 +37,6 @@ List firewalls`,
       };
     }
 
-    const value = result.value;
-
-    return formatResult(value, apiCall);
+    return formatResult(result.value);
   },
 };

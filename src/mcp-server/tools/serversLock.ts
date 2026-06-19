@@ -24,7 +24,7 @@ Locks the server. A locked server cannot be deleted or modified and no actions c
   },
   args,
   tool: async (client, args, ctx) => {
-    const [result, apiCall] = await serversLock(
+    const [result] = await serversLock(
       client,
       args.request,
       { fetchOptions: { signal: ctx.signal } },
@@ -37,8 +37,6 @@ Locks the server. A locked server cannot be deleted or modified and no actions c
       };
     }
 
-    const value = result.value;
-
-    return formatResult(value, apiCall);
+    return formatResult(result.value);
   },
 };

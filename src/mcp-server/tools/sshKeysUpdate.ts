@@ -25,7 +25,7 @@ Allows you update SSH Key in a project. These keys can be used to access servers
   },
   args,
   tool: async (client, args, ctx) => {
-    const [result, apiCall] = await sshKeysUpdate(
+    const [result] = await sshKeysUpdate(
       client,
       args.request,
       { fetchOptions: { signal: ctx.signal } },
@@ -38,8 +38,6 @@ Allows you update SSH Key in a project. These keys can be used to access servers
       };
     }
 
-    const value = result.value;
-
-    return formatResult(value, apiCall);
+    return formatResult(result.value);
   },
 };

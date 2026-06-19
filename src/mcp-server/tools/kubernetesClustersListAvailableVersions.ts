@@ -25,7 +25,7 @@ The API returns the latest 5 supported minor versions. When upgrading clusters, 
     "readOnlyHint": true,
   },
   tool: async (client, ctx) => {
-    const [result, apiCall] = await kubernetesClustersListAvailableVersions(
+    const [result] = await kubernetesClustersListAvailableVersions(
       client,
       { fetchOptions: { signal: ctx.signal } },
     ).$inspect();
@@ -37,8 +37,6 @@ The API returns the latest 5 supported minor versions. When upgrading clusters, 
       };
     }
 
-    const value = result.value;
-
-    return formatResult(value, apiCall);
+    return formatResult(result.value);
   },
 };

@@ -4,7 +4,6 @@
 
 import { LatitudeshCore } from "../core.js";
 import { encodeJSON } from "../lib/encodings.js";
-import * as M from "../lib/matchers.js";
 import { compactMap } from "../lib/primitives.js";
 import { safeParse } from "../lib/schemas.js";
 import { RequestOptions } from "../lib/sdks.js";
@@ -14,10 +13,6 @@ import {
   CreateElasticIp,
   CreateElasticIp$zodSchema,
 } from "../models/createelasticip.js";
-import {
-  CreateElasticIpResponse,
-  CreateElasticIpResponse$zodSchema,
-} from "../models/createelasticipop.js";
 import { APIError } from "../models/errors/apierror.js";
 import {
   ConnectionError,
@@ -42,7 +37,7 @@ export function elasticIpsCreateElasticIp(
   options?: RequestOptions,
 ): APIPromise<
   Result<
-    CreateElasticIpResponse,
+    Response,
     | APIError
     | SDKValidationError
     | UnexpectedClientError
@@ -66,7 +61,7 @@ async function $do(
 ): Promise<
   [
     Result<
-      CreateElasticIpResponse,
+      Response,
       | APIError
       | SDKValidationError
       | UnexpectedClientError
@@ -141,30 +136,9 @@ async function $do(
   if (!doResult.ok) {
     return [doResult, { status: "request-error", request: req$ }];
   }
-  const response = doResult.value;
-  const responseFields$ = {
-    HttpMeta: { Response: response, Request: req$ },
-  };
-
-  const [result$] = await M.match<
-    CreateElasticIpResponse,
-    | APIError
-    | SDKValidationError
-    | UnexpectedClientError
-    | InvalidRequestError
-    | RequestAbortedError
-    | RequestTimeoutError
-    | ConnectionError
-  >(
-    M.json(202, CreateElasticIpResponse$zodSchema, {
-      ctype: "application/vnd.api+json",
-      key: "elastic_ip",
-    }),
-    M.json(422, CreateElasticIpResponse$zodSchema, {
-      ctype: "application/vnd.api+json",
-      key: "error_object",
-    }),
-  )(response, req$, { extraFields: responseFields$ });
-
-  return [result$, { status: "complete", request: req$, response }];
+  return [doResult, {
+    status: "complete",
+    "request": req$,
+    response: doResult.value,
+  }];
 }
