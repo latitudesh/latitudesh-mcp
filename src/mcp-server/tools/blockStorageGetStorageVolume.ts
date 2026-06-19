@@ -24,7 +24,7 @@ Shows details of a specific volume.`,
   },
   args,
   tool: async (client, args, ctx) => {
-    const [result, apiCall] = await blockStorageGetStorageVolume(
+    const [result] = await blockStorageGetStorageVolume(
       client,
       args.request,
       { fetchOptions: { signal: ctx.signal } },
@@ -37,8 +37,6 @@ Shows details of a specific volume.`,
       };
     }
 
-    const value = result.value;
-
-    return formatResult(value, apiCall);
+    return formatResult(result.value);
   },
 };

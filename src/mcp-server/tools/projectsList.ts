@@ -25,7 +25,7 @@ Returns a list of all projects for the current team
   },
   args,
   tool: async (client, args, ctx) => {
-    const [result, apiCall] = await projectsList(
+    const [result] = await projectsList(
       client,
       args.request,
       { fetchOptions: { signal: ctx.signal } },
@@ -38,8 +38,6 @@ Returns a list of all projects for the current team
       };
     }
 
-    const value = result.value;
-
-    return formatResult(value, apiCall);
+    return formatResult(result.value);
   },
 };

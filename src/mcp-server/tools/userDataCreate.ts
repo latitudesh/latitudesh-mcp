@@ -25,7 +25,7 @@ Allows you to create User Data in a project, which can be used to perform custom
   },
   args,
   tool: async (client, args, ctx) => {
-    const [result, apiCall] = await userDataCreate(
+    const [result] = await userDataCreate(
       client,
       args.request,
       { fetchOptions: { signal: ctx.signal } },
@@ -38,8 +38,6 @@ Allows you to create User Data in a project, which can be used to perform custom
       };
     }
 
-    const value = result.value;
-
-    return formatResult(value, apiCall);
+    return formatResult(result.value);
   },
 };

@@ -25,7 +25,7 @@ Delete an existing API Key. Once deleted, the API Key can no longer be used to a
   },
   args,
   tool: async (client, args, ctx) => {
-    const [result, apiCall] = await apiKeysDelete(
+    const [result] = await apiKeysDelete(
       client,
       args.request,
       { fetchOptions: { signal: ctx.signal } },
@@ -38,6 +38,6 @@ Delete an existing API Key. Once deleted, the API Key can no longer be used to a
       };
     }
 
-    return formatResult(void 0, apiCall);
+    return formatResult(result.value);
   },
 };

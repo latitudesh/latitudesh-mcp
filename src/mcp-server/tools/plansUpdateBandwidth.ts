@@ -25,7 +25,7 @@ Allows to increase or decrease bandwidth packages. Only admins and owners can re
   },
   args,
   tool: async (client, args, ctx) => {
-    const [result, apiCall] = await plansUpdateBandwidth(
+    const [result] = await plansUpdateBandwidth(
       client,
       args.request,
       { fetchOptions: { signal: ctx.signal } },
@@ -38,8 +38,6 @@ Allows to increase or decrease bandwidth packages. Only admins and owners can re
       };
     }
 
-    const value = result.value;
-
-    return formatResult(value, apiCall);
+    return formatResult(result.value);
   },
 };

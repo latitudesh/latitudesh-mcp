@@ -24,7 +24,7 @@ Assigns a server to a firewall by its ID.`,
   },
   args,
   tool: async (client, args, ctx) => {
-    const [result, apiCall] = await firewallsAssignmentsCreate(
+    const [result] = await firewallsAssignmentsCreate(
       client,
       args.request,
       { fetchOptions: { signal: ctx.signal } },
@@ -37,8 +37,6 @@ Assigns a server to a firewall by its ID.`,
       };
     }
 
-    const value = result.value;
-
-    return formatResult(value, apiCall);
+    return formatResult(result.value);
   },
 };

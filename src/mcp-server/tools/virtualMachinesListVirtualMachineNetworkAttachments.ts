@@ -12,7 +12,7 @@ const args = {
 
 export const tool$virtualMachinesListVirtualMachineNetworkAttachments:
   ToolDefinition<typeof args> = {
-    name: "virtual-machines-list-virtual-machine-network-1c7",
+    name: "virtual-machines-list-network-attachments",
     description: `List VM network attachments
 
 Lists the secondary network attachments currently configured for a Virtual Machine.
@@ -22,11 +22,11 @@ Lists the secondary network attachments currently configured for a Virtual Machi
       "destructiveHint": false,
       "idempotentHint": false,
       "openWorldHint": false,
-      "readOnlyHint": true,
+      "readOnlyHint": false,
     },
     args,
     tool: async (client, args, ctx) => {
-      const [result, apiCall] =
+      const [result] =
         await virtualMachinesListVirtualMachineNetworkAttachments(
           client,
           args.request,
@@ -40,8 +40,6 @@ Lists the secondary network attachments currently configured for a Virtual Machi
         };
       }
 
-      const value = result.value;
-
-      return formatResult(value, apiCall);
+      return formatResult(result.value);
     },
   };

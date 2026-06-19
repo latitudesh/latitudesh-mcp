@@ -24,7 +24,7 @@ Updates a firewall by its ID.`,
   },
   args,
   tool: async (client, args, ctx) => {
-    const [result, apiCall] = await firewallsUpdate(
+    const [result] = await firewallsUpdate(
       client,
       args.request,
       { fetchOptions: { signal: ctx.signal } },
@@ -37,8 +37,6 @@ Updates a firewall by its ID.`,
       };
     }
 
-    const value = result.value;
-
-    return formatResult(value, apiCall);
+    return formatResult(result.value);
   },
 };

@@ -22,7 +22,7 @@ export const tool$userDataDelete: ToolDefinition<typeof args> = {
   },
   args,
   tool: async (client, args, ctx) => {
-    const [result, apiCall] = await userDataDelete(
+    const [result] = await userDataDelete(
       client,
       args.request,
       { fetchOptions: { signal: ctx.signal } },
@@ -35,6 +35,6 @@ export const tool$userDataDelete: ToolDefinition<typeof args> = {
       };
     }
 
-    return formatResult(void 0, apiCall);
+    return formatResult(result.value);
   },
 };

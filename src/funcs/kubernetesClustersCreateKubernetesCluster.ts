@@ -4,7 +4,6 @@
 
 import { LatitudeshCore } from "../core.js";
 import { encodeJSON } from "../lib/encodings.js";
-import * as M from "../lib/matchers.js";
 import { compactMap } from "../lib/primitives.js";
 import { safeParse } from "../lib/schemas.js";
 import { RequestOptions } from "../lib/sdks.js";
@@ -14,10 +13,6 @@ import {
   CreateKubernetesCluster,
   CreateKubernetesCluster$zodSchema,
 } from "../models/createkubernetescluster.js";
-import {
-  CreateKubernetesClusterResponse,
-  CreateKubernetesClusterResponse$zodSchema,
-} from "../models/createkubernetesclusterop.js";
 import { APIError } from "../models/errors/apierror.js";
 import {
   ConnectionError,
@@ -46,7 +41,7 @@ export function kubernetesClustersCreateKubernetesCluster(
   options?: RequestOptions,
 ): APIPromise<
   Result<
-    CreateKubernetesClusterResponse,
+    Response,
     | APIError
     | SDKValidationError
     | UnexpectedClientError
@@ -70,7 +65,7 @@ async function $do(
 ): Promise<
   [
     Result<
-      CreateKubernetesClusterResponse,
+      Response,
       | APIError
       | SDKValidationError
       | UnexpectedClientError
@@ -145,34 +140,9 @@ async function $do(
   if (!doResult.ok) {
     return [doResult, { status: "request-error", request: req$ }];
   }
-  const response = doResult.value;
-  const responseFields$ = {
-    HttpMeta: { Response: response, Request: req$ },
-  };
-
-  const [result$] = await M.match<
-    CreateKubernetesClusterResponse,
-    | APIError
-    | SDKValidationError
-    | UnexpectedClientError
-    | InvalidRequestError
-    | RequestAbortedError
-    | RequestTimeoutError
-    | ConnectionError
-  >(
-    M.json(201, CreateKubernetesClusterResponse$zodSchema, {
-      ctype: "application/vnd.api+json",
-      key: "kubernetes_cluster_create_response",
-    }),
-    M.json([400, 403, 422], CreateKubernetesClusterResponse$zodSchema, {
-      ctype: "application/vnd.api+json",
-      key: "error_object",
-    }),
-    M.json(503, CreateKubernetesClusterResponse$zodSchema, {
-      ctype: "application/vnd.api+json",
-      key: "error_object",
-    }),
-  )(response, req$, { extraFields: responseFields$ });
-
-  return [result$, { status: "complete", request: req$, response }];
+  return [doResult, {
+    status: "complete",
+    "request": req$,
+    response: doResult.value,
+  }];
 }

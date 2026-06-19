@@ -4,16 +4,11 @@
 
 import { LatitudeshCore } from "../core.js";
 import { encodeFormQuery } from "../lib/encodings.js";
-import * as M from "../lib/matchers.js";
 import { compactMap } from "../lib/primitives.js";
 import { safeParse } from "../lib/schemas.js";
 import { RequestOptions } from "../lib/sdks.js";
 import { extractSecurity, resolveGlobalSecurity } from "../lib/security.js";
 import { pathToFunc } from "../lib/url.js";
-import {
-  BillingUsage,
-  BillingUsage$zodSchema,
-} from "../models/billingusage.js";
 import { APIError } from "../models/errors/apierror.js";
 import {
   ConnectionError,
@@ -42,7 +37,7 @@ export function billingListUsage(
   options?: RequestOptions,
 ): APIPromise<
   Result<
-    BillingUsage,
+    Response,
     | APIError
     | SDKValidationError
     | UnexpectedClientError
@@ -66,7 +61,7 @@ async function $do(
 ): Promise<
   [
     Result<
-      BillingUsage,
+      Response,
       | APIError
       | SDKValidationError
       | UnexpectedClientError
@@ -146,26 +141,9 @@ async function $do(
   if (!doResult.ok) {
     return [doResult, { status: "request-error", request: req$ }];
   }
-  const response = doResult.value;
-  const responseFields$ = {
-    HttpMeta: { Response: response, Request: req$ },
-  };
-
-  const [result$] = await M.match<
-    BillingUsage,
-    | APIError
-    | SDKValidationError
-    | UnexpectedClientError
-    | InvalidRequestError
-    | RequestAbortedError
-    | RequestTimeoutError
-    | ConnectionError
-  >(
-    M.json(200, BillingUsage$zodSchema, {
-      ctype: "application/vnd.api+json",
-      key: "billing_usage",
-    }),
-  )(response, req$, { extraFields: responseFields$ });
-
-  return [result$, { status: "complete", request: req$, response }];
+  return [doResult, {
+    status: "complete",
+    "request": req$,
+    response: doResult.value,
+  }];
 }

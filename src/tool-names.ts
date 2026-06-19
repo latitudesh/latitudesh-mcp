@@ -133,7 +133,7 @@ export const toolNames: Array<{ name: string; description: string }>= [
     "description": "Update Kubernetes Cluster\n\nUpdates a Kubernetes cluster by scaling nodes or upgrading the Kubernetes version. The cluster must be in `Provisioned` phase to accept updates.\n\n## Scaling Operations\n\nExactly one of `worker_count` or `control_plane_count` must be provided per request. You cannot scale workers and control plane nodes in the same request.\n\nWhen scaling up, the API validates that sufficient server stock is available for the requested delta (e.g., scaling from 2 to 5 workers checks for 3 available servers).\n\nWhen scaling from 0 workers, you must provide a `worker_plan` since there is no existing configuration to inherit the plan from.\n\nControl plane scaling has a minimum of 1 node. You cannot scale control plane nodes to zero.\n\n## Version Upgrades\n\nProvide a `kubernetes_version` parameter to upgrade the cluster to a new Kubernetes version. Version upgrades follow these rules:\n\n- **No downgrades**: You cannot downgrade to a lower version than currently installed\n- **One minor version at a time**: You can only upgrade one minor version at a time (e.g., from 1.34 to 1.35, not from 1.34 to 1.36)\n- **Mutually exclusive**: Version upgrades cannot be combined with scaling operations in the same request\n- **Available versions only**: The target version must be in the list returned by `GET /kubernetes_clusters/available_versions`\n\nReturns 202 Accepted when an update operation is triggered. Poll the GET endpoint to monitor progress. Returns 200 OK if no change is needed (no-op).\n"
   },
   {
-    "name": "kubernetes-clusters-get-kubernetes-cluster-fbb",
+    "name": "kubernetes-clusters-get-kubeconfig",
     "description": "Get Kubernetes Cluster Kubeconfig\n\nRetrieves the kubeconfig file for a Kubernetes cluster. The kubeconfig is only available once the cluster is fully provisioned.\n\n**Note:** Only users with the `owner`, `administrator`, or `collaborator` role can access cluster credentials. Users with the `billing` role cannot perform this action.\n"
   },
   {
@@ -473,15 +473,15 @@ export const toolNames: Array<{ name: string; description: string }>= [
     "description": "Retrieve VM metrics\n\nRetrieve a time series for a single metric of a Virtual Machine."
   },
   {
-    "name": "virtual-machines-list-virtual-machine-network-1c7",
+    "name": "virtual-machines-list-network-attachments",
     "description": "List VM network attachments\n\nLists the secondary network attachments currently configured for a Virtual Machine.\n"
   },
   {
-    "name": "virtual-machines-create-virtual-machine-network-3b8",
+    "name": "virtual-machines-create-network-attachment",
     "description": "Attach a network to a VM\n\nAttaches a virtual network (VLAN) to a Virtual Machine. Work runs asynchronously and returns 202 Accepted.\n"
   },
   {
-    "name": "virtual-machines-destroy-virtual-machine-network-97a",
+    "name": "virtual-machines-destroy-network-attachment",
     "description": "Detach a network from a VM\n\nDetaches a virtual network (VLAN) from a Virtual Machine. Work runs asynchronously and returns 202 Accepted.\n"
   },
   {

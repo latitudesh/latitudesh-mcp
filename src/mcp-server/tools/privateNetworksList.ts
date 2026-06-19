@@ -25,7 +25,7 @@ Lists virtual networks assigned to a project
   },
   args,
   tool: async (client, args, ctx) => {
-    const [result, apiCall] = await privateNetworksList(
+    const [result] = await privateNetworksList(
       client,
       args.request,
       { fetchOptions: { signal: ctx.signal } },
@@ -38,8 +38,6 @@ Lists virtual networks assigned to a project
       };
     }
 
-    const value = result.value;
-
-    return formatResult(value, apiCall);
+    return formatResult(result.value);
   },
 };

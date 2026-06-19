@@ -25,7 +25,7 @@ List all Users Data in the project. These scripts can be used to configure serve
   },
   args,
   tool: async (client, args, ctx) => {
-    const [result, apiCall] = await userDataList(
+    const [result] = await userDataList(
       client,
       args.request,
       { fetchOptions: { signal: ctx.signal } },
@@ -38,8 +38,6 @@ List all Users Data in the project. These scripts can be used to configure serve
       };
     }
 
-    const value = result.value;
-
-    return formatResult(value, apiCall);
+    return formatResult(result.value);
   },
 };

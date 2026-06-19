@@ -25,7 +25,7 @@ Allow you remove User Data in a project.
   },
   args,
   tool: async (client, args, ctx) => {
-    const [result, apiCall] = await userDataDeleteProjectUserData(
+    const [result] = await userDataDeleteProjectUserData(
       client,
       args.request,
       { fetchOptions: { signal: ctx.signal } },
@@ -38,6 +38,6 @@ Allow you remove User Data in a project.
       };
     }
 
-    return formatResult(void 0, apiCall);
+    return formatResult(result.value);
   },
 };

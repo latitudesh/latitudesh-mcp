@@ -27,7 +27,7 @@ Retrieves detailed information about a Kubernetes cluster including its status, 
   },
   args,
   tool: async (client, args, ctx) => {
-    const [result, apiCall] = await kubernetesClustersGetKubernetesCluster(
+    const [result] = await kubernetesClustersGetKubernetesCluster(
       client,
       args.request,
       { fetchOptions: { signal: ctx.signal } },
@@ -40,8 +40,6 @@ Retrieves detailed information about a Kubernetes cluster including its status, 
       };
     }
 
-    const value = result.value;
-
-    return formatResult(value, apiCall);
+    return formatResult(result.value);
   },
 };

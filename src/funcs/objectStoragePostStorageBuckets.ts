@@ -4,7 +4,6 @@
 
 import { LatitudeshCore } from "../core.js";
 import { encodeJSON } from "../lib/encodings.js";
-import * as M from "../lib/matchers.js";
 import { compactMap } from "../lib/primitives.js";
 import { safeParse } from "../lib/schemas.js";
 import { RequestOptions } from "../lib/sdks.js";
@@ -22,8 +21,6 @@ import { SDKValidationError } from "../models/errors/sdkvalidationerror.js";
 import {
   PostStorageBucketsRequest,
   PostStorageBucketsRequest$zodSchema,
-  PostStorageBucketsResponse,
-  PostStorageBucketsResponse$zodSchema,
 } from "../models/poststoragebucketsop.js";
 import { APICall, APIPromise } from "../types/async.js";
 import { Result } from "../types/fp.js";
@@ -40,7 +37,7 @@ export function objectStoragePostStorageBuckets(
   options?: RequestOptions,
 ): APIPromise<
   Result<
-    PostStorageBucketsResponse,
+    Response,
     | APIError
     | SDKValidationError
     | UnexpectedClientError
@@ -64,7 +61,7 @@ async function $do(
 ): Promise<
   [
     Result<
-      PostStorageBucketsResponse,
+      Response,
       | APIError
       | SDKValidationError
       | UnexpectedClientError
@@ -139,34 +136,9 @@ async function $do(
   if (!doResult.ok) {
     return [doResult, { status: "request-error", request: req$ }];
   }
-  const response = doResult.value;
-  const responseFields$ = {
-    HttpMeta: { Response: response, Request: req$ },
-  };
-
-  const [result$] = await M.match<
-    PostStorageBucketsResponse,
-    | APIError
-    | SDKValidationError
-    | UnexpectedClientError
-    | InvalidRequestError
-    | RequestAbortedError
-    | RequestTimeoutError
-    | ConnectionError
-  >(
-    M.json(201, PostStorageBucketsResponse$zodSchema, {
-      ctype: "application/vnd.api+json",
-      key: "object",
-    }),
-    M.json([403, 404, 409, 422], PostStorageBucketsResponse$zodSchema, {
-      ctype: "application/vnd.api+json",
-      key: "error_object",
-    }),
-    M.json(500, PostStorageBucketsResponse$zodSchema, {
-      ctype: "application/vnd.api+json",
-      key: "error_object",
-    }),
-  )(response, req$, { extraFields: responseFields$ });
-
-  return [result$, { status: "complete", request: req$, response }];
+  return [doResult, {
+    status: "complete",
+    "request": req$,
+    response: doResult.value,
+  }];
 }

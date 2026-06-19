@@ -26,7 +26,7 @@ Lists all [available locations](https://latitude.sh/locations). For server avail
   },
   args,
   tool: async (client, args, ctx) => {
-    const [result, apiCall] = await regionsGet(
+    const [result] = await regionsGet(
       client,
       args.request,
       { fetchOptions: { signal: ctx.signal } },
@@ -39,8 +39,6 @@ Lists all [available locations](https://latitude.sh/locations). For server avail
       };
     }
 
-    const value = result.value;
-
-    return formatResult(value, apiCall);
+    return formatResult(result.value);
   },
 };

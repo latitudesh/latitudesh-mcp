@@ -30,7 +30,7 @@ Performs a power action on a given virtual machine:
   },
   args,
   tool: async (client, args, ctx) => {
-    const [result, apiCall] = await virtualMachinesCreateVirtualMachineAction(
+    const [result] = await virtualMachinesCreateVirtualMachineAction(
       client,
       args.request,
       { fetchOptions: { signal: ctx.signal } },
@@ -43,6 +43,6 @@ Performs a power action on a given virtual machine:
       };
     }
 
-    return formatResult(void 0, apiCall);
+    return formatResult(result.value);
   },
 };

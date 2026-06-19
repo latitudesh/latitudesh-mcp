@@ -27,7 +27,7 @@ Lists all Kubernetes clusters for a project.
   },
   args,
   tool: async (client, args, ctx) => {
-    const [result, apiCall] = await kubernetesClustersListKubernetesClusters(
+    const [result] = await kubernetesClustersListKubernetesClusters(
       client,
       args.request,
       { fetchOptions: { signal: ctx.signal } },
@@ -40,8 +40,6 @@ Lists all Kubernetes clusters for a project.
       };
     }
 
-    const value = result.value;
-
-    return formatResult(value, apiCall);
+    return formatResult(result.value);
   },
 };

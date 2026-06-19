@@ -25,7 +25,7 @@ List all SSH Keys in the project. These keys can be used to access servers after
   },
   args,
   tool: async (client, args, ctx) => {
-    const [result, apiCall] = await sshKeysGet(
+    const [result] = await sshKeysGet(
       client,
       args.request,
       { fetchOptions: { signal: ctx.signal } },
@@ -38,8 +38,6 @@ List all SSH Keys in the project. These keys can be used to access servers after
       };
     }
 
-    const value = result.value;
-
-    return formatResult(value, apiCall);
+    return formatResult(result.value);
   },
 };

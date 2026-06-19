@@ -25,7 +25,7 @@ Deletes an existing VPN Session.
   },
   args,
   tool: async (client, args, ctx) => {
-    const [result, apiCall] = await vpnSessionsDelete(
+    const [result] = await vpnSessionsDelete(
       client,
       args.request,
       { fetchOptions: { signal: ctx.signal } },
@@ -38,6 +38,6 @@ Deletes an existing VPN Session.
       };
     }
 
-    return formatResult(void 0, apiCall);
+    return formatResult(result.value);
   },
 };

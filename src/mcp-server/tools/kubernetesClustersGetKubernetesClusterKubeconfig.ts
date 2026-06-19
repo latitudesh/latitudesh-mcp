@@ -12,7 +12,7 @@ const args = {
 
 export const tool$kubernetesClustersGetKubernetesClusterKubeconfig:
   ToolDefinition<typeof args> = {
-    name: "kubernetes-clusters-get-kubernetes-cluster-fbb",
+    name: "kubernetes-clusters-get-kubeconfig",
     description: `Get Kubernetes Cluster Kubeconfig
 
 Retrieves the kubeconfig file for a Kubernetes cluster. The kubeconfig is only available once the cluster is fully provisioned.
@@ -24,16 +24,15 @@ Retrieves the kubeconfig file for a Kubernetes cluster. The kubeconfig is only a
       "destructiveHint": false,
       "idempotentHint": false,
       "openWorldHint": false,
-      "readOnlyHint": true,
+      "readOnlyHint": false,
     },
     args,
     tool: async (client, args, ctx) => {
-      const [result, apiCall] =
-        await kubernetesClustersGetKubernetesClusterKubeconfig(
-          client,
-          args.request,
-          { fetchOptions: { signal: ctx.signal } },
-        ).$inspect();
+      const [result] = await kubernetesClustersGetKubernetesClusterKubeconfig(
+        client,
+        args.request,
+        { fetchOptions: { signal: ctx.signal } },
+      ).$inspect();
 
       if (!result.ok) {
         return {
@@ -42,8 +41,6 @@ Retrieves the kubeconfig file for a Kubernetes cluster. The kubeconfig is only a
         };
       }
 
-      const value = result.value;
-
-      return formatResult(value, apiCall);
+      return formatResult(result.value);
     },
   };

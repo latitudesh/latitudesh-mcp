@@ -26,7 +26,7 @@ Lists all the filesystems from a team.`,
   },
   args,
   tool: async (client, args, ctx) => {
-    const [result, apiCall] = await filesystemStorageListFilesystems(
+    const [result] = await filesystemStorageListFilesystems(
       client,
       args.request,
       { fetchOptions: { signal: ctx.signal } },
@@ -39,6 +39,6 @@ Lists all the filesystems from a team.`,
       };
     }
 
-    return formatResult(void 0, apiCall);
+    return formatResult(result.value);
   },
 };

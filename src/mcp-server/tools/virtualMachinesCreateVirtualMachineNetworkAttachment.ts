@@ -12,7 +12,7 @@ const args = {
 
 export const tool$virtualMachinesCreateVirtualMachineNetworkAttachment:
   ToolDefinition<typeof args> = {
-    name: "virtual-machines-create-virtual-machine-network-3b8",
+    name: "virtual-machines-create-network-attachment",
     description: `Attach a network to a VM
 
 Attaches a virtual network (VLAN) to a Virtual Machine. Work runs asynchronously and returns 202 Accepted.
@@ -26,7 +26,7 @@ Attaches a virtual network (VLAN) to a Virtual Machine. Work runs asynchronously
     },
     args,
     tool: async (client, args, ctx) => {
-      const [result, apiCall] =
+      const [result] =
         await virtualMachinesCreateVirtualMachineNetworkAttachment(
           client,
           args.request,
@@ -40,8 +40,6 @@ Attaches a virtual network (VLAN) to a Virtual Machine. Work runs asynchronously
         };
       }
 
-      const value = result.value;
-
-      return formatResult(value, apiCall);
+      return formatResult(result.value);
     },
   };

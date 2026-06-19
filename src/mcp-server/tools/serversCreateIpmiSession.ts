@@ -28,7 +28,7 @@ Related guide: https://docs.latitude.sh/docs/ipmi
   },
   args,
   tool: async (client, args, ctx) => {
-    const [result, apiCall] = await serversCreateIpmiSession(
+    const [result] = await serversCreateIpmiSession(
       client,
       args.request,
       { fetchOptions: { signal: ctx.signal } },
@@ -41,8 +41,6 @@ Related guide: https://docs.latitude.sh/docs/ipmi
       };
     }
 
-    const value = result.value;
-
-    return formatResult(value, apiCall);
+    return formatResult(result.value);
   },
 };

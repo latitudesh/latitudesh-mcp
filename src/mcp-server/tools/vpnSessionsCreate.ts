@@ -26,7 +26,7 @@ Creates a new VPN Session.
   },
   args,
   tool: async (client, args, ctx) => {
-    const [result, apiCall] = await vpnSessionsCreate(
+    const [result] = await vpnSessionsCreate(
       client,
       args.request,
       { fetchOptions: { signal: ctx.signal } },
@@ -39,8 +39,6 @@ Creates a new VPN Session.
       };
     }
 
-    const value = result.value;
-
-    return formatResult(value, apiCall);
+    return formatResult(result.value);
   },
 };

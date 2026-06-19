@@ -25,7 +25,7 @@ Lists all operating systems available to deploy and reinstall.
   },
   args,
   tool: async (client, args, ctx) => {
-    const [result, apiCall] = await operatingSystemsListPlans(
+    const [result] = await operatingSystemsListPlans(
       client,
       args.request,
       { fetchOptions: { signal: ctx.signal } },
@@ -38,8 +38,6 @@ Lists all operating systems available to deploy and reinstall.
       };
     }
 
-    const value = result.value;
-
-    return formatResult(value, apiCall);
+    return formatResult(result.value);
   },
 };

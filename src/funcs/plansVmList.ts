@@ -4,7 +4,6 @@
 
 import { LatitudeshCore } from "../core.js";
 import { encodeFormQuery } from "../lib/encodings.js";
-import * as M from "../lib/matchers.js";
 import { compactMap } from "../lib/primitives.js";
 import { safeParse } from "../lib/schemas.js";
 import { RequestOptions } from "../lib/sdks.js";
@@ -23,10 +22,6 @@ import {
   GetVmPlansRequest,
   GetVmPlansRequest$zodSchema,
 } from "../models/getvmplansop.js";
-import {
-  VirtualMachinePlans,
-  VirtualMachinePlans$zodSchema,
-} from "../models/virtualmachineplans.js";
 import { APICall, APIPromise } from "../types/async.js";
 import { Result } from "../types/fp.js";
 
@@ -39,7 +34,7 @@ export function plansVmList(
   options?: RequestOptions,
 ): APIPromise<
   Result<
-    VirtualMachinePlans,
+    Response,
     | APIError
     | SDKValidationError
     | UnexpectedClientError
@@ -63,7 +58,7 @@ async function $do(
 ): Promise<
   [
     Result<
-      VirtualMachinePlans,
+      Response,
       | APIError
       | SDKValidationError
       | UnexpectedClientError
@@ -141,26 +136,9 @@ async function $do(
   if (!doResult.ok) {
     return [doResult, { status: "request-error", request: req$ }];
   }
-  const response = doResult.value;
-  const responseFields$ = {
-    HttpMeta: { Response: response, Request: req$ },
-  };
-
-  const [result$] = await M.match<
-    VirtualMachinePlans,
-    | APIError
-    | SDKValidationError
-    | UnexpectedClientError
-    | InvalidRequestError
-    | RequestAbortedError
-    | RequestTimeoutError
-    | ConnectionError
-  >(
-    M.json(200, VirtualMachinePlans$zodSchema, {
-      ctype: "application/vnd.api+json",
-      key: "virtual_machine_plans",
-    }),
-  )(response, req$, { extraFields: responseFields$ });
-
-  return [result$, { status: "complete", request: req$, response }];
+  return [doResult, {
+    status: "complete",
+    "request": req$,
+    response: doResult.value,
+  }];
 }

@@ -25,7 +25,7 @@ Allows you create SSH Keys. These keys can be used to access servers after deplo
   },
   args,
   tool: async (client, args, ctx) => {
-    const [result, apiCall] = await sshKeysCreate(
+    const [result] = await sshKeysCreate(
       client,
       args.request,
       { fetchOptions: { signal: ctx.signal } },
@@ -38,8 +38,6 @@ Allows you create SSH Keys. These keys can be used to access servers after deplo
       };
     }
 
-    const value = result.value;
-
-    return formatResult(value, apiCall);
+    return formatResult(result.value);
   },
 };

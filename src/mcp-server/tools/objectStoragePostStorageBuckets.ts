@@ -25,7 +25,7 @@ Creates a new object storage bucket for a project.`,
     },
     args,
     tool: async (client, args, ctx) => {
-      const [result, apiCall] = await objectStoragePostStorageBuckets(
+      const [result] = await objectStoragePostStorageBuckets(
         client,
         args.request,
         { fetchOptions: { signal: ctx.signal } },
@@ -38,8 +38,6 @@ Creates a new object storage bucket for a project.`,
         };
       }
 
-      const value = result.value;
-
-      return formatResult(value, apiCall);
+      return formatResult(result.value);
     },
   };

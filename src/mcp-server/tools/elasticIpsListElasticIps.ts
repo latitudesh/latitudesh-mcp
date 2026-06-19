@@ -25,7 +25,7 @@ List all Elastic IPs for the authenticated team. Elastic IPs are static public I
   },
   args,
   tool: async (client, args, ctx) => {
-    const [result, apiCall] = await elasticIpsListElasticIps(
+    const [result] = await elasticIpsListElasticIps(
       client,
       args.request,
       { fetchOptions: { signal: ctx.signal } },
@@ -38,8 +38,6 @@ List all Elastic IPs for the authenticated team. Elastic IPs are static public I
       };
     }
 
-    const value = result.value;
-
-    return formatResult(value, apiCall);
+    return formatResult(result.value);
   },
 };

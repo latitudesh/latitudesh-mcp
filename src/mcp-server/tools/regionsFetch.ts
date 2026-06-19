@@ -22,7 +22,7 @@ export const tool$regionsFetch: ToolDefinition<typeof args> = {
   },
   args,
   tool: async (client, args, ctx) => {
-    const [result, apiCall] = await regionsFetch(
+    const [result] = await regionsFetch(
       client,
       args.request,
       { fetchOptions: { signal: ctx.signal } },
@@ -35,8 +35,6 @@ export const tool$regionsFetch: ToolDefinition<typeof args> = {
       };
     }
 
-    const value = result.value;
-
-    return formatResult(value, apiCall);
+    return formatResult(result.value);
   },
 };

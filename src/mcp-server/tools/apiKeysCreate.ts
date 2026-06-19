@@ -25,7 +25,7 @@ Create a new API Key that is tied to the current user account. The created API k
   },
   args,
   tool: async (client, args, ctx) => {
-    const [result, apiCall] = await apiKeysCreate(
+    const [result] = await apiKeysCreate(
       client,
       args.request,
       { fetchOptions: { signal: ctx.signal } },
@@ -38,8 +38,6 @@ Create a new API Key that is tied to the current user account. The created API k
       };
     }
 
-    const value = result.value;
-
-    return formatResult(value, apiCall);
+    return formatResult(result.value);
   },
 };

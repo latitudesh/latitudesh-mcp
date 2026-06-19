@@ -25,7 +25,7 @@ Show a Virtual Machine.
   },
   args,
   tool: async (client, args, ctx) => {
-    const [result, apiCall] = await virtualMachinesGet(
+    const [result] = await virtualMachinesGet(
       client,
       args.request,
       { fetchOptions: { signal: ctx.signal } },
@@ -38,8 +38,6 @@ Show a Virtual Machine.
       };
     }
 
-    const value = result.value;
-
-    return formatResult(value, apiCall);
+    return formatResult(result.value);
   },
 };

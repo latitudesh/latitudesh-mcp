@@ -22,7 +22,7 @@ export const tool$rolesGet: ToolDefinition<typeof args> = {
   },
   args,
   tool: async (client, args, ctx) => {
-    const [result, apiCall] = await rolesGet(
+    const [result] = await rolesGet(
       client,
       args.request,
       { fetchOptions: { signal: ctx.signal } },
@@ -35,8 +35,6 @@ export const tool$rolesGet: ToolDefinition<typeof args> = {
       };
     }
 
-    const value = result.value;
-
-    return formatResult(value, apiCall);
+    return formatResult(result.value);
   },
 };

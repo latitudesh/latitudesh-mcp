@@ -24,7 +24,7 @@ Unschedules the server removal at the end of the billing cycle.`,
   },
   args,
   tool: async (client, args, ctx) => {
-    const [result, apiCall] = await serversUnscheduleDeletion(
+    const [result] = await serversUnscheduleDeletion(
       client,
       args.request,
       { fetchOptions: { signal: ctx.signal } },
@@ -37,6 +37,6 @@ Unschedules the server removal at the end of the billing cycle.`,
       };
     }
 
-    return formatResult(void 0, apiCall);
+    return formatResult(result.value);
   },
 };

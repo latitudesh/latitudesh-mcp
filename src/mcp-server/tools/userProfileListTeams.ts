@@ -19,7 +19,7 @@ Returns a list of all teams the user belongs to
     "readOnlyHint": true,
   },
   tool: async (client, ctx) => {
-    const [result, apiCall] = await userProfileListTeams(
+    const [result] = await userProfileListTeams(
       client,
       { fetchOptions: { signal: ctx.signal } },
     ).$inspect();
@@ -31,8 +31,6 @@ Returns a list of all teams the user belongs to
       };
     }
 
-    const value = result.value;
-
-    return formatResult(value, apiCall);
+    return formatResult(result.value);
   },
 };

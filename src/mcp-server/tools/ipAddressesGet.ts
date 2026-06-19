@@ -24,7 +24,7 @@ Retrieve an IP Address`,
   },
   args,
   tool: async (client, args, ctx) => {
-    const [result, apiCall] = await ipAddressesGet(
+    const [result] = await ipAddressesGet(
       client,
       args.request,
       { fetchOptions: { signal: ctx.signal } },
@@ -37,8 +37,6 @@ Retrieve an IP Address`,
       };
     }
 
-    const value = result.value;
-
-    return formatResult(value, apiCall);
+    return formatResult(result.value);
   },
 };

@@ -29,7 +29,7 @@ Deletes a Kubernetes cluster. This action is irreversible and will destroy all c
   },
   args,
   tool: async (client, args, ctx) => {
-    const [result, apiCall] = await kubernetesClustersDeleteKubernetesCluster(
+    const [result] = await kubernetesClustersDeleteKubernetesCluster(
       client,
       args.request,
       { fetchOptions: { signal: ctx.signal } },
@@ -42,8 +42,6 @@ Deletes a Kubernetes cluster. This action is irreversible and will destroy all c
       };
     }
 
-    const value = result.value;
-
-    return formatResult(value, apiCall);
+    return formatResult(result.value);
   },
 };

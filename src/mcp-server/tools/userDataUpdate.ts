@@ -25,7 +25,7 @@ Allow you update User Data in a team.
   },
   args,
   tool: async (client, args, ctx) => {
-    const [result, apiCall] = await userDataUpdate(
+    const [result] = await userDataUpdate(
       client,
       args.request,
       { fetchOptions: { signal: ctx.signal } },
@@ -38,8 +38,6 @@ Allow you update User Data in a team.
       };
     }
 
-    const value = result.value;
-
-    return formatResult(value, apiCall);
+    return formatResult(result.value);
   },
 };

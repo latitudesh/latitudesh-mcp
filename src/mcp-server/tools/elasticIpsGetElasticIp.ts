@@ -25,7 +25,7 @@ Returns a single Elastic IP by its ID.
   },
   args,
   tool: async (client, args, ctx) => {
-    const [result, apiCall] = await elasticIpsGetElasticIp(
+    const [result] = await elasticIpsGetElasticIp(
       client,
       args.request,
       { fetchOptions: { signal: ctx.signal } },
@@ -38,8 +38,6 @@ Returns a single Elastic IP by its ID.
       };
     }
 
-    const value = result.value;
-
-    return formatResult(value, apiCall);
+    return formatResult(result.value);
   },
 };

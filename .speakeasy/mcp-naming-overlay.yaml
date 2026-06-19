@@ -12,3 +12,24 @@ actions:
   - target: "$.paths['/kubernetes_clusters/available_versions'].get"
     update:
       x-speakeasy-name-override: listAvailableVersions
+
+  # The following MCP tool names, derived from their operationIds, exceed
+  # Speakeasy's 52-char tool-name limit and get truncated to hashed names
+  # (e.g. "...-network-1c7"). x-speakeasy-mcp.name sets a short, stable tool
+  # name without changing the underlying SDK method name.
+  - target: "$.paths['/kubernetes_clusters/{kubernetes_cluster_id}/kubeconfig'].get"
+    update:
+      x-speakeasy-mcp:
+        name: kubernetes-clusters-get-kubeconfig
+  - target: "$.paths['/virtual_machines/{virtual_machine_id}/network_attachments'].get"
+    update:
+      x-speakeasy-mcp:
+        name: virtual-machines-list-network-attachments
+  - target: "$.paths['/virtual_machines/{virtual_machine_id}/network_attachments'].post"
+    update:
+      x-speakeasy-mcp:
+        name: virtual-machines-create-network-attachment
+  - target: "$.paths['/virtual_machines/{virtual_machine_id}/network_attachments/{id}'].delete"
+    update:
+      x-speakeasy-mcp:
+        name: virtual-machines-destroy-network-attachment

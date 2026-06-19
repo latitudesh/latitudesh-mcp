@@ -25,7 +25,7 @@ Update a Tag in the team.
   },
   args,
   tool: async (client, args, ctx) => {
-    const [result, apiCall] = await tagsUpdate(
+    const [result] = await tagsUpdate(
       client,
       args.request,
       { fetchOptions: { signal: ctx.signal } },
@@ -38,8 +38,6 @@ Update a Tag in the team.
       };
     }
 
-    const value = result.value;
-
-    return formatResult(value, apiCall);
+    return formatResult(result.value);
   },
 };

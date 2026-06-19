@@ -26,7 +26,7 @@ Allow you to remove a Virtual Network assignment.
     },
     args,
     tool: async (client, args, ctx) => {
-      const [result, apiCall] = await privateNetworksDeleteAssignment(
+      const [result] = await privateNetworksDeleteAssignment(
         client,
         args.request,
         { fetchOptions: { signal: ctx.signal } },
@@ -39,6 +39,6 @@ Allow you to remove a Virtual Network assignment.
         };
       }
 
-      return formatResult(void 0, apiCall);
+      return formatResult(result.value);
     },
   };

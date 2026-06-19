@@ -25,7 +25,7 @@ Update the current user profile
   },
   args,
   tool: async (client, args, ctx) => {
-    const [result, apiCall] = await userProfileUpdate(
+    const [result] = await userProfileUpdate(
       client,
       args.request,
       { fetchOptions: { signal: ctx.signal } },
@@ -38,8 +38,6 @@ Update the current user profile
       };
     }
 
-    const value = result.value;
-
-    return formatResult(value, apiCall);
+    return formatResult(result.value);
   },
 };

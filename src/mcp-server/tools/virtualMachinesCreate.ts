@@ -25,7 +25,7 @@ Creates a new Virtual Machine.
   },
   args,
   tool: async (client, args, ctx) => {
-    const [result, apiCall] = await virtualMachinesCreate(
+    const [result] = await virtualMachinesCreate(
       client,
       args.request,
       { fetchOptions: { signal: ctx.signal } },
@@ -38,8 +38,6 @@ Creates a new Virtual Machine.
       };
     }
 
-    const value = result.value;
-
-    return formatResult(value, apiCall);
+    return formatResult(result.value);
   },
 };

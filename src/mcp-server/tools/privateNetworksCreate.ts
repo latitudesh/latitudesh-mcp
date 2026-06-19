@@ -25,7 +25,7 @@ Creates a new Virtual Network.
   },
   args,
   tool: async (client, args, ctx) => {
-    const [result, apiCall] = await privateNetworksCreate(
+    const [result] = await privateNetworksCreate(
       client,
       args.request,
       { fetchOptions: { signal: ctx.signal } },
@@ -38,8 +38,6 @@ Creates a new Virtual Network.
       };
     }
 
-    const value = result.value;
-
-    return formatResult(value, apiCall);
+    return formatResult(result.value);
   },
 };

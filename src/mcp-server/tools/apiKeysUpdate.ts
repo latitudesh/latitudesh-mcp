@@ -26,7 +26,7 @@ Use PATCH to update settings without rotating the token.
   },
   args,
   tool: async (client, args, ctx) => {
-    const [result, apiCall] = await apiKeysUpdate(
+    const [result] = await apiKeysUpdate(
       client,
       args.request,
       { fetchOptions: { signal: ctx.signal } },
@@ -39,8 +39,6 @@ Use PATCH to update settings without rotating the token.
       };
     }
 
-    const value = result.value;
-
-    return formatResult(value, apiCall);
+    return formatResult(result.value);
   },
 };

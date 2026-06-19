@@ -25,7 +25,7 @@ Releases an Elastic IP, returning it to the available pool. The IP will transiti
   },
   args,
   tool: async (client, args, ctx) => {
-    const [result, apiCall] = await elasticIpsDeleteElasticIp(
+    const [result] = await elasticIpsDeleteElasticIp(
       client,
       args.request,
       { fetchOptions: { signal: ctx.signal } },
@@ -38,8 +38,6 @@ Releases an Elastic IP, returning it to the available pool. The IP will transiti
       };
     }
 
-    const value = result.value;
-
-    return formatResult(value, apiCall);
+    return formatResult(result.value);
   },
 };

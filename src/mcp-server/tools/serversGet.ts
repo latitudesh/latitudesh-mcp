@@ -25,7 +25,7 @@ Returns a server that belongs to the team.
   },
   args,
   tool: async (client, args, ctx) => {
-    const [result, apiCall] = await serversGet(
+    const [result] = await serversGet(
       client,
       args.request,
       { fetchOptions: { signal: ctx.signal } },
@@ -38,8 +38,6 @@ Returns a server that belongs to the team.
       };
     }
 
-    const value = result.value;
-
-    return formatResult(value, apiCall);
+    return formatResult(result.value);
   },
 };

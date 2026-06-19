@@ -22,7 +22,7 @@ export const tool$teamsMembersGetTeamMembers: ToolDefinition<typeof args> = {
   },
   args,
   tool: async (client, args, ctx) => {
-    const [result, apiCall] = await teamsMembersGetTeamMembers(
+    const [result] = await teamsMembersGetTeamMembers(
       client,
       args.request,
       { fetchOptions: { signal: ctx.signal } },
@@ -35,8 +35,6 @@ export const tool$teamsMembersGetTeamMembers: ToolDefinition<typeof args> = {
       };
     }
 
-    const value = result.value;
-
-    return formatResult(value, apiCall);
+    return formatResult(result.value);
   },
 };

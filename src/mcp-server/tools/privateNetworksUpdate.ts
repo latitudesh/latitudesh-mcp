@@ -25,7 +25,7 @@ Update a Virtual Network.
   },
   args,
   tool: async (client, args, ctx) => {
-    const [result, apiCall] = await privateNetworksUpdate(
+    const [result] = await privateNetworksUpdate(
       client,
       args.request,
       { fetchOptions: { signal: ctx.signal } },
@@ -38,8 +38,6 @@ Update a Virtual Network.
       };
     }
 
-    const value = result.value;
-
-    return formatResult(value, apiCall);
+    return formatResult(result.value);
   },
 };

@@ -16,7 +16,7 @@ export const tool$teamsGet: ToolDefinition = {
     "readOnlyHint": true,
   },
   tool: async (client, ctx) => {
-    const [result, apiCall] = await teamsGet(
+    const [result] = await teamsGet(
       client,
       { fetchOptions: { signal: ctx.signal } },
     ).$inspect();
@@ -28,8 +28,6 @@ export const tool$teamsGet: ToolDefinition = {
       };
     }
 
-    const value = result.value;
-
-    return formatResult(value, apiCall);
+    return formatResult(result.value);
   },
 };

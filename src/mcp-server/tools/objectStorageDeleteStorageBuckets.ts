@@ -26,7 +26,7 @@ Allows you to remove an object storage from a project.`,
   },
   args,
   tool: async (client, args, ctx) => {
-    const [result, apiCall] = await objectStorageDeleteStorageBuckets(
+    const [result] = await objectStorageDeleteStorageBuckets(
       client,
       args.request,
       { fetchOptions: { signal: ctx.signal } },
@@ -39,8 +39,6 @@ Allows you to remove an object storage from a project.`,
       };
     }
 
-    const value = result.value;
-
-    return formatResult(value, apiCall);
+    return formatResult(result.value);
   },
 };
