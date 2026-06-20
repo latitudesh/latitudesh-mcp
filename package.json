@@ -23,6 +23,7 @@
     "prepublishOnly": "npm run build"
   },
   "dependencies": {
+    "@cloudflare/workers-oauth-provider": "^0.8.1",
     "@modelcontextprotocol/sdk": "1.26.0",
     "@stricli/core": "^1.1.2",
     "agents": "0.3.10",

@@ -922,7 +922,7 @@ http_headers = { "server-index" = "YOUR_SERVER_INDEX", "latitude-api-key" = "YOU
               <path d="M4 16c-1.1 0-2-.9-2-2V4c0-1.1.9-2 2-2h10c1.1 0 2 .9 2 2"></path>
             </svg>
           </button>
-          <code class="code-snippet language-json" id="claude-cli-cmd">claude mcp add --transport sse Latitudesh https://mcp.latitude.sh/sse</code>
+          <code class="code-snippet language-json" id="claude-cli-cmd">claude mcp add --transport http Latitudesh https://mcp.latitude.sh/mcp</code>
         </div>
       </div>
     </div>
@@ -973,7 +973,7 @@ http_headers = { "server-index" = "YOUR_SERVER_INDEX", "latitude-api-key" = "YOU
               <path d="M4 16c-1.1 0-2-.9-2-2V4c0-1.1.9-2 2-2h10c1.1 0 2 .9 2 2"></path>
             </svg>
           </button>
-          <code class="code-snippet language-json" id="gemini-config">gemini mcp add --transport sse Latitudesh https://mcp.latitude.sh/sse</code>
+          <code class="code-snippet language-json" id="gemini-config">gemini mcp add --transport http Latitudesh https://mcp.latitude.sh/mcp</code>
         </div>
       </div>
     </div>
