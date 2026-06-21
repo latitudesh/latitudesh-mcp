@@ -7,12 +7,18 @@
  *
  * Endpoints:
  *   /mcp            -> OAuth-protected MCP (apiRoute, prefix match). Claude discovers this.
+ *                      This is the only path advertised to humans on the landing page.
  *   /direct/mcp     -> header passthrough (bearer: / latitude-api-key:); kept off
  *                      the "/mcp" prefix so the OAuth guard doesn't swallow it.
  *   /sse            -> header passthrough (legacy SSE)
  *   /authorize      -> bridges Claude's redirect flow to Latitude's cli_sessions
  *   /authorize/poll -> server-side poll of the cli_session; completes the grant
  *   /token,/register,/.well-known/*  -> served by workers-oauth-provider
+ *
+ * INTENTIONAL: /direct/mcp and /sse are retained (unadvertised) for automation /
+ * CI that authenticates with a static Latitude API key via the bearer: header.
+ * Interactive clients use OAuth on /mcp. Do not remove these as "non-OAuth
+ * cleanup" — they are the supported key-based path for headless callers.
  *
  * The OAuth grant stores the user's Latitude API key (minted by the dashboard
  * approval) in `props.bearer`; the McpAgent's getSDK() reads `this.props.bearer`,
