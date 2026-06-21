@@ -32,3 +32,36 @@ jobs:
       github_access_token: ${{ secrets.GITHUB_TOKEN }}
       npm_token: ${{ secrets.NPM_TOKEN }}
       speakeasy_api_key: ${{ secrets.SPEAKEASY_API_KEY }}
+
+  # Re-apply the Cloudflare/OAuth overrides that `speakeasy run` clobbers, then
+  # push them onto the same regen branch so the PR is mergeable as-is. Runs in
+  # the same workflow run as `generate` (a push from the bot's GITHUB_TOKEN would
+  # NOT trigger a standalone workflow). Fails loudly if the override script can't
+  # find its anchors — a Speakeasy template change then blocks the merge instead
+  # of silently shipping a broken worker.
+  reapply-overrides:
+    needs: generate
+    if: needs.generate.outputs.branch_name != ''
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: ${{ needs.generate.outputs.branch_name }}
+      - uses: oven-sh/setup-bun@v2
+      - name: Re-apply Cloudflare/OAuth overrides
+        run: node scripts/apply-cloudflare-overrides.mjs
+      - name: Build (repopulate manifest.json + tool-names.ts, typecheck)
+        run: bun run build
+      - name: Commit & push to the regen branch
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add -A
+          if git diff --cached --quiet; then
+            echo "No override changes to push (already applied)."
+          else
+            git commit -m "ci: re-apply Cloudflare/OAuth overrides after regen"
+            git push origin HEAD:${{ needs.generate.outputs.branch_name }}
+          fi
