@@ -23,6 +23,11 @@ export class LatitudeshMCP extends McpAgent<Env, State, Props> {
       // generated "debug" to avoid verbose logging in production.
       logger: createConsoleLogger("info"),
       getSDK: () => this.getSDK(),
+      // Dynamic mode: expose ~4 meta-tools (list_tools / describe_tool_input /
+      // execute_tool / list_scopes) instead of all ~133 tool schemas, cutting the
+      // tools/list payload from ~31k tokens to a few hundred. The model discovers
+      // and invokes tools on demand. Manual override — re-apply after regen.
+      dynamic: true,
     });
 
     this.server = server;
