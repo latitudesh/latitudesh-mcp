@@ -183,22 +183,33 @@ function renderAuthorizePage(authorizeUrl: string, userCode: string, loginId: st
 <body>
   <div class="card">
     <h1>Authorize Latitude MCP</h1>
-    <p>Approve this connection in your Latitude dashboard. Confirm this code matches:</p>
+    <p>Click below and approve in Latitude. Confirm this code matches:</p>
     <div class="code">${userCode}</div>
     <br />
-    <a class="btn" id="approve" href="${authorizeUrl}" target="_blank" rel="noopener">Continue to Latitude →</a>
-    <p class="status" id="status">Waiting for approval…</p>
+    <a class="btn" id="approve" href="${authorizeUrl}" target="_blank" rel="noopener">Approve in Latitude →</a>
+    <p class="status" id="status">Click “Approve in Latitude” to continue.</p>
   </div>
 <script>
   const cfg = ${data};
-  // Best-effort: pop the dashboard automatically; the button is the fallback.
-  try { window.open(cfg.authorizeUrl, "_blank", "noopener"); } catch (e) {}
   const statusEl = document.getElementById("status");
+  const approveBtn = document.getElementById("approve");
+  let popup = null;
+  // Open the approval in a controlled popup on the user's click (so it isn't
+  // blocked) instead of auto-spawning a second tab; we auto-close it on approval.
+  approveBtn.addEventListener("click", (e) => {
+    const w = window.open(cfg.authorizeUrl, "latitude_authorize", "popup,width=520,height=760");
+    if (w) { popup = w; e.preventDefault(); statusEl.textContent = "Waiting for approval…"; }
+    // If the popup is blocked, the link's default (new tab) takes over.
+  });
   async function poll() {
     try {
       const r = await fetch("/authorize/poll?login=" + encodeURIComponent(cfg.loginId));
       const j = await r.json();
-      if (j.status === "approved") { statusEl.textContent = "Approved — redirecting…"; window.location = j.redirectTo; return; }
+      if (j.status === "approved") {
+        statusEl.textContent = "Approved — redirecting…";
+        if (popup) { try { popup.close(); } catch (e) {} }
+        window.location = j.redirectTo; return;
+      }
       if (j.status === "expired") { statusEl.textContent = "This login expired. Close this tab and try again."; return; }
     } catch (e) {}
     setTimeout(poll, 2000);
