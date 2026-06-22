@@ -94,22 +94,13 @@ processFile("wrangler.toml", [
 // --- src/cloudflare-worker/cloudflare-worker.ts -----------------------------
 processFile("src/cloudflare-worker/cloudflare-worker.ts", [
   {
-    label: "logger info + dynamic tool mode",
-    marker: "dynamic: true",
+    label: "logger info (not debug)",
+    marker: `createConsoleLogger("info")`,
     find:
-      `    const { server } = createMCPServer({\n` +
-      `      logger: createConsoleLogger("debug"),\n` +
-      `      getSDK: () => this.getSDK(),\n` +
-      `    });`,
+      `      logger: createConsoleLogger("debug"),`,
     replace:
-      `    const { server } = createMCPServer({\n` +
       `      // Override: "info" not "debug" (avoid verbose prod logging).\n` +
-      `      logger: createConsoleLogger("info"),\n` +
-      `      getSDK: () => this.getSDK(),\n` +
-      `      // Override: dynamic mode exposes ~4 meta-tools instead of all ~133\n` +
-      `      // tool schemas, cutting tools/list context ~98%.\n` +
-      `      dynamic: true,\n` +
-      `    });`,
+      `      logger: createConsoleLogger("info"),`,
   },
   {
     label: "auth via bearer / latitude-api-key headers",
