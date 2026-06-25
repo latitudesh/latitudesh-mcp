@@ -2,8 +2,8 @@ speakeasyVersion: 1.784.0
 sources:
     Latitudesh-OAS:
         sourceNamespace: latitudesh-oas
-        sourceRevisionDigest: sha256:c4b8232f0a6a51373726e64021e049e152acec9044589a2230c03871851920bd
-        sourceBlobDigest: sha256:31bace3435396e7e676d0722bae80dd83067a22fe096a4c39b85e57d06932910
+        sourceRevisionDigest: sha256:8e84241a6d59246dab13b243164594904651699b1365304b36566b40fe8cdcf8
+        sourceBlobDigest: sha256:2d796cc2aa20e885e249c39d1667e417887545325f27c997af29024a8870ccf2
         tags:
             - latest
             - "2023-06-01"
@@ -11,8 +11,8 @@ targets:
     latitudesh:
         source: Latitudesh-OAS
         sourceNamespace: latitudesh-oas
-        sourceRevisionDigest: sha256:c4b8232f0a6a51373726e64021e049e152acec9044589a2230c03871851920bd
-        sourceBlobDigest: sha256:31bace3435396e7e676d0722bae80dd83067a22fe096a4c39b85e57d06932910
+        sourceRevisionDigest: sha256:8e84241a6d59246dab13b243164594904651699b1365304b36566b40fe8cdcf8
+        sourceBlobDigest: sha256:2d796cc2aa20e885e249c39d1667e417887545325f27c997af29024a8870ccf2
 workflow:
     workflowVersion: 1.0.0
     speakeasyVersion: latest

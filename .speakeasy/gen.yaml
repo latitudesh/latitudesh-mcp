@@ -31,15 +31,17 @@ generation:
     generateNewTests: true
     skipResponseBodyAssertions: false
 mcp-typescript:
-  version: 0.2.1
+  version: 0.2.3
   additionalDependencies:
-    dependencies: {}
+    dependencies:
+      "@cloudflare/workers-oauth-provider": 0.8.1
     devDependencies: {}
     peerDependencies: {}
   advancedFlags: []
   author: Speakeasy
   baseErrorName: LatitudeshError
-  cloudflareEnabled: false
+  cloudflareEnabled: true
+  cloudflareURL: https://mcp.latitude.sh
   defaultErrorName: LatitudeshDefaultError
   envVarPrefix: LATITUDESH
   fixEnumNameSanitization: false

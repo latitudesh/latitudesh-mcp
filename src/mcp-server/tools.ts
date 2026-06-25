@@ -203,13 +203,22 @@ export function createRegisterTool(
       return;
     }
 
+    // Manual override (re-apply after `speakeasy run`): Speakeasy generates an
+    // empty `annotations.title: ""`. An empty-but-present title makes some MCP
+    // clients (e.g. the Claude connector UI) render a blank tool label instead
+    // of falling back to the name. Derive a readable title from the tool name.
+    const displayTitle = tool.annotations.title
+      || tool.name.replace(/[-_]+/g, " ").replace(/\b\w/g, (c) => c.toUpperCase());
+    const annotations = { ...tool.annotations, title: displayTitle };
+
     if (tool.args) {
       server.registerTool(
         tool.name,
         {
+          title: displayTitle,
           description: tool.description,
           inputSchema: tool.args,
-          annotations: tool.annotations,
+          annotations,
         },
         async (args, ctx) => {
           return tool.tool(getSDK(), args, ctx);
@@ -219,8 +228,9 @@ export function createRegisterTool(
       server.registerTool(
         tool.name,
         {
+          title: displayTitle,
           description: tool.description,
-          annotations: tool.annotations,
+          annotations,
         },
         async (ctx) => {
           return tool.tool(getSDK(), ctx);

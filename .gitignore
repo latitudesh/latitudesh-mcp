@@ -1,3 +1,5 @@
+.dev.vars
+.wrangler/
 bun.lock
 *.mcpb
 **/.speakeasy/logs/

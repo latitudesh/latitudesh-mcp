@@ -56,6 +56,9 @@ export const toolNames: Array<{ name: string; description: string }>= ${JSON.str
   // Set executable permissions on the output file
   const outputFile = join(destinationDir, "mcp-server.js");
   await chmod(outputFile, 0o755);
+  // create static directory for cloudflare deployment
+  const staticDir = "./static";
+  await mkdir(staticDir, { recursive: true });
 
   // Build the MCP bundle file
   if (shouldPack) {
