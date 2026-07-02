@@ -30,14 +30,28 @@ export const FirewallAssignmentDataServer$zodSchema: z.ZodType<
   primary_ipv4: z.string().optional(),
 });
 
+export type FirewallAssignmentDataFirewall = {
+  id?: string | undefined;
+  name?: string | undefined;
+};
+
+export const FirewallAssignmentDataFirewall$zodSchema: z.ZodType<
+  FirewallAssignmentDataFirewall
+> = z.object({
+  id: z.string().optional(),
+  name: z.string().optional(),
+});
+
 export type FirewallAssignmentDataAttributes = {
   server?: FirewallAssignmentDataServer | undefined;
+  firewall?: FirewallAssignmentDataFirewall | undefined;
   firewall_id?: string | undefined;
 };
 
 export const FirewallAssignmentDataAttributes$zodSchema: z.ZodType<
   FirewallAssignmentDataAttributes
 > = z.object({
+  firewall: z.lazy(() => FirewallAssignmentDataFirewall$zodSchema).optional(),
   firewall_id: z.string().optional(),
   server: z.lazy(() => FirewallAssignmentDataServer$zodSchema).optional(),
 });

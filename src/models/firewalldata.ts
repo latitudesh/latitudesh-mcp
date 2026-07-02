@@ -19,10 +19,14 @@ export type Rule = {
   to?: string | undefined;
   port?: string | undefined;
   protocol?: string | undefined;
+  default?: boolean | undefined;
   description?: string | null | undefined;
 };
 
 export const Rule$zodSchema: z.ZodType<Rule> = z.object({
+  default: z.boolean().optional().describe(
+    "True when this rule was seeded by Latitude when the firewall was created (cannot be deleted); false for user-added rules.",
+  ),
   description: z.string().nullable().optional().describe(
     "Optional description explaining the purpose of this rule",
   ),

@@ -19,9 +19,7 @@ export class LatitudeshMCP extends McpAgent<Env, State, Props> {
 
   async init() {
     const { server } = createMCPServer({
-      // Manual override (re-apply after `speakeasy run`): "info" instead of the
-      // generated "debug" to avoid verbose logging in production.
-      logger: createConsoleLogger("info"),
+      logger: createConsoleLogger("debug"),
       getSDK: () => this.getSDK(),
     });
 
@@ -29,12 +27,6 @@ export class LatitudeshMCP extends McpAgent<Env, State, Props> {
   }
 
   getSDK() {
-    // Incoming header keys are lowercased by the fetch handler below, and the
-    // landing page instructs clients to send `bearer` / `latitude-api-key`
-    // headers (matching the express serve path's buildSDK contract). The
-    // generated code reads `getHeader("Authorization")`, which is always empty
-    // (wrong case + wrong header), so auth silently fails — re-apply this fix
-    // after `speakeasy run`.
     const getHeader = (name: string) => this.props?.[name] ?? "";
 
     const sdk = new LatitudeshCore({
@@ -43,8 +35,7 @@ export class LatitudeshMCP extends McpAgent<Env, State, Props> {
         group: (...args) => console.group(...args),
         groupEnd: (...args) => console.groupEnd(...args),
       },
-      security: async () => ({ Bearer: getHeader("bearer") }),
-      latitude_api_key: getHeader("latitude-api-key") || undefined,
+      security: async () => ({ Bearer: getHeader("Authorization") }),
     });
     return sdk;
   }

@@ -31,10 +31,10 @@ generation:
     generateNewTests: true
     skipResponseBodyAssertions: false
 mcp-typescript:
-  version: 0.2.3
+  version: 0.2.4
   additionalDependencies:
     dependencies:
-      "@cloudflare/workers-oauth-provider": 0.8.1
+      '@cloudflare/workers-oauth-provider': 0.8.1
     devDependencies: {}
     peerDependencies: {}
   advancedFlags: []
