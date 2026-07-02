@@ -36,6 +36,7 @@ export type VirtualMachinePayloadAttributes = {
   operating_system?: string | null | undefined;
   user_data?: number | string | null | undefined;
   tags?: Array<string> | null | undefined;
+  site?: string | null | undefined;
 };
 
 export const VirtualMachinePayloadAttributes$zodSchema: z.ZodType<
@@ -49,6 +50,9 @@ export const VirtualMachinePayloadAttributes$zodSchema: z.ZodType<
     "The plan ID or Slug for the Virtual Machine",
   ),
   project: z.string().default("my-project"),
+  site: z.string().default("DAL").nullable().describe(
+    "Site/region slug where the VM is provisioned (e.g. DAL, SAO). Defaults to DAL when omitted.",
+  ),
   ssh_keys: z.array(z.string()).nullable().optional(),
   tags: z.array(z.string()).nullable().optional().describe(
     "Array of tag IDs to assign to the VM.",

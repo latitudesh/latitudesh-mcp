@@ -30,9 +30,8 @@ export function landingPageExpress(req: ExpressRequest, res: ExpressResponse) {
 
 export function landingPageHTML(origin: string): string {
   const o = origin;
-  // OAuth-only: mcp-remote points at the OAuth-protected /mcp endpoint and runs
-  // the browser auth flow on a 401 — no static headers/keys in client config.
-  // (Hand-edited; `speakeasy run` regenerates this with the /sse + header model.)
+  // Override: OAuth-only. mcp-remote points at /mcp and runs the browser auth
+  // flow on a 401 — no static headers/keys in client config.
   const mcpConfig = {
     "command": "npx",
     "args": [
@@ -929,7 +928,7 @@ url = "${o}/mcp"`;
         <h1>Instructions</h1>
         <p>One-click installation for Claude Desktop users</p>
         <div class="instruction-item">
-          <a href="https://github.com/latitudesh/latitudesh-mcp/releases/download/v0.2.3/mcp-server.mcpb" download="mcp-server.mcpb" class="action-button header-action" style="display: inline-flex; margin-bottom: 16px;">
+          <a href="https://github.com/latitudesh/latitudesh-mcp/releases/download/v0.2.4/mcp-server.mcpb" download="mcp-server.mcpb" class="action-button header-action" style="display: inline-flex; margin-bottom: 16px;">
             📥 Download MCP Bundle
           </a>
         </div>

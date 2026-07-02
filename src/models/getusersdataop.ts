@@ -3,11 +3,15 @@
  */
 
 import * as z from "zod";
+import { UserData, UserData$zodSchema } from "./userdata.js";
 
 export type GetUsersDataRequest = {
   filterProject?: string | undefined;
   filterScope?: string | undefined;
+  statsTotal?: string | undefined;
   extraFieldsUserData?: string | undefined;
+  pageSize?: number | undefined;
+  pageNumber?: number | undefined;
 };
 
 export const GetUsersDataRequest$zodSchema: z.ZodType<GetUsersDataRequest> = z
@@ -19,4 +23,20 @@ export const GetUsersDataRequest$zodSchema: z.ZodType<GetUsersDataRequest> = z
     filterScope: z.string().describe(
       "Filter by scope: `project` (has project), `team` (no project), or empty (all)",
     ).optional(),
+    pageNumber: z.int().default(1).describe(
+      "Page number to return (starts at 1)",
+    ),
+    pageSize: z.int().default(20).describe(
+      "Number of items to return per page",
+    ),
+    statsTotal: z.string().describe(
+      "Request aggregate stats in the response `meta`. Use `count` to get the total number of records, returned as `meta.stats.total.count`.",
+    ).optional(),
+  });
+
+export type GetUsersDataResponse = { Result: UserData };
+
+export const GetUsersDataResponse$zodSchema: z.ZodType<GetUsersDataResponse> = z
+  .object({
+    Result: UserData$zodSchema,
   });

@@ -18,6 +18,7 @@ export const UserDataPropertiesType$zodSchema = z.enum([
 export type UserDataPropertiesAttributes = {
   description?: string | undefined;
   content?: string | undefined;
+  decoded_content?: string | null | undefined;
   project?: ProjectInclude | undefined;
   created_at?: string | undefined;
   updated_at?: string | undefined;
@@ -28,6 +29,9 @@ export const UserDataPropertiesAttributes$zodSchema: z.ZodType<
 > = z.object({
   content: z.string().optional().describe("content of the User Data"),
   created_at: z.string().optional(),
+  decoded_content: z.string().nullable().optional().describe(
+    "decoded content of the User Data",
+  ),
   description: z.string().optional().describe("description of the User Data"),
   project: ProjectInclude$zodSchema.optional(),
   updated_at: z.string().optional(),

@@ -3,18 +3,18 @@
  */
 
 import * as z from "zod";
-import { UserDataObject, UserDataObject$zodSchema } from "./userdataobject.js";
-
-export type UserDataMeta = {};
-
-export const UserDataMeta$zodSchema: z.ZodType<UserDataMeta> = z.object({});
+import { PaginationMeta, PaginationMeta$zodSchema } from "./paginationmeta.js";
+import {
+  UserDataProperties,
+  UserDataProperties$zodSchema,
+} from "./userdataproperties.js";
 
 export type UserData = {
-  data?: Array<UserDataObject> | undefined;
-  meta?: UserDataMeta | undefined;
+  data?: Array<UserDataProperties> | undefined;
+  meta?: PaginationMeta | undefined;
 };
 
 export const UserData$zodSchema: z.ZodType<UserData> = z.object({
-  data: z.array(UserDataObject$zodSchema).optional(),
-  meta: z.lazy(() => UserDataMeta$zodSchema).optional(),
+  data: z.array(UserDataProperties$zodSchema).optional(),
+  meta: PaginationMeta$zodSchema.optional(),
 });
