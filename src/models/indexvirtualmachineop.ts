@@ -3,11 +3,17 @@
  */
 
 import * as z from "zod";
+import { ErrorObject, ErrorObject$zodSchema } from "./errorobject.js";
+import {
+  VirtualMachines,
+  VirtualMachines$zodSchema,
+} from "./virtualmachines.js";
 
 export type IndexVirtualMachineRequest = {
   filterProject?: string | undefined;
   filterTags?: string | undefined;
   extraFieldsVirtualMachines?: string | undefined;
+  sort?: string | undefined;
 };
 
 export const IndexVirtualMachineRequest$zodSchema: z.ZodType<
@@ -21,4 +27,16 @@ export const IndexVirtualMachineRequest$zodSchema: z.ZodType<
   filterTags: z.string().describe(
     "The tag IDs to filter by, separated by comma, e.g. `filter[tags]=tag_1,tag_2` will return VMs with `tag_1` AND `tag_2`.",
   ).optional(),
+  sort: z.string().describe(
+    "Comma-separated sort fields. Prefix a field with `-` for descending order. Supported fields: created_at, name, hostname, status. Example: `sort=status,-created_at` sorts by status ascending, then by creation date descending.",
+  ).optional(),
 });
+
+export type IndexVirtualMachineResponse = VirtualMachines | ErrorObject;
+
+export const IndexVirtualMachineResponse$zodSchema: z.ZodType<
+  IndexVirtualMachineResponse
+> = z.union([
+  VirtualMachines$zodSchema,
+  ErrorObject$zodSchema,
+]);

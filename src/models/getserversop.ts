@@ -25,6 +25,7 @@ export type GetServersRequest = {
   extraFieldsServers?: string | undefined;
   pageSize?: number | undefined;
   pageNumber?: number | undefined;
+  statsTotal?: string | undefined;
 };
 
 export const GetServersRequest$zodSchema: z.ZodType<GetServersRequest> = z
@@ -81,6 +82,9 @@ export const GetServersRequest$zodSchema: z.ZodType<GetServersRequest> = z
     pageSize: z.int().default(20).describe(
       "Number of items to return per page",
     ),
+    statsTotal: z.string().describe(
+      "Request aggregate stats in the response `meta`. Use `count` to get the total number of records, returned as `meta.stats.total.count`.",
+    ).optional(),
   });
 
 export type GetServersResponse = { Result: Servers };

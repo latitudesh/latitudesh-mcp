@@ -101,7 +101,7 @@ export const VirtualMachineAttributesOperatingSystem$zodSchema: z.ZodType<
 }).describe("The operating system installed on the virtual machine");
 
 /**
- * SSH credentials for connecting to the virtual machine. Only available when the VM is running.
+ * SSH credentials for connecting to the virtual machine. Only available when the VM is running. Opt-in extra field: request via `extra_fields[virtual_machines]=credentials`.
  */
 export type VirtualMachineAttributesCredentials = {
   username?: string | undefined;
@@ -120,7 +120,7 @@ export const VirtualMachineAttributesCredentials$zodSchema: z.ZodType<
     "The SSH username for the VM, determined by the operating system (e.g., ubuntu, centos, ec2-user). Defaults to ubuntu if not specified by the OS.",
   ),
 }).describe(
-  "SSH credentials for connecting to the virtual machine. Only available when the VM is running.",
+  "SSH credentials for connecting to the virtual machine. Only available when the VM is running. Opt-in extra field: request via `extra_fields[virtual_machines]=credentials`.",
 );
 
 export type VirtualMachineAttributesPlan = {
@@ -194,7 +194,7 @@ export const VirtualMachineAttributesAttributes$zodSchema: z.ZodType<
   created_at: z.string().optional(),
   credentials: z.lazy(() => VirtualMachineAttributesCredentials$zodSchema)
     .nullable().optional().describe(
-      "SSH credentials for connecting to the virtual machine. Only available when the VM is running.",
+      "SSH credentials for connecting to the virtual machine. Only available when the VM is running. Opt-in extra field: request via `extra_fields[virtual_machines]=credentials`.",
     ),
   name: z.string().optional(),
   operating_system: z.lazy(() =>

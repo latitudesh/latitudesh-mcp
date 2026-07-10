@@ -18,7 +18,7 @@ export const CustomTagDataType$zodSchema = z.enum([
 export type CustomTagDataAttributes = {
   name?: string | undefined;
   slug?: string | undefined;
-  description?: string | undefined;
+  description?: string | null | undefined;
   color?: string | undefined;
   team?: TeamInclude | undefined;
 };
@@ -27,7 +27,9 @@ export const CustomTagDataAttributes$zodSchema: z.ZodType<
   CustomTagDataAttributes
 > = z.object({
   color: z.string().optional().describe("Color of the Tag"),
-  description: z.string().optional().describe("Description of the Tag"),
+  description: z.string().nullable().optional().describe(
+    "Description of the Tag",
+  ),
   name: z.string().optional().describe("Name of the Tag"),
   slug: z.string().optional().describe("Slug of the Tag"),
   team: TeamInclude$zodSchema.optional(),

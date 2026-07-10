@@ -88,6 +88,7 @@ async function $do(
     "extra_fields[virtual_machines]": payload$?.extraFieldsVirtualMachines,
     "filter[project]": payload$?.filterProject,
     "filter[tags]": payload$?.filterTags,
+    "sort": payload$?.sort,
   });
 
   const headers$ = new Headers(compactMap({

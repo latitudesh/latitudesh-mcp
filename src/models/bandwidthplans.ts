@@ -7,18 +7,14 @@ import {
   BandwidthPlanData,
   BandwidthPlanData$zodSchema,
 } from "./bandwidthplandata.js";
-
-export type BandwidthPlansMeta = {};
-
-export const BandwidthPlansMeta$zodSchema: z.ZodType<BandwidthPlansMeta> = z
-  .object({});
+import { PaginationMeta, PaginationMeta$zodSchema } from "./paginationmeta.js";
 
 export type BandwidthPlans = {
   data?: Array<BandwidthPlanData> | undefined;
-  meta?: BandwidthPlansMeta | undefined;
+  meta?: PaginationMeta | undefined;
 };
 
 export const BandwidthPlans$zodSchema: z.ZodType<BandwidthPlans> = z.object({
   data: z.array(BandwidthPlanData$zodSchema).optional(),
-  meta: z.lazy(() => BandwidthPlansMeta$zodSchema).optional(),
+  meta: PaginationMeta$zodSchema.optional(),
 });

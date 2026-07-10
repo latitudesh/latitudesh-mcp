@@ -4,19 +4,14 @@
 
 import * as z from "zod";
 import { IpAddressData, IpAddressData$zodSchema } from "./ipaddressdata.js";
-
-export type IpAddressesMeta = {};
-
-export const IpAddressesMeta$zodSchema: z.ZodType<IpAddressesMeta> = z.object(
-  {},
-);
+import { PaginationMeta, PaginationMeta$zodSchema } from "./paginationmeta.js";
 
 export type IpAddresses = {
   data?: Array<IpAddressData> | undefined;
-  meta?: IpAddressesMeta | undefined;
+  meta?: PaginationMeta | undefined;
 };
 
 export const IpAddresses$zodSchema: z.ZodType<IpAddresses> = z.object({
   data: z.array(IpAddressData$zodSchema).optional(),
-  meta: z.lazy(() => IpAddressesMeta$zodSchema).optional(),
+  meta: PaginationMeta$zodSchema.optional(),
 });

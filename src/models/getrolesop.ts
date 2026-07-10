@@ -3,11 +3,13 @@
  */
 
 import * as z from "zod";
+import { PaginationMeta, PaginationMeta$zodSchema } from "./paginationmeta.js";
 import { RoleData, RoleData$zodSchema } from "./roledata.js";
 
 export type GetRolesRequest = {
   pageSize?: number | undefined;
   pageNumber?: number | undefined;
+  statsTotal?: string | undefined;
 };
 
 export const GetRolesRequest$zodSchema: z.ZodType<GetRolesRequest> = z.object({
@@ -15,16 +17,23 @@ export const GetRolesRequest$zodSchema: z.ZodType<GetRolesRequest> = z.object({
     "Page number to return (starts at 1)",
   ),
   pageSize: z.int().default(20).describe("Number of items to return per page"),
+  statsTotal: z.string().describe(
+    "Request aggregate stats in the response `meta`. Use `count` to get the total number of records, returned as `meta.stats.total.count`.",
+  ).optional(),
 });
 
 /**
  * Success
  */
-export type GetRolesResponseBody = { data?: Array<RoleData> | undefined };
+export type GetRolesResponseBody = {
+  data?: Array<RoleData> | undefined;
+  meta?: PaginationMeta | undefined;
+};
 
 export const GetRolesResponseBody$zodSchema: z.ZodType<GetRolesResponseBody> = z
   .object({
     data: z.array(RoleData$zodSchema).optional(),
+    meta: PaginationMeta$zodSchema.optional(),
   }).describe("Success");
 
 export type GetRolesResponse = { Result: GetRolesResponseBody };

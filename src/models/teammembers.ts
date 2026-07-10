@@ -3,6 +3,7 @@
  */
 
 import * as z from "zod";
+import { PaginationMeta, PaginationMeta$zodSchema } from "./paginationmeta.js";
 
 export type TeamMembersRole = {
   id?: string | undefined;
@@ -49,18 +50,12 @@ export const TeamMembersData$zodSchema: z.ZodType<TeamMembersData> = z.object({
   type: z.string().optional(),
 });
 
-export type TeamMembersMeta = {};
-
-export const TeamMembersMeta$zodSchema: z.ZodType<TeamMembersMeta> = z.object(
-  {},
-);
-
 export type TeamMembers = {
   data?: Array<TeamMembersData> | undefined;
-  meta?: TeamMembersMeta | undefined;
+  meta?: PaginationMeta | undefined;
 };
 
 export const TeamMembers$zodSchema: z.ZodType<TeamMembers> = z.object({
   data: z.array(z.lazy(() => TeamMembersData$zodSchema)).optional(),
-  meta: z.lazy(() => TeamMembersMeta$zodSchema).optional(),
+  meta: PaginationMeta$zodSchema.optional(),
 });

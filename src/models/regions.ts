@@ -3,6 +3,7 @@
  */
 
 import * as z from "zod";
+import { PaginationMeta, PaginationMeta$zodSchema } from "./paginationmeta.js";
 
 export type RegionsCountry = {
   slug?: string | undefined;
@@ -37,8 +38,12 @@ export const RegionsData$zodSchema: z.ZodType<RegionsData> = z.object({
   id: z.string().optional(),
 });
 
-export type Regions = { data?: Array<RegionsData> | undefined };
+export type Regions = {
+  data?: Array<RegionsData> | undefined;
+  meta?: PaginationMeta | undefined;
+};
 
 export const Regions$zodSchema: z.ZodType<Regions> = z.object({
   data: z.array(z.lazy(() => RegionsData$zodSchema)).optional(),
+  meta: PaginationMeta$zodSchema.optional(),
 });

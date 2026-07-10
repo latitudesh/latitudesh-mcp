@@ -7,20 +7,16 @@ import {
   OperatingSystemData,
   OperatingSystemData$zodSchema,
 } from "./operatingsystemdata.js";
-
-export type OperatingSystemsMeta = {};
-
-export const OperatingSystemsMeta$zodSchema: z.ZodType<OperatingSystemsMeta> = z
-  .object({});
+import { PaginationMeta, PaginationMeta$zodSchema } from "./paginationmeta.js";
 
 export type OperatingSystems = {
   data?: Array<OperatingSystemData> | undefined;
-  meta?: OperatingSystemsMeta | undefined;
+  meta?: PaginationMeta | undefined;
 };
 
 export const OperatingSystems$zodSchema: z.ZodType<OperatingSystems> = z.object(
   {
     data: z.array(OperatingSystemData$zodSchema).optional(),
-    meta: z.lazy(() => OperatingSystemsMeta$zodSchema).optional(),
+    meta: PaginationMeta$zodSchema.optional(),
   },
 );

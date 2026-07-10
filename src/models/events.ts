@@ -4,17 +4,14 @@
 
 import * as z from "zod";
 import { EventData, EventData$zodSchema } from "./eventdata.js";
-
-export type EventsMeta = {};
-
-export const EventsMeta$zodSchema: z.ZodType<EventsMeta> = z.object({});
+import { PaginationMeta, PaginationMeta$zodSchema } from "./paginationmeta.js";
 
 export type Events = {
   data?: Array<EventData> | undefined;
-  meta?: EventsMeta | undefined;
+  meta?: PaginationMeta | undefined;
 };
 
 export const Events$zodSchema: z.ZodType<Events> = z.object({
   data: z.array(EventData$zodSchema).optional(),
-  meta: z.lazy(() => EventsMeta$zodSchema).optional(),
+  meta: PaginationMeta$zodSchema.optional(),
 });

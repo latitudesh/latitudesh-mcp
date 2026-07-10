@@ -30,19 +30,28 @@ export function landingPageExpress(req: ExpressRequest, res: ExpressResponse) {
 
 export function landingPageHTML(origin: string): string {
   const o = origin;
-  // OAuth-only: mcp-remote points at the OAuth-protected /mcp endpoint and runs
-  // the browser auth flow on a 401 — no static headers/keys in client config.
-  // (Hand-edited; `speakeasy run` regenerates this with the /sse + header model.)
   const mcpConfig = {
     "command": "npx",
     "args": [
       "-y",
       "mcp-remote@0.1.25",
-      `${o}/mcp`,
+      `${o}/sse`,
+      "--header",
+      "server-index:${SERVER_INDEX}",
+      "--header",
+      "latitude-api-key:${LATITUDE_API_KEY}",
+      "--header",
+      "bearer:${BEARER}",
     ],
+    "env": {
+      "SERVER_INDEX": "YOUR_VALUE_HERE",
+      "LATITUDE_API_KEY": "YOUR_VALUE_HERE",
+      "BEARER": "YOUR_VALUE_HERE",
+    },
   };
   const codexConfig = `[mcp_servers.Latitudesh]
-url = "${o}/mcp"`;
+url = "${o}/sse"
+http_headers = { "server-index" = "YOUR_SERVER_INDEX", "latitude-api-key" = "YOUR_LATITUDE_API_KEY", "bearer" = "YOUR_BEARER" }`;
 
   return `
 <!DOCTYPE html>
@@ -680,7 +689,7 @@ url = "${o}/mcp"`;
                   </svg>
                 </button>
                 <div class="popover-menu hidden" id="popover-menu">
-                  <a class="popover-button install-link" href="cursor://anysphere.cursor-deeplink/mcp/install?name=Latitudesh&config=eyJjb21tYW5kIjoibnB4IiwiYXJncyI6WyIteSIsIm1jcC1yZW1vdGVAMC4xLjI1IiwiaHR0cHM6Ly9tY3AubGF0aXR1ZGUuc2gvbWNwIl19">
+                  <a class="popover-button install-link" href="cursor://anysphere.cursor-deeplink/mcp/install?name=Latitudesh&config=eyJjb21tYW5kIjoibnB4IiwiYXJncyI6WyIteSIsIm1jcC1yZW1vdGVAMC4xLjI1IiwiaHR0cHM6Ly9tY3AubGF0aXR1ZGUuc2gvc3NlIiwiLS1oZWFkZXIiLCJzZXJ2ZXItaW5kZXg6JHtTRVJWRVJfSU5ERVh9IiwiLS1oZWFkZXIiLCJsYXRpdHVkZS1hcGkta2V5OiR7TEFUSVRVREVfQVBJX0tFWX0iLCItLWhlYWRlciIsImJlYXJlcjoke0JFQVJFUn0iXX0=">
                     Cursor
                   </a>
                   <button class="popover-button" onclick="showModal('claude-code')">
@@ -689,7 +698,7 @@ url = "${o}/mcp"`;
                   <button class="popover-button" onclick="showModal('claude-desktop')">
                     Claude Desktop
                   </button>
-                  <a class="popover-button install-link" href="vscode://ms-vscode.vscode-mcp/install?name=Latitudesh&config=eyJjb21tYW5kIjoibnB4IiwiYXJncyI6WyIteSIsIm1jcC1yZW1vdGVAMC4xLjI1IiwiaHR0cHM6Ly9tY3AubGF0aXR1ZGUuc2gvbWNwIl19">
+                  <a class="popover-button install-link" href="vscode://ms-vscode.vscode-mcp/install?name=Latitudesh&config=eyJjb21tYW5kIjoibnB4IiwiYXJncyI6WyIteSIsIm1jcC1yZW1vdGVAMC4xLjI1IiwiaHR0cHM6Ly9tY3AubGF0aXR1ZGUuc2gvc3NlIiwiLS1oZWFkZXIiLCJzZXJ2ZXItaW5kZXg6JHtTRVJWRVJfSU5ERVh9IiwiLS1oZWFkZXIiLCJsYXRpdHVkZS1hcGkta2V5OiR7TEFUSVRVREVfQVBJX0tFWX0iLCItLWhlYWRlciIsImJlYXJlcjoke0JFQVJFUn0iXX0=">
                     VS Code
                   </a>
                   <button class="popover-button" onclick="showModal('gemini')">
@@ -712,7 +721,7 @@ url = "${o}/mcp"`;
             </div>
           </header>
           <div class="install-targets">
-            <a tabindex="0" class="card install-target install-link" href="cursor://anysphere.cursor-deeplink/mcp/install?name=Latitudesh&config=eyJjb21tYW5kIjoibnB4IiwiYXJncyI6WyIteSIsIm1jcC1yZW1vdGVAMC4xLjI1IiwiaHR0cHM6Ly9tY3AubGF0aXR1ZGUuc2gvbWNwIl19">
+            <a tabindex="0" class="card install-target install-link" href="cursor://anysphere.cursor-deeplink/mcp/install?name=Latitudesh&config=eyJjb21tYW5kIjoibnB4IiwiYXJncyI6WyIteSIsIm1jcC1yZW1vdGVAMC4xLjI1IiwiaHR0cHM6Ly9tY3AubGF0aXR1ZGUuc2gvc3NlIiwiLS1oZWFkZXIiLCJzZXJ2ZXItaW5kZXg6JHtTRVJWRVJfSU5ERVh9IiwiLS1oZWFkZXIiLCJsYXRpdHVkZS1hcGkta2V5OiR7TEFUSVRVREVfQVBJX0tFWX0iLCItLWhlYWRlciIsImJlYXJlcjoke0JFQVJFUn0iXX0=">
               <div class="target">
                 <img src="https://cursor.com/assets/images/logo.svg" alt="Cursor">
                 <span>Cursor</span>
@@ -734,7 +743,7 @@ url = "${o}/mcp"`;
                 <span>Claude Desktop</span>
               </div>
             </div>
-            <a tabindex="0" class="card install-target install-link" href="vscode://ms-vscode.vscode-mcp/install?name=Latitudesh&config=eyJjb21tYW5kIjoibnB4IiwiYXJncyI6WyIteSIsIm1jcC1yZW1vdGVAMC4xLjI1IiwiaHR0cHM6Ly9tY3AubGF0aXR1ZGUuc2gvbWNwIl19">
+            <a tabindex="0" class="card install-target install-link" href="vscode://ms-vscode.vscode-mcp/install?name=Latitudesh&config=eyJjb21tYW5kIjoibnB4IiwiYXJncyI6WyIteSIsIm1jcC1yZW1vdGVAMC4xLjI1IiwiaHR0cHM6Ly9tY3AubGF0aXR1ZGUuc2gvc3NlIiwiLS1oZWFkZXIiLCJzZXJ2ZXItaW5kZXg6JHtTRVJWRVJfSU5ERVh9IiwiLS1oZWFkZXIiLCJsYXRpdHVkZS1hcGkta2V5OiR7TEFUSVRVREVfQVBJX0tFWX0iLCItLWhlYWRlciIsImJlYXJlcjoke0JFQVJFUn0iXX0=">
               <div class="target">
                 <svg width="100" height="100" viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg">
                   <mask id="mask0" mask-type="alpha" maskUnits="userSpaceOnUse" x="0" y="0" width="100" height="100">
@@ -913,7 +922,7 @@ url = "${o}/mcp"`;
               <path d="M4 16c-1.1 0-2-.9-2-2V4c0-1.1.9-2 2-2h10c1.1 0 2 .9 2 2"></path>
             </svg>
           </button>
-          <code class="code-snippet language-json" id="claude-cli-cmd">claude mcp add --transport http Latitudesh https://mcp.latitude.sh/mcp</code>
+          <code class="code-snippet language-json" id="claude-cli-cmd">claude mcp add --transport sse Latitudesh https://mcp.latitude.sh/sse</code>
         </div>
       </div>
     </div>
@@ -929,7 +938,7 @@ url = "${o}/mcp"`;
         <h1>Instructions</h1>
         <p>One-click installation for Claude Desktop users</p>
         <div class="instruction-item">
-          <a href="https://github.com/latitudesh/latitudesh-mcp/releases/download/v0.2.3/mcp-server.mcpb" download="mcp-server.mcpb" class="action-button header-action" style="display: inline-flex; margin-bottom: 16px;">
+          <a href="https://github.com/latitudesh/latitudesh-mcp/releases/download/v0.2.4/mcp-server.mcpb" download="mcp-server.mcpb" class="action-button header-action" style="display: inline-flex; margin-bottom: 16px;">
             📥 Download MCP Bundle
           </a>
         </div>
@@ -964,7 +973,7 @@ url = "${o}/mcp"`;
               <path d="M4 16c-1.1 0-2-.9-2-2V4c0-1.1.9-2 2-2h10c1.1 0 2 .9 2 2"></path>
             </svg>
           </button>
-          <code class="code-snippet language-json" id="gemini-config">gemini mcp add --transport http Latitudesh https://mcp.latitude.sh/mcp</code>
+          <code class="code-snippet language-json" id="gemini-config">gemini mcp add --transport sse Latitudesh https://mcp.latitude.sh/sse</code>
         </div>
       </div>
     </div>
