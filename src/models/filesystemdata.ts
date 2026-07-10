@@ -4,6 +4,8 @@
 
 import * as z from "zod";
 import { ClosedEnum } from "../types/enums.js";
+import { ProjectInclude, ProjectInclude$zodSchema } from "./projectinclude.js";
+import { TeamInclude, TeamInclude$zodSchema } from "./teaminclude.js";
 
 export const FilesystemDataType = {
   Filesystems: "filesystems",
@@ -14,24 +16,24 @@ export const FilesystemDataType$zodSchema = z.enum([
   "filesystems",
 ]);
 
-export type FilesystemDataProject = {
-  id?: string | undefined;
-  name?: string | undefined;
-  slug?: string | undefined;
-};
+export const FilesystemStorageClass = {
+  Standard: "standard",
+  HighPerformance: "high_performance",
+} as const;
+export type FilesystemStorageClass = ClosedEnum<typeof FilesystemStorageClass>;
 
-export const FilesystemDataProject$zodSchema: z.ZodType<FilesystemDataProject> =
-  z.object({
-    id: z.string().optional(),
-    name: z.string().optional(),
-    slug: z.string().optional(),
-  });
+export const FilesystemStorageClass$zodSchema = z.enum([
+  "standard",
+  "high_performance",
+]);
 
 export type FilesystemDataAttributes = {
   name?: string | undefined;
   size_in_gb?: number | undefined;
+  storage_class?: FilesystemStorageClass | null | undefined;
   created_at?: string | null | undefined;
-  project?: FilesystemDataProject | undefined;
+  project?: ProjectInclude | undefined;
+  team?: TeamInclude | undefined;
 };
 
 export const FilesystemDataAttributes$zodSchema: z.ZodType<
@@ -39,8 +41,10 @@ export const FilesystemDataAttributes$zodSchema: z.ZodType<
 > = z.object({
   created_at: z.iso.datetime({ offset: true }).nullable().optional(),
   name: z.string().optional(),
-  project: z.lazy(() => FilesystemDataProject$zodSchema).optional(),
+  project: ProjectInclude$zodSchema.optional(),
   size_in_gb: z.int().optional(),
+  storage_class: FilesystemStorageClass$zodSchema.nullable().optional(),
+  team: TeamInclude$zodSchema.optional(),
 });
 
 export type FilesystemData = {

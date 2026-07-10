@@ -4,10 +4,16 @@
 
 import * as z from "zod";
 
-export type ShowVirtualMachineRequest = { virtual_machine_id: string };
+export type ShowVirtualMachineRequest = {
+  virtual_machine_id: string;
+  extraFieldsVirtualMachines?: string | undefined;
+};
 
 export const ShowVirtualMachineRequest$zodSchema: z.ZodType<
   ShowVirtualMachineRequest
 > = z.object({
+  extraFieldsVirtualMachines: z.string().describe(
+    "Comma-separated extra attributes that are lazy-loaded. Supported values: `credentials`, `pending_restart`. Example: `extra_fields[virtual_machines]=credentials,pending_restart`.",
+  ).optional(),
   virtual_machine_id: z.string(),
 });

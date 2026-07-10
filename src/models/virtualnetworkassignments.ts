@@ -3,25 +3,20 @@
  */
 
 import * as z from "zod";
+import { PaginationMeta, PaginationMeta$zodSchema } from "./paginationmeta.js";
 import {
   VirtualNetworkAssignmentData,
   VirtualNetworkAssignmentData$zodSchema,
 } from "./virtualnetworkassignmentdata.js";
 
-export type VirtualNetworkAssignmentsMeta = {};
-
-export const VirtualNetworkAssignmentsMeta$zodSchema: z.ZodType<
-  VirtualNetworkAssignmentsMeta
-> = z.object({});
-
 export type VirtualNetworkAssignments = {
   data?: Array<VirtualNetworkAssignmentData> | undefined;
-  meta?: VirtualNetworkAssignmentsMeta | undefined;
+  meta?: PaginationMeta | undefined;
 };
 
 export const VirtualNetworkAssignments$zodSchema: z.ZodType<
   VirtualNetworkAssignments
 > = z.object({
   data: z.array(VirtualNetworkAssignmentData$zodSchema).optional(),
-  meta: z.lazy(() => VirtualNetworkAssignmentsMeta$zodSchema).optional(),
+  meta: PaginationMeta$zodSchema.optional(),
 });

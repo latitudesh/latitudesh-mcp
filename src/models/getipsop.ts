@@ -51,6 +51,8 @@ export type GetIpsRequest = {
   extraFieldsIpAddresses?: string | undefined;
   pageSize?: number | undefined;
   pageNumber?: number | undefined;
+  statsTotal?: string | undefined;
+  sort?: string | undefined;
 };
 
 export const GetIpsRequest$zodSchema: z.ZodType<GetIpsRequest> = z.object({
@@ -77,6 +79,12 @@ export const GetIpsRequest$zodSchema: z.ZodType<GetIpsRequest> = z.object({
     "Page number to return (starts at 1)",
   ),
   pageSize: z.int().default(20).describe("Number of items to return per page"),
+  sort: z.string().describe(
+    "Comma-separated sort fields. Prefix a field with `-` for descending order. Supported fields: address, family, type, created_at. Example: `sort=type,-created_at` sorts by type ascending, then by creation date descending.",
+  ).optional(),
+  statsTotal: z.string().describe(
+    "Request aggregate stats in the response `meta`. Use `count` to get the total number of records, returned as `meta.stats.total.count`.",
+  ).optional(),
 });
 
 export type GetIpsResponse = { Result: IpAddresses };

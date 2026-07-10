@@ -16,16 +16,47 @@ export const VirtualMachineUpdatePayloadType$zodSchema = z.enum([
   "virtual_machines",
 ]);
 
+/**
+ * Target billing cycle. Upgrades only (hourly → monthly → yearly); downgrades and reserved-project changes return 422.
+ */
+export const VirtualMachineUpdatePayloadBilling = {
+  Hourly: "hourly",
+  Monthly: "monthly",
+  Yearly: "yearly",
+} as const;
+/**
+ * Target billing cycle. Upgrades only (hourly → monthly → yearly); downgrades and reserved-project changes return 422.
+ */
+export type VirtualMachineUpdatePayloadBilling = ClosedEnum<
+  typeof VirtualMachineUpdatePayloadBilling
+>;
+
+export const VirtualMachineUpdatePayloadBilling$zodSchema = z.enum([
+  "hourly",
+  "monthly",
+  "yearly",
+]).describe(
+  "Target billing cycle. Upgrades only (hourly → monthly → yearly); downgrades and reserved-project changes return 422.",
+);
+
 export type VirtualMachineUpdatePayloadAttributes = {
   name?: string | undefined;
   tags?: Array<string> | null | undefined;
+  billing?: VirtualMachineUpdatePayloadBilling | undefined;
+  plan?: string | undefined;
 };
 
 export const VirtualMachineUpdatePayloadAttributes$zodSchema: z.ZodType<
   VirtualMachineUpdatePayloadAttributes
 > = z.object({
+  billing: VirtualMachineUpdatePayloadBilling$zodSchema.optional().describe(
+    "Target billing cycle. Upgrades only (hourly → monthly → yearly); downgrades and reserved-project changes return 422.",
+  ),
   name: z.string().optional().describe(
     "The new display name (hostname) for the Virtual Machine",
+  ),
+  plan: z.string().optional().describe(
+    "Target plan slug for a vertical upgrade. Upgrades only (cpu, memory, and/or storage must scale up; nothing may shrink). The VM is powered off to apply the new resources and powered back on. Must be sent on its own (cannot be combined with name, tags, or billing). Returns 202 Accepted.",
   ),
   tags: z.array(z.string()).nullable().optional().describe(
     "Array of tag IDs to assign to the VM. Replaces all existing tags.",

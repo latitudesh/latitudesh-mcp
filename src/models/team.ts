@@ -16,6 +16,30 @@ export const TeamBilling$zodSchema: z.ZodType<TeamBilling> = z.object({
   id: z.string().optional(),
 });
 
+export type TeamLimits = {
+  bare_metal?: number | null | undefined;
+  bare_metal_gpu?: number | null | undefined;
+  virtual_machine?: number | null | undefined;
+  virtual_machine_gpu?: number | null | undefined;
+  elastic_ip?: number | null | undefined;
+  virtual_network?: number | null | undefined;
+  database?: number | null | undefined;
+  filesystem?: number | null | undefined;
+  block_storage?: number | null | undefined;
+};
+
+export const TeamLimits$zodSchema: z.ZodType<TeamLimits> = z.object({
+  bare_metal: z.int().nullable().optional(),
+  bare_metal_gpu: z.int().nullable().optional(),
+  block_storage: z.int().nullable().optional(),
+  database: z.int().nullable().optional(),
+  elastic_ip: z.int().nullable().optional(),
+  filesystem: z.int().nullable().optional(),
+  virtual_machine: z.int().nullable().optional(),
+  virtual_machine_gpu: z.int().nullable().optional(),
+  virtual_network: z.int().nullable().optional(),
+});
+
 export type TeamAttributes = {
   name?: string | undefined;
   slug?: string | undefined;
@@ -30,6 +54,7 @@ export type TeamAttributes = {
   owner?: UserInclude | undefined;
   billing?: TeamBilling | undefined;
   feature_flags?: Array<string> | undefined;
+  limits?: TeamLimits | undefined;
 };
 
 export const TeamAttributes$zodSchema: z.ZodType<TeamAttributes> = z.object({
@@ -40,6 +65,7 @@ export const TeamAttributes$zodSchema: z.ZodType<TeamAttributes> = z.object({
   description: z.string().nullable().optional(),
   enforce_mfa: z.boolean().optional(),
   feature_flags: z.array(z.string()).optional(),
+  limits: z.lazy(() => TeamLimits$zodSchema).optional(),
   name: z.string().optional(),
   owner: UserInclude$zodSchema.optional(),
   projects: z.array(ProjectInclude$zodSchema).optional(),

@@ -3,22 +3,18 @@
  */
 
 import * as z from "zod";
+import { PaginationMeta, PaginationMeta$zodSchema } from "./paginationmeta.js";
 import {
   VirtualNetworkData,
   VirtualNetworkData$zodSchema,
 } from "./virtualnetworkdata.js";
 
-export type VirtualNetworksMeta = {};
-
-export const VirtualNetworksMeta$zodSchema: z.ZodType<VirtualNetworksMeta> = z
-  .object({});
-
 export type VirtualNetworks = {
   data?: Array<VirtualNetworkData> | undefined;
-  meta?: VirtualNetworksMeta | undefined;
+  meta?: PaginationMeta | undefined;
 };
 
 export const VirtualNetworks$zodSchema: z.ZodType<VirtualNetworks> = z.object({
   data: z.array(VirtualNetworkData$zodSchema).optional(),
-  meta: z.lazy(() => VirtualNetworksMeta$zodSchema).optional(),
+  meta: PaginationMeta$zodSchema.optional(),
 });

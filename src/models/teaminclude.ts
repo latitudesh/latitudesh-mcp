@@ -4,28 +4,65 @@
 
 import * as z from "zod";
 
-export type Currency = {};
+export type Currency = {
+  id?: string | undefined;
+  code?: string | undefined;
+  name?: string | undefined;
+  currency_id?: number | null | undefined;
+};
 
-export const Currency$zodSchema: z.ZodType<Currency> = z.object({});
+export const Currency$zodSchema: z.ZodType<Currency> = z.object({
+  code: z.string().optional(),
+  currency_id: z.int().nullable().optional(),
+  id: z.string().optional(),
+  name: z.string().optional(),
+});
+
+export type TeamIncludeLimits = {
+  bare_metal?: number | null | undefined;
+  bare_metal_gpu?: number | null | undefined;
+  virtual_machine?: number | null | undefined;
+  virtual_machine_gpu?: number | null | undefined;
+  elastic_ip?: number | null | undefined;
+  virtual_network?: number | null | undefined;
+  database?: number | null | undefined;
+  filesystem?: number | null | undefined;
+  block_storage?: number | null | undefined;
+};
+
+export const TeamIncludeLimits$zodSchema: z.ZodType<TeamIncludeLimits> = z
+  .object({
+    bare_metal: z.int().nullable().optional(),
+    bare_metal_gpu: z.int().nullable().optional(),
+    block_storage: z.int().nullable().optional(),
+    database: z.int().nullable().optional(),
+    elastic_ip: z.int().nullable().optional(),
+    filesystem: z.int().nullable().optional(),
+    virtual_machine: z.int().nullable().optional(),
+    virtual_machine_gpu: z.int().nullable().optional(),
+    virtual_network: z.int().nullable().optional(),
+  });
 
 export type TeamInclude = {
   id?: string | undefined;
   name?: string | undefined;
   slug?: string | undefined;
   description?: string | null | undefined;
-  address?: string | undefined;
+  address?: string | null | undefined;
   currency?: Currency | undefined;
-  status?: string | undefined;
+  status?: string | null | undefined;
   feature_flags?: Array<string> | undefined;
+  limits?: TeamIncludeLimits | undefined;
 };
 
 export const TeamInclude$zodSchema: z.ZodType<TeamInclude> = z.object({
-  address: z.string().optional(),
+  address: z.string().nullable().optional(),
   currency: z.lazy(() => Currency$zodSchema).optional(),
   description: z.string().nullable().optional(),
   feature_flags: z.array(z.string()).optional(),
   id: z.string().optional(),
+  limits: z.lazy(() => TeamIncludeLimits$zodSchema).optional(),
   name: z.string().optional(),
   slug: z.string().optional(),
-  status: z.string().optional(),
+  status: z.string().nullable().optional(),
 });

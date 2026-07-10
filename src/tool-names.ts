@@ -157,6 +157,10 @@ export const toolNames: Array<{ name: string; description: string }>= [
     "description": "List storage plans"
   },
   {
+    "name": "plans-get-managed-database-plans",
+    "description": "List managed database plans"
+  },
+  {
     "name": "plans-vm-list",
     "description": "List VM plans"
   },
@@ -483,6 +487,54 @@ export const toolNames: Array<{ name: string; description: string }>= [
   {
     "name": "virtual-machines-destroy-network-attachment",
     "description": "Detach a network from a VM\n\nDetaches a virtual network (VLAN) from a Virtual Machine. Work runs asynchronously and returns 202 Accepted.\n"
+  },
+  {
+    "name": "virtual-machine-backups-list-for-virtual-machine",
+    "description": "List a VM's backups\n\nLists the backups of the given Virtual Machine.\n"
+  },
+  {
+    "name": "virtual-machine-backups-create-for-virtual-machine",
+    "description": "Create VM backup\n\nTriggers a backup of the given Virtual Machine.\n"
+  },
+  {
+    "name": "virtual-machine-backups-list",
+    "description": "List all VM backups\n\nLists every backup that belongs to the authenticated team.\n"
+  },
+  {
+    "name": "virtual-machine-backups-create",
+    "description": "Create VM backup (top-level)\n\nTriggers a backup of the Virtual Machine referenced in the body.\n"
+  },
+  {
+    "name": "virtual-machine-backups-get",
+    "description": "Get VM backup"
+  },
+  {
+    "name": "virtual-machine-backups-delete",
+    "description": "Delete VM backup\n\nArchives and deletes a Virtual Machine backup. Work runs asynchronously and returns 202 Accepted. Only `Ready` or `Failed` backups can be deleted, and not while a restore from the backup is in progress.\n"
+  },
+  {
+    "name": "virtual-machine-restores-list-for-virtual-6f5",
+    "description": "List a backup's restores\n\nLists the restores created from the given backup.\n"
+  },
+  {
+    "name": "virtual-machine-restores-create-for-virtual-e98",
+    "description": "Create VM restore\n\nRestores a backup into a new Virtual Machine. Optionally accepts a `name` for the restored VM and a target `site` slug to restore into another region.\n"
+  },
+  {
+    "name": "virtual-machine-restores-list-for-backup",
+    "description": "List a backup's restores (top-level backup path)\n\nLists the restores created from the given backup, reached via the top-level backup path.\n"
+  },
+  {
+    "name": "virtual-machine-restores-list",
+    "description": "List all VM restores\n\nLists every restore that belongs to the authenticated team.\n"
+  },
+  {
+    "name": "virtual-machine-restores-create",
+    "description": "Create VM restore (flat)\n\nRestores the backup referenced in the body into a new Virtual Machine. Optionally accepts a `name` for the restored VM and a target `site` slug to restore into another region.\n"
+  },
+  {
+    "name": "virtual-machine-restores-get",
+    "description": "Get VM restore"
   },
   {
     "name": "private-networks-list",

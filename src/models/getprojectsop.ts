@@ -15,6 +15,7 @@ export type GetProjectsRequest = {
   extraFieldsProjects?: string | undefined;
   pageSize?: number | undefined;
   pageNumber?: number | undefined;
+  statsTotal?: string | undefined;
 };
 
 export const GetProjectsRequest$zodSchema: z.ZodType<GetProjectsRequest> = z
@@ -40,6 +41,9 @@ export const GetProjectsRequest$zodSchema: z.ZodType<GetProjectsRequest> = z
     pageSize: z.int().default(20).describe(
       "Number of items to return per page",
     ),
+    statsTotal: z.string().describe(
+      "Request aggregate stats in the response `meta`. Use `count` to get the total number of records, returned as `meta.stats.total.count`.",
+    ).optional(),
   });
 
 export type GetProjectsResponse = { Result: Projects };

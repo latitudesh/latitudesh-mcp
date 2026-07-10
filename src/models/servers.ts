@@ -3,18 +3,15 @@
  */
 
 import * as z from "zod";
+import { PaginationMeta, PaginationMeta$zodSchema } from "./paginationmeta.js";
 import { ServerData, ServerData$zodSchema } from "./serverdata.js";
-
-export type ServersMeta = {};
-
-export const ServersMeta$zodSchema: z.ZodType<ServersMeta> = z.object({});
 
 export type Servers = {
   data?: Array<ServerData> | undefined;
-  meta?: ServersMeta | undefined;
+  meta?: PaginationMeta | undefined;
 };
 
 export const Servers$zodSchema: z.ZodType<Servers> = z.object({
   data: z.array(ServerData$zodSchema).optional(),
-  meta: z.lazy(() => ServersMeta$zodSchema).optional(),
+  meta: PaginationMeta$zodSchema.optional(),
 });

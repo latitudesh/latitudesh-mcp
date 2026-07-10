@@ -48,14 +48,14 @@ export const VirtualNetworkDataRegion$zodSchema: z.ZodType<
 export type VirtualNetworkDataTag = {
   id?: string | undefined;
   name?: string | undefined;
-  description?: string | undefined;
-  color?: string | undefined;
+  description?: string | null | undefined;
+  color?: string | null | undefined;
 };
 
 export const VirtualNetworkDataTag$zodSchema: z.ZodType<VirtualNetworkDataTag> =
   z.object({
-    color: z.string().optional(),
-    description: z.string().optional(),
+    color: z.string().nullable().optional(),
+    description: z.string().nullable().optional(),
     id: z.string().optional(),
     name: z.string().optional(),
   });

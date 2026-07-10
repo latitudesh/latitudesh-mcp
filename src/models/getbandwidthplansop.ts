@@ -10,6 +10,7 @@ export type GetBandwidthPlansRequest = {
   filterId?: string | undefined;
   pageSize?: number | undefined;
   pageNumber?: number | undefined;
+  statsTotal?: string | undefined;
 };
 
 export const GetBandwidthPlansRequest$zodSchema: z.ZodType<
@@ -21,6 +22,9 @@ export const GetBandwidthPlansRequest$zodSchema: z.ZodType<
     "Page number to return (starts at 1)",
   ),
   pageSize: z.int().default(20).describe("Number of items to return per page"),
+  statsTotal: z.string().describe(
+    "Request aggregate stats in the response `meta`. Use `count` to get the total number of records, returned as `meta.stats.total.count`.",
+  ).optional(),
 });
 
 export type GetBandwidthPlansResponse = { Result: BandwidthPlans };

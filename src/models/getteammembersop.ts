@@ -8,6 +8,7 @@ import { TeamMembers, TeamMembers$zodSchema } from "./teammembers.js";
 export type GetTeamMembersRequest = {
   pageSize?: number | undefined;
   pageNumber?: number | undefined;
+  statsTotal?: string | undefined;
 };
 
 export const GetTeamMembersRequest$zodSchema: z.ZodType<GetTeamMembersRequest> =
@@ -18,6 +19,9 @@ export const GetTeamMembersRequest$zodSchema: z.ZodType<GetTeamMembersRequest> =
     pageSize: z.int().default(20).describe(
       "Number of items to return per page",
     ),
+    statsTotal: z.string().describe(
+      "Request aggregate stats in the response `meta`. Use `count` to get the total number of records, returned as `meta.stats.total.count`.",
+    ).optional(),
   });
 
 export type GetTeamMembersResponse = { Result: TeamMembers };

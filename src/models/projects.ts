@@ -3,10 +3,15 @@
  */
 
 import * as z from "zod";
+import { PaginationMeta, PaginationMeta$zodSchema } from "./paginationmeta.js";
 import { Project, Project$zodSchema } from "./project.js";
 
-export type Projects = { data?: Array<Project> | undefined };
+export type Projects = {
+  data?: Array<Project> | undefined;
+  meta?: PaginationMeta | undefined;
+};
 
 export const Projects$zodSchema: z.ZodType<Projects> = z.object({
   data: z.array(Project$zodSchema).optional(),
+  meta: PaginationMeta$zodSchema.optional(),
 });

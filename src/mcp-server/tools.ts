@@ -203,10 +203,8 @@ export function createRegisterTool(
       return;
     }
 
-    // Manual override (re-apply after `speakeasy run`): Speakeasy generates an
-    // empty `annotations.title: ""`. An empty-but-present title makes some MCP
-    // clients (e.g. the Claude connector UI) render a blank tool label instead
-    // of falling back to the name. Derive a readable title from the tool name.
+    // Override: Speakeasy emits annotations.title: "" which renders blank in
+    // the Claude connector UI. Derive a readable title from the tool name.
     const displayTitle = tool.annotations.title
       || tool.name.replace(/[-_]+/g, " ").replace(/\b\w/g, (c) => c.toUpperCase());
     const annotations = { ...tool.annotations, title: displayTitle };
@@ -353,6 +351,8 @@ export function registerDynamicTools(
       if (def.args) {
         const jsonSchema = z.toJSONSchema(z.object(def.args), {
           target: "draft-2020-12",
+          io: "input",
+          unrepresentable: "any",
         });
         schemaText += JSON.stringify(jsonSchema, null, 2);
       } else {

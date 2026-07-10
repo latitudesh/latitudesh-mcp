@@ -24,7 +24,7 @@ export type UpdateVirtualNetworkAttributes2 = {
 export const UpdateVirtualNetworkAttributes2$zodSchema: z.ZodType<
   UpdateVirtualNetworkAttributes2
 > = z.object({
-  description: z.string().default("Test virtual network update"),
+  description: z.string().optional(),
   tags: z.array(z.string()).optional(),
 });
 
