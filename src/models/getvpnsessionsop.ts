@@ -3,7 +3,7 @@
  */
 
 import * as z from "zod";
-import { ClosedEnum } from "../types/enums.js";
+import { catchUnrecognizedEnum, OpenEnum } from "../types/enums.js";
 import {
   VpnSessionDataWithPassword,
   VpnSessionDataWithPassword$zodSchema,
@@ -29,27 +29,30 @@ export const FilterLocation = {
   Tyo: "TYO",
   Tyo2: "TYO2",
 } as const;
-export type FilterLocation = ClosedEnum<typeof FilterLocation>;
+export type FilterLocation = OpenEnum<typeof FilterLocation>;
 
-export const FilterLocation$zodSchema = z.enum([
-  "ASH",
-  "BUE",
-  "CHI",
-  "DAL",
-  "FRA",
-  "LAX",
-  "LON",
-  "MEX",
-  "MEX2",
-  "MIA",
-  "MIA2",
-  "NYC",
-  "SAO",
-  "SAO2",
-  "SGP",
-  "SYD",
-  "TYO",
-  "TYO2",
+export const FilterLocation$zodSchema = z.union([
+  z.enum([
+    "ASH",
+    "BUE",
+    "CHI",
+    "DAL",
+    "FRA",
+    "LAX",
+    "LON",
+    "MEX",
+    "MEX2",
+    "MIA",
+    "MIA2",
+    "NYC",
+    "SAO",
+    "SAO2",
+    "SGP",
+    "SYD",
+    "TYO",
+    "TYO2",
+  ]),
+  z.string().transform(catchUnrecognizedEnum),
 ]);
 
 export type GetVpnSessionsRequest = {

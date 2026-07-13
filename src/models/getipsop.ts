@@ -29,6 +29,7 @@ export const FilterFamily$zodSchema = z.enum([
 export const FilterType = {
   Private: "private",
   Public: "public",
+  Elastic: "elastic",
 } as const;
 /**
  * The protocol type to filter by
@@ -38,6 +39,7 @@ export type FilterType = ClosedEnum<typeof FilterType>;
 export const FilterType$zodSchema = z.enum([
   "private",
   "public",
+  "elastic",
 ]).describe("The protocol type to filter by");
 
 export type GetIpsRequest = {
@@ -48,6 +50,8 @@ export type GetIpsRequest = {
   filterLocation?: string | undefined;
   filterAddress?: string | undefined;
   filterAdditional?: boolean | undefined;
+  filterAvailable?: boolean | undefined;
+  filterManagement?: boolean | undefined;
   extraFieldsIpAddresses?: string | undefined;
   pageSize?: number | undefined;
   pageNumber?: number | undefined;
@@ -65,10 +69,16 @@ export const GetIpsRequest$zodSchema: z.ZodType<GetIpsRequest> = z.object({
   filterAddress: z.string().describe(
     "The address of IP to filter by starts_with",
   ).optional(),
+  filterAvailable: z.boolean().describe(
+    "Filter by unassigned IPs (true) or assigned IPs (false)",
+  ).optional(),
   filterFamily: FilterFamily$zodSchema.optional().describe(
     "The protocol family to filter by",
   ),
   filterLocation: z.string().describe("The site slug to filter by").optional(),
+  filterManagement: z.boolean().describe(
+    "Filter by management IPs (true) or additional/elastic IPs (false)",
+  ).optional(),
   filterProject: z.string().describe("The project ID or Slug to filter by")
     .optional(),
   filterServer: z.string().describe("The server ID to filter by").optional(),

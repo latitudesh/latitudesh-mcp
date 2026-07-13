@@ -3,7 +3,7 @@
  */
 
 import * as z from "zod";
-import { ClosedEnum } from "../types/enums.js";
+import { catchUnrecognizedEnum, ClosedEnum, OpenEnum } from "../types/enums.js";
 
 export const CreateServerType2 = {
   Servers: "servers",
@@ -41,28 +41,31 @@ export const CreateServerPlan2 = {
 /**
  * The plan slug to choose server from, defining the specs the server will have
  */
-export type CreateServerPlan2 = ClosedEnum<typeof CreateServerPlan2>;
+export type CreateServerPlan2 = OpenEnum<typeof CreateServerPlan2>;
 
-export const CreateServerPlan2$zodSchema = z.enum([
-  "c2-large-x86",
-  "c2-medium-x86",
-  "c2-small-x86",
-  "c3-large-x86",
-  "c3-medium-x86",
-  "c3-small-x86",
-  "c3-xlarge-x86",
-  "g3-gh200",
-  "g3-large-x86",
-  "g3-medium-x86",
-  "g3-small-x86",
-  "g3-xlarge-x86",
-  "g4-rtx6kpro-large",
-  "m3-large-x86",
-  "m4-metal-large",
-  "m4-metal-small",
-  "rs4-metal-xlarge",
-  "s2-small-x86",
-  "s3-large-x86",
+export const CreateServerPlan2$zodSchema = z.union([
+  z.enum([
+    "c2-large-x86",
+    "c2-medium-x86",
+    "c2-small-x86",
+    "c3-large-x86",
+    "c3-medium-x86",
+    "c3-small-x86",
+    "c3-xlarge-x86",
+    "g3-gh200",
+    "g3-large-x86",
+    "g3-medium-x86",
+    "g3-small-x86",
+    "g3-xlarge-x86",
+    "g4-rtx6kpro-large",
+    "m3-large-x86",
+    "m4-metal-large",
+    "m4-metal-small",
+    "rs4-metal-xlarge",
+    "s2-small-x86",
+    "s3-large-x86",
+  ]),
+  z.string().transform(catchUnrecognizedEnum),
 ]).describe(
   "The plan slug to choose server from, defining the specs the server will have",
 );
@@ -93,27 +96,30 @@ export const CreateServerSite2 = {
 /**
  * The site slug to deploy the server
  */
-export type CreateServerSite2 = ClosedEnum<typeof CreateServerSite2>;
+export type CreateServerSite2 = OpenEnum<typeof CreateServerSite2>;
 
-export const CreateServerSite2$zodSchema = z.enum([
-  "ASH",
-  "BUE",
-  "CHI",
-  "DAL",
-  "FRA",
-  "LAX",
-  "LON",
-  "MEX",
-  "MEX2",
-  "MIA",
-  "MIA2",
-  "NYC",
-  "SAO",
-  "SAO2",
-  "SGP",
-  "SYD",
-  "TYO",
-  "TYO2",
+export const CreateServerSite2$zodSchema = z.union([
+  z.enum([
+    "ASH",
+    "BUE",
+    "CHI",
+    "DAL",
+    "FRA",
+    "LAX",
+    "LON",
+    "MEX",
+    "MEX2",
+    "MIA",
+    "MIA2",
+    "NYC",
+    "SAO",
+    "SAO2",
+    "SGP",
+    "SYD",
+    "TYO",
+    "TYO2",
+  ]),
+  z.string().transform(catchUnrecognizedEnum),
 ]).describe("The site slug to deploy the server");
 
 /**

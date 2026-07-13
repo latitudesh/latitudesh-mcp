@@ -3,7 +3,7 @@
  */
 
 import * as z from "zod";
-import { ClosedEnum } from "../types/enums.js";
+import { catchUnrecognizedEnum, ClosedEnum, OpenEnum } from "../types/enums.js";
 
 export const PostVpnSessionType2 = {
   VpnSessions: "vpn_sessions",
@@ -34,27 +34,30 @@ export const PostVpnSessionSite2 = {
   Tyo: "TYO",
   Tyo2: "TYO2",
 } as const;
-export type PostVpnSessionSite2 = ClosedEnum<typeof PostVpnSessionSite2>;
+export type PostVpnSessionSite2 = OpenEnum<typeof PostVpnSessionSite2>;
 
-export const PostVpnSessionSite2$zodSchema = z.enum([
-  "ASH",
-  "BUE",
-  "CHI",
-  "DAL",
-  "FRA",
-  "LAX",
-  "LON",
-  "MEX",
-  "MEX2",
-  "MIA",
-  "MIA2",
-  "NYC",
-  "SAO",
-  "SAO2",
-  "SGP",
-  "SYD",
-  "TYO",
-  "TYO2",
+export const PostVpnSessionSite2$zodSchema = z.union([
+  z.enum([
+    "ASH",
+    "BUE",
+    "CHI",
+    "DAL",
+    "FRA",
+    "LAX",
+    "LON",
+    "MEX",
+    "MEX2",
+    "MIA",
+    "MIA2",
+    "NYC",
+    "SAO",
+    "SAO2",
+    "SGP",
+    "SYD",
+    "TYO",
+    "TYO2",
+  ]),
+  z.string().transform(catchUnrecognizedEnum),
 ]);
 
 export type PostVpnSessionAttributes2 = {

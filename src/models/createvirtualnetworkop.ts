@@ -3,7 +3,7 @@
  */
 
 import * as z from "zod";
-import { ClosedEnum } from "../types/enums.js";
+import { catchUnrecognizedEnum, ClosedEnum, OpenEnum } from "../types/enums.js";
 
 export const CreateVirtualNetworkType2 = {
   VirtualNetwork: "virtual_network",
@@ -17,7 +17,7 @@ export const CreateVirtualNetworkType2$zodSchema = z.enum([
 ]);
 
 /**
- * Site ID or slug
+ * Site slug
  */
 export const CreateVirtualNetworkSite2 = {
   Ash: "ASH",
@@ -40,32 +40,35 @@ export const CreateVirtualNetworkSite2 = {
   Tyo2: "TYO2",
 } as const;
 /**
- * Site ID or slug
+ * Site slug
  */
-export type CreateVirtualNetworkSite2 = ClosedEnum<
+export type CreateVirtualNetworkSite2 = OpenEnum<
   typeof CreateVirtualNetworkSite2
 >;
 
-export const CreateVirtualNetworkSite2$zodSchema = z.enum([
-  "ASH",
-  "BUE",
-  "CHI",
-  "DAL",
-  "FRA",
-  "LAX",
-  "LON",
-  "MEX",
-  "MEX2",
-  "MIA",
-  "MIA2",
-  "NYC",
-  "SAO",
-  "SAO2",
-  "SGP",
-  "SYD",
-  "TYO",
-  "TYO2",
-]).describe("Site ID or slug");
+export const CreateVirtualNetworkSite2$zodSchema = z.union([
+  z.enum([
+    "ASH",
+    "BUE",
+    "CHI",
+    "DAL",
+    "FRA",
+    "LAX",
+    "LON",
+    "MEX",
+    "MEX2",
+    "MIA",
+    "MIA2",
+    "NYC",
+    "SAO",
+    "SAO2",
+    "SGP",
+    "SYD",
+    "TYO",
+    "TYO2",
+  ]),
+  z.string().transform(catchUnrecognizedEnum),
+]).describe("Site slug");
 
 export type CreateVirtualNetworkAttributes2 = {
   description: string;
@@ -78,9 +81,7 @@ export const CreateVirtualNetworkAttributes2$zodSchema: z.ZodType<
 > = z.object({
   description: z.string(),
   project: z.string().describe("Project ID or slug"),
-  site: CreateVirtualNetworkSite2$zodSchema.optional().describe(
-    "Site ID or slug",
-  ),
+  site: CreateVirtualNetworkSite2$zodSchema.optional().describe("Site slug"),
 });
 
 export type CreateVirtualNetworkData2 = {
