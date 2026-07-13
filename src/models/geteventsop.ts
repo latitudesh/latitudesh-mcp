@@ -17,6 +17,7 @@ export type GetEventsRequest = {
   pageSize?: number | undefined;
   pageNumber?: number | undefined;
   statsTotal?: string | undefined;
+  sort?: string | undefined;
 };
 
 export const GetEventsRequest$zodSchema: z.ZodType<GetEventsRequest> = z.object(
@@ -49,6 +50,9 @@ export const GetEventsRequest$zodSchema: z.ZodType<GetEventsRequest> = z.object(
     pageSize: z.int().default(20).describe(
       "Number of items to return per page",
     ),
+    sort: z.string().describe(
+      "Comma-separated sort fields. Prefix a field with `-` for descending order. Supported fields: created_at. Example: `sort=-created_at` sorts by creation date descending.",
+    ).optional(),
     statsTotal: z.string().describe(
       "Request aggregate stats in the response `meta`. Use `count` to get the total number of records, returned as `meta.stats.total.count`.",
     ).optional(),

@@ -95,6 +95,7 @@ async function $do(
     "filter[target_name]": payload$?.filterTargetName,
     "page[number]": payload$?.pageNumber,
     "page[size]": payload$?.pageSize,
+    "sort": payload$?.sort,
     "stats[total]": payload$?.statsTotal,
   });
 
