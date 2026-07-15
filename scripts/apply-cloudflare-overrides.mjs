@@ -7,6 +7,11 @@
  * In CI this runs automatically on the speakeasy-sdk-regen-* branch (see
  * .github/workflows/sdk_generation.yaml).
  *
+ * With --verify, nothing is written: the script only checks that every
+ * override's marker is present and exits non-zero otherwise. Unlike apply mode,
+ * this does not depend on Speakeasy template anchors, so it is safe to run on
+ * any branch (see .github/workflows/verify_overrides.yaml).
+ *
  * Each edit is IDEMPOTENT (skipped if its marker is already present) and FAILS
  * LOUDLY if neither the generated anchor nor the applied marker is found — that
  * means Speakeasy changed its template and a human needs to update this script,
@@ -23,6 +28,8 @@ const OLD_DEEPLINK_B64 =
 const NEW_DEEPLINK_B64 =
   "eyJjb21tYW5kIjoibnB4IiwiYXJncyI6WyIteSIsIm1jcC1yZW1vdGVAMC4xLjI1IiwiaHR0cHM6Ly9tY3AubGF0aXR1ZGUuc2gvbWNwIl19";
 
+const VERIFY = process.argv.includes("--verify");
+
 let failed = false;
 
 /**
@@ -31,7 +38,15 @@ let failed = false;
  */
 function applyEdit(content, e) {
   if (content.includes(e.marker)) {
-    console.log(`  ✓ already applied: ${e.label}`);
+    console.log(`  ✓ ${VERIFY ? "present" : "already applied"}: ${e.label}`);
+    return content;
+  }
+  if (VERIFY) {
+    console.error(
+      `  ✗ MISSING: ${e.label}\n` +
+        `    The applied marker was not found — the override is not present.`,
+    );
+    failed = true;
     return content;
   }
   if (!content.includes(e.find)) {
@@ -51,7 +66,7 @@ function processFile(path, edits) {
   console.log(`\n${path}`);
   let content = readFileSync(path, "utf8");
   for (const e of edits) content = applyEdit(content, e);
-  writeFileSync(path, content);
+  if (!VERIFY) writeFileSync(path, content);
 }
 
 // --- wrangler.toml ----------------------------------------------------------
@@ -239,7 +254,11 @@ processFile("src/landing-page.ts", [
 ]);
 
 if (failed) {
-  console.error("\nOne or more overrides could not be applied. See errors above.");
+  console.error(
+    VERIFY
+      ? "\nOne or more overrides are missing. Run `node scripts/apply-cloudflare-overrides.mjs` to re-apply them."
+      : "\nOne or more overrides could not be applied. See errors above.",
+  );
   process.exit(1);
 }
-console.log("\nAll Cloudflare/OAuth overrides applied.");
+console.log(`\nAll Cloudflare/OAuth overrides ${VERIFY ? "are present" : "applied"}.`);

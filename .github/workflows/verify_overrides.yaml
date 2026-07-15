@@ -1,0 +1,25 @@
+# Required check on PRs to main: fails if the hand-maintained Cloudflare/OAuth
+# overrides are missing (i.e. a regen clobbered them) or if the build breaks.
+#
+# Bot pushes made with GITHUB_TOKEN (the speakeasy-sdk-regen-* branches) do NOT
+# trigger this workflow — for those, the reapply-overrides job in
+# sdk_generation.yaml posts a commit status with the same `verify-overrides`
+# context instead. Branch protection requires that context, so either path
+# satisfies it and a regen PR with no status stays blocked.
+name: Verify Overrides
+permissions:
+  contents: read
+"on":
+  pull_request:
+    branches:
+      - main
+jobs:
+  verify-overrides:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: oven-sh/setup-bun@v2
+      - name: Verify Cloudflare/OAuth overrides are present
+        run: node scripts/apply-cloudflare-overrides.mjs --verify
+      - name: Build
+        run: bun run build
