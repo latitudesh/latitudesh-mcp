@@ -37,17 +37,26 @@ let failed = false;
  * @param {{label:string, find:string, replace:string, marker:string, all?:boolean}} e
  */
 function applyEdit(content, e) {
-  if (content.includes(e.marker)) {
+  // For `all` edits the marker alone isn't enough: every occurrence of the
+  // generated anchor must be gone, or the override is only partially applied.
+  const stale = e.all && content.includes(e.find);
+  if (content.includes(e.marker) && !stale) {
     console.log(`  ✓ ${VERIFY ? "present" : "already applied"}: ${e.label}`);
     return content;
   }
   if (VERIFY) {
     console.error(
-      `  ✗ MISSING: ${e.label}\n` +
-        `    The applied marker was not found — the override is not present.`,
+      `  ✗ ${stale ? "PARTIAL" : "MISSING"}: ${e.label}\n` +
+        (stale
+          ? `    The generated anchor still occurs alongside the applied marker.`
+          : `    The applied marker was not found — the override is not present.`),
     );
     failed = true;
     return content;
+  }
+  if (stale) {
+    console.log(`  + re-applied remaining occurrences: ${e.label}`);
+    return content.split(e.find).join(e.replace);
   }
   if (!content.includes(e.find)) {
     console.error(
