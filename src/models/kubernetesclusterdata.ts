@@ -52,36 +52,6 @@ export const VersionStatus$zodSchema = z.enum([
 ]).describe("The cluster's version status relative to available upgrades");
 
 /**
- * Control plane status information
- */
-export type ControlPlane = {
-  ready?: boolean | undefined;
-  replicas?: number | undefined;
-  ready_replicas?: number | undefined;
-};
-
-export const ControlPlane$zodSchema: z.ZodType<ControlPlane> = z.object({
-  ready: z.boolean().optional(),
-  ready_replicas: z.int().optional(),
-  replicas: z.int().optional(),
-}).describe("Control plane status information");
-
-/**
- * Worker nodes status information
- */
-export type Workers = {
-  replicas?: number | undefined;
-  ready_replicas?: number | undefined;
-  available_replicas?: number | undefined;
-};
-
-export const Workers$zodSchema: z.ZodType<Workers> = z.object({
-  available_replicas: z.int().optional(),
-  ready_replicas: z.int().optional(),
-  replicas: z.int().optional(),
-}).describe("Worker nodes status information");
-
-/**
  * Current status of worker nodes. 'idle' when 0 workers, 'ready' when all workers are ready, 'scaling' when workers are being provisioned/removed, 'error' when a worker has failed.
  */
 export const WorkerStatus = {
@@ -167,22 +137,6 @@ export const KubernetesClusterDataStepStatus$zodSchema = z.enum([
   "completed",
 ]).describe("Current status of this step");
 
-export type KubernetesClusterDataStep = {
-  name?: KubernetesClusterDataName | undefined;
-  status?: KubernetesClusterDataStepStatus | undefined;
-};
-
-export const KubernetesClusterDataStep$zodSchema: z.ZodType<
-  KubernetesClusterDataStep
-> = z.object({
-  name: KubernetesClusterDataName$zodSchema.optional().describe(
-    "Step identifier",
-  ),
-  status: KubernetesClusterDataStepStatus$zodSchema.optional().describe(
-    "Current status of this step",
-  ),
-});
-
 /**
  * The role of this node in the cluster
  */
@@ -222,6 +176,52 @@ export const NodeStatus$zodSchema = z.enum([
   "failed",
   "deleting",
 ]).describe("Current status of the node");
+
+/**
+ * Control plane status information
+ */
+export type ControlPlane = {
+  ready?: boolean | undefined;
+  replicas?: number | undefined;
+  ready_replicas?: number | undefined;
+};
+
+export const ControlPlane$zodSchema: z.ZodType<ControlPlane> = z.object({
+  ready: z.boolean().optional(),
+  ready_replicas: z.int().optional(),
+  replicas: z.int().optional(),
+}).describe("Control plane status information");
+
+/**
+ * Worker nodes status information
+ */
+export type Workers = {
+  replicas?: number | undefined;
+  ready_replicas?: number | undefined;
+  available_replicas?: number | undefined;
+};
+
+export const Workers$zodSchema: z.ZodType<Workers> = z.object({
+  available_replicas: z.int().optional(),
+  ready_replicas: z.int().optional(),
+  replicas: z.int().optional(),
+}).describe("Worker nodes status information");
+
+export type KubernetesClusterDataStep = {
+  name?: KubernetesClusterDataName | undefined;
+  status?: KubernetesClusterDataStepStatus | undefined;
+};
+
+export const KubernetesClusterDataStep$zodSchema: z.ZodType<
+  KubernetesClusterDataStep
+> = z.object({
+  name: KubernetesClusterDataName$zodSchema.optional().describe(
+    "Step identifier",
+  ),
+  status: KubernetesClusterDataStepStatus$zodSchema.optional().describe(
+    "Current status of this step",
+  ),
+});
 
 export type Node = {
   id?: string | undefined;

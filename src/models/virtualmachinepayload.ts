@@ -17,6 +17,29 @@ export const VirtualMachinePayloadType$zodSchema = z.enum([
 ]);
 
 /**
+ * Billing cycle for the VM. The supported set is validated per-project (on_demand vs reserved). Defaults to the project's default billing when omitted.
+ */
+export const VirtualMachinePayloadBilling = {
+  Hourly: "hourly",
+  Monthly: "monthly",
+  Yearly: "yearly",
+} as const;
+/**
+ * Billing cycle for the VM. The supported set is validated per-project (on_demand vs reserved). Defaults to the project's default billing when omitted.
+ */
+export type VirtualMachinePayloadBilling = ClosedEnum<
+  typeof VirtualMachinePayloadBilling
+>;
+
+export const VirtualMachinePayloadBilling$zodSchema = z.enum([
+  "hourly",
+  "monthly",
+  "yearly",
+]).describe(
+  "Billing cycle for the VM. The supported set is validated per-project (on_demand vs reserved). Defaults to the project's default billing when omitted.",
+);
+
+/**
  * A user data record reference (encoded id_hash, e.g. 'ud_xxx', or raw integer id) to apply as cloud-init configuration
  */
 export type UserDataUnion = number | string;
@@ -30,6 +53,7 @@ export const UserDataUnion$zodSchema: z.ZodType<UserDataUnion> = z.union([
 
 export type VirtualMachinePayloadAttributes = {
   name?: string | undefined;
+  billing?: VirtualMachinePayloadBilling | undefined;
   plan?: string | null | undefined;
   ssh_keys?: Array<string> | null | undefined;
   project?: string | undefined;
@@ -42,6 +66,9 @@ export type VirtualMachinePayloadAttributes = {
 export const VirtualMachinePayloadAttributes$zodSchema: z.ZodType<
   VirtualMachinePayloadAttributes
 > = z.object({
+  billing: VirtualMachinePayloadBilling$zodSchema.optional().describe(
+    "Billing cycle for the VM. The supported set is validated per-project (on_demand vs reserved). Defaults to the project's default billing when omitted.",
+  ),
   name: z.string().default("my-vm"),
   operating_system: z.string().nullable().optional().describe(
     "The operating system slug for the Virtual Machine. If not specified, defaults to ubuntu_24_04_x64_lts for CPU plans or ubuntu24_ml_in_a_box for GPU plans.",

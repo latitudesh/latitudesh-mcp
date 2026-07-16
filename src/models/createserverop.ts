@@ -223,24 +223,6 @@ export const CreateServerFilesystem2$zodSchema = z.enum([
   "xfs",
 ]);
 
-export type CreateServerDiskLayout2 = {
-  count: number;
-  role: CreateServerRole2;
-  raid_level?: CreateServerRaidLevel2 | null | undefined;
-  filesystem?: CreateServerFilesystem2 | null | undefined;
-  mount_point?: string | null | undefined;
-};
-
-export const CreateServerDiskLayout2$zodSchema: z.ZodType<
-  CreateServerDiskLayout2
-> = z.object({
-  count: z.int(),
-  filesystem: CreateServerFilesystem2$zodSchema.nullable().optional(),
-  mount_point: z.string().nullable().optional(),
-  raid_level: CreateServerRaidLevel2$zodSchema.nullable().optional(),
-  role: CreateServerRole2$zodSchema,
-});
-
 /**
  * The server billing type. Accepts `hourly` and `monthly` for on demand projects and `yearly` for reserved projects.
  */
@@ -261,6 +243,24 @@ export const CreateServerBilling2$zodSchema = z.enum([
 ]).describe(
   "The server billing type. Accepts `hourly` and `monthly` for on demand projects and `yearly` for reserved projects.",
 );
+
+export type CreateServerDiskLayout2 = {
+  count: number;
+  role: CreateServerRole2;
+  raid_level?: CreateServerRaidLevel2 | null | undefined;
+  filesystem?: CreateServerFilesystem2 | null | undefined;
+  mount_point?: string | null | undefined;
+};
+
+export const CreateServerDiskLayout2$zodSchema: z.ZodType<
+  CreateServerDiskLayout2
+> = z.object({
+  count: z.int(),
+  filesystem: CreateServerFilesystem2$zodSchema.nullable().optional(),
+  mount_point: z.string().nullable().optional(),
+  raid_level: CreateServerRaidLevel2$zodSchema.nullable().optional(),
+  role: CreateServerRole2$zodSchema,
+});
 
 export type CreateServerAttributes2 = {
   project?: string | undefined;

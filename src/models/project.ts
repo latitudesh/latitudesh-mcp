@@ -3,8 +3,17 @@
  */
 
 import * as z from "zod";
-import { ClosedEnum } from "../types/enums.js";
+import { catchUnrecognizedEnum, ClosedEnum, OpenEnum } from "../types/enums.js";
 import { TeamInclude, TeamInclude$zodSchema } from "./teaminclude.js";
+
+export const ProjectType = {
+  Projects: "projects",
+} as const;
+export type ProjectType = ClosedEnum<typeof ProjectType>;
+
+export const ProjectType$zodSchema = z.enum([
+  "projects",
+]);
 
 export const BillingType = {
   Yearly: "Yearly",
@@ -13,25 +22,31 @@ export const BillingType = {
   Normal: "Normal",
   Custom: "Custom",
 } as const;
-export type BillingType = ClosedEnum<typeof BillingType>;
+export type BillingType = OpenEnum<typeof BillingType>;
 
-export const BillingType$zodSchema = z.enum([
-  "Yearly",
-  "Monthly",
-  "Hourly",
-  "Normal",
-  "Custom",
+export const BillingType$zodSchema = z.union([
+  z.enum([
+    "Yearly",
+    "Monthly",
+    "Hourly",
+    "Normal",
+    "Custom",
+  ]),
+  z.string().transform(catchUnrecognizedEnum),
 ]);
 
 export const BillingMethod = {
   Normal: "Normal",
   NinetyFivethPercentile: "95th percentile",
 } as const;
-export type BillingMethod = ClosedEnum<typeof BillingMethod>;
+export type BillingMethod = OpenEnum<typeof BillingMethod>;
 
-export const BillingMethod$zodSchema = z.enum([
-  "Normal",
-  "95th percentile",
+export const BillingMethod$zodSchema = z.union([
+  z.enum([
+    "Normal",
+    "95th percentile",
+  ]),
+  z.string().transform(catchUnrecognizedEnum),
 ]);
 
 export const Environment = {
@@ -39,25 +54,34 @@ export const Environment = {
   Staging: "Staging",
   Production: "Production",
 } as const;
-export type Environment = ClosedEnum<typeof Environment>;
+export type Environment = OpenEnum<typeof Environment>;
 
-export const Environment$zodSchema = z.enum([
-  "Development",
-  "Staging",
-  "Production",
+export const Environment$zodSchema = z.union([
+  z.enum([
+    "Development",
+    "Staging",
+    "Production",
+  ]),
+  z.string().transform(catchUnrecognizedEnum),
 ]);
 
+export type ProjectTag = {};
+
+export const ProjectTag$zodSchema: z.ZodType<ProjectTag> = z.object({});
+
 export type ProjectStats = {
+  databases?: number | undefined;
   ip_addresses?: number | undefined;
   prefixes?: number | undefined;
   servers?: number | undefined;
-  containers?: number | undefined;
+  storages?: number | undefined;
+  virtual_machines?: number | undefined;
   vlans?: number | undefined;
 };
 
 export const ProjectStats$zodSchema: z.ZodType<ProjectStats> = z.object({
-  containers: z.number().optional().describe(
-    "The number of containers assigned to the project",
+  databases: z.number().optional().describe(
+    "The number of database servers assigned to the project",
   ),
   ip_addresses: z.number().optional().describe(
     "The number of IP addresses assigned to the project",
@@ -67,6 +91,12 @@ export const ProjectStats$zodSchema: z.ZodType<ProjectStats> = z.object({
   ),
   servers: z.number().optional().describe(
     "The number of servers assigned to the project",
+  ),
+  storages: z.number().optional().describe(
+    "The number of storages assigned to the project",
+  ),
+  virtual_machines: z.number().optional().describe(
+    "The number of active virtual machines assigned to the project",
   ),
   vlans: z.number().optional().describe(
     "The number of VLANs assigned to the project",
@@ -86,13 +116,16 @@ export const ProjectBilling$zodSchema: z.ZodType<ProjectBilling> = z.object({
 });
 
 export type ProjectAttributes = {
+  tags?: Array<ProjectTag> | undefined;
   name?: string | undefined;
   slug?: string | undefined;
   description?: string | null | undefined;
   billing_type?: BillingType | null | undefined;
   billing_method?: BillingMethod | null | undefined;
   cost?: string | null | undefined;
+  bandwidth_alert?: boolean | null | undefined;
   environment?: Environment | null | undefined;
+  provisioning_type?: string | null | undefined;
   stats?: ProjectStats | undefined;
   billing?: ProjectBilling | undefined;
   team?: TeamInclude | undefined;
@@ -102,6 +135,9 @@ export type ProjectAttributes = {
 
 export const ProjectAttributes$zodSchema: z.ZodType<ProjectAttributes> = z
   .object({
+    bandwidth_alert: z.boolean().nullable().optional().describe(
+      "Whether bandwidth quota alerts are enabled for the project",
+    ),
     billing: z.lazy(() => ProjectBilling$zodSchema).optional(),
     billing_method: BillingMethod$zodSchema.nullable().optional(),
     billing_type: BillingType$zodSchema.nullable().optional(),
@@ -112,18 +148,26 @@ export const ProjectAttributes$zodSchema: z.ZodType<ProjectAttributes> = z
     ),
     environment: Environment$zodSchema.nullable().optional(),
     name: z.string().optional().describe("The project name"),
+    provisioning_type: z.string().nullable().optional().describe(
+      "The project provisioning model, either on_demand (pay-as-you-go, hourly or monthly billing) or reserved (annual contract with yearly billing). Defaults to on_demand.",
+    ),
     slug: z.string().optional().describe("A unique project identifier"),
     stats: z.lazy(() => ProjectStats$zodSchema).optional(),
+    tags: z.array(z.lazy(() => ProjectTag$zodSchema)).optional().describe(
+      "The tags assigned to the project",
+    ),
     team: TeamInclude$zodSchema.optional(),
     updated_at: z.string().optional(),
   });
 
 export type Project = {
   id?: string | undefined;
+  type?: ProjectType | undefined;
   attributes?: ProjectAttributes | undefined;
 };
 
 export const Project$zodSchema: z.ZodType<Project> = z.object({
   attributes: z.lazy(() => ProjectAttributes$zodSchema).optional(),
   id: z.string().optional().describe("The project ID"),
+  type: ProjectType$zodSchema.optional(),
 });

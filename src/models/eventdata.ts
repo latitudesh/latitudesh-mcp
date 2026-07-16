@@ -15,45 +15,48 @@ export const EventDataType$zodSchema = z.enum([
 ]);
 
 export type Author = {
-  id?: string | undefined;
-  name?: string | undefined;
-  email?: string | undefined;
+  id?: string | null | undefined;
+  name?: string | null | undefined;
+  email?: string | null | undefined;
 };
 
 export const Author$zodSchema: z.ZodType<Author> = z.object({
-  email: z.string().optional(),
-  id: z.string().optional(),
-  name: z.string().optional(),
+  email: z.string().nullable().optional(),
+  id: z.string().nullable().optional(),
+  name: z.string().nullable().optional(),
 });
 
 export type EventDataProject = {
-  id?: string | undefined;
-  name?: string | undefined;
-  slug?: string | undefined;
+  id?: string | null | undefined;
+  name?: string | null | undefined;
+  slug?: string | null | undefined;
 };
 
 export const EventDataProject$zodSchema: z.ZodType<EventDataProject> = z.object(
   {
-    id: z.string().optional(),
-    name: z.string().optional(),
-    slug: z.string().optional(),
+    id: z.string().nullable().optional(),
+    name: z.string().nullable().optional(),
+    slug: z.string().nullable().optional(),
   },
 );
 
 export type EventDataTeam = {
-  id?: string | undefined;
-  name?: string | undefined;
+  id?: string | null | undefined;
+  name?: string | null | undefined;
 };
 
 export const EventDataTeam$zodSchema: z.ZodType<EventDataTeam> = z.object({
-  id: z.string().optional(),
-  name: z.string().optional(),
+  id: z.string().nullable().optional(),
+  name: z.string().nullable().optional(),
 });
 
-export type Target = { id?: string | undefined; name?: string | undefined };
+export type Target = {
+  id?: string | null | undefined;
+  name?: string | undefined;
+};
 
 export const Target$zodSchema: z.ZodType<Target> = z.object({
-  id: z.string().optional(),
+  id: z.string().nullable().optional(),
   name: z.string().optional(),
 });
 

@@ -6,6 +6,55 @@ import * as z from "zod";
 import { ClosedEnum } from "../types/enums.js";
 
 /**
+ * Type of discount (percentage or fixed amount)
+ */
+export const BillingUsageType = {
+  Percent: "percent",
+  Amount: "amount",
+} as const;
+/**
+ * Type of discount (percentage or fixed amount)
+ */
+export type BillingUsageType = ClosedEnum<typeof BillingUsageType>;
+
+export const BillingUsageType$zodSchema = z.enum([
+  "percent",
+  "amount",
+]).describe("Type of discount (percentage or fixed amount)");
+
+export const BillingUsageUnit = {
+  Quantity: "quantity",
+  Hour: "hour",
+  Minute: "minute",
+  Gb: "GB",
+} as const;
+export type BillingUsageUnit = ClosedEnum<typeof BillingUsageUnit>;
+
+export const BillingUsageUnit$zodSchema = z.enum([
+  "quantity",
+  "hour",
+  "minute",
+  "GB",
+]);
+
+export const UsageType = {
+  Licensed: "licensed",
+  Metered: "metered",
+} as const;
+export type UsageType = ClosedEnum<typeof UsageType>;
+
+export const UsageType$zodSchema = z.enum([
+  "licensed",
+  "metered",
+]);
+
+export type BillingUsageMeta = {};
+
+export const BillingUsageMeta$zodSchema: z.ZodType<BillingUsageMeta> = z.object(
+  {},
+);
+
+/**
  * The project in which the returned usage belongs to
  */
 export type BillingUsageProject = {
@@ -31,23 +80,6 @@ export const Period$zodSchema: z.ZodType<Period> = z.object({
   start: z.iso.datetime({ offset: true }).optional(),
 }).describe("The period from the returned billing cycle");
 
-/**
- * Type of discount (percentage or fixed amount)
- */
-export const BillingUsageType = {
-  Percent: "percent",
-  Amount: "amount",
-} as const;
-/**
- * Type of discount (percentage or fixed amount)
- */
-export type BillingUsageType = ClosedEnum<typeof BillingUsageType>;
-
-export const BillingUsageType$zodSchema = z.enum([
-  "percent",
-  "amount",
-]).describe("Type of discount (percentage or fixed amount)");
-
 export type Discount = {
   description: string;
   type: BillingUsageType;
@@ -62,42 +94,45 @@ export const Discount$zodSchema: z.ZodType<Discount> = z.object({
   value: z.number().describe("Value of the discount (percentage or amount)"),
 });
 
-export const BillingUsageUnit = {
-  Quantity: "quantity",
-  Hour: "hour",
-  Minute: "minute",
-} as const;
-export type BillingUsageUnit = ClosedEnum<typeof BillingUsageUnit>;
-
-export const BillingUsageUnit$zodSchema = z.enum([
-  "quantity",
-  "hour",
-  "minute",
-]);
-
-export const UsageType = {
-  Licensed: "licensed",
-  Metered: "metered",
-} as const;
-export type UsageType = ClosedEnum<typeof UsageType>;
-
-export const UsageType$zodSchema = z.enum([
-  "licensed",
-  "metered",
-]);
-
-export type Metadata = {
-  id?: string | null | undefined;
-  hostname?: string | null | undefined;
-  plan?: string | null | undefined;
+export type BillingUsageServer = {
+  id?: string | undefined;
+  hostname?: string | undefined;
+  plan?: string | undefined;
   tags?: Array<string> | undefined;
 };
 
+export const BillingUsageServer$zodSchema: z.ZodType<BillingUsageServer> = z
+  .object({
+    hostname: z.string().optional(),
+    id: z.string().optional(),
+    plan: z.string().optional(),
+    tags: z.array(z.string()).optional(),
+  });
+
+export type Bucket = {
+  id?: string | undefined;
+  name?: string | undefined;
+  location?: string | null | undefined;
+};
+
+export const Bucket$zodSchema: z.ZodType<Bucket> = z.object({
+  id: z.string().optional(),
+  location: z.string().nullable().optional(),
+  name: z.string().optional(),
+});
+
+export type Metadata = {
+  servers?: Array<BillingUsageServer> | undefined;
+  bucket?: Bucket | undefined;
+  billing_unit_divisor?: number | null | undefined;
+};
+
 export const Metadata$zodSchema: z.ZodType<Metadata> = z.object({
-  hostname: z.string().nullable().optional(),
-  id: z.string().nullable().optional(),
-  plan: z.string().nullable().optional(),
-  tags: z.array(z.string()).optional(),
+  billing_unit_divisor: z.int().nullable().optional().describe(
+    "For products priced per divided unit (e.g. $0.01 per 1000 API calls), the divisor applied to the quantity before pricing. Omitted for products that are not priced by divided units.",
+  ),
+  bucket: z.lazy(() => Bucket$zodSchema).optional(),
+  servers: z.array(z.lazy(() => BillingUsageServer$zodSchema)).optional(),
 });
 
 export type Product = {
@@ -112,14 +147,19 @@ export type Product = {
   start?: string | undefined;
   end?: string | null | undefined;
   unit?: BillingUsageUnit | undefined;
+  unit_amount?: number | undefined;
   unit_price?: number | undefined;
   usage_type?: UsageType | undefined;
   quantity?: number | undefined;
+  amount?: number | undefined;
   price?: number | undefined;
   metadata?: Metadata | undefined;
 };
 
 export const Product$zodSchema: z.ZodType<Product> = z.object({
+  amount: z.number().optional().describe(
+    "The total usage amount of the product in cents",
+  ),
   amount_without_discount: z.int().optional(),
   description: z.string().optional(),
   discountable: z.boolean().optional(),
@@ -136,6 +176,9 @@ export const Product$zodSchema: z.ZodType<Product> = z.object({
   resource: z.string().optional(),
   start: z.iso.datetime({ offset: true }).optional(),
   unit: BillingUsageUnit$zodSchema.optional(),
+  unit_amount: z.number().optional().describe(
+    "The unit amount of the product in cents",
+  ),
   unit_price: z.number().optional().describe(
     "The unit price of the product in cents",
   ),
@@ -146,6 +189,7 @@ export type BillingUsageAttributes = {
   project?: BillingUsageProject | undefined;
   period?: Period | undefined;
   available_credit_balance?: number | undefined;
+  amount?: number | undefined;
   price?: number | undefined;
   threshold?: number | null | undefined;
   products?: Array<Product> | undefined;
@@ -154,6 +198,7 @@ export type BillingUsageAttributes = {
 export const BillingUsageAttributes$zodSchema: z.ZodType<
   BillingUsageAttributes
 > = z.object({
+  amount: z.number().optional().describe("The total usage amount in cents"),
   available_credit_balance: z.int().optional().describe(
     "The available credit balance in cents",
   ),
@@ -172,6 +217,7 @@ export const BillingUsageAttributes$zodSchema: z.ZodType<
 
 export type BillingUsageData = {
   id?: string | undefined;
+  type?: string | undefined;
   attributes?: BillingUsageAttributes | undefined;
 };
 
@@ -179,11 +225,16 @@ export const BillingUsageData$zodSchema: z.ZodType<BillingUsageData> = z.object(
   {
     attributes: z.lazy(() => BillingUsageAttributes$zodSchema).optional(),
     id: z.string().optional(),
+    type: z.string().optional(),
   },
 );
 
-export type BillingUsage = { data?: BillingUsageData | undefined };
+export type BillingUsage = {
+  meta?: BillingUsageMeta | undefined;
+  data?: BillingUsageData | undefined;
+};
 
 export const BillingUsage$zodSchema: z.ZodType<BillingUsage> = z.object({
   data: z.lazy(() => BillingUsageData$zodSchema).optional(),
+  meta: z.lazy(() => BillingUsageMeta$zodSchema).optional(),
 });

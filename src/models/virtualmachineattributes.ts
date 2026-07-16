@@ -18,27 +18,6 @@ export const VirtualMachineAttributesType$zodSchema = z.enum([
   "virtual_machines",
 ]);
 
-export const VirtualMachineAttributesStatus = {
-  Running: "Running",
-  ConfiguringNetwork: "Configuring network",
-  Starting: "Starting",
-  Scheduling: "Scheduling",
-  Scheduled: "Scheduled",
-  Destroying: "Destroying",
-} as const;
-export type VirtualMachineAttributesStatus = ClosedEnum<
-  typeof VirtualMachineAttributesStatus
->;
-
-export const VirtualMachineAttributesStatus$zodSchema = z.enum([
-  "Running",
-  "Configuring network",
-  "Starting",
-  "Scheduling",
-  "Scheduled",
-  "Destroying",
-]);
-
 /**
  * Features supported by this operating system
  */
@@ -46,14 +25,18 @@ export type VirtualMachineAttributesFeatures = {
   raid?: boolean | undefined;
   ssh_keys?: boolean | undefined;
   user_data?: boolean | undefined;
+  rescue?: boolean | undefined;
+  workflow?: boolean | undefined;
 };
 
 export const VirtualMachineAttributesFeatures$zodSchema: z.ZodType<
   VirtualMachineAttributesFeatures
 > = z.object({
   raid: z.boolean().optional().describe("Whether RAID is supported"),
+  rescue: z.boolean().optional().describe("Whether rescue mode is supported"),
   ssh_keys: z.boolean().optional().describe("Whether SSH keys are supported"),
   user_data: z.boolean().optional().describe("Whether user data is supported"),
+  workflow: z.boolean().optional().describe("Whether workflow is supported"),
 }).describe("Features supported by this operating system");
 
 /**
@@ -172,7 +155,7 @@ export const VirtualMachineAttributesTag$zodSchema: z.ZodType<
 export type VirtualMachineAttributesAttributes = {
   name?: string | undefined;
   created_at?: string | undefined;
-  status?: VirtualMachineAttributesStatus | undefined;
+  status?: string | undefined;
   primary_ipv4?: string | null | undefined;
   operating_system?: VirtualMachineAttributesOperatingSystem | null | undefined;
   credentials?: VirtualMachineAttributesCredentials | null | undefined;
@@ -210,7 +193,9 @@ export const VirtualMachineAttributesAttributes$zodSchema: z.ZodType<
   project: ProjectInclude$zodSchema.optional(),
   site: z.string().nullable().optional(),
   specs: z.lazy(() => VirtualMachineAttributesSpecs$zodSchema).optional(),
-  status: VirtualMachineAttributesStatus$zodSchema.optional(),
+  status: z.string().optional().describe(
+    "Current lifecycle status of the VM, derived from the underlying KubeVirt phase/printable status and capitalized. This is an open set that may grow over time — do not treat it as a closed enum. Known values include: Running, Starting, Stopped, Stopping, Failed, Off, Error, Rebooting, Deleting, Destroying, Configuring network, Scheduling, Scheduled, Provisioning.",
+  ),
   tags: z.array(z.lazy(() => VirtualMachineAttributesTag$zodSchema)).optional(),
   team: TeamInclude$zodSchema.optional(),
   user_data: z.string().nullable().optional().describe(
