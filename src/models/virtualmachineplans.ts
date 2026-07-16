@@ -23,6 +23,69 @@ export const VirtualMachinePlansType$zodSchema = z.enum([
 ]).describe("The type of the resource");
 
 /**
+ * The unit of the disk size
+ */
+export const VirtualMachinePlansUnit = {
+  Gib: "gib",
+} as const;
+/**
+ * The unit of the disk size
+ */
+export type VirtualMachinePlansUnit = ClosedEnum<
+  typeof VirtualMachinePlansUnit
+>;
+
+export const VirtualMachinePlansUnit$zodSchema = z.enum([
+  "gib",
+]).describe("The unit of the disk size");
+
+/**
+ * The stock level in this region
+ */
+export const VirtualMachinePlansRegionStockLevel = {
+  Low: "low",
+  Unavailable: "unavailable",
+  Medium: "medium",
+  High: "high",
+} as const;
+/**
+ * The stock level in this region
+ */
+export type VirtualMachinePlansRegionStockLevel = ClosedEnum<
+  typeof VirtualMachinePlansRegionStockLevel
+>;
+
+export const VirtualMachinePlansRegionStockLevel$zodSchema = z.enum([
+  "low",
+  "unavailable",
+  "medium",
+  "high",
+]).describe("The stock level in this region");
+
+/**
+ * The stock level of the plan
+ */
+export const VirtualMachinePlansStockLevel = {
+  Low: "low",
+  Unavailable: "unavailable",
+  Medium: "medium",
+  High: "high",
+} as const;
+/**
+ * The stock level of the plan
+ */
+export type VirtualMachinePlansStockLevel = ClosedEnum<
+  typeof VirtualMachinePlansStockLevel
+>;
+
+export const VirtualMachinePlansStockLevel$zodSchema = z.enum([
+  "low",
+  "unavailable",
+  "medium",
+  "high",
+]).describe("The stock level of the plan");
+
+/**
  * Detailed vCPU specifications
  */
 export type Vcpu = {
@@ -50,23 +113,6 @@ export const VirtualMachinePlansNic$zodSchema: z.ZodType<
   count: z.string().optional().describe("Number of NICs"),
   type: z.string().optional().describe("NIC speed/type"),
 });
-
-/**
- * The unit of the disk size
- */
-export const VirtualMachinePlansUnit = {
-  Gib: "gib",
-} as const;
-/**
- * The unit of the disk size
- */
-export type VirtualMachinePlansUnit = ClosedEnum<
-  typeof VirtualMachinePlansUnit
->;
-
-export const VirtualMachinePlansUnit$zodSchema = z.enum([
-  "gib",
-]).describe("The unit of the disk size");
 
 export type Size = {
   amount?: number | undefined;
@@ -172,29 +218,6 @@ export const VirtualMachinePlansLocations$zodSchema: z.ZodType<
   ),
 });
 
-/**
- * The stock level in this region
- */
-export const VirtualMachinePlansRegionStockLevel = {
-  Low: "low",
-  Unavailable: "unavailable",
-  Medium: "medium",
-  High: "high",
-} as const;
-/**
- * The stock level in this region
- */
-export type VirtualMachinePlansRegionStockLevel = ClosedEnum<
-  typeof VirtualMachinePlansRegionStockLevel
->;
-
-export const VirtualMachinePlansRegionStockLevel$zodSchema = z.enum([
-  "low",
-  "unavailable",
-  "medium",
-  "high",
-]).describe("The stock level in this region");
-
 export type VirtualMachinePlansRegion = {
   name?: string | undefined;
   available?: Array<string> | undefined;
@@ -213,29 +236,6 @@ export const VirtualMachinePlansRegion$zodSchema: z.ZodType<
   stock_level: VirtualMachinePlansRegionStockLevel$zodSchema.optional()
     .describe("The stock level in this region"),
 });
-
-/**
- * The stock level of the plan
- */
-export const VirtualMachinePlansStockLevel = {
-  Low: "low",
-  Unavailable: "unavailable",
-  Medium: "medium",
-  High: "high",
-} as const;
-/**
- * The stock level of the plan
- */
-export type VirtualMachinePlansStockLevel = ClosedEnum<
-  typeof VirtualMachinePlansStockLevel
->;
-
-export const VirtualMachinePlansStockLevel$zodSchema = z.enum([
-  "low",
-  "unavailable",
-  "medium",
-  "high",
-]).describe("The stock level of the plan");
 
 export type VirtualMachinePlansAttributes = {
   name?: string | undefined;

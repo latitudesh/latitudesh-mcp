@@ -69,6 +69,21 @@ export const IpmiStatus$zodSchema = z.enum([
   "Normal",
 ]);
 
+export const ServerDataRole = {
+  External: "external",
+  Internal: "internal",
+  Ipmi: "ipmi",
+  Unknown: "unknown",
+} as const;
+export type ServerDataRole = ClosedEnum<typeof ServerDataRole>;
+
+export const ServerDataRole$zodSchema = z.enum([
+  "external",
+  "internal",
+  "ipmi",
+  "unknown",
+]);
+
 export type ServerDataPlan = {
   id?: string | undefined;
   name?: string | undefined;
@@ -149,21 +164,6 @@ export const ServerDataSpecs$zodSchema: z.ZodType<ServerDataSpecs> = z.object({
   nic: z.string().optional().describe("NIC quantity and speed"),
   ram: z.string().optional().describe("RAM size in GB"),
 });
-
-export const ServerDataRole = {
-  External: "external",
-  Internal: "internal",
-  Ipmi: "ipmi",
-  Unknown: "unknown",
-} as const;
-export type ServerDataRole = ClosedEnum<typeof ServerDataRole>;
-
-export const ServerDataRole$zodSchema = z.enum([
-  "external",
-  "internal",
-  "ipmi",
-  "unknown",
-]);
 
 export type Interface = {
   role?: ServerDataRole | undefined;

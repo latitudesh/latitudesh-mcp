@@ -3,22 +3,18 @@
  */
 
 import * as z from "zod";
+import { PaginationMeta, PaginationMeta$zodSchema } from "./paginationmeta.js";
 import {
   VirtualMachineAttributes,
   VirtualMachineAttributes$zodSchema,
 } from "./virtualmachineattributes.js";
 
-export type VirtualMachinesMeta = {};
-
-export const VirtualMachinesMeta$zodSchema: z.ZodType<VirtualMachinesMeta> = z
-  .object({});
-
 export type VirtualMachines = {
   data?: Array<VirtualMachineAttributes> | undefined;
-  meta?: VirtualMachinesMeta | undefined;
+  meta?: PaginationMeta | undefined;
 };
 
 export const VirtualMachines$zodSchema: z.ZodType<VirtualMachines> = z.object({
   data: z.array(VirtualMachineAttributes$zodSchema).optional(),
-  meta: z.lazy(() => VirtualMachinesMeta$zodSchema).optional(),
+  meta: PaginationMeta$zodSchema.optional(),
 });

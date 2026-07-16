@@ -14,6 +14,9 @@ export type IndexVirtualMachineRequest = {
   filterTags?: string | undefined;
   extraFieldsVirtualMachines?: string | undefined;
   sort?: string | undefined;
+  pageSize?: number | undefined;
+  pageNumber?: number | undefined;
+  statsTotal?: string | undefined;
 };
 
 export const IndexVirtualMachineRequest$zodSchema: z.ZodType<
@@ -27,16 +30,36 @@ export const IndexVirtualMachineRequest$zodSchema: z.ZodType<
   filterTags: z.string().describe(
     "The tag IDs to filter by, separated by comma, e.g. `filter[tags]=tag_1,tag_2` will return VMs with `tag_1` AND `tag_2`.",
   ).optional(),
+  pageNumber: z.int().default(1).describe(
+    "Page number to return (starts at 1)",
+  ),
+  pageSize: z.int().default(20).describe("Number of items to return per page"),
   sort: z.string().describe(
     "Comma-separated sort fields. Prefix a field with `-` for descending order. Supported fields: created_at, name, hostname, status. Example: `sort=status,-created_at` sorts by status ascending, then by creation date descending.",
   ).optional(),
+  statsTotal: z.string().describe(
+    "Request aggregate stats in the response `meta`. Use `count` to get the total number of records, returned as `meta.stats.total.count`.",
+  ).optional(),
 });
 
-export type IndexVirtualMachineResponse = VirtualMachines | ErrorObject;
+export type IndexVirtualMachineResponseResult = VirtualMachines | ErrorObject;
 
-export const IndexVirtualMachineResponse$zodSchema: z.ZodType<
-  IndexVirtualMachineResponse
+export const IndexVirtualMachineResponseResult$zodSchema: z.ZodType<
+  IndexVirtualMachineResponseResult
 > = z.union([
   VirtualMachines$zodSchema,
   ErrorObject$zodSchema,
 ]);
+
+export type IndexVirtualMachineResponse = {
+  Result: VirtualMachines | ErrorObject;
+};
+
+export const IndexVirtualMachineResponse$zodSchema: z.ZodType<
+  IndexVirtualMachineResponse
+> = z.object({
+  Result: z.union([
+    VirtualMachines$zodSchema,
+    ErrorObject$zodSchema,
+  ]),
+});

@@ -29,6 +29,34 @@ export const Feature$zodSchema = z.enum([
   "sev",
 ]);
 
+export const DriveType = {
+  Ssd: "SSD",
+  Hdd: "HDD",
+  Nvme: "NVME",
+} as const;
+export type DriveType = ClosedEnum<typeof DriveType>;
+
+export const DriveType$zodSchema = z.enum([
+  "SSD",
+  "HDD",
+  "NVME",
+]);
+
+export const PlanDataStockLevel = {
+  Unavailable: "unavailable",
+  Low: "low",
+  Medium: "medium",
+  High: "high",
+} as const;
+export type PlanDataStockLevel = ClosedEnum<typeof PlanDataStockLevel>;
+
+export const PlanDataStockLevel$zodSchema = z.enum([
+  "unavailable",
+  "low",
+  "medium",
+  "high",
+]);
+
 export type Cpu = {
   type?: string | undefined;
   clock?: number | undefined;
@@ -48,19 +76,6 @@ export type Memory = { total?: number | undefined };
 export const Memory$zodSchema: z.ZodType<Memory> = z.object({
   total: z.number().optional(),
 });
-
-export const DriveType = {
-  Ssd: "SSD",
-  Hdd: "HDD",
-  Nvme: "NVME",
-} as const;
-export type DriveType = ClosedEnum<typeof DriveType>;
-
-export const DriveType$zodSchema = z.enum([
-  "SSD",
-  "HDD",
-  "NVME",
-]);
 
 export type Drive = {
   count?: number | undefined;
@@ -126,21 +141,6 @@ export const PlanDataLocations$zodSchema: z.ZodType<PlanDataLocations> = z
     available: z.array(z.string()).optional(),
     in_stock: z.array(z.string()).optional(),
   });
-
-export const PlanDataStockLevel = {
-  Unavailable: "unavailable",
-  Low: "low",
-  Medium: "medium",
-  High: "high",
-} as const;
-export type PlanDataStockLevel = ClosedEnum<typeof PlanDataStockLevel>;
-
-export const PlanDataStockLevel$zodSchema = z.enum([
-  "unavailable",
-  "low",
-  "medium",
-  "high",
-]);
 
 export type PlanDataUSD = {
   hour?: number | null | undefined;

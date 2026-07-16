@@ -61,20 +61,6 @@ export const CreateServerReinstallOperatingSystem2$zodSchema = z.enum([
   "windows_server_2019_std_v1",
 ]).describe("The OS selected for the reinstall process");
 
-export type CreateServerReinstallPartition2 = {
-  size_in_gb?: number | undefined;
-  path?: string | undefined;
-  filesystem_type?: string | undefined;
-};
-
-export const CreateServerReinstallPartition2$zodSchema: z.ZodType<
-  CreateServerReinstallPartition2
-> = z.object({
-  filesystem_type: z.string().optional(),
-  path: z.string().optional(),
-  size_in_gb: z.int().optional(),
-});
-
 /**
  * RAID mode for the server. Set to 'raid-0' for RAID 0, 'raid-1' for RAID 1, or omit/null for no RAID configuration
  */
@@ -136,6 +122,20 @@ export const CreateServerReinstallFilesystem2$zodSchema = z.enum([
   "ext4",
   "xfs",
 ]);
+
+export type CreateServerReinstallPartition2 = {
+  size_in_gb?: number | undefined;
+  path?: string | undefined;
+  filesystem_type?: string | undefined;
+};
+
+export const CreateServerReinstallPartition2$zodSchema: z.ZodType<
+  CreateServerReinstallPartition2
+> = z.object({
+  filesystem_type: z.string().optional(),
+  path: z.string().optional(),
+  size_in_gb: z.int().optional(),
+});
 
 export type CreateServerReinstallDiskLayout2 = {
   count: number;

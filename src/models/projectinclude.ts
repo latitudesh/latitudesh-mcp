@@ -18,17 +18,23 @@ export const ProjectIncludeBilling$zodSchema: z.ZodType<ProjectIncludeBilling> =
   });
 
 export type ProjectIncludeStats = {
+  databases?: number | undefined;
   ip_addresses?: number | undefined;
   prefixes?: number | undefined;
   servers?: number | undefined;
+  storages?: number | undefined;
+  virtual_machines?: number | undefined;
   vlans?: number | undefined;
 };
 
 export const ProjectIncludeStats$zodSchema: z.ZodType<ProjectIncludeStats> = z
   .object({
+    databases: z.int().optional(),
     ip_addresses: z.int().optional(),
     prefixes: z.int().optional(),
     servers: z.int().optional(),
+    storages: z.int().optional(),
+    virtual_machines: z.int().optional(),
     vlans: z.int().optional(),
   });
 
