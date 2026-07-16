@@ -7,6 +7,11 @@
  * In CI this runs automatically on the speakeasy-sdk-regen-* branch (see
  * .github/workflows/sdk_generation.yaml).
  *
+ * With --verify, nothing is written: the script only checks that every
+ * override's marker is present and exits non-zero otherwise. Unlike apply mode,
+ * this does not depend on Speakeasy template anchors, so it is safe to run on
+ * any branch (see .github/workflows/verify_overrides.yaml).
+ *
  * Each edit is IDEMPOTENT (skipped if its marker is already present) and FAILS
  * LOUDLY if neither the generated anchor nor the applied marker is found — that
  * means Speakeasy changed its template and a human needs to update this script,
@@ -23,35 +28,68 @@ const OLD_DEEPLINK_B64 =
 const NEW_DEEPLINK_B64 =
   "eyJjb21tYW5kIjoibnB4IiwiYXJncyI6WyIteSIsIm1jcC1yZW1vdGVAMC4xLjI1IiwiaHR0cHM6Ly9tY3AubGF0aXR1ZGUuc2gvbWNwIl19";
 
+const VERIFY = process.argv.includes("--verify");
+
 let failed = false;
+
+const occurrences = (content, needle) => content.split(needle).length - 1;
 
 /**
  * @param {string} content
- * @param {{label:string, find:string, replace:string, marker:string, all?:boolean}} e
+ * @param {{label:string, find:string, replace:string, marker:string, all?:boolean, count?:number}} e
  */
 function applyEdit(content, e) {
-  if (content.includes(e.marker)) {
-    console.log(`  ✓ already applied: ${e.label}`);
+  // For `all` edits the marker alone isn't enough: it must occur exactly
+  // `count` times and every occurrence of the generated anchor must be gone,
+  // or the override is only partially applied (e.g. a template change turned
+  // one of the locations into something this script doesn't recognize).
+  const found = occurrences(content, e.marker);
+  const stale = e.all && content.includes(e.find);
+  const applied = e.all ? found === e.count && !stale : found > 0;
+  if (applied) {
+    console.log(`  ✓ ${VERIFY ? "present" : "already applied"}: ${e.label}`);
+    return content;
+  }
+  if (VERIFY) {
+    const reason = stale
+      ? "The generated anchor still occurs alongside the applied marker."
+      : found > 0
+        ? `Expected ${e.count} occurrences of the applied marker, found ${found}.`
+        : "The applied marker was not found — the override is not present.";
+    console.error(`  ✗ ${found > 0 ? "PARTIAL" : "MISSING"}: ${e.label}\n    ${reason}`);
+    failed = true;
     return content;
   }
   if (!content.includes(e.find)) {
     console.error(
       `  ✗ FAILED: ${e.label}\n` +
-        `    Neither the applied marker nor the generated anchor was found.\n` +
+        `    Neither the applied marker nor the generated anchor was found${
+          found > 0 ? ` at the expected ${e.count} locations` : ""
+        }.\n` +
         `    Speakeasy's template likely changed — update scripts/apply-cloudflare-overrides.mjs.`,
     );
     failed = true;
     return content;
   }
+  const next = e.all ? content.split(e.find).join(e.replace) : content.replace(e.find, e.replace);
+  if (e.all && occurrences(next, e.marker) !== e.count) {
+    console.error(
+      `  ✗ FAILED: ${e.label}\n` +
+        `    Applied, but ended with ${occurrences(next, e.marker)} occurrences of the marker (expected ${e.count}).\n` +
+        `    Speakeasy's template likely changed — update scripts/apply-cloudflare-overrides.mjs.`,
+    );
+    failed = true;
+    return next;
+  }
   console.log(`  + applied: ${e.label}`);
-  return e.all ? content.split(e.find).join(e.replace) : content.replace(e.find, e.replace);
+  return next;
 }
 
 function processFile(path, edits) {
   console.log(`\n${path}`);
   let content = readFileSync(path, "utf8");
   for (const e of edits) content = applyEdit(content, e);
-  writeFileSync(path, content);
+  if (!VERIFY) writeFileSync(path, content);
 }
 
 // --- wrangler.toml ----------------------------------------------------------
@@ -228,6 +266,7 @@ processFile("src/landing-page.ts", [
     find: OLD_DEEPLINK_B64,
     replace: NEW_DEEPLINK_B64,
     all: true,
+    count: 4,
   },
   {
     label: "Claude Code / Gemini CLI snippets -> OAuth /mcp (http)",
@@ -235,11 +274,16 @@ processFile("src/landing-page.ts", [
     find: `--transport sse Latitudesh https://mcp.latitude.sh/sse`,
     replace: `--transport http Latitudesh https://mcp.latitude.sh/mcp`,
     all: true,
+    count: 2,
   },
 ]);
 
 if (failed) {
-  console.error("\nOne or more overrides could not be applied. See errors above.");
+  console.error(
+    VERIFY
+      ? "\nOne or more overrides are missing. Run `node scripts/apply-cloudflare-overrides.mjs` to re-apply them."
+      : "\nOne or more overrides could not be applied. See errors above.",
+  );
   process.exit(1);
 }
-console.log("\nAll Cloudflare/OAuth overrides applied.");
+console.log(`\nAll Cloudflare/OAuth overrides ${VERIFY ? "are present" : "applied"}.`);
