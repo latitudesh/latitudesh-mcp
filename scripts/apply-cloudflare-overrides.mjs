@@ -32,43 +32,57 @@ const VERIFY = process.argv.includes("--verify");
 
 let failed = false;
 
+const occurrences = (content, needle) => content.split(needle).length - 1;
+
 /**
  * @param {string} content
- * @param {{label:string, find:string, replace:string, marker:string, all?:boolean}} e
+ * @param {{label:string, find:string, replace:string, marker:string, all?:boolean, count?:number}} e
  */
 function applyEdit(content, e) {
-  // For `all` edits the marker alone isn't enough: every occurrence of the
-  // generated anchor must be gone, or the override is only partially applied.
+  // For `all` edits the marker alone isn't enough: it must occur exactly
+  // `count` times and every occurrence of the generated anchor must be gone,
+  // or the override is only partially applied (e.g. a template change turned
+  // one of the locations into something this script doesn't recognize).
+  const found = occurrences(content, e.marker);
   const stale = e.all && content.includes(e.find);
-  if (content.includes(e.marker) && !stale) {
+  const applied = e.all ? found === e.count && !stale : found > 0;
+  if (applied) {
     console.log(`  ✓ ${VERIFY ? "present" : "already applied"}: ${e.label}`);
     return content;
   }
   if (VERIFY) {
-    console.error(
-      `  ✗ ${stale ? "PARTIAL" : "MISSING"}: ${e.label}\n` +
-        (stale
-          ? `    The generated anchor still occurs alongside the applied marker.`
-          : `    The applied marker was not found — the override is not present.`),
-    );
+    const reason = stale
+      ? "The generated anchor still occurs alongside the applied marker."
+      : found > 0
+        ? `Expected ${e.count} occurrences of the applied marker, found ${found}.`
+        : "The applied marker was not found — the override is not present.";
+    console.error(`  ✗ ${found > 0 ? "PARTIAL" : "MISSING"}: ${e.label}\n    ${reason}`);
     failed = true;
     return content;
-  }
-  if (stale) {
-    console.log(`  + re-applied remaining occurrences: ${e.label}`);
-    return content.split(e.find).join(e.replace);
   }
   if (!content.includes(e.find)) {
     console.error(
       `  ✗ FAILED: ${e.label}\n` +
-        `    Neither the applied marker nor the generated anchor was found.\n` +
+        `    Neither the applied marker nor the generated anchor was found${
+          found > 0 ? ` at the expected ${e.count} locations` : ""
+        }.\n` +
         `    Speakeasy's template likely changed — update scripts/apply-cloudflare-overrides.mjs.`,
     );
     failed = true;
     return content;
   }
+  const next = e.all ? content.split(e.find).join(e.replace) : content.replace(e.find, e.replace);
+  if (e.all && occurrences(next, e.marker) !== e.count) {
+    console.error(
+      `  ✗ FAILED: ${e.label}\n` +
+        `    Applied, but ended with ${occurrences(next, e.marker)} occurrences of the marker (expected ${e.count}).\n` +
+        `    Speakeasy's template likely changed — update scripts/apply-cloudflare-overrides.mjs.`,
+    );
+    failed = true;
+    return next;
+  }
   console.log(`  + applied: ${e.label}`);
-  return e.all ? content.split(e.find).join(e.replace) : content.replace(e.find, e.replace);
+  return next;
 }
 
 function processFile(path, edits) {
@@ -252,6 +266,7 @@ processFile("src/landing-page.ts", [
     find: OLD_DEEPLINK_B64,
     replace: NEW_DEEPLINK_B64,
     all: true,
+    count: 4,
   },
   {
     label: "Claude Code / Gemini CLI snippets -> OAuth /mcp (http)",
@@ -259,6 +274,7 @@ processFile("src/landing-page.ts", [
     find: `--transport sse Latitudesh https://mcp.latitude.sh/sse`,
     replace: `--transport http Latitudesh https://mcp.latitude.sh/mcp`,
     all: true,
+    count: 2,
   },
 ]);
 
