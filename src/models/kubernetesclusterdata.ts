@@ -3,32 +3,41 @@
  */
 
 import * as z from "zod";
-import { ClosedEnum } from "../types/enums.js";
+import { catchUnrecognizedEnum, ClosedEnum, OpenEnum } from "../types/enums.js";
 
 /**
- * The current phase of the cluster lifecycle
+ * The current phase of the cluster lifecycle. 'Upgrading' is reported while a Kubernetes version upgrade is rolling through the cluster.
  */
 export const KubernetesClusterDataPhase = {
   Pending: "Pending",
   Provisioning: "Provisioning",
   Provisioned: "Provisioned",
+  Upgrading: "Upgrading",
   Deleting: "Deleting",
   Failed: "Failed",
+  Unknown: "Unknown",
 } as const;
 /**
- * The current phase of the cluster lifecycle
+ * The current phase of the cluster lifecycle. 'Upgrading' is reported while a Kubernetes version upgrade is rolling through the cluster.
  */
-export type KubernetesClusterDataPhase = ClosedEnum<
+export type KubernetesClusterDataPhase = OpenEnum<
   typeof KubernetesClusterDataPhase
 >;
 
-export const KubernetesClusterDataPhase$zodSchema = z.enum([
-  "Pending",
-  "Provisioning",
-  "Provisioned",
-  "Deleting",
-  "Failed",
-]).describe("The current phase of the cluster lifecycle");
+export const KubernetesClusterDataPhase$zodSchema = z.union([
+  z.enum([
+    "Pending",
+    "Provisioning",
+    "Provisioned",
+    "Upgrading",
+    "Deleting",
+    "Failed",
+    "Unknown",
+  ]),
+  z.string().transform(catchUnrecognizedEnum),
+]).describe(
+  "The current phase of the cluster lifecycle. 'Upgrading' is reported while a Kubernetes version upgrade is rolling through the cluster.",
+);
 
 /**
  * The cluster's version status relative to available upgrades
@@ -52,47 +61,57 @@ export const VersionStatus$zodSchema = z.enum([
 ]).describe("The cluster's version status relative to available upgrades");
 
 /**
- * Current status of worker nodes. 'idle' when 0 workers, 'ready' when all workers are ready, 'scaling' when workers are being provisioned/removed, 'error' when a worker has failed.
+ * Current status of worker nodes. 'idle' when 0 workers, 'ready' when all workers are ready, 'scaling' when workers are being provisioned/removed, 'upgrading' while a Kubernetes version upgrade is rolling through the workers, 'error' when a worker has failed.
  */
 export const WorkerStatus = {
   Idle: "idle",
   Ready: "ready",
   Scaling: "scaling",
+  Upgrading: "upgrading",
   Error: "error",
 } as const;
 /**
- * Current status of worker nodes. 'idle' when 0 workers, 'ready' when all workers are ready, 'scaling' when workers are being provisioned/removed, 'error' when a worker has failed.
+ * Current status of worker nodes. 'idle' when 0 workers, 'ready' when all workers are ready, 'scaling' when workers are being provisioned/removed, 'upgrading' while a Kubernetes version upgrade is rolling through the workers, 'error' when a worker has failed.
  */
-export type WorkerStatus = ClosedEnum<typeof WorkerStatus>;
+export type WorkerStatus = OpenEnum<typeof WorkerStatus>;
 
-export const WorkerStatus$zodSchema = z.enum([
-  "idle",
-  "ready",
-  "scaling",
-  "error",
+export const WorkerStatus$zodSchema = z.union([
+  z.enum([
+    "idle",
+    "ready",
+    "scaling",
+    "upgrading",
+    "error",
+  ]),
+  z.string().transform(catchUnrecognizedEnum),
 ]).describe(
-  "Current status of worker nodes. 'idle' when 0 workers, 'ready' when all workers are ready, 'scaling' when workers are being provisioned/removed, 'error' when a worker has failed.",
+  "Current status of worker nodes. 'idle' when 0 workers, 'ready' when all workers are ready, 'scaling' when workers are being provisioned/removed, 'upgrading' while a Kubernetes version upgrade is rolling through the workers, 'error' when a worker has failed.",
 );
 
 /**
- * Current status of control plane nodes. 'ready' when control plane is operational, 'scaling' when nodes are being provisioned/removed, 'error' when a control plane node has failed.
+ * Current status of control plane nodes. 'ready' when control plane is operational, 'scaling' when nodes are being provisioned/removed, 'upgrading' while a Kubernetes version upgrade is rolling through the control plane, 'error' when a control plane node has failed.
  */
 export const ControlPlaneStatus = {
   Ready: "ready",
   Scaling: "scaling",
+  Upgrading: "upgrading",
   Error: "error",
 } as const;
 /**
- * Current status of control plane nodes. 'ready' when control plane is operational, 'scaling' when nodes are being provisioned/removed, 'error' when a control plane node has failed.
+ * Current status of control plane nodes. 'ready' when control plane is operational, 'scaling' when nodes are being provisioned/removed, 'upgrading' while a Kubernetes version upgrade is rolling through the control plane, 'error' when a control plane node has failed.
  */
-export type ControlPlaneStatus = ClosedEnum<typeof ControlPlaneStatus>;
+export type ControlPlaneStatus = OpenEnum<typeof ControlPlaneStatus>;
 
-export const ControlPlaneStatus$zodSchema = z.enum([
-  "ready",
-  "scaling",
-  "error",
+export const ControlPlaneStatus$zodSchema = z.union([
+  z.enum([
+    "ready",
+    "scaling",
+    "upgrading",
+    "error",
+  ]),
+  z.string().transform(catchUnrecognizedEnum),
 ]).describe(
-  "Current status of control plane nodes. 'ready' when control plane is operational, 'scaling' when nodes are being provisioned/removed, 'error' when a control plane node has failed.",
+  "Current status of control plane nodes. 'ready' when control plane is operational, 'scaling' when nodes are being provisioned/removed, 'upgrading' while a Kubernetes version upgrade is rolling through the control plane, 'error' when a control plane node has failed.",
 );
 
 /**
@@ -284,13 +303,13 @@ export type KubernetesClusterDataAttributes = {
   ready?: boolean | undefined;
   control_plane_endpoint?: string | null | undefined;
   kubeconfig_url?: string | null | undefined;
-  location?: string | undefined;
+  location?: string | null | undefined;
   load_balancer_ips?: Array<string> | undefined;
-  kubernetes_version?: string | undefined;
+  kubernetes_version?: string | null | undefined;
   version_status?: VersionStatus | undefined;
   available_upgrade?: string | null | undefined;
   created_at?: string | undefined;
-  plan?: string | undefined;
+  plan?: string | null | undefined;
   worker_plan?: string | null | undefined;
   control_plane_count?: number | undefined;
   worker_count?: number | undefined;
@@ -327,7 +346,7 @@ export const KubernetesClusterDataAttributes$zodSchema: z.ZodType<
     "Whether the control plane is ready",
   ),
   control_plane_status: ControlPlaneStatus$zodSchema.optional().describe(
-    "Current status of control plane nodes. 'ready' when control plane is operational, 'scaling' when nodes are being provisioned/removed, 'error' when a control plane node has failed.",
+    "Current status of control plane nodes. 'ready' when control plane is operational, 'scaling' when nodes are being provisioned/removed, 'upgrading' while a Kubernetes version upgrade is rolling through the control plane, 'error' when a control plane node has failed.",
   ),
   created_at: z.iso.datetime({ offset: true }).optional().describe(
     "When the cluster was created",
@@ -344,16 +363,16 @@ export const KubernetesClusterDataAttributes$zodSchema: z.ZodType<
   kubeconfig_url: z.string().nullable().optional().describe(
     "The URL to retrieve the kubeconfig file",
   ),
-  kubernetes_version: z.string().optional().describe(
-    "The Kubernetes version running on the cluster",
+  kubernetes_version: z.string().nullable().optional().describe(
+    "The Kubernetes version running on the cluster. May be null when the control plane resource is not fully available (e.g., incomplete provisioning or deletion in progress).",
   ),
   last_status_change: z.iso.datetime({ offset: true }).nullable().optional()
     .describe("Timestamp of the most recent status condition change"),
   load_balancer_ips: z.array(z.string()).optional().describe(
     "IP addresses assigned to the cluster's load balancer",
   ),
-  location: z.string().optional().describe(
-    "The site/region where the cluster is deployed",
+  location: z.string().nullable().optional().describe(
+    "The site/region where the cluster is deployed. May be null when the cluster's resources are not fully available (e.g., incomplete provisioning or deletion in progress).",
   ),
   message: z.string().optional().describe(
     "Human-readable status message describing the current provisioning state",
@@ -363,10 +382,10 @@ export const KubernetesClusterDataAttributes$zodSchema: z.ZodType<
     "List of nodes (servers) in the cluster",
   ),
   phase: KubernetesClusterDataPhase$zodSchema.optional().describe(
-    "The current phase of the cluster lifecycle",
+    "The current phase of the cluster lifecycle. 'Upgrading' is reported while a Kubernetes version upgrade is rolling through the cluster.",
   ),
-  plan: z.string().optional().describe(
-    "The machine plan slug for control plane nodes",
+  plan: z.string().nullable().optional().describe(
+    "The machine plan slug for control plane nodes. May be null when the control plane machine template is not available (e.g., incomplete provisioning or deletion in progress).",
   ),
   project: z.lazy(() => KubernetesClusterDataProject$zodSchema).optional()
     .describe("The project this cluster belongs to"),
@@ -385,7 +404,7 @@ export const KubernetesClusterDataAttributes$zodSchema: z.ZodType<
     "The machine plan slug for worker nodes. Null if no workers exist.",
   ),
   worker_status: WorkerStatus$zodSchema.nullable().optional().describe(
-    "Current status of worker nodes. 'idle' when 0 workers, 'ready' when all workers are ready, 'scaling' when workers are being provisioned/removed, 'error' when a worker has failed.",
+    "Current status of worker nodes. 'idle' when 0 workers, 'ready' when all workers are ready, 'scaling' when workers are being provisioned/removed, 'upgrading' while a Kubernetes version upgrade is rolling through the workers, 'error' when a worker has failed.",
   ),
   workers: z.lazy(() => Workers$zodSchema).nullable().optional().describe(
     "Worker nodes status information",

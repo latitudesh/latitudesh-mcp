@@ -3,30 +3,46 @@
  */
 
 import * as z from "zod";
+import { ClosedEnum } from "../types/enums.js";
+
+export const UserUpdateType = {
+  Users: "users",
+} as const;
+export type UserUpdateType = ClosedEnum<typeof UserUpdateType>;
+
+export const UserUpdateType$zodSchema = z.enum([
+  "users",
+]);
 
 export type UserUpdateAttributes = {
   first_name?: string | undefined;
   last_name?: string | undefined;
   email?: string | undefined;
   authentication_factor_id?: string | null | undefined;
-  role?: string | undefined;
+  role?: string | null | undefined;
+  created_at?: string | undefined;
+  updated_at?: string | undefined;
 };
 
 export const UserUpdateAttributes$zodSchema: z.ZodType<UserUpdateAttributes> = z
   .object({
     authentication_factor_id: z.string().nullable().optional(),
+    created_at: z.string().optional(),
     email: z.string().optional(),
     first_name: z.string().optional(),
     last_name: z.string().optional(),
-    role: z.string().optional(),
+    role: z.string().nullable().optional(),
+    updated_at: z.string().optional(),
   });
 
 export type UserUpdate = {
   id?: string | undefined;
+  type?: UserUpdateType | undefined;
   attributes?: UserUpdateAttributes | undefined;
 };
 
 export const UserUpdate$zodSchema: z.ZodType<UserUpdate> = z.object({
   attributes: z.lazy(() => UserUpdateAttributes$zodSchema).optional(),
   id: z.string().optional(),
+  type: UserUpdateType$zodSchema.optional(),
 });

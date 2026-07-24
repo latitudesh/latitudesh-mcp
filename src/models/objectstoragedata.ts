@@ -82,6 +82,7 @@ export type ObjectStorageDataAttributes = {
   locking?: boolean | null | undefined;
   retention_mode?: RetentionMode | null | undefined;
   retention_period?: number | null | undefined;
+  source?: string | undefined;
   region?: ObjectStorageDataRegion | null | undefined;
   project?: ProjectInclude | undefined;
   team?: TeamInclude | undefined;
@@ -115,6 +116,9 @@ export const ObjectStorageDataAttributes$zodSchema: z.ZodType<
   ),
   secret_key: z.string().nullable().optional().describe(
     "S3 secret key for authentication",
+  ),
+  source: z.string().optional().describe(
+    "How the bucket originated: `default` for buckets created through the API, or `synchronized` for buckets imported from the storage provider.",
   ),
   storage_class: StorageClass$zodSchema.optional().describe(
     "Storage class tier",

@@ -97,7 +97,7 @@ export const Discount$zodSchema: z.ZodType<Discount> = z.object({
 export type BillingUsageServer = {
   id?: string | undefined;
   hostname?: string | undefined;
-  plan?: string | undefined;
+  plan?: string | null | undefined;
   tags?: Array<string> | undefined;
 };
 
@@ -105,7 +105,7 @@ export const BillingUsageServer$zodSchema: z.ZodType<BillingUsageServer> = z
   .object({
     hostname: z.string().optional(),
     id: z.string().optional(),
-    plan: z.string().optional(),
+    plan: z.string().nullable().optional(),
     tags: z.array(z.string()).optional(),
   });
 
