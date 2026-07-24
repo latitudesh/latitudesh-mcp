@@ -83,24 +83,45 @@ export const VirtualMachineAttributesOperatingSystem$zodSchema: z.ZodType<
   ),
 }).describe("The operating system installed on the virtual machine");
 
+export type VirtualMachineAttributesSshKey = {
+  id?: string | undefined;
+  name?: string | undefined;
+  fingerprint?: string | undefined;
+  public_key?: string | undefined;
+  created_at?: string | undefined;
+  updated_at?: string | undefined;
+};
+
+export const VirtualMachineAttributesSshKey$zodSchema: z.ZodType<
+  VirtualMachineAttributesSshKey
+> = z.object({
+  created_at: z.string().optional(),
+  fingerprint: z.string().optional(),
+  id: z.string().optional(),
+  name: z.string().optional(),
+  public_key: z.string().optional(),
+  updated_at: z.string().optional(),
+});
+
 /**
  * SSH credentials for connecting to the virtual machine. Only available when the VM is running. Opt-in extra field: request via `extra_fields[virtual_machines]=credentials`.
  */
 export type VirtualMachineAttributesCredentials = {
-  username?: string | undefined;
-  host?: string | undefined;
-  password?: string | undefined;
-  ssh_keys?: Array<string> | undefined;
+  username?: string | null | undefined;
+  host?: string | null | undefined;
+  password?: string | null | undefined;
+  ssh_keys?: Array<VirtualMachineAttributesSshKey> | null | undefined;
 };
 
 export const VirtualMachineAttributesCredentials$zodSchema: z.ZodType<
   VirtualMachineAttributesCredentials
 > = z.object({
-  host: z.string().optional(),
-  password: z.string().optional(),
-  ssh_keys: z.array(z.string()).optional(),
-  username: z.string().optional().describe(
-    "The SSH username for the VM, determined by the operating system (e.g., ubuntu, centos, ec2-user). Defaults to ubuntu if not specified by the OS.",
+  host: z.string().nullable().optional(),
+  password: z.string().nullable().optional(),
+  ssh_keys: z.array(z.lazy(() => VirtualMachineAttributesSshKey$zodSchema))
+    .nullable().optional(),
+  username: z.string().nullable().optional().describe(
+    "The SSH username for the VM, determined by the operating system (e.g., ubuntu, centos, ec2-user). Defaults to ubuntu if not specified by the OS. Returns null when the VM is not running.",
   ),
 }).describe(
   "SSH credentials for connecting to the virtual machine. Only available when the VM is running. Opt-in extra field: request via `extra_fields[virtual_machines]=credentials`.",

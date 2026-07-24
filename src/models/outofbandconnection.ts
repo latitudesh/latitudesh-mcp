@@ -4,13 +4,15 @@
 
 import * as z from "zod";
 
-export type SshKey = {
+export type OutOfBandConnectionSshKey = {
   id?: string | undefined;
   description?: string | undefined;
   fingerprint?: string | undefined;
 };
 
-export const SshKey$zodSchema: z.ZodType<SshKey> = z.object({
+export const OutOfBandConnectionSshKey$zodSchema: z.ZodType<
+  OutOfBandConnectionSshKey
+> = z.object({
   description: z.string().optional(),
   fingerprint: z.string().optional(),
   id: z.string().optional(),
@@ -34,7 +36,7 @@ export const OutOfBandConnectionCredentials$zodSchema: z.ZodType<
 );
 
 export type OutOfBandConnectionAttributes = {
-  ssh_key?: SshKey | undefined;
+  ssh_key?: OutOfBandConnectionSshKey | undefined;
   created_at?: string | undefined;
   username?: string | undefined;
   credentials?: OutOfBandConnectionCredentials | undefined;
@@ -55,7 +57,7 @@ export const OutOfBandConnectionAttributes$zodSchema: z.ZodType<
     ),
   port: z.string().optional(),
   server_id: z.string().optional(),
-  ssh_key: z.lazy(() => SshKey$zodSchema).optional(),
+  ssh_key: z.lazy(() => OutOfBandConnectionSshKey$zodSchema).optional(),
   status: z.string().optional(),
   username: z.string().optional(),
 });

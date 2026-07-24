@@ -29,21 +29,33 @@ export type VolumeDataAttributes = {
   namespace_id?: string | null | undefined;
   connector_id?: string | null | undefined;
   initiators?: Array<Initiator> | null | undefined;
+  keyring?: string | null | undefined;
+  cluster_user?: string | null | undefined;
+  volume_path?: string | null | undefined;
   project?: ProjectInclude | undefined;
   team?: TeamInclude | undefined;
 };
 
 export const VolumeDataAttributes$zodSchema: z.ZodType<VolumeDataAttributes> = z
   .object({
+    cluster_user: z.string().nullable().optional().describe(
+      "Ceph cluster user used to connect to the volume. Returned only for dashboard-origin requests; null until the volume is provisioned.",
+    ),
     connector_id: z.string().nullable().optional(),
     created_at: z.iso.datetime({ offset: true }).nullable().optional(),
     initiators: z.array(z.lazy(() => Initiator$zodSchema)).nullable()
       .optional(),
+    keyring: z.string().nullable().optional().describe(
+      "Cephx keyring secret used to connect to the volume. Returned only for dashboard-origin requests; null until the volume is provisioned.",
+    ),
     name: z.string().optional(),
     namespace_id: z.string().nullable().optional(),
     project: ProjectInclude$zodSchema.optional(),
     size_in_gb: z.int().optional(),
     team: TeamInclude$zodSchema.optional(),
+    volume_path: z.string().nullable().optional().describe(
+      "Path of the volume inside the cluster. Returned only for dashboard-origin requests; null until the volume is provisioned.",
+    ),
   });
 
 export type VolumeData = {

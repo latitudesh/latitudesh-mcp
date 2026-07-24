@@ -3,7 +3,18 @@
  */
 
 import * as z from "zod";
+import { ClosedEnum } from "../types/enums.js";
+import { ProjectInclude, ProjectInclude$zodSchema } from "./projectinclude.js";
 import { UserInclude, UserInclude$zodSchema } from "./userinclude.js";
+
+export const UserTeamType = {
+  Teams: "teams",
+} as const;
+export type UserTeamType = ClosedEnum<typeof UserTeamType>;
+
+export const UserTeamType$zodSchema = z.enum([
+  "teams",
+]);
 
 export type UserTeamBilling = {
   id?: string | undefined;
@@ -15,6 +26,30 @@ export const UserTeamBilling$zodSchema: z.ZodType<UserTeamBilling> = z.object({
   id: z.string().optional(),
 });
 
+export type UserTeamLimits = {
+  bare_metal?: number | null | undefined;
+  bare_metal_gpu?: number | null | undefined;
+  virtual_machine?: number | null | undefined;
+  virtual_machine_gpu?: number | null | undefined;
+  elastic_ip?: number | null | undefined;
+  virtual_network?: number | null | undefined;
+  database?: number | null | undefined;
+  filesystem?: number | null | undefined;
+  block_storage?: number | null | undefined;
+};
+
+export const UserTeamLimits$zodSchema: z.ZodType<UserTeamLimits> = z.object({
+  bare_metal: z.int().nullable().optional(),
+  bare_metal_gpu: z.int().nullable().optional(),
+  block_storage: z.int().nullable().optional(),
+  database: z.int().nullable().optional(),
+  elastic_ip: z.int().nullable().optional(),
+  filesystem: z.int().nullable().optional(),
+  virtual_machine: z.int().nullable().optional(),
+  virtual_machine_gpu: z.int().nullable().optional(),
+  virtual_network: z.int().nullable().optional(),
+});
+
 export type UserTeamAttributes = {
   name?: string | undefined;
   slug?: string | undefined;
@@ -23,8 +58,14 @@ export type UserTeamAttributes = {
   currency?: string | undefined;
   created_at?: string | undefined;
   updated_at?: string | undefined;
+  status?: string | null | undefined;
+  enforce_mfa?: boolean | undefined;
+  users?: Array<UserInclude> | undefined;
+  projects?: Array<ProjectInclude> | undefined;
   owner?: UserInclude | undefined;
   billing?: UserTeamBilling | undefined;
+  feature_flags?: Array<string> | undefined;
+  limits?: UserTeamLimits | undefined;
 };
 
 export const UserTeamAttributes$zodSchema: z.ZodType<UserTeamAttributes> = z
@@ -34,18 +75,26 @@ export const UserTeamAttributes$zodSchema: z.ZodType<UserTeamAttributes> = z
     created_at: z.string().optional(),
     currency: z.string().optional(),
     description: z.string().nullable().optional(),
+    enforce_mfa: z.boolean().optional(),
+    feature_flags: z.array(z.string()).optional(),
+    limits: z.lazy(() => UserTeamLimits$zodSchema).optional(),
     name: z.string().optional(),
     owner: UserInclude$zodSchema.optional(),
+    projects: z.array(ProjectInclude$zodSchema).optional(),
     slug: z.string().optional(),
+    status: z.string().nullable().optional(),
     updated_at: z.string().optional(),
+    users: z.array(UserInclude$zodSchema).optional(),
   });
 
 export type UserTeam = {
   id?: string | undefined;
+  type?: UserTeamType | undefined;
   attributes?: UserTeamAttributes | undefined;
 };
 
 export const UserTeam$zodSchema: z.ZodType<UserTeam> = z.object({
   attributes: z.lazy(() => UserTeamAttributes$zodSchema).optional(),
   id: z.string().optional(),
+  type: UserTeamType$zodSchema.optional(),
 });
