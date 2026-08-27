@@ -30,28 +30,18 @@ export function landingPageExpress(req: ExpressRequest, res: ExpressResponse) {
 
 export function landingPageHTML(origin: string): string {
   const o = origin;
+  // Override: OAuth-only. mcp-remote points at /mcp and runs the browser auth
+  // flow on a 401 — no static headers/keys in client config.
   const mcpConfig = {
     "command": "npx",
     "args": [
       "-y",
       "mcp-remote@0.1.25",
-      `${o}/sse`,
-      "--header",
-      "server-index:${SERVER_INDEX}",
-      "--header",
-      "latitude-api-key:${LATITUDE_API_KEY}",
-      "--header",
-      "bearer:${BEARER}",
+      `${o}/mcp`,
     ],
-    "env": {
-      "SERVER_INDEX": "YOUR_VALUE_HERE",
-      "LATITUDE_API_KEY": "YOUR_VALUE_HERE",
-      "BEARER": "YOUR_VALUE_HERE",
-    },
   };
   const codexConfig = `[mcp_servers.Latitudesh]
-url = "${o}/sse"
-http_headers = { "server-index" = "YOUR_SERVER_INDEX", "latitude-api-key" = "YOUR_LATITUDE_API_KEY", "bearer" = "YOUR_BEARER" }`;
+url = "${o}/mcp"`;
 
   return `
 <!DOCTYPE html>
@@ -689,7 +679,7 @@ http_headers = { "server-index" = "YOUR_SERVER_INDEX", "latitude-api-key" = "YOU
                   </svg>
                 </button>
                 <div class="popover-menu hidden" id="popover-menu">
-                  <a class="popover-button install-link" href="cursor://anysphere.cursor-deeplink/mcp/install?name=Latitudesh&config=eyJjb21tYW5kIjoibnB4IiwiYXJncyI6WyIteSIsIm1jcC1yZW1vdGVAMC4xLjI1IiwiaHR0cHM6Ly9tY3AubGF0aXR1ZGUuc2gvc3NlIiwiLS1oZWFkZXIiLCJzZXJ2ZXItaW5kZXg6JHtTRVJWRVJfSU5ERVh9IiwiLS1oZWFkZXIiLCJsYXRpdHVkZS1hcGkta2V5OiR7TEFUSVRVREVfQVBJX0tFWX0iLCItLWhlYWRlciIsImJlYXJlcjoke0JFQVJFUn0iXX0=">
+                  <a class="popover-button install-link" href="cursor://anysphere.cursor-deeplink/mcp/install?name=Latitudesh&config=eyJjb21tYW5kIjoibnB4IiwiYXJncyI6WyIteSIsIm1jcC1yZW1vdGVAMC4xLjI1IiwiaHR0cHM6Ly9tY3AubGF0aXR1ZGUuc2gvbWNwIl19">
                     Cursor
                   </a>
                   <button class="popover-button" onclick="showModal('claude-code')">
@@ -698,7 +688,7 @@ http_headers = { "server-index" = "YOUR_SERVER_INDEX", "latitude-api-key" = "YOU
                   <button class="popover-button" onclick="showModal('claude-desktop')">
                     Claude Desktop
                   </button>
-                  <a class="popover-button install-link" href="vscode://ms-vscode.vscode-mcp/install?name=Latitudesh&config=eyJjb21tYW5kIjoibnB4IiwiYXJncyI6WyIteSIsIm1jcC1yZW1vdGVAMC4xLjI1IiwiaHR0cHM6Ly9tY3AubGF0aXR1ZGUuc2gvc3NlIiwiLS1oZWFkZXIiLCJzZXJ2ZXItaW5kZXg6JHtTRVJWRVJfSU5ERVh9IiwiLS1oZWFkZXIiLCJsYXRpdHVkZS1hcGkta2V5OiR7TEFUSVRVREVfQVBJX0tFWX0iLCItLWhlYWRlciIsImJlYXJlcjoke0JFQVJFUn0iXX0=">
+                  <a class="popover-button install-link" href="vscode://ms-vscode.vscode-mcp/install?name=Latitudesh&config=eyJjb21tYW5kIjoibnB4IiwiYXJncyI6WyIteSIsIm1jcC1yZW1vdGVAMC4xLjI1IiwiaHR0cHM6Ly9tY3AubGF0aXR1ZGUuc2gvbWNwIl19">
                     VS Code
                   </a>
                   <button class="popover-button" onclick="showModal('gemini')">
@@ -721,7 +711,7 @@ http_headers = { "server-index" = "YOUR_SERVER_INDEX", "latitude-api-key" = "YOU
             </div>
           </header>
           <div class="install-targets">
-            <a tabindex="0" class="card install-target install-link" href="cursor://anysphere.cursor-deeplink/mcp/install?name=Latitudesh&config=eyJjb21tYW5kIjoibnB4IiwiYXJncyI6WyIteSIsIm1jcC1yZW1vdGVAMC4xLjI1IiwiaHR0cHM6Ly9tY3AubGF0aXR1ZGUuc2gvc3NlIiwiLS1oZWFkZXIiLCJzZXJ2ZXItaW5kZXg6JHtTRVJWRVJfSU5ERVh9IiwiLS1oZWFkZXIiLCJsYXRpdHVkZS1hcGkta2V5OiR7TEFUSVRVREVfQVBJX0tFWX0iLCItLWhlYWRlciIsImJlYXJlcjoke0JFQVJFUn0iXX0=">
+            <a tabindex="0" class="card install-target install-link" href="cursor://anysphere.cursor-deeplink/mcp/install?name=Latitudesh&config=eyJjb21tYW5kIjoibnB4IiwiYXJncyI6WyIteSIsIm1jcC1yZW1vdGVAMC4xLjI1IiwiaHR0cHM6Ly9tY3AubGF0aXR1ZGUuc2gvbWNwIl19">
               <div class="target">
                 <img src="https://cursor.com/assets/images/logo.svg" alt="Cursor">
                 <span>Cursor</span>
@@ -743,7 +733,7 @@ http_headers = { "server-index" = "YOUR_SERVER_INDEX", "latitude-api-key" = "YOU
                 <span>Claude Desktop</span>
               </div>
             </div>
-            <a tabindex="0" class="card install-target install-link" href="vscode://ms-vscode.vscode-mcp/install?name=Latitudesh&config=eyJjb21tYW5kIjoibnB4IiwiYXJncyI6WyIteSIsIm1jcC1yZW1vdGVAMC4xLjI1IiwiaHR0cHM6Ly9tY3AubGF0aXR1ZGUuc2gvc3NlIiwiLS1oZWFkZXIiLCJzZXJ2ZXItaW5kZXg6JHtTRVJWRVJfSU5ERVh9IiwiLS1oZWFkZXIiLCJsYXRpdHVkZS1hcGkta2V5OiR7TEFUSVRVREVfQVBJX0tFWX0iLCItLWhlYWRlciIsImJlYXJlcjoke0JFQVJFUn0iXX0=">
+            <a tabindex="0" class="card install-target install-link" href="vscode://ms-vscode.vscode-mcp/install?name=Latitudesh&config=eyJjb21tYW5kIjoibnB4IiwiYXJncyI6WyIteSIsIm1jcC1yZW1vdGVAMC4xLjI1IiwiaHR0cHM6Ly9tY3AubGF0aXR1ZGUuc2gvbWNwIl19">
               <div class="target">
                 <svg width="100" height="100" viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg">
                   <mask id="mask0" mask-type="alpha" maskUnits="userSpaceOnUse" x="0" y="0" width="100" height="100">
@@ -922,7 +912,7 @@ http_headers = { "server-index" = "YOUR_SERVER_INDEX", "latitude-api-key" = "YOU
               <path d="M4 16c-1.1 0-2-.9-2-2V4c0-1.1.9-2 2-2h10c1.1 0 2 .9 2 2"></path>
             </svg>
           </button>
-          <code class="code-snippet language-json" id="claude-cli-cmd">claude mcp add --transport sse Latitudesh https://mcp.latitude.sh/sse</code>
+          <code class="code-snippet language-json" id="claude-cli-cmd">claude mcp add --transport http Latitudesh https://mcp.latitude.sh/mcp</code>
         </div>
       </div>
     </div>
@@ -973,7 +963,7 @@ http_headers = { "server-index" = "YOUR_SERVER_INDEX", "latitude-api-key" = "YOU
               <path d="M4 16c-1.1 0-2-.9-2-2V4c0-1.1.9-2 2-2h10c1.1 0 2 .9 2 2"></path>
             </svg>
           </button>
-          <code class="code-snippet language-json" id="gemini-config">gemini mcp add --transport sse Latitudesh https://mcp.latitude.sh/sse</code>
+          <code class="code-snippet language-json" id="gemini-config">gemini mcp add --transport http Latitudesh https://mcp.latitude.sh/mcp</code>
         </div>
       </div>
     </div>
