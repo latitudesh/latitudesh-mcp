@@ -20,6 +20,8 @@ export type AttributesData = {
   outbound_gb?: number | undefined;
   avg_outbound_speed_mbps?: number | undefined;
   avg_inbound_speed_mbps?: number | undefined;
+  outbound_speed_mbps?: number | undefined;
+  inbound_speed_mbps?: number | undefined;
 };
 
 export const AttributesData$zodSchema: z.ZodType<AttributesData> = z.object({
@@ -27,7 +29,9 @@ export const AttributesData$zodSchema: z.ZodType<AttributesData> = z.object({
   avg_outbound_speed_mbps: z.number().optional().describe("Value in Mbps"),
   date: z.string().optional().describe("The datetime of the day"),
   inbound_gb: z.int().optional().describe("Value in GB"),
+  inbound_speed_mbps: z.number().optional().describe("Value in Mbps"),
   outbound_gb: z.int().optional().describe("Value in GB"),
+  outbound_speed_mbps: z.number().optional().describe("Value in Mbps"),
 });
 
 export type TrafficRegion = {
@@ -43,11 +47,11 @@ export const TrafficRegion$zodSchema: z.ZodType<TrafficRegion> = z.object({
   data: z.array(z.lazy(() => AttributesData$zodSchema)).optional(),
   region_slug: z.string().optional(),
   total_inbound_95th_percentile_mbps: z.number().optional().describe(
-    "The 95th percentile of inbound bandwidth for this region, calculated from 30-minute intervals. Value in Mbps",
+    "The 95th percentile of inbound bandwidth for this region. Value in Mbps",
   ),
   total_inbound_gb: z.int().optional().describe("Value in GB"),
   total_outbound_95th_percentile_mbps: z.number().optional().describe(
-    "The 95th percentile of outbound bandwidth for this region, calculated from 30-minute intervals. Value in Mbps",
+    "The 95th percentile of outbound bandwidth for this region. Value in Mbps",
   ),
   total_outbound_gb: z.int().optional().describe("Value in GB"),
 });
@@ -72,11 +76,11 @@ export const TrafficAttributes$zodSchema: z.ZodType<TrafficAttributes> = z
       "The end timestamp. Must be a unix timestamp",
     ),
     total_inbound_95th_percentile_mbps: z.number().optional().describe(
-      "The 95th percentile of inbound bandwidth across all regions, calculated from all 30-minute intervals combined. This is a global percentile, not a sum of regional percentiles. Value in Mbps",
+      "The 95th percentile of inbound bandwidth across all regions. This is a global percentile, not a sum of regional percentiles. Value in Mbps",
     ),
     total_inbound_gb: z.int().optional().describe("Value in GB"),
     total_outbound_95th_percentile_mbps: z.number().optional().describe(
-      "The 95th percentile of outbound bandwidth across all regions, calculated from all 30-minute intervals combined. This is a global percentile, not a sum of regional percentiles. Value in Mbps",
+      "The 95th percentile of outbound bandwidth across all regions. This is a global percentile, not a sum of regional percentiles. Value in Mbps",
     ),
     total_outbound_gb: z.int().optional().describe("Value in GB"),
   });
@@ -93,8 +97,16 @@ export const TrafficData$zodSchema: z.ZodType<TrafficData> = z.object({
   type: TrafficType$zodSchema.optional(),
 });
 
-export type Traffic = { data?: TrafficData | undefined };
+export type TrafficMeta = {};
+
+export const TrafficMeta$zodSchema: z.ZodType<TrafficMeta> = z.object({});
+
+export type Traffic = {
+  data?: TrafficData | undefined;
+  meta?: TrafficMeta | undefined;
+};
 
 export const Traffic$zodSchema: z.ZodType<Traffic> = z.object({
   data: z.lazy(() => TrafficData$zodSchema).optional(),
+  meta: z.lazy(() => TrafficMeta$zodSchema).optional(),
 });

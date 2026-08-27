@@ -20,14 +20,20 @@ export type OperatingSystemDataFeatures = {
   raid?: boolean | undefined;
   ssh_keys?: boolean | undefined;
   user_data?: boolean | undefined;
+  accelerate?: boolean | undefined;
+  rescue?: boolean | undefined;
+  workflow?: boolean | undefined;
 };
 
 export const OperatingSystemDataFeatures$zodSchema: z.ZodType<
   OperatingSystemDataFeatures
 > = z.object({
+  accelerate: z.boolean().optional(),
   raid: z.boolean().optional(),
+  rescue: z.boolean().optional(),
   ssh_keys: z.boolean().optional(),
   user_data: z.boolean().optional(),
+  workflow: z.boolean().optional(),
 });
 
 export type OperatingSystemDataAttributes = {

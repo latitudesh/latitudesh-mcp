@@ -198,10 +198,12 @@ export type PlanDataAttributes = {
   features?: Array<Feature> | undefined;
   specs?: PlanDataSpecs | undefined;
   regions?: Array<PlanDataRegion> | undefined;
+  available_operating_systems?: Array<string> | undefined;
 };
 
 export const PlanDataAttributes$zodSchema: z.ZodType<PlanDataAttributes> = z
   .object({
+    available_operating_systems: z.array(z.string()).optional(),
     features: z.array(Feature$zodSchema).optional().describe(
       "List of available features for the plan",
     ),

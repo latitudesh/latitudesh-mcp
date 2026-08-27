@@ -16,12 +16,20 @@ export const CreateFirewallAssignmentType2$zodSchema = z.enum([
   "firewall_assignments",
 ]);
 
-export type CreateFirewallAssignmentAttributes2 = { server_id: string };
+export type CreateFirewallAssignmentAttributes2 = {
+  server_id?: string | undefined;
+  virtual_machine_id?: string | undefined;
+};
 
 export const CreateFirewallAssignmentAttributes2$zodSchema: z.ZodType<
   CreateFirewallAssignmentAttributes2
 > = z.object({
-  server_id: z.string(),
+  server_id: z.string().optional().describe(
+    "The server ID to assign. Provide exactly one of server_id or virtual_machine_id.",
+  ),
+  virtual_machine_id: z.string().optional().describe(
+    "The virtual machine ID to assign. Provide exactly one of server_id or virtual_machine_id. A virtual machine can be assigned to at most one firewall.",
+  ),
 });
 
 export type CreateFirewallAssignmentData2 = {

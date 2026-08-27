@@ -50,6 +50,7 @@ export const UpdateFirewallRule2$zodSchema: z.ZodType<UpdateFirewallRule2> = z
 
 export type UpdateFirewallAttributes2 = {
   name?: string | undefined;
+  tags?: Array<string> | undefined;
   rules?: Array<UpdateFirewallRule2> | undefined;
 };
 
@@ -58,6 +59,9 @@ export const UpdateFirewallAttributes2$zodSchema: z.ZodType<
 > = z.object({
   name: z.string().optional(),
   rules: z.array(z.lazy(() => UpdateFirewallRule2$zodSchema)).optional(),
+  tags: z.array(z.string()).optional().describe(
+    "IDs of the tags to attach to the firewall. Replaces the current tags; send an empty array to remove all tags.",
+  ),
 });
 
 export type UpdateFirewallData2 = {

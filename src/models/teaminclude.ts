@@ -24,6 +24,8 @@ export type TeamIncludeLimits = {
   virtual_machine?: number | null | undefined;
   virtual_machine_gpu?: number | null | undefined;
   elastic_ip?: number | null | undefined;
+  bgp_session_per_ip?: number | null | undefined;
+  public_network?: number | null | undefined;
   virtual_network?: number | null | undefined;
   database?: number | null | undefined;
   filesystem?: number | null | undefined;
@@ -34,10 +36,12 @@ export const TeamIncludeLimits$zodSchema: z.ZodType<TeamIncludeLimits> = z
   .object({
     bare_metal: z.int().nullable().optional(),
     bare_metal_gpu: z.int().nullable().optional(),
+    bgp_session_per_ip: z.int().nullable().optional(),
     block_storage: z.int().nullable().optional(),
     database: z.int().nullable().optional(),
     elastic_ip: z.int().nullable().optional(),
     filesystem: z.int().nullable().optional(),
+    public_network: z.int().nullable().optional(),
     virtual_machine: z.int().nullable().optional(),
     virtual_machine_gpu: z.int().nullable().optional(),
     virtual_network: z.int().nullable().optional(),

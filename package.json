@@ -1,6 +1,6 @@
 {
   "name": "latitudesh",
-  "version": "0.3.1",
+  "version": "0.3.2",
   "author": "Speakeasy",
   "type": "module",
   "sideEffects": false,
@@ -32,8 +32,13 @@
   },
   "overrides": {
     "@modelcontextprotocol/sdk": "1.26.0",
-    "hono": ">=4.12.25",
-    "fast-uri": ">=3.1.2"
+    "hono": ">=4.12.34",
+    "fast-uri": ">=4.1.2 <5.0.0",
+    "js-yaml": ">=4.3.1 <5.0.0",
+    "ip-address": ">=10.3.1 <11.0.0",
+    "nanoid@^5.0.0": ">=5.1.16 <6.0.0",
+    "brace-expansion@^2.0.0": ">=2.1.4 <3.0.0",
+    "body-parser": ">=2.3.0 <3.0.0"
   },
   "devDependencies": {
     "@anthropic-ai/mcpb": "^1.2.0",

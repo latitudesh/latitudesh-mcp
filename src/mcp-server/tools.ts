@@ -203,20 +203,13 @@ export function createRegisterTool(
       return;
     }
 
-    // Override: Speakeasy emits annotations.title: "" which renders blank in
-    // the Claude connector UI. Derive a readable title from the tool name.
-    const displayTitle = tool.annotations.title
-      || tool.name.replace(/[-_]+/g, " ").replace(/\b\w/g, (c) => c.toUpperCase());
-    const annotations = { ...tool.annotations, title: displayTitle };
-
     if (tool.args) {
       server.registerTool(
         tool.name,
         {
-          title: displayTitle,
           description: tool.description,
           inputSchema: tool.args,
-          annotations,
+          annotations: tool.annotations,
         },
         async (args, ctx) => {
           return tool.tool(getSDK(), args, ctx);
@@ -226,9 +219,8 @@ export function createRegisterTool(
       server.registerTool(
         tool.name,
         {
-          title: displayTitle,
           description: tool.description,
-          annotations,
+          annotations: tool.annotations,
         },
         async (ctx) => {
           return tool.tool(getSDK(), ctx);

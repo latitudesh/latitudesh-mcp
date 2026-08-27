@@ -25,7 +25,7 @@ export type Rule = {
 
 export const Rule$zodSchema: z.ZodType<Rule> = z.object({
   default: z.boolean().optional().describe(
-    "True when this rule was seeded by Latitude when the firewall was created (cannot be deleted); false for user-added rules.",
+    "True when this rule was seeded by Latitude when the firewall was created; false for user-added rules. Read-only: this flag cannot be set through the API.",
   ),
   description: z.string().nullable().optional().describe(
     "Optional description explaining the purpose of this rule",
@@ -53,10 +53,25 @@ export const FirewallDataProject$zodSchema: z.ZodType<FirewallDataProject> = z
     slug: z.string().optional(),
   });
 
+export type FirewallDataTag = {
+  id?: string | undefined;
+  name?: string | undefined;
+  description?: string | null | undefined;
+  color?: string | null | undefined;
+};
+
+export const FirewallDataTag$zodSchema: z.ZodType<FirewallDataTag> = z.object({
+  color: z.string().nullable().optional(),
+  description: z.string().nullable().optional(),
+  id: z.string().optional(),
+  name: z.string().optional(),
+});
+
 export type FirewallDataAttributes = {
   name?: string | undefined;
   rules?: Array<Rule> | undefined;
   project?: FirewallDataProject | undefined;
+  tags?: Array<FirewallDataTag> | undefined;
 };
 
 export const FirewallDataAttributes$zodSchema: z.ZodType<
@@ -65,6 +80,7 @@ export const FirewallDataAttributes$zodSchema: z.ZodType<
   name: z.string().optional(),
   project: z.lazy(() => FirewallDataProject$zodSchema).optional(),
   rules: z.array(z.lazy(() => Rule$zodSchema)).optional(),
+  tags: z.array(z.lazy(() => FirewallDataTag$zodSchema)).optional(),
 });
 
 export type FirewallData = {

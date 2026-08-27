@@ -69,6 +69,21 @@ export const ObjectStorageDataRegion$zodSchema: z.ZodType<
   id: z.string().optional().describe("Region identifier"),
 }).describe("Region information where the object storage is located");
 
+/**
+ * S3 access credentials. Only included when `extra_fields[object_storages]=credentials` is requested and the requesting user is the bucket's creator.
+ */
+export type ObjectStorageDataCredentials = { access_key?: string | undefined };
+
+export const ObjectStorageDataCredentials$zodSchema: z.ZodType<
+  ObjectStorageDataCredentials
+> = z.object({
+  access_key: z.string().optional().describe(
+    "S3 access key for authentication",
+  ),
+}).describe(
+  "S3 access credentials. Only included when `extra_fields[object_storages]=credentials` is requested and the requesting user is the bucket's creator.",
+);
+
 export type ObjectStorageDataAttributes = {
   name?: string | undefined;
   storage_type?: string | undefined;
@@ -76,13 +91,13 @@ export type ObjectStorageDataAttributes = {
   created_at?: string | null | undefined;
   bucket_name?: string | undefined;
   endpoint?: string | undefined;
-  access_key?: string | null | undefined;
-  secret_key?: string | null | undefined;
   versioning?: boolean | null | undefined;
   locking?: boolean | null | undefined;
   retention_mode?: RetentionMode | null | undefined;
   retention_period?: number | null | undefined;
+  source?: string | undefined;
   region?: ObjectStorageDataRegion | null | undefined;
+  credentials?: ObjectStorageDataCredentials | null | undefined;
   project?: ProjectInclude | undefined;
   team?: TeamInclude | undefined;
 };
@@ -90,15 +105,16 @@ export type ObjectStorageDataAttributes = {
 export const ObjectStorageDataAttributes$zodSchema: z.ZodType<
   ObjectStorageDataAttributes
 > = z.object({
-  access_key: z.string().nullable().optional().describe(
-    "S3 access key for authentication",
-  ),
   bucket_name: z.string().optional().describe("S3-compatible bucket name"),
   created_at: z.iso.datetime({ offset: true }).nullable().optional().describe(
     "Timestamp when the object storage was created",
   ),
+  credentials: z.lazy(() => ObjectStorageDataCredentials$zodSchema).nullable()
+    .optional().describe(
+      "S3 access credentials. Only included when `extra_fields[object_storages]=credentials` is requested and the requesting user is the bucket's creator.",
+    ),
   endpoint: z.string().optional().describe(
-    "S3-compatible endpoint URL for accessing the bucket",
+    "Region-specific S3-compatible endpoint URL for accessing the bucket. The endpoint varies based on the bucket's location.",
   ),
   locking: z.boolean().nullable().optional().describe(
     "Whether object lock is enabled on the bucket",
@@ -113,8 +129,8 @@ export const ObjectStorageDataAttributes$zodSchema: z.ZodType<
   retention_period: z.int().nullable().optional().describe(
     "Default retention period in days when object lock is enabled",
   ),
-  secret_key: z.string().nullable().optional().describe(
-    "S3 secret key for authentication",
+  source: z.string().optional().describe(
+    "How the bucket originated: `default` for buckets created through the API, or `synchronized` for buckets imported from the storage provider.",
   ),
   storage_class: StorageClass$zodSchema.optional().describe(
     "Storage class tier",

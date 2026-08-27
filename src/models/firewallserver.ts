@@ -6,16 +6,50 @@ import * as z from "zod";
 import { ClosedEnum } from "../types/enums.js";
 
 export const FirewallServerType = {
-  FirewallServers: "firewall_servers",
+  FirewallAssignments: "firewall_assignments",
 } as const;
 export type FirewallServerType = ClosedEnum<typeof FirewallServerType>;
 
 export const FirewallServerType$zodSchema = z.enum([
-  "firewall_servers",
+  "firewall_assignments",
 ]);
 
+/**
+ * Present only when the assignment targets a server.
+ */
+export type FirewallServerServer = {
+  id?: string | undefined;
+  hostname?: string | undefined;
+  primary_ipv4?: string | null | undefined;
+};
+
+export const FirewallServerServer$zodSchema: z.ZodType<FirewallServerServer> = z
+  .object({
+    hostname: z.string().optional(),
+    id: z.string().optional(),
+    primary_ipv4: z.string().nullable().optional(),
+  }).describe("Present only when the assignment targets a server.");
+
+/**
+ * Present only when the assignment targets a virtual machine.
+ */
+export type FirewallServerVirtualMachine = {
+  id?: string | undefined;
+  hostname?: string | undefined;
+  primary_ipv4?: string | null | undefined;
+};
+
+export const FirewallServerVirtualMachine$zodSchema: z.ZodType<
+  FirewallServerVirtualMachine
+> = z.object({
+  hostname: z.string().optional(),
+  id: z.string().optional(),
+  primary_ipv4: z.string().nullable().optional(),
+}).describe("Present only when the assignment targets a virtual machine.");
+
 export type FirewallServerAttributes = {
-  server_id?: string | undefined;
+  server?: FirewallServerServer | undefined;
+  virtual_machine?: FirewallServerVirtualMachine | undefined;
   firewall_id?: string | undefined;
 };
 
@@ -23,17 +57,30 @@ export const FirewallServerAttributes$zodSchema: z.ZodType<
   FirewallServerAttributes
 > = z.object({
   firewall_id: z.string().optional(),
-  server_id: z.string().optional(),
+  server: z.lazy(() => FirewallServerServer$zodSchema).optional().describe(
+    "Present only when the assignment targets a server.",
+  ),
+  virtual_machine: z.lazy(() => FirewallServerVirtualMachine$zodSchema)
+    .optional().describe(
+      "Present only when the assignment targets a virtual machine.",
+    ),
 });
 
-export type FirewallServer = {
+export type FirewallServerData = {
   id?: string | undefined;
   type?: FirewallServerType | undefined;
   attributes?: FirewallServerAttributes | undefined;
 };
 
+export const FirewallServerData$zodSchema: z.ZodType<FirewallServerData> = z
+  .object({
+    attributes: z.lazy(() => FirewallServerAttributes$zodSchema).optional(),
+    id: z.string().optional(),
+    type: FirewallServerType$zodSchema.optional(),
+  });
+
+export type FirewallServer = { data?: FirewallServerData | undefined };
+
 export const FirewallServer$zodSchema: z.ZodType<FirewallServer> = z.object({
-  attributes: z.lazy(() => FirewallServerAttributes$zodSchema).optional(),
-  id: z.string().optional(),
-  type: FirewallServerType$zodSchema.optional(),
+  data: z.lazy(() => FirewallServerData$zodSchema).optional(),
 });

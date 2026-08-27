@@ -22,6 +22,8 @@ export type TeamLimits = {
   virtual_machine?: number | null | undefined;
   virtual_machine_gpu?: number | null | undefined;
   elastic_ip?: number | null | undefined;
+  bgp_session_per_ip?: number | null | undefined;
+  public_network?: number | null | undefined;
   virtual_network?: number | null | undefined;
   database?: number | null | undefined;
   filesystem?: number | null | undefined;
@@ -31,10 +33,12 @@ export type TeamLimits = {
 export const TeamLimits$zodSchema: z.ZodType<TeamLimits> = z.object({
   bare_metal: z.int().nullable().optional(),
   bare_metal_gpu: z.int().nullable().optional(),
+  bgp_session_per_ip: z.int().nullable().optional(),
   block_storage: z.int().nullable().optional(),
   database: z.int().nullable().optional(),
   elastic_ip: z.int().nullable().optional(),
   filesystem: z.int().nullable().optional(),
+  public_network: z.int().nullable().optional(),
   virtual_machine: z.int().nullable().optional(),
   virtual_machine_gpu: z.int().nullable().optional(),
   virtual_network: z.int().nullable().optional(),
@@ -48,7 +52,10 @@ export type TeamAttributes = {
   currency?: string | undefined;
   created_at?: string | undefined;
   updated_at?: string | undefined;
+  status?: string | null | undefined;
   enforce_mfa?: boolean | undefined;
+  customer_billing_id?: string | null | undefined;
+  referred_code?: string | null | undefined;
   users?: Array<UserInclude> | undefined;
   projects?: Array<ProjectInclude> | undefined;
   owner?: UserInclude | undefined;
@@ -62,6 +69,7 @@ export const TeamAttributes$zodSchema: z.ZodType<TeamAttributes> = z.object({
   billing: z.lazy(() => TeamBilling$zodSchema).optional(),
   created_at: z.string().optional(),
   currency: z.string().optional(),
+  customer_billing_id: z.string().nullable().optional(),
   description: z.string().nullable().optional(),
   enforce_mfa: z.boolean().optional(),
   feature_flags: z.array(z.string()).optional(),
@@ -69,7 +77,9 @@ export const TeamAttributes$zodSchema: z.ZodType<TeamAttributes> = z.object({
   name: z.string().optional(),
   owner: UserInclude$zodSchema.optional(),
   projects: z.array(ProjectInclude$zodSchema).optional(),
+  referred_code: z.string().nullable().optional(),
   slug: z.string().optional(),
+  status: z.string().nullable().optional(),
   updated_at: z.string().optional(),
   users: z.array(UserInclude$zodSchema).optional(),
 });

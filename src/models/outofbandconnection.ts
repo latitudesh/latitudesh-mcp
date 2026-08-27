@@ -4,13 +4,15 @@
 
 import * as z from "zod";
 
-export type SshKey = {
+export type OutOfBandConnectionSshKey = {
   id?: string | undefined;
   description?: string | undefined;
   fingerprint?: string | undefined;
 };
 
-export const SshKey$zodSchema: z.ZodType<SshKey> = z.object({
+export const OutOfBandConnectionSshKey$zodSchema: z.ZodType<
+  OutOfBandConnectionSshKey
+> = z.object({
   description: z.string().optional(),
   fingerprint: z.string().optional(),
   id: z.string().optional(),
@@ -20,26 +22,26 @@ export const SshKey$zodSchema: z.ZodType<SshKey> = z.object({
  * credentials are valid only when the server is deployed with ssh keys
  */
 export type OutOfBandConnectionCredentials = {
-  user?: string | undefined;
-  password?: string | undefined;
+  user?: string | null | undefined;
+  password?: string | null | undefined;
 };
 
 export const OutOfBandConnectionCredentials$zodSchema: z.ZodType<
   OutOfBandConnectionCredentials
 > = z.object({
-  password: z.string().optional(),
-  user: z.string().optional(),
+  password: z.string().nullable().optional(),
+  user: z.string().nullable().optional(),
 }).describe(
   "credentials are valid only when the server is deployed with ssh keys",
 );
 
 export type OutOfBandConnectionAttributes = {
-  ssh_key?: SshKey | undefined;
+  ssh_key?: OutOfBandConnectionSshKey | undefined;
   created_at?: string | undefined;
   username?: string | undefined;
   credentials?: OutOfBandConnectionCredentials | undefined;
   port?: string | undefined;
-  access_ip?: string | undefined;
+  access_ip?: string | null | undefined;
   server_id?: string | undefined;
   status?: string | undefined;
 };
@@ -47,7 +49,7 @@ export type OutOfBandConnectionAttributes = {
 export const OutOfBandConnectionAttributes$zodSchema: z.ZodType<
   OutOfBandConnectionAttributes
 > = z.object({
-  access_ip: z.string().optional(),
+  access_ip: z.string().nullable().optional(),
   created_at: z.string().optional(),
   credentials: z.lazy(() => OutOfBandConnectionCredentials$zodSchema).optional()
     .describe(
@@ -55,7 +57,7 @@ export const OutOfBandConnectionAttributes$zodSchema: z.ZodType<
     ),
   port: z.string().optional(),
   server_id: z.string().optional(),
-  ssh_key: z.lazy(() => SshKey$zodSchema).optional(),
+  ssh_key: z.lazy(() => OutOfBandConnectionSshKey$zodSchema).optional(),
   status: z.string().optional(),
   username: z.string().optional(),
 });
@@ -74,11 +76,19 @@ export const OutOfBandConnectionData$zodSchema: z.ZodType<
   type: z.string().optional(),
 });
 
+export type OutOfBandConnectionMeta = {};
+
+export const OutOfBandConnectionMeta$zodSchema: z.ZodType<
+  OutOfBandConnectionMeta
+> = z.object({});
+
 export type OutOfBandConnection = {
   data?: OutOfBandConnectionData | undefined;
+  meta?: OutOfBandConnectionMeta | undefined;
 };
 
 export const OutOfBandConnection$zodSchema: z.ZodType<OutOfBandConnection> = z
   .object({
     data: z.lazy(() => OutOfBandConnectionData$zodSchema).optional(),
+    meta: z.lazy(() => OutOfBandConnectionMeta$zodSchema).optional(),
   });

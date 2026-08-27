@@ -78,20 +78,20 @@ export const IpAddressDataRegion$zodSchema: z.ZodType<IpAddressDataRegion> = z
   });
 
 /**
- * Server assignment information. Returns an empty object when the IP is not assigned to an active server (e.g., when the server is decommissioning or deleted).
+ * Server assignment information. Returns an empty object when the IP is not assigned to an active server (e.g., when the server is decommissioning or deleted). The hostname is null when the assigned server has no hostname set.
  */
 export type Assignment = {
   server_id?: string | undefined;
-  hostname?: string | undefined;
-  assigned_at?: string | undefined;
+  hostname?: string | null | undefined;
+  assigned_at?: string | null | undefined;
 };
 
 export const Assignment$zodSchema: z.ZodType<Assignment> = z.object({
-  assigned_at: z.string().optional(),
-  hostname: z.string().optional(),
+  assigned_at: z.string().nullable().optional(),
+  hostname: z.string().nullable().optional(),
   server_id: z.string().optional(),
 }).describe(
-  "Server assignment information. Returns an empty object when the IP is not assigned to an active server (e.g., when the server is decommissioning or deleted).",
+  "Server assignment information. Returns an empty object when the IP is not assigned to an active server (e.g., when the server is decommissioning or deleted). The hostname is null when the assigned server has no hostname set.",
 );
 
 /**
@@ -135,7 +135,7 @@ export const IpAddressDataAttributes$zodSchema: z.ZodType<
   additional: z.boolean().optional(),
   address: z.string().optional(),
   assignment: z.lazy(() => Assignment$zodSchema).optional().describe(
-    "Server assignment information. Returns an empty object when the IP is not assigned to an active server (e.g., when the server is decommissioning or deleted).",
+    "Server assignment information. Returns an empty object when the IP is not assigned to an active server (e.g., when the server is decommissioning or deleted). The hostname is null when the assigned server has no hostname set.",
   ),
   available: z.boolean().optional(),
   cidr: z.string().nullable().optional(),

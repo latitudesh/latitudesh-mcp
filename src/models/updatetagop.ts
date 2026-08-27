@@ -24,7 +24,7 @@ export type UpdateTagAttributes2 = {
 
 export const UpdateTagAttributes2$zodSchema: z.ZodType<UpdateTagAttributes2> = z
   .object({
-    color: z.string().default("#ffffff").describe("Color of the Tag"),
+    color: z.string().optional().describe("Color of the Tag"),
     description: z.string().nullable().optional().describe(
       "Description of the Tag",
     ),

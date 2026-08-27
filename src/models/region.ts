@@ -3,6 +3,16 @@
  */
 
 import * as z from "zod";
+import { ClosedEnum } from "../types/enums.js";
+
+export const RegionType = {
+  Regions: "regions",
+} as const;
+export type RegionType = ClosedEnum<typeof RegionType>;
+
+export const RegionType$zodSchema = z.enum([
+  "regions",
+]);
 
 export type RegionCountry = {
   slug?: string | undefined;
@@ -17,29 +27,43 @@ export const RegionCountry$zodSchema: z.ZodType<RegionCountry> = z.object({
 export type RegionAttributes = {
   slug?: string | undefined;
   name?: string | undefined;
+  facility?: string | null | undefined;
   country?: RegionCountry | undefined;
+  type?: string | null | undefined;
+  features?: Array<string> | undefined;
+  network_group?: string | null | undefined;
 };
 
 export const RegionAttributes$zodSchema: z.ZodType<RegionAttributes> = z.object(
   {
     country: z.lazy(() => RegionCountry$zodSchema).optional(),
+    facility: z.string().nullable().optional(),
+    features: z.array(z.string()).optional().describe(
+      "Location capabilities available at this location (e.g. `public_network`, `elastic_ip_bgp`).",
+    ),
     name: z.string().optional(),
+    network_group: z.string().nullable().optional().describe(
+      "The location's network group slug (e.g. `TYO`, `LON2`).",
+    ),
     slug: z.string().optional(),
+    type: z.string().nullable().optional(),
   },
 );
 
-export type RegionData = {
+export type DataRegions = {
   id?: string | undefined;
+  type?: RegionType | undefined;
   attributes?: RegionAttributes | undefined;
 };
 
-export const RegionData$zodSchema: z.ZodType<RegionData> = z.object({
+export const DataRegions$zodSchema: z.ZodType<DataRegions> = z.object({
   attributes: z.lazy(() => RegionAttributes$zodSchema).optional(),
   id: z.string().optional(),
+  type: RegionType$zodSchema.optional(),
 });
 
-export type Region = { data?: RegionData | undefined };
+export type Region = { data?: DataRegions | undefined };
 
 export const Region$zodSchema: z.ZodType<Region> = z.object({
-  data: z.lazy(() => RegionData$zodSchema).optional(),
+  data: z.lazy(() => DataRegions$zodSchema).optional(),
 });

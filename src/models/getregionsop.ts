@@ -9,10 +9,18 @@ export type GetRegionsRequest = {
   pageSize?: number | undefined;
   pageNumber?: number | undefined;
   statsTotal?: string | undefined;
+  include_custom?: boolean | undefined;
+  filterFeatures?: string | undefined;
 };
 
 export const GetRegionsRequest$zodSchema: z.ZodType<GetRegionsRequest> = z
   .object({
+    filterFeatures: z.string().describe(
+      "Return only locations that support the given capability, e.g. `filter[features]=public_network`.",
+    ).optional(),
+    include_custom: z.boolean().describe(
+      "When set to `true`, the response also includes custom regions (such as storage-only regions) alongside the default core regions. When omitted or `false`, only core regions are returned.",
+    ).optional(),
     pageNumber: z.int().default(1).describe(
       "Page number to return (starts at 1)",
     ),

@@ -10,6 +10,7 @@ import {
 
 export type GetAllFirewallAssignmentsRequest = {
   filterServer?: string | undefined;
+  filterVirtualMachine?: string | undefined;
   pageSize?: number | undefined;
   pageNumber?: number | undefined;
 };
@@ -18,6 +19,9 @@ export const GetAllFirewallAssignmentsRequest$zodSchema: z.ZodType<
   GetAllFirewallAssignmentsRequest
 > = z.object({
   filterServer: z.string().describe("The server ID to filter by").optional(),
+  filterVirtualMachine: z.string().describe(
+    "The virtual machine ID to filter by",
+  ).optional(),
   pageNumber: z.int().default(1).describe(
     "Page number to return (starts at 1)",
   ),

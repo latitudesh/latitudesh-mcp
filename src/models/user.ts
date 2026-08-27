@@ -3,7 +3,17 @@
  */
 
 import * as z from "zod";
+import { ClosedEnum } from "../types/enums.js";
 import { TeamInclude, TeamInclude$zodSchema } from "./teaminclude.js";
+
+export const UserType = {
+  Users: "users",
+} as const;
+export type UserType = ClosedEnum<typeof UserType>;
+
+export const UserType$zodSchema = z.enum([
+  "users",
+]);
 
 export type UserRole = {
   id?: string | undefined;
@@ -24,25 +34,31 @@ export type UserAttributes = {
   last_name?: string | undefined;
   email?: string | undefined;
   authentication_factor_id?: string | undefined;
+  created_at?: string | undefined;
+  updated_at?: string | undefined;
   role?: UserRole | undefined;
   teams?: Array<TeamInclude> | undefined;
 };
 
 export const UserAttributes$zodSchema: z.ZodType<UserAttributes> = z.object({
   authentication_factor_id: z.string().optional(),
+  created_at: z.string().optional(),
   email: z.string().optional(),
   first_name: z.string().optional(),
   last_name: z.string().optional(),
   role: z.lazy(() => UserRole$zodSchema).optional(),
   teams: z.array(TeamInclude$zodSchema).optional(),
+  updated_at: z.string().optional(),
 });
 
 export type User = {
   id?: string | undefined;
+  type?: UserType | undefined;
   attributes?: UserAttributes | undefined;
 };
 
 export const User$zodSchema: z.ZodType<User> = z.object({
   attributes: z.lazy(() => UserAttributes$zodSchema).optional(),
   id: z.string().optional(),
+  type: UserType$zodSchema.optional(),
 });

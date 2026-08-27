@@ -123,20 +123,6 @@ export const CreateServerReinstallFilesystem2$zodSchema = z.enum([
   "xfs",
 ]);
 
-export type CreateServerReinstallPartition2 = {
-  size_in_gb?: number | undefined;
-  path?: string | undefined;
-  filesystem_type?: string | undefined;
-};
-
-export const CreateServerReinstallPartition2$zodSchema: z.ZodType<
-  CreateServerReinstallPartition2
-> = z.object({
-  filesystem_type: z.string().optional(),
-  path: z.string().optional(),
-  size_in_gb: z.int().optional(),
-});
-
 export type CreateServerReinstallDiskLayout2 = {
   count: number;
   role: CreateServerReinstallRole2;
@@ -158,12 +144,14 @@ export const CreateServerReinstallDiskLayout2$zodSchema: z.ZodType<
 export type CreateServerReinstallAttributes2 = {
   operating_system?: CreateServerReinstallOperatingSystem2 | undefined;
   hostname?: string | undefined;
-  partitions?: Array<CreateServerReinstallPartition2> | null | undefined;
   ssh_keys?: Array<string> | null | undefined;
   user_data?: string | null | undefined;
   raid?: CreateServerReinstallRaid2 | null | undefined;
   disk_layout?: Array<CreateServerReinstallDiskLayout2> | null | undefined;
   ipxe?: string | null | undefined;
+  persistent_netboot?: boolean | undefined;
+  public_network?: boolean | null | undefined;
+  public_network_id?: string | null | undefined;
 };
 
 export const CreateServerReinstallAttributes2$zodSchema: z.ZodType<
@@ -179,8 +167,15 @@ export const CreateServerReinstallAttributes2$zodSchema: z.ZodType<
   ),
   operating_system: CreateServerReinstallOperatingSystem2$zodSchema.optional()
     .describe("The OS selected for the reinstall process"),
-  partitions: z.array(z.lazy(() => CreateServerReinstallPartition2$zodSchema))
-    .nullable().optional(),
+  persistent_netboot: z.boolean().optional().describe(
+    "Keep network boot enabled so the server iPXE-boots on every reboot instead of booting from disk. Only supported with the 'ipxe' operating system.",
+  ),
+  public_network: z.boolean().nullable().optional().describe(
+    "**Preview** (`public_network` feature flag). Set to 'true' to attach the server onto the given 'public_network_id', or 'false' to detach an existing public network, during the reinstall. Requires 'public_network_id' when attaching.",
+  ),
+  public_network_id: z.string().nullable().optional().describe(
+    "ID of a customer public network to attach this server to during the reinstall. The public network must belong to the same project and be in the same location as the server, and must have at least one free IP address. Applies to this reinstall only; omit it to leave any existing public network unchanged.",
+  ),
   raid: CreateServerReinstallRaid2$zodSchema.nullable().optional().describe(
     "RAID mode for the server. Set to 'raid-0' for RAID 0, 'raid-1' for RAID 1, or omit/null for no RAID configuration",
   ),

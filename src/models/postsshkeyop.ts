@@ -16,16 +16,16 @@ export const PostSshKeyType2$zodSchema = z.enum([
 ]);
 
 export type PostSshKeyAttributes2 = {
-  name?: string | undefined;
+  name: string;
   project?: string | undefined;
-  public_key?: string | undefined;
+  public_key: string;
 };
 
 export const PostSshKeyAttributes2$zodSchema: z.ZodType<PostSshKeyAttributes2> =
   z.object({
-    name: z.string().optional().describe("Name of the SSH Key"),
+    name: z.string().describe("Name of the SSH Key"),
     project: z.string().optional().describe("Project ID or slug"),
-    public_key: z.string().optional().describe("SSH Public Key"),
+    public_key: z.string().describe("SSH Public Key"),
   });
 
 export type PostSshKeyData2 = {

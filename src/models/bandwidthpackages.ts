@@ -15,7 +15,7 @@ export const BandwidthPackagesType$zodSchema = z.enum([
 ]);
 
 export type BandwidthPackagesProject = {
-  id?: number | undefined;
+  id?: string | undefined;
   name?: string | undefined;
   slug?: string | undefined;
 };
@@ -23,7 +23,7 @@ export type BandwidthPackagesProject = {
 export const BandwidthPackagesProject$zodSchema: z.ZodType<
   BandwidthPackagesProject
 > = z.object({
-  id: z.int().optional(),
+  id: z.string().optional(),
   name: z.string().optional(),
   slug: z.string().optional(),
 });
@@ -31,7 +31,7 @@ export const BandwidthPackagesProject$zodSchema: z.ZodType<
 export type Package = {
   region_slug?: string | undefined;
   currency?: string | undefined;
-  unit_price?: number | undefined;
+  unit_price?: number | null | undefined;
   contracted?: number | undefined;
   total_price?: number | undefined;
 };
@@ -41,7 +41,7 @@ export const Package$zodSchema: z.ZodType<Package> = z.object({
   currency: z.string().optional(),
   region_slug: z.string().optional(),
   total_price: z.number().optional(),
-  unit_price: z.number().optional(),
+  unit_price: z.number().nullable().optional(),
 });
 
 export type BandwidthPackagesAttributes = {
@@ -56,13 +56,31 @@ export const BandwidthPackagesAttributes$zodSchema: z.ZodType<
   project: z.lazy(() => BandwidthPackagesProject$zodSchema).optional(),
 });
 
-export type BandwidthPackages = {
+export type BandwidthPackagesData = {
+  id?: string | undefined;
   type?: BandwidthPackagesType | undefined;
   attributes?: BandwidthPackagesAttributes | undefined;
 };
 
+export const BandwidthPackagesData$zodSchema: z.ZodType<BandwidthPackagesData> =
+  z.object({
+    attributes: z.lazy(() => BandwidthPackagesAttributes$zodSchema).optional(),
+    id: z.string().optional(),
+    type: BandwidthPackagesType$zodSchema.optional(),
+  });
+
+export type BandwidthPackagesMeta = {};
+
+export const BandwidthPackagesMeta$zodSchema: z.ZodType<BandwidthPackagesMeta> =
+  z.object({});
+
+export type BandwidthPackages = {
+  data?: BandwidthPackagesData | undefined;
+  meta?: BandwidthPackagesMeta | undefined;
+};
+
 export const BandwidthPackages$zodSchema: z.ZodType<BandwidthPackages> = z
   .object({
-    attributes: z.lazy(() => BandwidthPackagesAttributes$zodSchema).optional(),
-    type: BandwidthPackagesType$zodSchema.optional(),
+    data: z.lazy(() => BandwidthPackagesData$zodSchema).optional(),
+    meta: z.lazy(() => BandwidthPackagesMeta$zodSchema).optional(),
   });

@@ -4,6 +4,8 @@
 
 import * as z from "zod";
 import { ClosedEnum } from "../types/enums.js";
+import { DeployConfig, DeployConfig$zodSchema } from "./deployconfig.js";
+import { ErrorObject, ErrorObject$zodSchema } from "./errorobject.js";
 
 export const UpdateServerDeployConfigType2 = {
   DeployConfig: "deploy_config",
@@ -137,20 +139,6 @@ export const UpdateServerDeployConfigDiskLayout2$zodSchema: z.ZodType<
   role: UpdateServerDeployConfigRole2$zodSchema,
 });
 
-export type UpdateServerDeployConfigPartition2 = {
-  size_in_gb?: number | undefined;
-  path?: string | undefined;
-  filesystem_type?: string | undefined;
-};
-
-export const UpdateServerDeployConfigPartition2$zodSchema: z.ZodType<
-  UpdateServerDeployConfigPartition2
-> = z.object({
-  filesystem_type: z.string().optional(),
-  path: z.string().optional(),
-  size_in_gb: z.int().optional(),
-});
-
 export type UpdateServerDeployConfigAttributes2 = {
   hostname?: string | null | undefined;
   operating_system?:
@@ -161,8 +149,10 @@ export type UpdateServerDeployConfigAttributes2 = {
   disk_layout?: Array<UpdateServerDeployConfigDiskLayout2> | null | undefined;
   user_data?: string | null | undefined;
   ssh_keys?: Array<string> | null | undefined;
-  partitions?: Array<UpdateServerDeployConfigPartition2> | null | undefined;
   ipxe_url?: string | null | undefined;
+  persistent_netboot?: boolean | undefined;
+  public_network?: boolean | null | undefined;
+  public_network_id?: string | null | undefined;
 };
 
 export const UpdateServerDeployConfigAttributes2$zodSchema: z.ZodType<
@@ -177,9 +167,15 @@ export const UpdateServerDeployConfigAttributes2$zodSchema: z.ZodType<
   ),
   operating_system: UpdateServerDeployConfigOperatingSystem2$zodSchema
     .nullable().optional(),
-  partitions: z.array(
-    z.lazy(() => UpdateServerDeployConfigPartition2$zodSchema),
-  ).nullable().optional(),
+  persistent_netboot: z.boolean().optional().describe(
+    "Keep network boot enabled so the server iPXE-boots on every reboot instead of booting from disk. Only supported with the 'ipxe' operating system.",
+  ),
+  public_network: z.boolean().nullable().optional().describe(
+    "Set to 'true' to attach the server onto a public network. Requires 'public_network_id'. Available only when the public network feature is enabled for the server's location.",
+  ),
+  public_network_id: z.string().nullable().optional().describe(
+    "ID of a customer public network to attach the server onto. Requires 'public_network' to be 'true'. The public network must belong to the same project and be in the same location as the server, and must have at least one free IP address. This public network configuration is saved to the deploy config and inherited by future reinstalls until changed. Available only when the public network feature is enabled for the server's location.",
+  ),
   raid: UpdateServerDeployConfigRaid2$zodSchema.nullable().optional().describe(
     "RAID mode for the server. Set to 'raid-0' for RAID 0, 'raid-1' for RAID 1, or omit/null for no RAID configuration",
   ),
@@ -213,3 +209,12 @@ export const UpdateServerDeployConfigRequest$zodSchema: z.ZodType<
   RequestBody: z.lazy(() => UpdateServerDeployConfigRequestBody2$zodSchema),
   server_id: z.string().describe("The Server ID"),
 });
+
+export type UpdateServerDeployConfigResponse = DeployConfig | ErrorObject;
+
+export const UpdateServerDeployConfigResponse$zodSchema: z.ZodType<
+  UpdateServerDeployConfigResponse
+> = z.union([
+  DeployConfig$zodSchema,
+  ErrorObject$zodSchema,
+]);

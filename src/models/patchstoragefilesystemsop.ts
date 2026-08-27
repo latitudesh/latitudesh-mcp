@@ -17,16 +17,12 @@ export const PatchStorageFilesystemsType2$zodSchema = z.enum([
   "filesystems",
 ]);
 
-export type PatchStorageFilesystemsAttributes2 = {
-  size_in_gb?: number | undefined;
-};
+export type PatchStorageFilesystemsAttributes2 = { size_in_gb: number };
 
 export const PatchStorageFilesystemsAttributes2$zodSchema: z.ZodType<
   PatchStorageFilesystemsAttributes2
 > = z.object({
-  size_in_gb: z.int().default(1500).describe(
-    "Size in GB (not required, default is 1500)",
-  ),
+  size_in_gb: z.int().describe("Size in GB (not required, default is 1500)"),
 });
 
 export type PatchStorageFilesystemsData2 = {

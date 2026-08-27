@@ -22,6 +22,57 @@ export const Initiator$zodSchema: z.ZodType<Initiator> = z.object({
   nqn: z.string().optional(),
 });
 
+/**
+ * NVMe-TCP block mapping of a high performance volume. Null for volumes that are not mapped to a server.
+ */
+export type Block = {
+  nqn?: string | null | undefined;
+  nsid?: number | null | undefined;
+  server_id?: string | null | undefined;
+};
+
+export const Block$zodSchema: z.ZodType<Block> = z.object({
+  nqn: z.string().nullable().optional().describe(
+    "NVMe Qualified Name of the mapped server.",
+  ),
+  nsid: z.int().nullable().optional().describe(
+    "NVMe namespace ID of the mapping.",
+  ),
+  server_id: z.string().nullable().optional().describe(
+    "ID of the server the volume is mapped to.",
+  ),
+}).describe(
+  "NVMe-TCP block mapping of a high performance volume. Null for volumes that are not mapped to a server.",
+);
+
+export type VolumeDataSite = {
+  id?: string | undefined;
+  name?: string | undefined;
+  slug?: string | undefined;
+  facility?: string | undefined;
+};
+
+export const VolumeDataSite$zodSchema: z.ZodType<VolumeDataSite> = z.object({
+  facility: z.string().optional(),
+  id: z.string().optional(),
+  name: z.string().optional(),
+  slug: z.string().optional(),
+});
+
+export type VolumeDataRegion = {
+  city?: string | null | undefined;
+  country?: string | null | undefined;
+  site?: VolumeDataSite | null | undefined;
+};
+
+export const VolumeDataRegion$zodSchema: z.ZodType<VolumeDataRegion> = z.object(
+  {
+    city: z.string().nullable().optional(),
+    country: z.string().nullable().optional(),
+    site: z.lazy(() => VolumeDataSite$zodSchema).nullable().optional(),
+  },
+);
+
 export type VolumeDataAttributes = {
   name?: string | undefined;
   size_in_gb?: number | undefined;
@@ -29,21 +80,39 @@ export type VolumeDataAttributes = {
   namespace_id?: string | null | undefined;
   connector_id?: string | null | undefined;
   initiators?: Array<Initiator> | null | undefined;
+  block?: Block | null | undefined;
+  keyring?: string | null | undefined;
+  cluster_user?: string | null | undefined;
+  volume_path?: string | null | undefined;
+  region?: VolumeDataRegion | null | undefined;
   project?: ProjectInclude | undefined;
   team?: TeamInclude | undefined;
 };
 
 export const VolumeDataAttributes$zodSchema: z.ZodType<VolumeDataAttributes> = z
   .object({
+    block: z.lazy(() => Block$zodSchema).nullable().optional().describe(
+      "NVMe-TCP block mapping of a high performance volume. Null for volumes that are not mapped to a server.",
+    ),
+    cluster_user: z.string().nullable().optional().describe(
+      "Cluster user used to connect to the volume. Returned only for dashboard-origin requests; null until the volume is provisioned.",
+    ),
     connector_id: z.string().nullable().optional(),
     created_at: z.iso.datetime({ offset: true }).nullable().optional(),
     initiators: z.array(z.lazy(() => Initiator$zodSchema)).nullable()
       .optional(),
+    keyring: z.string().nullable().optional().describe(
+      "Keyring secret used to connect to the volume. Returned only for dashboard-origin requests; null until the volume is provisioned.",
+    ),
     name: z.string().optional(),
     namespace_id: z.string().nullable().optional(),
     project: ProjectInclude$zodSchema.optional(),
+    region: z.lazy(() => VolumeDataRegion$zodSchema).nullable().optional(),
     size_in_gb: z.int().optional(),
     team: TeamInclude$zodSchema.optional(),
+    volume_path: z.string().nullable().optional().describe(
+      "Path of the volume inside the cluster. Returned only for dashboard-origin requests; null until the volume is provisioned.",
+    ),
   });
 
 export type VolumeData = {

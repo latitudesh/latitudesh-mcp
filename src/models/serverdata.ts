@@ -84,6 +84,39 @@ export const ServerDataRole$zodSchema = z.enum([
   "unknown",
 ]);
 
+export type ServerDataTag = {
+  id?: string | undefined;
+  name?: string | undefined;
+  description?: string | null | undefined;
+  color?: string | null | undefined;
+};
+
+export const ServerDataTag$zodSchema: z.ZodType<ServerDataTag> = z.object({
+  color: z.string().nullable().optional(),
+  description: z.string().nullable().optional(),
+  id: z.string().optional(),
+  name: z.string().optional(),
+});
+
+/**
+ * **Preview** (`public_network` feature flag). The public network this server is attached onto, or null. Fetch full details from GET /public_networks/{id}.
+ */
+export type ServerDataPublicNetwork = {
+  id?: string | undefined;
+  ipv4?: string | null | undefined;
+  ipv6?: string | null | undefined;
+};
+
+export const ServerDataPublicNetwork$zodSchema: z.ZodType<
+  ServerDataPublicNetwork
+> = z.object({
+  id: z.string().optional(),
+  ipv4: z.string().nullable().optional(),
+  ipv6: z.string().nullable().optional(),
+}).describe(
+  "**Preview** (`public_network` feature flag). The public network this server is attached onto, or null. Fetch full details from GET /public_networks/{id}.",
+);
+
 export type ServerDataPlan = {
   id?: string | undefined;
   name?: string | undefined;
@@ -180,11 +213,15 @@ export const Interface$zodSchema: z.ZodType<Interface> = z.object({
 });
 
 export type ServerDataAttributes = {
+  tags?: Array<ServerDataTag> | undefined;
   hostname?: string | undefined;
   label?: string | undefined;
+  price?: number | null | undefined;
   status?: ServerDataStatus | undefined;
-  ipmi_status?: IpmiStatus | undefined;
+  ipmi_status?: IpmiStatus | null | undefined;
   role?: string | undefined;
+  public_network_eligible?: boolean | undefined;
+  public_network?: ServerDataPublicNetwork | null | undefined;
   site?: string | undefined;
   locked?: boolean | undefined;
   rescue_allowed?: boolean | undefined;
@@ -206,15 +243,23 @@ export const ServerDataAttributes$zodSchema: z.ZodType<ServerDataAttributes> = z
     created_at: z.string().nullable().optional(),
     hostname: z.string().optional(),
     interfaces: z.array(z.lazy(() => Interface$zodSchema)).optional(),
-    ipmi_status: IpmiStatus$zodSchema.optional(),
+    ipmi_status: IpmiStatus$zodSchema.nullable().optional(),
     label: z.string().optional().describe("The server label"),
     locked: z.boolean().optional(),
     operating_system: z.lazy(() => ServerDataOperatingSystem$zodSchema)
       .optional(),
     plan: z.lazy(() => ServerDataPlan$zodSchema).optional(),
+    price: z.number().nullable().optional(),
     primary_ipv4: z.string().nullable().optional(),
     primary_ipv6: z.string().nullable().optional(),
     project: ProjectInclude$zodSchema.optional(),
+    public_network: z.lazy(() => ServerDataPublicNetwork$zodSchema).nullable()
+      .optional().describe(
+        "**Preview** (`public_network` feature flag). The public network this server is attached onto, or null. Fetch full details from GET /public_networks/{id}.",
+      ),
+    public_network_eligible: z.boolean().optional().describe(
+      "Whether the server is eligible to attach a public network (carries the bond-vpc-enabled tag).",
+    ),
     region: ServerRegionResourceData$zodSchema.optional(),
     rescue_allowed: z.boolean().optional(),
     role: z.string().optional().describe("The server role (e.g. Bare Metal)"),
@@ -224,6 +269,7 @@ export const ServerDataAttributes$zodSchema: z.ZodType<ServerDataAttributes> = z
     status: ServerDataStatus$zodSchema.optional().describe(
       "`on` - The server is powered ON\n`off` - The server is powered OFF\n`unknown` - The server power status is unknown\n`disk_erasing` - The server is in reinstalling state `disk_erasing`\n`deploying` - The server is deploying or reinstalling\n`failed_deployment` - The server has failed deployment or reinstall\n`rescue_mode` - The server is in rescue mode\n",
     ),
+    tags: z.array(z.lazy(() => ServerDataTag$zodSchema)).optional(),
     team: TeamInclude$zodSchema.optional(),
   });
 

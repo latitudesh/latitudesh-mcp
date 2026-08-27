@@ -59,6 +59,7 @@ export type VirtualMachinePayloadAttributes = {
   project?: string | undefined;
   operating_system?: string | null | undefined;
   user_data?: number | string | null | undefined;
+  marketplace_app?: string | null | undefined;
   tags?: Array<string> | null | undefined;
   site?: string | null | undefined;
 };
@@ -68,6 +69,9 @@ export const VirtualMachinePayloadAttributes$zodSchema: z.ZodType<
 > = z.object({
   billing: VirtualMachinePayloadBilling$zodSchema.optional().describe(
     "Billing cycle for the VM. The supported set is validated per-project (on_demand vs reserved). Defaults to the project's default billing when omitted.",
+  ),
+  marketplace_app: z.string().nullable().optional().describe(
+    "A marketplace app reference (slug, e.g. \"openclaw\", or encoded id_hash \"mkapp_xxx\") to preinstall on the VM via cloud-init. Cannot be combined with operating_system; the app defines its own.",
   ),
   name: z.string().default("my-vm"),
   operating_system: z.string().nullable().optional().describe(

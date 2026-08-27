@@ -29,7 +29,7 @@ import { Result } from "../types/fp.js";
  * List firewall assignments
  *
  * @remarks
- * Returns a list of all servers assigned to one or more firewalls.
+ * Returns a list of all servers and virtual machines assigned to one or more firewalls.
  */
 export function firewallsGetAllFirewallAssignments(
   client$: LatitudeshCore,
@@ -87,6 +87,7 @@ async function $do(
   const path$ = pathToFunc("/firewalls/assignments")();
   const query$ = encodeFormQuery({
     "filter[server]": payload$?.filterServer,
+    "filter[virtual_machine]": payload$?.filterVirtualMachine,
     "page[number]": payload$?.pageNumber,
     "page[size]": payload$?.pageSize,
   });

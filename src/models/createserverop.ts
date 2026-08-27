@@ -263,44 +263,50 @@ export const CreateServerDiskLayout2$zodSchema: z.ZodType<
 });
 
 export type CreateServerAttributes2 = {
-  project?: string | undefined;
-  plan?: CreateServerPlan2 | undefined;
-  site?: CreateServerSite2 | undefined;
-  operating_system?: CreateServerOperatingSystem2 | undefined;
-  hostname?: string | undefined;
+  project: string;
+  plan: CreateServerPlan2;
+  site: CreateServerSite2;
+  operating_system: CreateServerOperatingSystem2;
+  hostname: string;
   ssh_keys?: Array<string> | null | undefined;
   user_data?: string | null | undefined;
   raid?: CreateServerRaid2 | null | undefined;
   disk_layout?: Array<CreateServerDiskLayout2> | null | undefined;
   ipxe?: string | null | undefined;
+  persistent_netboot?: boolean | undefined;
+  bgp_ready?: boolean | null | undefined;
   billing?: CreateServerBilling2 | null | undefined;
 };
 
 export const CreateServerAttributes2$zodSchema: z.ZodType<
   CreateServerAttributes2
 > = z.object({
+  bgp_ready: z.boolean().nullable().optional().describe(
+    "Deploy the server onto hardware that can announce an Elastic IP over BGP.",
+  ),
   billing: CreateServerBilling2$zodSchema.nullable().optional().describe(
     "The server billing type. Accepts `hourly` and `monthly` for on demand projects and `yearly` for reserved projects.",
   ),
   disk_layout: z.array(z.lazy(() => CreateServerDiskLayout2$zodSchema))
     .nullable().optional(),
-  hostname: z.string().optional().describe("The server hostname"),
+  hostname: z.string().describe("The server hostname"),
   ipxe: z.string().nullable().optional().describe(
     "URL where iPXE script is stored on, OR the iPXE script encoded in base64. This attribute is required when iPXE is selected as operating system.",
   ),
-  operating_system: CreateServerOperatingSystem2$zodSchema.optional().describe(
+  operating_system: CreateServerOperatingSystem2$zodSchema.describe(
     "The operating system slug for the new server",
   ),
-  plan: CreateServerPlan2$zodSchema.optional().describe(
+  persistent_netboot: z.boolean().optional().describe(
+    "Keep network boot enabled so the server iPXE-boots on every reboot instead of booting from disk. Only supported with the 'ipxe' operating system.",
+  ),
+  plan: CreateServerPlan2$zodSchema.describe(
     "The plan slug to choose server from, defining the specs the server will have",
   ),
-  project: z.string().optional().describe(
-    "The project (ID or Slug) to deploy the server",
-  ),
+  project: z.string().describe("The project (ID or Slug) to deploy the server"),
   raid: CreateServerRaid2$zodSchema.nullable().optional().describe(
     "RAID mode for the server. Set to 'raid-0' for RAID 0, 'raid-1' for RAID 1, or omit/null for no RAID configuration",
   ),
-  site: CreateServerSite2$zodSchema.optional().describe(
+  site: CreateServerSite2$zodSchema.describe(
     "The site slug to deploy the server",
   ),
   ssh_keys: z.array(z.string()).nullable().optional().describe(

@@ -14,26 +14,57 @@ export const CreateElasticIpType$zodSchema = z.enum([
   "elastic_ips",
 ]);
 
+/**
+ * How the elastic IP is delivered. Defaults to routed
+ */
+export const CreateElasticIpMode = {
+  Routed: "routed",
+  Bgp: "bgp",
+} as const;
+/**
+ * How the elastic IP is delivered. Defaults to routed
+ */
+export type CreateElasticIpMode = ClosedEnum<typeof CreateElasticIpMode>;
+
+export const CreateElasticIpMode$zodSchema = z.enum([
+  "routed",
+  "bgp",
+]).describe("How the elastic IP is delivered. Defaults to routed");
+
 export type CreateElasticIpAttributes = {
+  mode?: CreateElasticIpMode | undefined;
+  server_id?: string | undefined;
   project_id: string;
-  server_id: string;
+  server_ids?: Array<string> | undefined;
+  site?: string | undefined;
 };
 
 export const CreateElasticIpAttributes$zodSchema: z.ZodType<
   CreateElasticIpAttributes
 > = z.object({
-  project_id: z.string().describe("The project ID or slug"),
-  server_id: z.string().describe("The server ID to assign the Elastic IP to"),
+  mode: CreateElasticIpMode$zodSchema.default("routed").describe(
+    "How the elastic IP is delivered. Defaults to routed",
+  ),
+  project_id: z.string().describe("The project to create the elastic IP in"),
+  server_id: z.string().optional().describe(
+    "The server to assign the elastic IP to. Required in routed mode and rejected in bgp mode, which uses server_ids",
+  ),
+  server_ids: z.array(z.string()).optional().describe(
+    "The servers that announce the elastic IP over BGP. Only used in bgp mode, where it may be omitted to allocate a VIP with no sessions",
+  ),
+  site: z.string().optional().describe(
+    "The site slug to allocate the elastic IP in. Only used in bgp mode, where it is required when no server_ids are given",
+  ),
 });
 
 export type CreateElasticIpData = {
   type: CreateElasticIpType;
-  attributes: CreateElasticIpAttributes;
+  attributes?: CreateElasticIpAttributes | undefined;
 };
 
 export const CreateElasticIpData$zodSchema: z.ZodType<CreateElasticIpData> = z
   .object({
-    attributes: z.lazy(() => CreateElasticIpAttributes$zodSchema),
+    attributes: z.lazy(() => CreateElasticIpAttributes$zodSchema).optional(),
     type: CreateElasticIpType$zodSchema,
   });
 

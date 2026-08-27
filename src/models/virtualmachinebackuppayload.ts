@@ -16,14 +16,12 @@ export const VirtualMachineBackupPayloadType$zodSchema = z.enum([
   "virtual_machine_backups",
 ]);
 
-export type VirtualMachineBackupPayloadAttributes = {
-  virtual_machine?: string | undefined;
-};
+export type VirtualMachineBackupPayloadAttributes = { virtual_machine: string };
 
 export const VirtualMachineBackupPayloadAttributes$zodSchema: z.ZodType<
   VirtualMachineBackupPayloadAttributes
 > = z.object({
-  virtual_machine: z.string().optional().describe(
+  virtual_machine: z.string().describe(
     "Virtual machine id to back up. Required on the top-level `POST /virtual_machine_backups`; taken from the path when nested under a VM.",
   ),
 });

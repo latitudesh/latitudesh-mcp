@@ -104,32 +104,37 @@ export const Vcpu$zodSchema: z.ZodType<Vcpu> = z.object({
 
 export type VirtualMachinePlansNic = {
   type?: string | undefined;
-  count?: string | undefined;
+  count?: number | undefined;
 };
 
 export const VirtualMachinePlansNic$zodSchema: z.ZodType<
   VirtualMachinePlansNic
 > = z.object({
-  count: z.string().optional().describe("Number of NICs"),
+  count: z.int().optional().describe("Number of NICs"),
   type: z.string().optional().describe("NIC speed/type"),
 });
 
-export type Size = {
+export type VirtualMachinePlansSize = {
   amount?: number | undefined;
   unit?: VirtualMachinePlansUnit | undefined;
 };
 
-export const Size$zodSchema: z.ZodType<Size> = z.object({
+export const VirtualMachinePlansSize$zodSchema: z.ZodType<
+  VirtualMachinePlansSize
+> = z.object({
   amount: z.int().optional().describe("The total size of the disk"),
   unit: VirtualMachinePlansUnit$zodSchema.optional().describe(
     "The unit of the disk size",
   ),
 });
 
-export type Disk = { type?: string | undefined; size?: Size | undefined };
+export type Disk = {
+  type?: string | undefined;
+  size?: VirtualMachinePlansSize | undefined;
+};
 
 export const Disk$zodSchema: z.ZodType<Disk> = z.object({
-  size: z.lazy(() => Size$zodSchema).optional(),
+  size: z.lazy(() => VirtualMachinePlansSize$zodSchema).optional(),
   type: z.string().optional().describe(
     "The type of the disk (e.g., local SSD, local NVMe)",
   ),
@@ -137,7 +142,7 @@ export const Disk$zodSchema: z.ZodType<Disk> = z.object({
 
 export type VirtualMachinePlansSpecs = {
   memory?: number | undefined;
-  gpu?: string | undefined;
+  gpu?: string | null | undefined;
   vram_per_gpu?: number | null | undefined;
   vcpus?: number | undefined;
   vcpu?: Vcpu | undefined;
@@ -149,7 +154,7 @@ export const VirtualMachinePlansSpecs$zodSchema: z.ZodType<
   VirtualMachinePlansSpecs
 > = z.object({
   disk: z.lazy(() => Disk$zodSchema).optional(),
-  gpu: z.string().optional().describe("The GPU type"),
+  gpu: z.string().nullable().optional().describe("The GPU type"),
   memory: z.int().optional().describe("The total memory"),
   nics: z.array(z.lazy(() => VirtualMachinePlansNic$zodSchema)).nullable()
     .optional().describe("Network interface cards"),
@@ -239,6 +244,7 @@ export const VirtualMachinePlansRegion$zodSchema: z.ZodType<
 
 export type VirtualMachinePlansAttributes = {
   name?: string | undefined;
+  slug?: string | undefined;
   specs?: VirtualMachinePlansSpecs | undefined;
   regions?: Array<VirtualMachinePlansRegion> | undefined;
   stock_level?: VirtualMachinePlansStockLevel | undefined;
@@ -254,6 +260,9 @@ export const VirtualMachinePlansAttributes$zodSchema: z.ZodType<
   name: z.string().optional().describe("The name of the plan"),
   regions: z.array(z.lazy(() => VirtualMachinePlansRegion$zodSchema))
     .optional(),
+  slug: z.string().optional().describe(
+    "The slug of the plan, used to create virtual machines",
+  ),
   specs: z.lazy(() => VirtualMachinePlansSpecs$zodSchema).optional(),
   stock_level: VirtualMachinePlansStockLevel$zodSchema.optional().describe(
     "The stock level of the plan",

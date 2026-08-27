@@ -15,16 +15,13 @@ export const PostProjectSshKeyType2$zodSchema = z.enum([
   "ssh_keys",
 ]);
 
-export type PostProjectSshKeyAttributes2 = {
-  name?: string | undefined;
-  public_key?: string | undefined;
-};
+export type PostProjectSshKeyAttributes2 = { name: string; public_key: string };
 
 export const PostProjectSshKeyAttributes2$zodSchema: z.ZodType<
   PostProjectSshKeyAttributes2
 > = z.object({
-  name: z.string().optional().describe("Name of the SSH Key"),
-  public_key: z.string().optional().describe("SSH Public Key"),
+  name: z.string().describe("Name of the SSH Key"),
+  public_key: z.string().describe("SSH Public Key"),
 });
 
 export type PostProjectSshKeyData2 = {
