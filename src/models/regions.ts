@@ -3,7 +3,17 @@
  */
 
 import * as z from "zod";
+import { ClosedEnum } from "../types/enums.js";
 import { PaginationMeta, PaginationMeta$zodSchema } from "./paginationmeta.js";
+
+export const RegionsType = {
+  Regions: "regions",
+} as const;
+export type RegionsType = ClosedEnum<typeof RegionsType>;
+
+export const RegionsType$zodSchema = z.enum([
+  "regions",
+]);
 
 export type RegionsCountry = {
   slug?: string | undefined;
@@ -18,24 +28,38 @@ export const RegionsCountry$zodSchema: z.ZodType<RegionsCountry> = z.object({
 export type RegionsAttributes = {
   slug?: string | undefined;
   name?: string | undefined;
+  facility?: string | null | undefined;
   country?: RegionsCountry | undefined;
+  type?: string | null | undefined;
+  features?: Array<string> | undefined;
+  network_group?: string | null | undefined;
 };
 
 export const RegionsAttributes$zodSchema: z.ZodType<RegionsAttributes> = z
   .object({
     country: z.lazy(() => RegionsCountry$zodSchema).optional(),
+    facility: z.string().nullable().optional(),
+    features: z.array(z.string()).optional().describe(
+      "Location capabilities available at this location (e.g. `public_network`, `elastic_ip_bgp`).",
+    ),
     name: z.string().optional(),
+    network_group: z.string().nullable().optional().describe(
+      "The location's network group slug (e.g. `TYO`, `LON2`).",
+    ),
     slug: z.string().optional(),
+    type: z.string().nullable().optional(),
   });
 
 export type RegionsData = {
   id?: string | undefined;
+  type?: RegionsType | undefined;
   attributes?: RegionsAttributes | undefined;
 };
 
 export const RegionsData$zodSchema: z.ZodType<RegionsData> = z.object({
   attributes: z.lazy(() => RegionsAttributes$zodSchema).optional(),
   id: z.string().optional(),
+  type: RegionsType$zodSchema.optional(),
 });
 
 export type Regions = {

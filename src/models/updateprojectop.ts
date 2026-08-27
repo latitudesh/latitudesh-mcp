@@ -41,17 +41,15 @@ export type UpdateProjectAttributes2 = {
 export const UpdateProjectAttributes2$zodSchema: z.ZodType<
   UpdateProjectAttributes2
 > = z.object({
-  bandwidth_alert: z.boolean().default(false),
-  description: z.string().default(
-    "A brand new description for the virtual network",
-  ),
+  bandwidth_alert: z.boolean().optional(),
+  description: z.string().optional(),
   environment: UpdateProjectEnvironment2$zodSchema.optional(),
-  name: z.string().default("A brand new name for the virtual network"),
+  name: z.string().optional(),
   tags: z.array(z.string()).optional(),
 });
 
 export type UpdateProjectData2 = {
-  id?: string | undefined;
+  id: string;
   type: UpdateProjectType2;
   attributes?: UpdateProjectAttributes2 | undefined;
 };
@@ -59,7 +57,7 @@ export type UpdateProjectData2 = {
 export const UpdateProjectData2$zodSchema: z.ZodType<UpdateProjectData2> = z
   .object({
     attributes: z.lazy(() => UpdateProjectAttributes2$zodSchema).optional(),
-    id: z.string().default("proj_81EVOtR1N4J2Z"),
+    id: z.string(),
     type: UpdateProjectType2$zodSchema,
   });
 

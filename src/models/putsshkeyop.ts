@@ -22,21 +22,19 @@ export type PutSshKeyAttributes2 = {
 
 export const PutSshKeyAttributes2$zodSchema: z.ZodType<PutSshKeyAttributes2> = z
   .object({
-    name: z.string().default("New SSH Key Name").describe(
-      "Name of the SSH Key",
-    ),
+    name: z.string().optional().describe("Name of the SSH Key"),
     tags: z.array(z.string()).optional(),
   });
 
 export type PutSshKeyData2 = {
-  id?: string | undefined;
+  id: string;
   type: PutSshKeyType2;
   attributes?: PutSshKeyAttributes2 | undefined;
 };
 
 export const PutSshKeyData2$zodSchema: z.ZodType<PutSshKeyData2> = z.object({
   attributes: z.lazy(() => PutSshKeyAttributes2$zodSchema).optional(),
-  id: z.string().default("ssh_81EVOtR1N4J2Z"),
+  id: z.string(),
   type: PutSshKeyType2$zodSchema,
 });
 

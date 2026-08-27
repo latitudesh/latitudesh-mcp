@@ -17,23 +17,27 @@ export const BandwidthPlanDataType$zodSchema = z.enum([
 export type BandwidthPlanDataUsd = {
   monthly?: number | undefined;
   hourly?: number | undefined;
+  yearly?: number | null | undefined;
 };
 
 export const BandwidthPlanDataUsd$zodSchema: z.ZodType<BandwidthPlanDataUsd> = z
   .object({
     hourly: z.int().optional(),
     monthly: z.int().optional(),
+    yearly: z.int().nullable().optional(),
   });
 
 export type BandwidthPlanDataBrl = {
   monthly?: number | undefined;
   hourly?: number | undefined;
+  yearly?: number | null | undefined;
 };
 
 export const BandwidthPlanDataBrl$zodSchema: z.ZodType<BandwidthPlanDataBrl> = z
   .object({
     hourly: z.int().optional(),
     monthly: z.int().optional(),
+    yearly: z.int().nullable().optional(),
   });
 
 export type BandwidthPlanDataPricing = {

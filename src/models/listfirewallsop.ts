@@ -7,6 +7,7 @@ import { Firewalls, Firewalls$zodSchema } from "./firewalls.js";
 
 export type ListFirewallsRequest = {
   filterProject?: string | undefined;
+  filterTags?: string | undefined;
   pageSize?: number | undefined;
   pageNumber?: number | undefined;
 };
@@ -14,6 +15,9 @@ export type ListFirewallsRequest = {
 export const ListFirewallsRequest$zodSchema: z.ZodType<ListFirewallsRequest> = z
   .object({
     filterProject: z.string().optional(),
+    filterTags: z.string().describe(
+      "Comma-separated tag IDs. Returns firewalls that have all the given tags.",
+    ).optional(),
     pageNumber: z.int().default(1).describe(
       "Page number to return (starts at 1)",
     ),

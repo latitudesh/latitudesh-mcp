@@ -77,13 +77,22 @@ export const PatchUserProfileRequest$zodSchema: z.ZodType<
   id: z.string(),
 });
 
+export type PatchUserProfileMeta = {};
+
+export const PatchUserProfileMeta$zodSchema: z.ZodType<PatchUserProfileMeta> = z
+  .object({});
+
 /**
  * Success
  */
-export type PatchUserProfileResponse = { data?: UserUpdate | undefined };
+export type PatchUserProfileResponse = {
+  data?: UserUpdate | undefined;
+  meta?: PatchUserProfileMeta | undefined;
+};
 
 export const PatchUserProfileResponse$zodSchema: z.ZodType<
   PatchUserProfileResponse
 > = z.object({
   data: UserUpdate$zodSchema.optional(),
+  meta: z.lazy(() => PatchUserProfileMeta$zodSchema).optional(),
 }).describe("Success");

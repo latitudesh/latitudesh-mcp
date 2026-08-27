@@ -3,32 +3,39 @@
  */
 
 import * as z from "zod";
-import { ClosedEnum } from "../types/enums.js";
+import { catchUnrecognizedEnum, ClosedEnum, OpenEnum } from "../types/enums.js";
 
 /**
- * The current phase of the cluster lifecycle
+ * The current phase of the cluster lifecycle.
  */
 export const KubernetesClusterSummaryDataPhase = {
   Pending: "Pending",
   Provisioning: "Provisioning",
   Provisioned: "Provisioned",
+  Upgrading: "Upgrading",
   Deleting: "Deleting",
   Failed: "Failed",
+  Unknown: "Unknown",
 } as const;
 /**
- * The current phase of the cluster lifecycle
+ * The current phase of the cluster lifecycle.
  */
-export type KubernetesClusterSummaryDataPhase = ClosedEnum<
+export type KubernetesClusterSummaryDataPhase = OpenEnum<
   typeof KubernetesClusterSummaryDataPhase
 >;
 
-export const KubernetesClusterSummaryDataPhase$zodSchema = z.enum([
-  "Pending",
-  "Provisioning",
-  "Provisioned",
-  "Deleting",
-  "Failed",
-]).describe("The current phase of the cluster lifecycle");
+export const KubernetesClusterSummaryDataPhase$zodSchema = z.union([
+  z.enum([
+    "Pending",
+    "Provisioning",
+    "Provisioned",
+    "Upgrading",
+    "Deleting",
+    "Failed",
+    "Unknown",
+  ]),
+  z.string().transform(catchUnrecognizedEnum),
+]).describe("The current phase of the cluster lifecycle.");
 
 /**
  * Step identifier
@@ -119,7 +126,7 @@ export const KubernetesClusterSummaryDataAttributes$zodSchema: z.ZodType<
   ),
   name: z.string().optional().describe("The cluster name"),
   phase: KubernetesClusterSummaryDataPhase$zodSchema.optional().describe(
-    "The current phase of the cluster lifecycle",
+    "The current phase of the cluster lifecycle.",
   ),
   ready: z.boolean().optional().describe(
     "Whether the cluster is ready to accept workloads",

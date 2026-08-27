@@ -41,11 +41,13 @@ export const QuotaInMbps$zodSchema: z.ZodType<QuotaInMbps> = z.object({
 export type QuotaPerRegion = {
   region_id?: string | undefined;
   region_slug?: string | undefined;
+  price?: number | null | undefined;
   quota_in_tb?: QuotaInTb | undefined;
   quota_in_mbps?: QuotaInMbps | undefined;
 };
 
 export const QuotaPerRegion$zodSchema: z.ZodType<QuotaPerRegion> = z.object({
+  price: z.int().nullable().optional(),
   quota_in_mbps: z.lazy(() => QuotaInMbps$zodSchema).optional(),
   quota_in_tb: z.lazy(() => QuotaInTb$zodSchema).optional(),
   region_id: z.string().optional(),
@@ -93,8 +95,18 @@ export const TrafficQuotaData$zodSchema: z.ZodType<TrafficQuotaData> = z.object(
   },
 );
 
-export type TrafficQuota = { data?: TrafficQuotaData | undefined };
+export type TrafficQuotaMeta = {};
+
+export const TrafficQuotaMeta$zodSchema: z.ZodType<TrafficQuotaMeta> = z.object(
+  {},
+);
+
+export type TrafficQuota = {
+  data?: TrafficQuotaData | undefined;
+  meta?: TrafficQuotaMeta | undefined;
+};
 
 export const TrafficQuota$zodSchema: z.ZodType<TrafficQuota> = z.object({
   data: z.lazy(() => TrafficQuotaData$zodSchema).optional(),
+  meta: z.lazy(() => TrafficQuotaMeta$zodSchema).optional(),
 });

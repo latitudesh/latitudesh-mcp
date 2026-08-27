@@ -86,6 +86,7 @@ async function $do(
   const path$ = pathToFunc("/firewalls")();
   const query$ = encodeFormQuery({
     "filter[project]": payload$?.filterProject,
+    "filter[tags]": payload$?.filterTags,
     "page[number]": payload$?.pageNumber,
     "page[size]": payload$?.pageSize,
   });

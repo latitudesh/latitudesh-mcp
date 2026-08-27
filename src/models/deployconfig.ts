@@ -18,24 +18,24 @@ export const DeployConfigRole$zodSchema = z.enum([
   "raw",
 ]);
 
-export const RaidLevel = {
+export const DeployConfigRaidLevel = {
   Raid0: "raid-0",
   Raid1: "raid-1",
 } as const;
-export type RaidLevel = ClosedEnum<typeof RaidLevel>;
+export type DeployConfigRaidLevel = ClosedEnum<typeof DeployConfigRaidLevel>;
 
-export const RaidLevel$zodSchema = z.enum([
+export const DeployConfigRaidLevel$zodSchema = z.enum([
   "raid-0",
   "raid-1",
 ]);
 
-export const Filesystem = {
+export const DeployConfigFilesystem = {
   Ext4: "ext4",
   Xfs: "xfs",
 } as const;
-export type Filesystem = ClosedEnum<typeof Filesystem>;
+export type DeployConfigFilesystem = ClosedEnum<typeof DeployConfigFilesystem>;
 
-export const Filesystem$zodSchema = z.enum([
+export const DeployConfigFilesystem$zodSchema = z.enum([
   "ext4",
   "xfs",
 ]);
@@ -43,29 +43,17 @@ export const Filesystem$zodSchema = z.enum([
 export type DiskLayout = {
   count: number;
   role: DeployConfigRole;
-  raid_level?: RaidLevel | null | undefined;
-  filesystem?: Filesystem | null | undefined;
+  raid_level?: DeployConfigRaidLevel | null | undefined;
+  filesystem?: DeployConfigFilesystem | null | undefined;
   mount_point?: string | null | undefined;
 };
 
 export const DiskLayout$zodSchema: z.ZodType<DiskLayout> = z.object({
   count: z.int(),
-  filesystem: Filesystem$zodSchema.nullable().optional(),
+  filesystem: DeployConfigFilesystem$zodSchema.nullable().optional(),
   mount_point: z.string().nullable().optional(),
-  raid_level: RaidLevel$zodSchema.nullable().optional(),
+  raid_level: DeployConfigRaidLevel$zodSchema.nullable().optional(),
   role: DeployConfigRole$zodSchema,
-});
-
-export type Partition = {
-  path?: string | undefined;
-  size_in_gb?: number | undefined;
-  filesystem_type?: string | undefined;
-};
-
-export const Partition$zodSchema: z.ZodType<Partition> = z.object({
-  filesystem_type: z.string().optional(),
-  path: z.string().optional(),
-  size_in_gb: z.int().optional(),
 });
 
 export type DeployConfigAttributes = {
@@ -75,7 +63,9 @@ export type DeployConfigAttributes = {
   disk_layout?: Array<DiskLayout> | null | undefined;
   user_data?: string | undefined;
   ssh_keys?: Array<string> | undefined;
-  partitions?: Array<Partition> | null | undefined;
+  persistent_netboot?: boolean | null | undefined;
+  public_network?: boolean | null | undefined;
+  public_network_id?: string | null | undefined;
 };
 
 export const DeployConfigAttributes$zodSchema: z.ZodType<
@@ -85,7 +75,11 @@ export const DeployConfigAttributes$zodSchema: z.ZodType<
     .optional(),
   hostname: z.string().optional(),
   operating_system: z.string().optional(),
-  partitions: z.array(z.lazy(() => Partition$zodSchema)).nullable().optional(),
+  persistent_netboot: z.boolean().nullable().optional().describe(
+    "Keep network boot enabled so the server iPXE-boots on every reboot instead of booting from disk. Only supported with the 'ipxe' operating system.",
+  ),
+  public_network: z.boolean().nullable().optional(),
+  public_network_id: z.string().nullable().optional(),
   raid: z.string().optional(),
   ssh_keys: z.array(z.string()).optional(),
   user_data: z.string().optional(),

@@ -61,13 +61,25 @@ export const PostTeamRequest$zodSchema: z.ZodType<PostTeamRequest> = z.object({
   data: z.lazy(() => PostTeamData2$zodSchema),
 });
 
+export type PostTeamMeta = { session_token?: string | undefined };
+
+export const PostTeamMeta$zodSchema: z.ZodType<PostTeamMeta> = z.object({
+  session_token: z.string().optional().describe(
+    "Create-only session token to authenticate follow-up requests against the new team",
+  ),
+});
+
 /**
  * Created
  */
-export type PostTeamResponse = { data?: Team | undefined };
+export type PostTeamResponse = {
+  data?: Team | undefined;
+  meta?: PostTeamMeta | undefined;
+};
 
 export const PostTeamResponse$zodSchema: z.ZodType<PostTeamResponse> = z.object(
   {
     data: Team$zodSchema.optional(),
+    meta: z.lazy(() => PostTeamMeta$zodSchema).optional(),
   },
 ).describe("Created");

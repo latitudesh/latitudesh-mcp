@@ -33,6 +33,8 @@ import { Result } from "../types/fp.js";
  * - `power_on` - Starts the virtual machine
  * - `power_off` - Stops the virtual machine
  * - `reboot` - Restarts the virtual machine
+ *
+ * `power_on` is never blocked. A `power_off` or `reboot` returns `409 Conflict` when a backup is in progress for the virtual machine.
  */
 export function virtualMachinesCreateVirtualMachineAction(
   client$: LatitudeshCore,
@@ -100,7 +102,7 @@ async function $do(
 
   const headers$ = new Headers(compactMap({
     "Content-Type": "application/json",
-    Accept: "*/*",
+    Accept: "application/vnd.api+json",
   }));
   const securityInput = await extractSecurity(client$._options.security);
   const requestSecurity = resolveGlobalSecurity(securityInput);

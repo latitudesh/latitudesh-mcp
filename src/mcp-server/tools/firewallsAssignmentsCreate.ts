@@ -14,7 +14,7 @@ export const tool$firewallsAssignmentsCreate: ToolDefinition<typeof args> = {
   name: "firewalls-assignments-create",
   description: `Assign server to firewall
 
-Assigns a server to a firewall by its ID.`,
+Assigns a server or a virtual machine to a firewall by its ID.`,
   annotations: {
     "title": "",
     "destructiveHint": false,

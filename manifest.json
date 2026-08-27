@@ -1,7 +1,7 @@
 {
   "manifest_version": "0.3",
   "name": "latitudesh",
-  "version": "0.3.1",
+  "version": "0.3.2",
   "description": "",
   "long_description": "Latitude.sh API: The Latitude.sh API is a RESTful API to manage your Latitude.sh account. It allows you to perform the same actions as the Latitude.sh dashboard.",
   "author": {
@@ -78,6 +78,22 @@
       "description": "Update API key settings\n\nUpdate API Key settings (name, read_only, allowed_ips) without rotating the token.\nUse PUT to rotate the token.\n"
     },
     {
+      "name": "baselines-preview-get-baselines",
+      "description": "List baselines\n\n**Preview.** Available to teams with the `baselines_api` feature flag. The shape of this\nendpoint may change before general availability.\n\nList all baselines in the team. A baseline records the configuration you expect your\nservers to be delivered with — plan, SSH keys, user data, disk layout and BIOS settings.\n"
+    },
+    {
+      "name": "baselines-preview-create-baseline",
+      "description": "Create baseline\n\n**Preview.** Available to teams with the `baselines_api` feature flag.\n\nCreate a baseline in the team. A baseline can target all servers, a custom set (when the\nplan is not yet known), or one or more specific platforms. When it targets platforms, the\ndisk layout is validated by the same rules a deploy applies — against the smallest of the\nselected platforms — so a baseline that saves here can be dispatched verbatim.\n"
+    },
+    {
+      "name": "baselines-preview-get-baseline",
+      "description": "Retrieve baseline\n\n**Preview.** Available to teams with the `baselines_api` feature flag.\n\nRetrieve a single baseline.\n"
+    },
+    {
+      "name": "baselines-preview-destroy-baseline",
+      "description": "Delete baseline\n\n**Preview.** Available to teams with the `baselines_api` feature flag.\n\nDelete a baseline.\n"
+    },
+    {
       "name": "billing-list-usage",
       "description": "Retrieve billing usage\n\nReturns the billing usage of a project\n"
     },
@@ -87,7 +103,7 @@
     },
     {
       "name": "firewalls-get-all-firewall-assignments",
-      "description": "List firewall assignments\n\nReturns a list of all servers assigned to one or more firewalls."
+      "description": "List firewall assignments\n\nReturns a list of all servers and virtual machines assigned to one or more firewalls."
     },
     {
       "name": "firewalls-list",
@@ -111,11 +127,11 @@
     },
     {
       "name": "firewalls-list-assignments",
-      "description": "Firewall assignments\n\nReturns a list of all servers assigned to a particular firewall."
+      "description": "Firewall assignments\n\nReturns a list of all servers and virtual machines assigned to a particular firewall."
     },
     {
       "name": "firewalls-delete-assignment",
-      "description": "Delete assignment\n\nRemoves a server from a firewall by its ID."
+      "description": "Delete assignment\n\nRemoves a server or a virtual machine from a firewall by its assignment ID."
     },
     {
       "name": "elastic-ips-list-elastic-ips",
@@ -138,8 +154,24 @@
       "description": "Move an Elastic IP\n\nMoves an Elastic IP to a different server within the same project and site. The reassignment is performed asynchronously. The Elastic IP must be in `active` status, the target server must belong to the same project, and the target server must be in the same site as the currently assigned server.\n"
     },
     {
+      "name": "elastic-ips-list-elastic-ip-bgp-sessions",
+      "description": "List BGP sessions\n\nList the BGP sessions announcing an elastic IP"
+    },
+    {
+      "name": "elastic-ips-create-elastic-ip-bgp-session",
+      "description": "Create a BGP session\n\nAnnounce an elastic IP from a server over BGP"
+    },
+    {
+      "name": "elastic-ips-get-elastic-ip-bgp-session",
+      "description": "Retrieve a BGP session\n\nRetrieve a BGP session announcing an elastic IP"
+    },
+    {
+      "name": "elastic-ips-delete-elastic-ip-bgp-session",
+      "description": "Delete a BGP session\n\nStop announcing an elastic IP from a server"
+    },
+    {
       "name": "firewalls-assignments-create",
-      "description": "Assign server to firewall\n\nAssigns a server to a firewall by its ID."
+      "description": "Assign server to firewall\n\nAssigns a server or a virtual machine to a firewall by its ID."
     },
     {
       "name": "ip-addresses-list",
@@ -222,12 +254,32 @@
       "description": "List VM plans"
     },
     {
+      "name": "public-networks-get-public-networks",
+      "description": "List networks\n\nList the customer networks owned by the team"
+    },
+    {
+      "name": "public-networks-create-public-network",
+      "description": "Create a network\n\nProvision a customer network: an IPv4 block of the chosen size plus a paired IPv6 /64. The network is allocated synchronously and returned in the response; billing is settled in the background."
+    },
+    {
+      "name": "public-networks-get-public-network",
+      "description": "Retrieve a network\n\nRetrieve a customer network"
+    },
+    {
+      "name": "public-networks-destroy-public-network",
+      "description": "Delete a network\n\nDelete a customer network. Only allowed while the network has no IPs in use."
+    },
+    {
       "name": "projects-list",
       "description": "List projects\n\nReturns a list of all projects for the current team\n"
     },
     {
       "name": "projects-create",
       "description": "Create project"
+    },
+    {
+      "name": "projects-get-project",
+      "description": "Retrieve project\n\nReturns a single project belonging to the current team\n"
     },
     {
       "name": "projects-delete",
@@ -276,6 +328,66 @@
     {
       "name": "projects-ssh-keys-post-project-ssh-key",
       "description": "Create SSH Key\n\nAllow you create SSH Keys in a project. These keys can be used to access servers after deploy and reinstall actions.\n"
+    },
+    {
+      "name": "object-storage-get-storage-usage",
+      "description": "List storage usage\n\nReturns daily object storage usage for a project. Each row reports the canonical usage in bytes for a single storage on a given day, plus the provider-reported raw value.\n"
+    },
+    {
+      "name": "object-storage-get-storage-access-keys",
+      "description": "List access keys\n\nLists object storage access keys for a project, grouped by storage class. Secrets are never returned by this endpoint."
+    },
+    {
+      "name": "object-storage-post-storage-access-keys",
+      "description": "Create access key\n\nCreates an object storage IAM access key for a project. The secret is returned only once, in this response, and cannot be retrieved again. The provider is selected by `storage_class`: `standard` provisions the key on Wasabi and `high_performance` provisions it on VAST."
+    },
+    {
+      "name": "object-storage-delete-storage-access-keys-username",
+      "description": "Delete access key\n\nPermanently deletes an object storage access key and its associated provider-side credentials. Deletion cannot be undone: it revokes the key's credentials and removes the key from the storage provider. For `standard` (Wasabi) keys, the IAM user is removed from each of the project's bucket policies, all of the user's access keys are revoked, and the IAM user is deleted. For `high_performance` (VAST) keys, the VAST user's S3 keys are revoked, its attached S3 policies are deleted, and the VAST user is removed."
+    },
+    {
+      "name": "object-storage-get-storage-bucket-access-keys",
+      "description": "List bucket access keys\n\nLists IAM access keys associated with an object storage bucket. Secrets are never returned by this endpoint."
+    },
+    {
+      "name": "object-storage-get-storage-buckets",
+      "description": "List buckets\n\nLists all object storages from a team."
+    },
+    {
+      "name": "object-storage-post-storage-buckets",
+      "description": "Create bucket\n\nCreates a new object storage bucket for a project."
+    },
+    {
+      "name": "object-storage-get-storage-bucket",
+      "description": "Retrieve bucket\n\nShows details of a specific object storage."
+    },
+    {
+      "name": "object-storage-delete-storage-buckets",
+      "description": "Delete bucket\n\nAllows you to remove an object storage from a project."
+    },
+    {
+      "name": "object-storage-get-storage-bucket-lifecycle-rules",
+      "description": "List lifecycle rules\n\nLists all lifecycle rules for a specific object storage bucket."
+    },
+    {
+      "name": "object-storage-post-storage-bucket-lifecycle-rules",
+      "description": "Create lifecycle rule\n\nCreates a new lifecycle rule for an object storage bucket. Lifecycle rules automate object expiration based on age."
+    },
+    {
+      "name": "object-storage-get-storage-bucket-lifecycle-rule",
+      "description": "Retrieve lifecycle rule\n\nRetrieves details of a specific lifecycle rule."
+    },
+    {
+      "name": "object-storage-delete-storage-bucket-lifecycle-rule",
+      "description": "Delete lifecycle rule\n\nDeletes a lifecycle rule from an object storage bucket."
+    },
+    {
+      "name": "object-storage-patch-storage-bucket-lifecycle-rule",
+      "description": "Update lifecycle rule\n\nUpdates an existing lifecycle rule for an object storage bucket."
+    },
+    {
+      "name": "object-storage-get-storage-bucket-metrics",
+      "description": "Retrieve bucket metrics\n\nRetrieves usage metrics for a specific object storage bucket, including storage consumption and estimated cost for the current billing period."
     },
     {
       "name": "user-data-get-project-users-data",
@@ -442,20 +554,8 @@
       "description": "Mount volume\n\nMounts a volume by adding the client to an allowed list"
     },
     {
-      "name": "object-storage-get-storage-buckets",
-      "description": "List buckets\n\nLists all object storages from a team."
-    },
-    {
-      "name": "object-storage-post-storage-buckets",
-      "description": "Create bucket\n\nCreates a new object storage bucket for a project."
-    },
-    {
-      "name": "object-storage-get-storage-bucket",
-      "description": "Retrieve bucket\n\nShows details of a specific object storage."
-    },
-    {
-      "name": "object-storage-delete-storage-buckets",
-      "description": "Delete bucket\n\nAllows you to remove an object storage from a project."
+      "name": "block-storage-post-storage-volumes-map",
+      "description": "Map volume to server\n\nMaps a high performance volume to a server over NVMe-TCP."
     },
     {
       "name": "tags-list",
@@ -506,6 +606,14 @@
       "description": "List user teams\n\nReturns a list of all teams the user belongs to\n"
     },
     {
+      "name": "marketplace-apps-list-marketplace-apps",
+      "description": "List marketplace apps\n\nLists the marketplace apps available to deploy on Virtual Machines. Only published apps are returned. Requires the `marketplace_apps` feature to be enabled for the team."
+    },
+    {
+      "name": "marketplace-apps-get-marketplace-app",
+      "description": "Retrieve a marketplace app\n\nRetrieve a single marketplace app by ID or slug. Only published apps are visible. Requires the `marketplace_apps` feature to be enabled for the team."
+    },
+    {
       "name": "virtual-machines-list",
       "description": "List VMs\n\nShow all Team's Virtual Machines.\n"
     },
@@ -527,7 +635,7 @@
     },
     {
       "name": "virtual-machines-create-virtual-machine-action",
-      "description": "Run VM power action\n\nPerforms a power action on a given virtual machine:\n- `power_on` - Starts the virtual machine\n- `power_off` - Stops the virtual machine\n- `reboot` - Restarts the virtual machine\n"
+      "description": "Run VM power action\n\nPerforms a power action on a given virtual machine:\n- `power_on` - Starts the virtual machine\n- `power_off` - Stops the virtual machine\n- `reboot` - Restarts the virtual machine\n\n`power_on` is never blocked. A `power_off` or `reboot` returns `409 Conflict` when a backup is in progress for the virtual machine.\n"
     },
     {
       "name": "virtual-machines-show-virtual-machine-metrics",

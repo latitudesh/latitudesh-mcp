@@ -29,7 +29,7 @@ import { Result } from "../types/fp.js";
  * Assign server to firewall
  *
  * @remarks
- * Assigns a server to a firewall by its ID.
+ * Assigns a server or a virtual machine to a firewall by its ID.
  */
 export function firewallsAssignmentsCreate(
   client$: LatitudeshCore,

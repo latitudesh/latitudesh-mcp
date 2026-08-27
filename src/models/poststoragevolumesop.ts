@@ -21,7 +21,8 @@ export const PostStorageVolumesType2$zodSchema = z.enum([
 export type PostStorageVolumesAttributes2 = {
   project: string;
   name: string;
-  size_in_gb?: number | undefined;
+  region: string;
+  size_in_gb: number;
 };
 
 export const PostStorageVolumesAttributes2$zodSchema: z.ZodType<
@@ -29,9 +30,10 @@ export const PostStorageVolumesAttributes2$zodSchema: z.ZodType<
 > = z.object({
   name: z.string().describe("Volume name"),
   project: z.string().describe("Project ID or slug"),
-  size_in_gb: z.int().default(1500).describe(
-    "Size in GB (not required, default is 1500)",
+  region: z.string().describe(
+    "Region (site) slug where the volume is provisioned",
   ),
+  size_in_gb: z.int().describe("Size in GB"),
 });
 
 export type PostStorageVolumesData2 = {

@@ -3,9 +3,14 @@
  */
 
 import { plansListStorage } from "../../funcs/plansListStorage.js";
+import { GetStoragePlansRequest$zodSchema } from "../../models/getstorageplansop.js";
 import { formatResult, ToolDefinition } from "../tools.js";
 
-export const tool$plansListStorage: ToolDefinition = {
+const args = {
+  request: GetStoragePlansRequest$zodSchema.optional(),
+};
+
+export const tool$plansListStorage: ToolDefinition<typeof args> = {
   name: "plans-list-storage",
   description: `List storage plans`,
   annotations: {
@@ -15,9 +20,11 @@ export const tool$plansListStorage: ToolDefinition = {
     "openWorldHint": false,
     "readOnlyHint": true,
   },
-  tool: async (client, ctx) => {
+  args,
+  tool: async (client, args, ctx) => {
     const [result] = await plansListStorage(
       client,
+      args.request,
       { fetchOptions: { signal: ctx.signal } },
     ).$inspect();
 

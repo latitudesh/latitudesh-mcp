@@ -32,6 +32,9 @@ export type FilesystemDataAttributes = {
   size_in_gb?: number | undefined;
   storage_class?: FilesystemStorageClass | null | undefined;
   created_at?: string | null | undefined;
+  keyring?: string | null | undefined;
+  cluster_user?: string | null | undefined;
+  volume_path?: string | null | undefined;
   project?: ProjectInclude | undefined;
   team?: TeamInclude | undefined;
 };
@@ -39,12 +42,21 @@ export type FilesystemDataAttributes = {
 export const FilesystemDataAttributes$zodSchema: z.ZodType<
   FilesystemDataAttributes
 > = z.object({
+  cluster_user: z.string().nullable().optional().describe(
+    "Cluster user used to mount the filesystem. Returned only for dashboard-origin requests; null until the filesystem is provisioned.",
+  ),
   created_at: z.iso.datetime({ offset: true }).nullable().optional(),
+  keyring: z.string().nullable().optional().describe(
+    "Keyring secret used to mount the filesystem. Returned only for dashboard-origin requests; null until the filesystem is provisioned.",
+  ),
   name: z.string().optional(),
   project: ProjectInclude$zodSchema.optional(),
   size_in_gb: z.int().optional(),
   storage_class: FilesystemStorageClass$zodSchema.nullable().optional(),
   team: TeamInclude$zodSchema.optional(),
+  volume_path: z.string().nullable().optional().describe(
+    "Path of the filesystem volume inside the cluster. Returned only for dashboard-origin requests; null until the filesystem is provisioned.",
+  ),
 });
 
 export type FilesystemData = {

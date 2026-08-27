@@ -23,12 +23,12 @@ export type PutProjectSshKeyAttributes2 = {
 export const PutProjectSshKeyAttributes2$zodSchema: z.ZodType<
   PutProjectSshKeyAttributes2
 > = z.object({
-  name: z.string().default("New SSH Key Name").describe("Name of the SSH Key"),
+  name: z.string().optional().describe("Name of the SSH Key"),
   tags: z.array(z.string()).optional(),
 });
 
 export type PutProjectSshKeyData2 = {
-  id?: string | undefined;
+  id: string;
   type: PutProjectSshKeyType2;
   attributes?: PutProjectSshKeyAttributes2 | undefined;
 };
@@ -36,7 +36,7 @@ export type PutProjectSshKeyData2 = {
 export const PutProjectSshKeyData2$zodSchema: z.ZodType<PutProjectSshKeyData2> =
   z.object({
     attributes: z.lazy(() => PutProjectSshKeyAttributes2$zodSchema).optional(),
-    id: z.string().default("ssh_81EVOtR1N4J2Z"),
+    id: z.string(),
     type: PutProjectSshKeyType2$zodSchema,
   });
 

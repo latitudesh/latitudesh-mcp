@@ -5,8 +5,13 @@
 import * as z from "zod";
 import { PlanData, PlanData$zodSchema } from "./plandata.js";
 
-export type Plan = { data?: PlanData | undefined };
+export type PlanMeta = {};
+
+export const PlanMeta$zodSchema: z.ZodType<PlanMeta> = z.object({});
+
+export type Plan = { data?: PlanData | undefined; meta?: PlanMeta | undefined };
 
 export const Plan$zodSchema: z.ZodType<Plan> = z.object({
   data: PlanData$zodSchema.optional(),
+  meta: z.lazy(() => PlanMeta$zodSchema).optional(),
 });

@@ -16,6 +16,7 @@ export const IpmiSessionType$zodSchema = z.enum([
 
 export type IpmiSessionAttributes = {
   ipmi_address?: string | undefined;
+  ipmi_url?: string | null | undefined;
   ipmi_username?: string | undefined;
   ipmi_password?: string | undefined;
 };
@@ -24,6 +25,9 @@ export const IpmiSessionAttributes$zodSchema: z.ZodType<IpmiSessionAttributes> =
   z.object({
     ipmi_address: z.string().optional().describe("The IPMI IP Address"),
     ipmi_password: z.string().optional().describe("The IPMI password"),
+    ipmi_url: z.string().nullable().optional().describe(
+      "The IPMI URL for direct access",
+    ),
     ipmi_username: z.string().optional().describe("The IPMI username"),
   });
 

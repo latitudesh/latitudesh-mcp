@@ -29,7 +29,7 @@ import { Result } from "../types/fp.js";
  * Delete assignment
  *
  * @remarks
- * Removes a server from a firewall by its ID.
+ * Removes a server or a virtual machine from a firewall by its assignment ID.
  */
 export function firewallsDeleteAssignment(
   client$: LatitudeshCore,

@@ -14,7 +14,7 @@ export const tool$firewallsDeleteAssignment: ToolDefinition<typeof args> = {
   name: "firewalls-delete-assignment",
   description: `Delete assignment
 
-Removes a server from a firewall by its ID.`,
+Removes a server or a virtual machine from a firewall by its assignment ID.`,
   annotations: {
     "title": "",
     "destructiveHint": true,

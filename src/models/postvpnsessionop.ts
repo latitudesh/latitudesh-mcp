@@ -61,15 +61,15 @@ export const PostVpnSessionSite2$zodSchema = z.union([
 ]);
 
 export type PostVpnSessionAttributes2 = {
-  site?: PostVpnSessionSite2 | undefined;
-  server_id?: string | undefined;
+  site: PostVpnSessionSite2;
+  server_id: string;
 };
 
 export const PostVpnSessionAttributes2$zodSchema: z.ZodType<
   PostVpnSessionAttributes2
 > = z.object({
-  server_id: z.string().optional(),
-  site: PostVpnSessionSite2$zodSchema.optional(),
+  server_id: z.string(),
+  site: PostVpnSessionSite2$zodSchema,
 });
 
 export type PostVpnSessionData2 = {

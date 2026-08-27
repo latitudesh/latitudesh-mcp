@@ -48,7 +48,7 @@ export const UpdateServerAttributes2$zodSchema: z.ZodType<
   billing: UpdateServerBilling2$zodSchema.nullable().optional().describe(
     "The server billing type. Accepts `hourly` and `monthly` for on demand projects and `yearly` for reserved projects.",
   ),
-  hostname: z.string().default("new-hostname"),
+  hostname: z.string().optional(),
   project: z.string().optional().describe(
     "Project ID or slug to move the server to",
   ),
@@ -64,7 +64,7 @@ export type UpdateServerData2 = {
 export const UpdateServerData2$zodSchema: z.ZodType<UpdateServerData2> = z
   .object({
     attributes: z.lazy(() => UpdateServerAttributes2$zodSchema).optional(),
-    id: z.string().default("sv_81EVOtR1N4J2Z"),
+    id: z.string().optional(),
     type: UpdateServerType2$zodSchema.optional(),
   });
 

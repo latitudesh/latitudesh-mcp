@@ -16,9 +16,12 @@ export const FirewallAssignmentDataType$zodSchema = z.enum([
   "firewall_assignments",
 ]);
 
+/**
+ * Present only when the assignment targets a server.
+ */
 export type FirewallAssignmentDataServer = {
   id?: string | undefined;
-  primary_ipv4?: string | undefined;
+  primary_ipv4?: string | null | undefined;
   hostname?: string | undefined;
 };
 
@@ -27,8 +30,25 @@ export const FirewallAssignmentDataServer$zodSchema: z.ZodType<
 > = z.object({
   hostname: z.string().optional(),
   id: z.string().optional(),
-  primary_ipv4: z.string().optional(),
-});
+  primary_ipv4: z.string().nullable().optional(),
+}).describe("Present only when the assignment targets a server.");
+
+/**
+ * Present only when the assignment targets a virtual machine.
+ */
+export type FirewallAssignmentDataVirtualMachine = {
+  id?: string | undefined;
+  primary_ipv4?: string | null | undefined;
+  hostname?: string | undefined;
+};
+
+export const FirewallAssignmentDataVirtualMachine$zodSchema: z.ZodType<
+  FirewallAssignmentDataVirtualMachine
+> = z.object({
+  hostname: z.string().optional(),
+  id: z.string().optional(),
+  primary_ipv4: z.string().nullable().optional(),
+}).describe("Present only when the assignment targets a virtual machine.");
 
 export type FirewallAssignmentDataFirewall = {
   id?: string | undefined;
@@ -44,6 +64,7 @@ export const FirewallAssignmentDataFirewall$zodSchema: z.ZodType<
 
 export type FirewallAssignmentDataAttributes = {
   server?: FirewallAssignmentDataServer | undefined;
+  virtual_machine?: FirewallAssignmentDataVirtualMachine | undefined;
   firewall?: FirewallAssignmentDataFirewall | undefined;
   firewall_id?: string | undefined;
 };
@@ -53,7 +74,12 @@ export const FirewallAssignmentDataAttributes$zodSchema: z.ZodType<
 > = z.object({
   firewall: z.lazy(() => FirewallAssignmentDataFirewall$zodSchema).optional(),
   firewall_id: z.string().optional(),
-  server: z.lazy(() => FirewallAssignmentDataServer$zodSchema).optional(),
+  server: z.lazy(() => FirewallAssignmentDataServer$zodSchema).optional()
+    .describe("Present only when the assignment targets a server."),
+  virtual_machine: z.lazy(() => FirewallAssignmentDataVirtualMachine$zodSchema)
+    .optional().describe(
+      "Present only when the assignment targets a virtual machine.",
+    ),
 });
 
 export type FirewallAssignmentData = {

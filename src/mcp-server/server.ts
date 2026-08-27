@@ -22,15 +22,24 @@ import { tool$apiKeysDelete } from "./tools/apiKeysDelete.js";
 import { tool$apiKeysList } from "./tools/apiKeysList.js";
 import { tool$apiKeysUpdate } from "./tools/apiKeysUpdate.js";
 import { tool$apiKeysUpdateApiKey } from "./tools/apiKeysUpdateApiKey.js";
+import { tool$baselinesPreviewCreateBaseline } from "./tools/baselinesPreviewCreateBaseline.js";
+import { tool$baselinesPreviewDestroyBaseline } from "./tools/baselinesPreviewDestroyBaseline.js";
+import { tool$baselinesPreviewGetBaseline } from "./tools/baselinesPreviewGetBaseline.js";
+import { tool$baselinesPreviewGetBaselines } from "./tools/baselinesPreviewGetBaselines.js";
 import { tool$billingListUsage } from "./tools/billingListUsage.js";
 import { tool$blockStorageDeleteStorageVolumes } from "./tools/blockStorageDeleteStorageVolumes.js";
 import { tool$blockStorageGetStorageVolume } from "./tools/blockStorageGetStorageVolume.js";
 import { tool$blockStorageGetStorageVolumes } from "./tools/blockStorageGetStorageVolumes.js";
 import { tool$blockStoragePostStorageVolumes } from "./tools/blockStoragePostStorageVolumes.js";
+import { tool$blockStoragePostStorageVolumesMap } from "./tools/blockStoragePostStorageVolumesMap.js";
 import { tool$blockStoragePostStorageVolumesMount } from "./tools/blockStoragePostStorageVolumesMount.js";
 import { tool$elasticIpsCreateElasticIp } from "./tools/elasticIpsCreateElasticIp.js";
+import { tool$elasticIpsCreateElasticIpBgpSession } from "./tools/elasticIpsCreateElasticIpBgpSession.js";
 import { tool$elasticIpsDeleteElasticIp } from "./tools/elasticIpsDeleteElasticIp.js";
+import { tool$elasticIpsDeleteElasticIpBgpSession } from "./tools/elasticIpsDeleteElasticIpBgpSession.js";
 import { tool$elasticIpsGetElasticIp } from "./tools/elasticIpsGetElasticIp.js";
+import { tool$elasticIpsGetElasticIpBgpSession } from "./tools/elasticIpsGetElasticIpBgpSession.js";
+import { tool$elasticIpsListElasticIpBgpSessions } from "./tools/elasticIpsListElasticIpBgpSessions.js";
 import { tool$elasticIpsListElasticIps } from "./tools/elasticIpsListElasticIps.js";
 import { tool$elasticIpsUpdateElasticIp } from "./tools/elasticIpsUpdateElasticIp.js";
 import { tool$eventsList } from "./tools/eventsList.js";
@@ -56,9 +65,22 @@ import { tool$kubernetesClustersGetKubernetesClusterKubeconfig } from "./tools/k
 import { tool$kubernetesClustersListAvailableVersions } from "./tools/kubernetesClustersListAvailableVersions.js";
 import { tool$kubernetesClustersListKubernetesClusters } from "./tools/kubernetesClustersListKubernetesClusters.js";
 import { tool$kubernetesClustersUpdateKubernetesCluster } from "./tools/kubernetesClustersUpdateKubernetesCluster.js";
+import { tool$marketplaceAppsGetMarketplaceApp } from "./tools/marketplaceAppsGetMarketplaceApp.js";
+import { tool$marketplaceAppsListMarketplaceApps } from "./tools/marketplaceAppsListMarketplaceApps.js";
+import { tool$objectStorageDeleteStorageAccessKeysUsername } from "./tools/objectStorageDeleteStorageAccessKeysUsername.js";
+import { tool$objectStorageDeleteStorageBucketLifecycleRule } from "./tools/objectStorageDeleteStorageBucketLifecycleRule.js";
 import { tool$objectStorageDeleteStorageBuckets } from "./tools/objectStorageDeleteStorageBuckets.js";
+import { tool$objectStorageGetStorageAccessKeys } from "./tools/objectStorageGetStorageAccessKeys.js";
 import { tool$objectStorageGetStorageBucket } from "./tools/objectStorageGetStorageBucket.js";
+import { tool$objectStorageGetStorageBucketAccessKeys } from "./tools/objectStorageGetStorageBucketAccessKeys.js";
+import { tool$objectStorageGetStorageBucketLifecycleRule } from "./tools/objectStorageGetStorageBucketLifecycleRule.js";
+import { tool$objectStorageGetStorageBucketLifecycleRules } from "./tools/objectStorageGetStorageBucketLifecycleRules.js";
+import { tool$objectStorageGetStorageBucketMetrics } from "./tools/objectStorageGetStorageBucketMetrics.js";
 import { tool$objectStorageGetStorageBuckets } from "./tools/objectStorageGetStorageBuckets.js";
+import { tool$objectStorageGetStorageUsage } from "./tools/objectStorageGetStorageUsage.js";
+import { tool$objectStoragePatchStorageBucketLifecycleRule } from "./tools/objectStoragePatchStorageBucketLifecycleRule.js";
+import { tool$objectStoragePostStorageAccessKeys } from "./tools/objectStoragePostStorageAccessKeys.js";
+import { tool$objectStoragePostStorageBucketLifecycleRules } from "./tools/objectStoragePostStorageBucketLifecycleRules.js";
 import { tool$objectStoragePostStorageBuckets } from "./tools/objectStoragePostStorageBuckets.js";
 import { tool$operatingSystemsListPlans } from "./tools/operatingSystemsListPlans.js";
 import { tool$plansGet } from "./tools/plansGet.js";
@@ -77,9 +99,14 @@ import { tool$privateNetworksListAssignments } from "./tools/privateNetworksList
 import { tool$privateNetworksUpdate } from "./tools/privateNetworksUpdate.js";
 import { tool$projectsCreate } from "./tools/projectsCreate.js";
 import { tool$projectsDelete } from "./tools/projectsDelete.js";
+import { tool$projectsGetProject } from "./tools/projectsGetProject.js";
 import { tool$projectsList } from "./tools/projectsList.js";
 import { tool$projectsSshKeysPostProjectSshKey } from "./tools/projectsSshKeysPostProjectSshKey.js";
 import { tool$projectsUpdate } from "./tools/projectsUpdate.js";
+import { tool$publicNetworksCreatePublicNetwork } from "./tools/publicNetworksCreatePublicNetwork.js";
+import { tool$publicNetworksDestroyPublicNetwork } from "./tools/publicNetworksDestroyPublicNetwork.js";
+import { tool$publicNetworksGetPublicNetwork } from "./tools/publicNetworksGetPublicNetwork.js";
+import { tool$publicNetworksGetPublicNetworks } from "./tools/publicNetworksGetPublicNetworks.js";
 import { tool$regionsFetch } from "./tools/regionsFetch.js";
 import { tool$regionsGet } from "./tools/regionsGet.js";
 import { tool$rolesGet } from "./tools/rolesGet.js";
@@ -178,7 +205,7 @@ export function createMCPServer(deps: {
 }) {
   const server = new McpServer({
     name: "Latitudesh",
-    version: "0.3.1",
+    version: "0.3.2",
   });
 
   const getClient = deps.getSDK || (() =>
@@ -229,6 +256,10 @@ export function createMCPServer(deps: {
   tool(tool$apiKeysUpdate);
   tool(tool$apiKeysDelete);
   tool(tool$apiKeysUpdateApiKey);
+  tool(tool$baselinesPreviewGetBaselines);
+  tool(tool$baselinesPreviewCreateBaseline);
+  tool(tool$baselinesPreviewGetBaseline);
+  tool(tool$baselinesPreviewDestroyBaseline);
   tool(tool$billingListUsage);
   tool(tool$eventsList);
   tool(tool$firewallsGetAllFirewallAssignments);
@@ -244,6 +275,10 @@ export function createMCPServer(deps: {
   tool(tool$elasticIpsGetElasticIp);
   tool(tool$elasticIpsDeleteElasticIp);
   tool(tool$elasticIpsUpdateElasticIp);
+  tool(tool$elasticIpsListElasticIpBgpSessions);
+  tool(tool$elasticIpsCreateElasticIpBgpSession);
+  tool(tool$elasticIpsGetElasticIpBgpSession);
+  tool(tool$elasticIpsDeleteElasticIpBgpSession);
   tool(tool$firewallsAssignmentsCreate);
   tool(tool$ipAddressesList);
   tool(tool$ipAddressesGet);
@@ -265,8 +300,13 @@ export function createMCPServer(deps: {
   tool(tool$plansListStorage);
   tool(tool$plansGetManagedDatabasePlans);
   tool(tool$plansVmList);
+  tool(tool$publicNetworksGetPublicNetworks);
+  tool(tool$publicNetworksCreatePublicNetwork);
+  tool(tool$publicNetworksGetPublicNetwork);
+  tool(tool$publicNetworksDestroyPublicNetwork);
   tool(tool$projectsList);
   tool(tool$projectsCreate);
+  tool(tool$projectsGetProject);
   tool(tool$projectsDelete);
   tool(tool$projectsUpdate);
   tool(tool$sshKeysList);
@@ -279,6 +319,21 @@ export function createMCPServer(deps: {
   tool(tool$sshKeysDelete);
   tool(tool$sshKeysUpdate);
   tool(tool$projectsSshKeysPostProjectSshKey);
+  tool(tool$objectStorageGetStorageUsage);
+  tool(tool$objectStorageGetStorageAccessKeys);
+  tool(tool$objectStoragePostStorageAccessKeys);
+  tool(tool$objectStorageDeleteStorageAccessKeysUsername);
+  tool(tool$objectStorageGetStorageBucketAccessKeys);
+  tool(tool$objectStorageGetStorageBuckets);
+  tool(tool$objectStoragePostStorageBuckets);
+  tool(tool$objectStorageGetStorageBucket);
+  tool(tool$objectStorageDeleteStorageBuckets);
+  tool(tool$objectStorageGetStorageBucketLifecycleRules);
+  tool(tool$objectStoragePostStorageBucketLifecycleRules);
+  tool(tool$objectStorageGetStorageBucketLifecycleRule);
+  tool(tool$objectStorageDeleteStorageBucketLifecycleRule);
+  tool(tool$objectStoragePatchStorageBucketLifecycleRule);
+  tool(tool$objectStorageGetStorageBucketMetrics);
   tool(tool$userDataGetProjectUsersData);
   tool(tool$userDataGetProjectUserData);
   tool(tool$userDataDeleteProjectUserData);
@@ -320,10 +375,7 @@ export function createMCPServer(deps: {
   tool(tool$blockStorageGetStorageVolume);
   tool(tool$blockStorageDeleteStorageVolumes);
   tool(tool$blockStoragePostStorageVolumesMount);
-  tool(tool$objectStorageGetStorageBuckets);
-  tool(tool$objectStoragePostStorageBuckets);
-  tool(tool$objectStorageGetStorageBucket);
-  tool(tool$objectStorageDeleteStorageBuckets);
+  tool(tool$blockStoragePostStorageVolumesMap);
   tool(tool$tagsList);
   tool(tool$tagsCreate);
   tool(tool$tagsDelete);
@@ -336,6 +388,8 @@ export function createMCPServer(deps: {
   tool(tool$userProfileGet);
   tool(tool$userProfileUpdate);
   tool(tool$userProfileListTeams);
+  tool(tool$marketplaceAppsListMarketplaceApps);
+  tool(tool$marketplaceAppsGetMarketplaceApp);
   tool(tool$virtualMachinesList);
   tool(tool$virtualMachinesCreate);
   tool(tool$virtualMachinesGet);

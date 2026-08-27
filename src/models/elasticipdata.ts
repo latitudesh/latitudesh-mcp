@@ -32,22 +32,25 @@ export const ElasticIpDataFamily$zodSchema = z.enum([
 /**
  * The routing mode for this Elastic IP
  */
-export const Mode = {
+export const ElasticIpDataMode = {
   Routed: "routed",
+  Bgp: "bgp",
 } as const;
 /**
  * The routing mode for this Elastic IP
  */
-export type Mode = ClosedEnum<typeof Mode>;
+export type ElasticIpDataMode = ClosedEnum<typeof ElasticIpDataMode>;
 
-export const Mode$zodSchema = z.enum([
+export const ElasticIpDataMode$zodSchema = z.enum([
   "routed",
+  "bgp",
 ]).describe("The routing mode for this Elastic IP");
 
 /**
  * The current status of the Elastic IP
  */
 export const ElasticIpDataStatus = {
+  Pending: "pending",
   Configuring: "configuring",
   Active: "active",
   Moving: "moving",
@@ -60,6 +63,7 @@ export const ElasticIpDataStatus = {
 export type ElasticIpDataStatus = ClosedEnum<typeof ElasticIpDataStatus>;
 
 export const ElasticIpDataStatus$zodSchema = z.enum([
+  "pending",
   "configuring",
   "active",
   "moving",
@@ -141,7 +145,7 @@ export type ElasticIpDataAttributes = {
   address?: string | undefined;
   family?: ElasticIpDataFamily | undefined;
   prefix_length?: number | undefined;
-  mode?: Mode | undefined;
+  mode?: ElasticIpDataMode | undefined;
   status?: ElasticIpDataStatus | undefined;
   created_at?: string | undefined;
   server?: ElasticIpDataServer | null | undefined;
@@ -159,7 +163,7 @@ export const ElasticIpDataAttributes$zodSchema: z.ZodType<
   family: ElasticIpDataFamily$zodSchema.optional().describe(
     "The IP address family",
   ),
-  mode: Mode$zodSchema.optional().describe(
+  mode: ElasticIpDataMode$zodSchema.optional().describe(
     "The routing mode for this Elastic IP",
   ),
   prefix_length: z.int().optional().describe(

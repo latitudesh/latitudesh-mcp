@@ -17,18 +17,18 @@ export const CreateTagType2$zodSchema = z.enum([
 ]);
 
 export type CreateTagAttributes2 = {
-  name?: string | undefined;
+  name: string;
   description?: string | null | undefined;
-  color?: string | undefined;
+  color: string;
 };
 
 export const CreateTagAttributes2$zodSchema: z.ZodType<CreateTagAttributes2> = z
   .object({
-    color: z.string().default("#ffffff").describe("Color of the Tag"),
+    color: z.string().describe("Color of the Tag"),
     description: z.string().nullable().optional().describe(
       "Description of the Tag",
     ),
-    name: z.string().optional().describe("Name of the Tag"),
+    name: z.string().describe("Name of the Tag"),
   });
 
 export type CreateTagData2 = {

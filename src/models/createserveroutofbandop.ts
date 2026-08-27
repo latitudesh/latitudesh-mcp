@@ -16,16 +16,12 @@ export const CreateServerOutOfBandType2$zodSchema = z.enum([
   "out_of_band",
 ]);
 
-export type CreateServerOutOfBandAttributes2 = {
-  ssh_key_id?: string | undefined;
-};
+export type CreateServerOutOfBandAttributes2 = { ssh_key_id: string };
 
 export const CreateServerOutOfBandAttributes2$zodSchema: z.ZodType<
   CreateServerOutOfBandAttributes2
 > = z.object({
-  ssh_key_id: z.string().optional().describe(
-    "SSH Key ID to set for out of band",
-  ),
+  ssh_key_id: z.string().describe("SSH Key ID to set for out of band"),
 });
 
 export type CreateServerOutOfBandData2 = {

@@ -107,7 +107,7 @@ export const PostStorageBucketsAttributes$zodSchema: z.ZodType<
       "Backend storage tier. `standard` is the default S3-compatible tier. `high_performance` is a lower-latency, higher-throughput tier available in select regions only.",
     ),
   versioning: z.boolean().default(false).describe(
-    "Enable S3 object versioning. Once enabled, versioning cannot be disabled.",
+    "Enable S3 object versioning. Versioning can be suspended later unless Object Lock is enabled; enabling Object Lock requires versioning and prevents versioning from being suspended.",
   ),
 });
 
