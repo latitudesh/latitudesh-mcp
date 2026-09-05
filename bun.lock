@@ -1,5 +1,6 @@
 {
-  "lockfileVersion": 1,
+  "lockfileVersion": 3,
+  "configVersion": 0,
   "workspaces": {
     "": {
       "name": "latitudesh",
@@ -30,12 +31,16 @@
   "overrides": {
     "@modelcontextprotocol/sdk": "1.26.0",
     "body-parser": ">=2.3.0 <3.0.0",
-    "brace-expansion@^2.0.0": ">=2.1.4 <3.0.0",
+    "brace-expansion@^2.0.0": {
+      ".": ">=2.1.4 <3.0.0",
+    },
     "fast-uri": ">=4.1.2 <5.0.0",
     "hono": ">=4.12.34",
     "ip-address": ">=10.3.1 <11.0.0",
     "js-yaml": ">=4.3.1 <5.0.0",
-    "nanoid@^5.0.0": ">=5.1.16 <6.0.0",
+    "nanoid@^5.0.0": {
+      ".": ">=5.1.16 <6.0.0",
+    },
   },
   "packages": {
     "@ai-sdk/gateway": ["@ai-sdk/gateway@3.0.189", "", { "dependencies": { "@ai-sdk/provider": "3.0.15", "@ai-sdk/provider-utils": "4.0.50", "@vercel/oidc": "3.2.0" }, "peerDependencies": { "zod": "^3.25.76 || ^4.1.8" } }, "sha512-roPKojHenQm7U77kNNE0w586jP2vnjxaNx/+KFSQkJRLLAxrg7yUwZQfyOEizoTxdaltu+ZIlLRTw09X3XbGvQ=="],
