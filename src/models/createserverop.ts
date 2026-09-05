@@ -145,26 +145,29 @@ export const CreateServerOperatingSystem2 = {
 /**
  * The operating system slug for the new server
  */
-export type CreateServerOperatingSystem2 = ClosedEnum<
+export type CreateServerOperatingSystem2 = OpenEnum<
   typeof CreateServerOperatingSystem2
 >;
 
-export const CreateServerOperatingSystem2$zodSchema = z.enum([
-  "centos_7_4_x64",
-  "centos_8_x64",
-  "debian_10",
-  "debian_11",
-  "debian_12",
-  "ipxe",
-  "rhel8",
-  "rockylinux_8",
-  "ubuntu22_ml_in_a_box",
-  "ubuntu24_ml_in_a_box",
-  "ubuntu_20_04_x64_lts",
-  "ubuntu_22_04_x64_lts",
-  "ubuntu_24_04_x64_lts",
-  "windows_2022_std",
-  "windows_server_2019_std_v1",
+export const CreateServerOperatingSystem2$zodSchema = z.union([
+  z.enum([
+    "centos_7_4_x64",
+    "centos_8_x64",
+    "debian_10",
+    "debian_11",
+    "debian_12",
+    "ipxe",
+    "rhel8",
+    "rockylinux_8",
+    "ubuntu22_ml_in_a_box",
+    "ubuntu24_ml_in_a_box",
+    "ubuntu_20_04_x64_lts",
+    "ubuntu_22_04_x64_lts",
+    "ubuntu_24_04_x64_lts",
+    "windows_2022_std",
+    "windows_server_2019_std_v1",
+  ]),
+  z.string().transform(catchUnrecognizedEnum),
 ]).describe("The operating system slug for the new server");
 
 /**
@@ -273,6 +276,8 @@ export type CreateServerAttributes2 = {
   raid?: CreateServerRaid2 | null | undefined;
   disk_layout?: Array<CreateServerDiskLayout2> | null | undefined;
   ipxe?: string | null | undefined;
+  public_network?: boolean | null | undefined;
+  public_network_id?: string | null | undefined;
   persistent_netboot?: boolean | undefined;
   bgp_ready?: boolean | null | undefined;
   billing?: CreateServerBilling2 | null | undefined;
@@ -303,6 +308,12 @@ export const CreateServerAttributes2$zodSchema: z.ZodType<
     "The plan slug to choose server from, defining the specs the server will have",
   ),
   project: z.string().describe("The project (ID or Slug) to deploy the server"),
+  public_network: z.boolean().nullable().optional().describe(
+    "**Preview.** Available to teams with public networks enabled. Set to true to deploy the server attached to the given public_network_id. Requires public_network_id; only public-network-capable stock is selected.",
+  ),
+  public_network_id: z.string().nullable().optional().describe(
+    "**Preview.** Available to teams with public networks enabled. ID of a customer public network to attach the server onto. Requires public_network: true. The public network must belong to the same project and location as the deployment and have a free address.",
+  ),
   raid: CreateServerRaid2$zodSchema.nullable().optional().describe(
     "RAID mode for the server. Set to 'raid-0' for RAID 0, 'raid-1' for RAID 1, or omit/null for no RAID configuration",
   ),

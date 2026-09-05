@@ -5,6 +5,15 @@
 import * as z from "zod";
 import { ClosedEnum } from "../types/enums.js";
 
+export const DeployConfigType = {
+  DeployConfig: "deploy_config",
+} as const;
+export type DeployConfigType = ClosedEnum<typeof DeployConfigType>;
+
+export const DeployConfigType$zodSchema = z.enum([
+  "deploy_config",
+]);
+
 export const DeployConfigRole = {
   Os: "os",
   Storage: "storage",
@@ -31,13 +40,11 @@ export const DeployConfigRaidLevel$zodSchema = z.enum([
 
 export const DeployConfigFilesystem = {
   Ext4: "ext4",
-  Xfs: "xfs",
 } as const;
 export type DeployConfigFilesystem = ClosedEnum<typeof DeployConfigFilesystem>;
 
 export const DeployConfigFilesystem$zodSchema = z.enum([
   "ext4",
-  "xfs",
 ]);
 
 export type DiskLayout = {
@@ -59,10 +66,12 @@ export const DiskLayout$zodSchema: z.ZodType<DiskLayout> = z.object({
 export type DeployConfigAttributes = {
   operating_system?: string | undefined;
   hostname?: string | undefined;
-  raid?: string | undefined;
+  raid?: string | null | undefined;
   disk_layout?: Array<DiskLayout> | null | undefined;
   user_data?: string | undefined;
   ssh_keys?: Array<string> | undefined;
+  ipxe_url?: string | null | undefined;
+  ipxe?: string | null | undefined;
   persistent_netboot?: boolean | null | undefined;
   public_network?: boolean | null | undefined;
   public_network_id?: string | null | undefined;
@@ -74,19 +83,22 @@ export const DeployConfigAttributes$zodSchema: z.ZodType<
   disk_layout: z.array(z.lazy(() => DiskLayout$zodSchema)).nullable()
     .optional(),
   hostname: z.string().optional(),
+  ipxe: z.string().nullable().optional(),
+  ipxe_url: z.string().nullable().optional(),
   operating_system: z.string().optional(),
   persistent_netboot: z.boolean().nullable().optional().describe(
     "Keep network boot enabled so the server iPXE-boots on every reboot instead of booting from disk. Only supported with the 'ipxe' operating system.",
   ),
   public_network: z.boolean().nullable().optional(),
   public_network_id: z.string().nullable().optional(),
-  raid: z.string().optional(),
+  raid: z.string().nullable().optional(),
   ssh_keys: z.array(z.string()).optional(),
   user_data: z.string().optional(),
 });
 
 export type DeployConfigData = {
   id?: string | undefined;
+  type?: DeployConfigType | undefined;
   attributes?: DeployConfigAttributes | undefined;
 };
 
@@ -94,11 +106,22 @@ export const DeployConfigData$zodSchema: z.ZodType<DeployConfigData> = z.object(
   {
     attributes: z.lazy(() => DeployConfigAttributes$zodSchema).optional(),
     id: z.string().optional(),
+    type: DeployConfigType$zodSchema.optional(),
   },
 );
 
-export type DeployConfig = { data?: DeployConfigData | undefined };
+export type DeployConfigMeta = {};
+
+export const DeployConfigMeta$zodSchema: z.ZodType<DeployConfigMeta> = z.object(
+  {},
+);
+
+export type DeployConfig = {
+  data?: DeployConfigData | undefined;
+  meta?: DeployConfigMeta | undefined;
+};
 
 export const DeployConfig$zodSchema: z.ZodType<DeployConfig> = z.object({
   data: z.lazy(() => DeployConfigData$zodSchema).optional(),
+  meta: z.lazy(() => DeployConfigMeta$zodSchema).optional(),
 });

@@ -6,8 +6,8 @@ import * as z from "zod";
 
 export type StorageUsageAttributes = {
   date?: string | undefined;
-  storage_id?: number | undefined;
-  project_id?: number | undefined;
+  storage_id?: string | undefined;
+  project_id?: string | undefined;
   storage_type?: string | null | undefined;
   tier?: string | null | undefined;
   region?: string | undefined;
@@ -27,7 +27,9 @@ export const StorageUsageAttributes$zodSchema: z.ZodType<
     "The day this usage row refers to",
   ),
   ingested_at: z.iso.datetime({ offset: true }).optional(),
-  project_id: z.int().optional(),
+  project_id: z.string().optional().describe(
+    "The project ID. A numeric value serialized as a string, e.g. \"1234\".",
+  ),
   raw_unit: z.string().optional().describe(
     "The unit raw_value is expressed in",
   ),
@@ -35,7 +37,9 @@ export const StorageUsageAttributes$zodSchema: z.ZodType<
     "The provider-reported usage value, in raw_unit",
   ),
   region: z.string().optional(),
-  storage_id: z.int().optional(),
+  storage_id: z.string().optional().describe(
+    "The storage/bucket ID. A numeric value serialized as a string, e.g. \"42\".",
+  ),
   storage_type: z.string().nullable().optional().describe(
     "Storage kind. One of: object, file, block.",
   ),

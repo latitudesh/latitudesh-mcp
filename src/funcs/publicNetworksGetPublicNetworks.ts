@@ -29,6 +29,8 @@ import { Result } from "../types/fp.js";
  * List networks
  *
  * @remarks
+ * **Preview.** Available at locations where the `public_network` feature is enabled.
+ *
  * List the customer networks owned by the team
  */
 export function publicNetworksGetPublicNetworks(

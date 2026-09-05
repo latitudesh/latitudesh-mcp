@@ -29,7 +29,7 @@ import { Result } from "../types/fp.js";
  * Retrieve a marketplace app
  *
  * @remarks
- * Retrieve a single marketplace app by ID or slug. Only published apps are visible. Requires the `marketplace_apps` feature to be enabled for the team.
+ * Retrieve a single marketplace app by ID or slug. Only published apps are visible.
  */
 export function marketplaceAppsGetMarketplaceApp(
   client$: LatitudeshCore,
