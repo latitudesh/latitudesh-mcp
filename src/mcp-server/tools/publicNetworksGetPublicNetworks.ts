@@ -15,6 +15,8 @@ export const tool$publicNetworksGetPublicNetworks: ToolDefinition<typeof args> =
     name: "public-networks-get-public-networks",
     description: `List networks
 
+**Preview.** Available at locations where the \`public_network\` feature is enabled.
+
 List the customer networks owned by the team`,
     annotations: {
       "title": "",

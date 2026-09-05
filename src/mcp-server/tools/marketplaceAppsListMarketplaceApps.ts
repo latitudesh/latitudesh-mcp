@@ -9,7 +9,7 @@ export const tool$marketplaceAppsListMarketplaceApps: ToolDefinition = {
   name: "marketplace-apps-list-marketplace-apps",
   description: `List marketplace apps
 
-Lists the marketplace apps available to deploy on Virtual Machines. Only published apps are returned. Requires the \`marketplace_apps\` feature to be enabled for the team.`,
+Lists the marketplace apps available to deploy on Virtual Machines. Only published apps are returned.`,
   annotations: {
     "title": "",
     "destructiveHint": false,

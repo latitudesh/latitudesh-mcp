@@ -68,7 +68,7 @@ export const PostStorageVolumesMapMeta$zodSchema: z.ZodType<
 > = z.object({});
 
 /**
- * Success
+ * Accepted
  */
 export type PostStorageVolumesMapResponse = {
   data?: VolumeData | undefined;
@@ -80,4 +80,4 @@ export const PostStorageVolumesMapResponse$zodSchema: z.ZodType<
 > = z.object({
   data: VolumeData$zodSchema.optional(),
   meta: z.lazy(() => PostStorageVolumesMapMeta$zodSchema).optional(),
-}).describe("Success");
+}).describe("Accepted");

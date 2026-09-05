@@ -6,14 +6,28 @@ import * as z from "zod";
 import { Servers, Servers$zodSchema } from "./servers.js";
 
 export type GetServersRequest = {
+  filterId?: string | undefined;
   filterProject?: string | undefined;
   filterRegion?: string | undefined;
   filterHostname?: string | undefined;
+  filterHostnameEql?: string | undefined;
+  filterHostnamePrefix?: string | undefined;
+  filterHostnameSuffix?: string | undefined;
+  filterHostnameMatch?: string | undefined;
   filterCreatedAtGte?: string | undefined;
   filterCreatedAtLte?: string | undefined;
+  filterCreatedAt?: string | undefined;
   filterLabel?: string | undefined;
+  filterLabelEql?: string | undefined;
+  filterLabelPrefix?: string | undefined;
+  filterLabelSuffix?: string | undefined;
+  filterLabelMatch?: string | undefined;
   filterStatus?: string | undefined;
   filterPlan?: string | undefined;
+  filterPlanEql?: string | undefined;
+  filterPlanPrefix?: string | undefined;
+  filterPlanSuffix?: string | undefined;
+  filterPlanMatch?: string | undefined;
   filterGpu?: boolean | undefined;
   filterRamEql?: number | undefined;
   filterRamGte?: number | undefined;
@@ -22,7 +36,9 @@ export type GetServersRequest = {
   filterDiskGte?: number | undefined;
   filterDiskLte?: number | undefined;
   filterTags?: string | undefined;
+  filterBgpEligible?: boolean | undefined;
   extraFieldsServers?: string | undefined;
+  sort?: string | undefined;
   pageSize?: number | undefined;
   pageNumber?: number | undefined;
   statsTotal?: string | undefined;
@@ -33,11 +49,17 @@ export const GetServersRequest$zodSchema: z.ZodType<GetServersRequest> = z
     extraFieldsServers: z.string().describe(
       "The `credentials` are provided as extra attributes that are lazy loaded. To request it, just set `extra_fields[servers]=credentials` in the query string.",
     ).optional(),
+    filterBgpEligible: z.boolean().describe(
+      "Filter by whether the server can announce a BGP Elastic IP.",
+    ).optional(),
+    filterCreatedAt: z.string().describe(
+      "The created at date range to filter by, as two comma-separated ISO 8601 datetimes (both bounds required), e.g. `filter[created_at]=2026-01-01T00:00:00Z,2026-01-31T23:59:59Z`. `created_at` is the date the server was added to the project",
+    ).optional(),
     filterCreatedAtGte: z.string().describe(
-      "The created at greater than equal date to filter by",
+      "The created at greater than equal date to filter by. `created_at` is the date the server was added to the project",
     ).optional(),
     filterCreatedAtLte: z.string().describe(
-      "The created at less than equal date to filter by",
+      "The created at less than equal date to filter by. `created_at` is the date the server was added to the project",
     ).optional(),
     filterDiskEql: z.int().describe(
       "Filter servers with disk size (in GB) equal to the provided value.",
@@ -53,10 +75,48 @@ export const GetServersRequest$zodSchema: z.ZodType<GetServersRequest> = z
     ).optional(),
     filterHostname: z.string().describe("The hostname of server to filter by")
       .optional(),
+    filterHostnameEql: z.string().describe(
+      "The exact (case-sensitive) hostname of server to filter by",
+    ).optional(),
+    filterHostnameMatch: z.string().describe(
+      "Filter servers whose hostname contains the provided value",
+    ).optional(),
+    filterHostnamePrefix: z.string().describe(
+      "Filter servers whose hostname starts with the provided value",
+    ).optional(),
+    filterHostnameSuffix: z.string().describe(
+      "Filter servers whose hostname ends with the provided value",
+    ).optional(),
+    filterId: z.string().describe("The server ID to filter by (exact match)")
+      .optional(),
     filterLabel: z.string().describe("The label of server to filter by")
       .optional(),
+    filterLabelEql: z.string().describe(
+      "The exact (case-sensitive) label of server to filter by",
+    ).optional(),
+    filterLabelMatch: z.string().describe(
+      "Filter servers whose label contains the provided value",
+    ).optional(),
+    filterLabelPrefix: z.string().describe(
+      "Filter servers whose label starts with the provided value",
+    ).optional(),
+    filterLabelSuffix: z.string().describe(
+      "Filter servers whose label ends with the provided value",
+    ).optional(),
     filterPlan: z.string().describe(
       "The platform/plan name of the server to filter by",
+    ).optional(),
+    filterPlanEql: z.string().describe(
+      "The exact platform/plan name of the server to filter by (case-insensitive)",
+    ).optional(),
+    filterPlanMatch: z.string().describe(
+      "Filter servers whose platform/plan name contains the provided value",
+    ).optional(),
+    filterPlanPrefix: z.string().describe(
+      "Filter servers whose platform/plan name starts with the provided value",
+    ).optional(),
+    filterPlanSuffix: z.string().describe(
+      "Filter servers whose platform/plan name ends with the provided value",
     ).optional(),
     filterProject: z.string().describe("The project ID or Slug to filter by")
       .optional(),
@@ -82,6 +142,9 @@ export const GetServersRequest$zodSchema: z.ZodType<GetServersRequest> = z
     pageSize: z.int().default(20).describe(
       "Number of items to return per page",
     ),
+    sort: z.string().describe(
+      "Comma-separated sort fields. Prefix a field with `-` for descending order. Supported: hostname, created_at, location, operating_system.",
+    ).optional(),
     statsTotal: z.string().describe(
       "Request aggregate stats in the response `meta`. Use `count` to get the total number of records, returned as `meta.stats.total.count`.",
     ).optional(),

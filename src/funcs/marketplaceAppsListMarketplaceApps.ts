@@ -23,7 +23,7 @@ import { Result } from "../types/fp.js";
  * List marketplace apps
  *
  * @remarks
- * Lists the marketplace apps available to deploy on Virtual Machines. Only published apps are returned. Requires the `marketplace_apps` feature to be enabled for the team.
+ * Lists the marketplace apps available to deploy on Virtual Machines. Only published apps are returned.
  */
 export function marketplaceAppsListMarketplaceApps(
   client$: LatitudeshCore,

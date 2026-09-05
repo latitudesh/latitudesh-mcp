@@ -108,7 +108,6 @@ export const UpdateServerDeployConfigRaidLevel2$zodSchema = z.enum([
 
 export const UpdateServerDeployConfigFilesystem2 = {
   Ext4: "ext4",
-  Xfs: "xfs",
 } as const;
 export type UpdateServerDeployConfigFilesystem2 = ClosedEnum<
   typeof UpdateServerDeployConfigFilesystem2
@@ -116,7 +115,6 @@ export type UpdateServerDeployConfigFilesystem2 = ClosedEnum<
 
 export const UpdateServerDeployConfigFilesystem2$zodSchema = z.enum([
   "ext4",
-  "xfs",
 ]);
 
 export type UpdateServerDeployConfigDiskLayout2 = {
@@ -150,6 +148,7 @@ export type UpdateServerDeployConfigAttributes2 = {
   user_data?: string | null | undefined;
   ssh_keys?: Array<string> | null | undefined;
   ipxe_url?: string | null | undefined;
+  ipxe?: string | null | undefined;
   persistent_netboot?: boolean | undefined;
   public_network?: boolean | null | undefined;
   public_network_id?: string | null | undefined;
@@ -162,6 +161,9 @@ export const UpdateServerDeployConfigAttributes2$zodSchema: z.ZodType<
     z.lazy(() => UpdateServerDeployConfigDiskLayout2$zodSchema),
   ).nullable().optional(),
   hostname: z.string().nullable().optional(),
+  ipxe: z.string().nullable().optional().describe(
+    "URL where the iPXE script is stored, or the iPXE script encoded in base64. This attribute is required when the iPXE operating system is selected. Replaces the deprecated 'ipxe_url'.",
+  ),
   ipxe_url: z.string().nullable().optional().describe(
     "URL where iPXE script is stored on, necessary for custom image deployments. This attribute is required when operating system iPXE is selected.",
   ),
@@ -185,17 +187,29 @@ export const UpdateServerDeployConfigAttributes2$zodSchema: z.ZodType<
   ),
 });
 
-export type UpdateServerDeployConfigRequestBody2 = {
+export type UpdateServerDeployConfigData2 = {
+  id?: string | undefined;
   type: UpdateServerDeployConfigType2;
   attributes?: UpdateServerDeployConfigAttributes2 | undefined;
+};
+
+export const UpdateServerDeployConfigData2$zodSchema: z.ZodType<
+  UpdateServerDeployConfigData2
+> = z.object({
+  attributes: z.lazy(() => UpdateServerDeployConfigAttributes2$zodSchema)
+    .optional(),
+  id: z.string().optional(),
+  type: UpdateServerDeployConfigType2$zodSchema,
+});
+
+export type UpdateServerDeployConfigRequestBody2 = {
+  data: UpdateServerDeployConfigData2;
 };
 
 export const UpdateServerDeployConfigRequestBody2$zodSchema: z.ZodType<
   UpdateServerDeployConfigRequestBody2
 > = z.object({
-  attributes: z.lazy(() => UpdateServerDeployConfigAttributes2$zodSchema)
-    .optional(),
-  type: UpdateServerDeployConfigType2$zodSchema,
+  data: z.lazy(() => UpdateServerDeployConfigData2$zodSchema),
 });
 
 export type UpdateServerDeployConfigRequest = {

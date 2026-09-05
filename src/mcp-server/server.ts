@@ -65,6 +65,7 @@ import { tool$kubernetesClustersGetKubernetesClusterKubeconfig } from "./tools/k
 import { tool$kubernetesClustersListAvailableVersions } from "./tools/kubernetesClustersListAvailableVersions.js";
 import { tool$kubernetesClustersListKubernetesClusters } from "./tools/kubernetesClustersListKubernetesClusters.js";
 import { tool$kubernetesClustersUpdateKubernetesCluster } from "./tools/kubernetesClustersUpdateKubernetesCluster.js";
+import { tool$managedDatabasesShowManagedDatabaseMetrics } from "./tools/managedDatabasesShowManagedDatabaseMetrics.js";
 import { tool$marketplaceAppsGetMarketplaceApp } from "./tools/marketplaceAppsGetMarketplaceApp.js";
 import { tool$marketplaceAppsListMarketplaceApps } from "./tools/marketplaceAppsListMarketplaceApps.js";
 import { tool$objectStorageDeleteStorageAccessKeysUsername } from "./tools/objectStorageDeleteStorageAccessKeysUsername.js";
@@ -205,7 +206,7 @@ export function createMCPServer(deps: {
 }) {
   const server = new McpServer({
     name: "Latitudesh",
-    version: "0.3.2",
+    version: "0.3.3",
   });
 
   const getClient = deps.getSDK || (() =>
@@ -424,6 +425,7 @@ export function createMCPServer(deps: {
   tool(tool$vpnSessionsCreate);
   tool(tool$vpnSessionsRefreshPassword);
   tool(tool$vpnSessionsDelete);
+  tool(tool$managedDatabasesShowManagedDatabaseMetrics);
 
   if (deps.dynamic) {
     registerDynamicTools(deps.logger, server, getClient, toolMap, scopes);

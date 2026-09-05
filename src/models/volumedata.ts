@@ -26,6 +26,7 @@ export const Initiator$zodSchema: z.ZodType<Initiator> = z.object({
  * NVMe-TCP block mapping of a high performance volume. Null for volumes that are not mapped to a server.
  */
 export type Block = {
+  status?: string | null | undefined;
   nqn?: string | null | undefined;
   nsid?: number | null | undefined;
   server_id?: string | null | undefined;
@@ -40,6 +41,9 @@ export const Block$zodSchema: z.ZodType<Block> = z.object({
   ),
   server_id: z.string().nullable().optional().describe(
     "ID of the server the volume is mapped to.",
+  ),
+  status: z.string().nullable().optional().describe(
+    "Mapping lifecycle state: \"mapping\" while the mapping is being applied, \"mapped\" once the server can access the volume, or \"failed\". Mapping is asynchronous, so poll the volume until this reaches a terminal state.",
   ),
 }).describe(
   "NVMe-TCP block mapping of a high performance volume. Null for volumes that are not mapped to a server.",

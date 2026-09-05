@@ -142,38 +142,16 @@ export const PlanDataLocations$zodSchema: z.ZodType<PlanDataLocations> = z
     in_stock: z.array(z.string()).optional(),
   });
 
-export type PlanDataUSD = {
-  hour?: number | null | undefined;
-  month?: number | null | undefined;
-  year?: number | null | undefined;
-};
-
-export const PlanDataUSD$zodSchema: z.ZodType<PlanDataUSD> = z.object({
-  hour: z.number().nullable().optional(),
-  month: z.number().nullable().optional(),
-  year: z.number().nullable().optional(),
-});
-
-export type PlanDataBRL = {
-  hour?: number | null | undefined;
-  month?: number | null | undefined;
-  year?: number | null | undefined;
-};
-
-export const PlanDataBRL$zodSchema: z.ZodType<PlanDataBRL> = z.object({
-  hour: z.number().nullable().optional(),
-  month: z.number().nullable().optional(),
-  year: z.number().nullable().optional(),
-});
-
 export type PlanDataPricing = {
-  USD?: PlanDataUSD | undefined;
-  BRL?: PlanDataBRL | undefined;
+  hour?: number | null | undefined;
+  month?: number | null | undefined;
+  year?: number | null | undefined;
 };
 
 export const PlanDataPricing$zodSchema: z.ZodType<PlanDataPricing> = z.object({
-  BRL: z.lazy(() => PlanDataBRL$zodSchema).optional(),
-  USD: z.lazy(() => PlanDataUSD$zodSchema).optional(),
+  hour: z.number().nullable().optional(),
+  month: z.number().nullable().optional(),
+  year: z.number().nullable().optional(),
 });
 
 export type PlanDataRegion = {
@@ -181,14 +159,17 @@ export type PlanDataRegion = {
   deploys_instantly?: Array<string> | undefined;
   locations?: PlanDataLocations | undefined;
   stock_level?: PlanDataStockLevel | undefined;
-  pricing?: PlanDataPricing | undefined;
+  pricing?: { [k: string]: PlanDataPricing } | undefined;
 };
 
 export const PlanDataRegion$zodSchema: z.ZodType<PlanDataRegion> = z.object({
   deploys_instantly: z.array(z.string()).optional(),
   locations: z.lazy(() => PlanDataLocations$zodSchema).optional(),
   name: z.string().optional(),
-  pricing: z.lazy(() => PlanDataPricing$zodSchema).optional(),
+  pricing: z.record(z.string(), z.lazy(() => PlanDataPricing$zodSchema))
+    .optional().describe(
+      "Prices keyed by ISO 4217 currency code (e.g. USD, BRL).",
+    ),
   stock_level: PlanDataStockLevel$zodSchema.optional(),
 });
 
