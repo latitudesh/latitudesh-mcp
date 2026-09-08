@@ -3,16 +3,12 @@
  */
 
 import { LatitudeshCore } from "../core.js";
-import { encodeSimple } from "../lib/encodings.js";
+import { encodeFormQuery, encodeSimple } from "../lib/encodings.js";
 import { compactMap } from "../lib/primitives.js";
 import { safeParse } from "../lib/schemas.js";
 import { RequestOptions } from "../lib/sdks.js";
 import { extractSecurity, resolveGlobalSecurity } from "../lib/security.js";
 import { pathToFunc } from "../lib/url.js";
-import {
-  DestroyPublicNetworkRequest,
-  DestroyPublicNetworkRequest$zodSchema,
-} from "../models/destroypublicnetworkop.js";
 import { APIError } from "../models/errors/apierror.js";
 import {
   ConnectionError,
@@ -22,20 +18,19 @@ import {
   UnexpectedClientError,
 } from "../models/errors/httpclienterrors.js";
 import { SDKValidationError } from "../models/errors/sdkvalidationerror.js";
+import {
+  ShowManagedDatabaseMetricsRequest,
+  ShowManagedDatabaseMetricsRequest$zodSchema,
+} from "../models/showmanageddatabasemetricsop.js";
 import { APICall, APIPromise } from "../types/async.js";
 import { Result } from "../types/fp.js";
 
 /**
- * Delete a network
- *
- * @remarks
- * **Preview.** Available at locations where the `public_network` feature is enabled.
- *
- * Delete a customer network. Only allowed while the network has no IPs in use.
+ * Show managed database metrics
  */
-export function publicNetworksDestroyPublicNetwork(
+export function managedDatabasesShowManagedDatabaseMetrics(
   client$: LatitudeshCore,
-  request: DestroyPublicNetworkRequest,
+  request: ShowManagedDatabaseMetricsRequest,
   options?: RequestOptions,
 ): APIPromise<
   Result<
@@ -58,7 +53,7 @@ export function publicNetworksDestroyPublicNetwork(
 
 async function $do(
   client$: LatitudeshCore,
-  request: DestroyPublicNetworkRequest,
+  request: ShowManagedDatabaseMetricsRequest,
   options?: RequestOptions,
 ): Promise<
   [
@@ -77,7 +72,7 @@ async function $do(
 > {
   const parsed$ = safeParse(
     request,
-    (value$) => DestroyPublicNetworkRequest$zodSchema.parse(value$),
+    (value$) => ShowManagedDatabaseMetricsRequest$zodSchema.parse(value$),
     "Input validation failed",
   );
   if (!parsed$.ok) {
@@ -87,17 +82,22 @@ async function $do(
   const body$ = null;
 
   const pathParams$ = {
-    id: encodeSimple("id", payload$.id, {
-      explode: false,
-      charEncoding: "percent",
-    }),
+    managed_database_id: encodeSimple(
+      "managed_database_id",
+      payload$.managed_database_id,
+      { explode: false, charEncoding: "percent" },
+    ),
   };
-  const path$ = pathToFunc("/public_networks/{id}")(
+  const path$ = pathToFunc("/managed_databases/{managed_database_id}/metrics")(
     pathParams$,
   );
+  const query$ = encodeFormQuery({
+    "period": payload$.period,
+    "queries": payload$.queries,
+  });
 
   const headers$ = new Headers(compactMap({
-    Accept: "application/vnd.api+json",
+    Accept: "application/json",
   }));
   const securityInput = await extractSecurity(client$._options.security);
   const requestSecurity = resolveGlobalSecurity(securityInput);
@@ -105,7 +105,7 @@ async function $do(
   const context = {
     options: client$._options,
     baseURL: options?.serverURL ?? client$._baseURL ?? "",
-    operationID: "destroy-public-network",
+    operationID: "show-managed-database-metrics",
     oAuth2Scopes: null,
     resolvedSecurity: requestSecurity,
     securitySource: client$._options.security,
@@ -123,10 +123,11 @@ async function $do(
 
   const requestRes = client$._createRequest(context, {
     security: requestSecurity,
-    method: "DELETE",
+    method: "GET",
     baseURL: options?.serverURL,
     path: path$,
     headers: headers$,
+    query: query$,
     body: body$,
     userAgent: client$._options.userAgent,
     timeoutMs: options?.timeoutMs || client$._options.timeoutMs

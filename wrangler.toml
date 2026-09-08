@@ -1,32 +1,20 @@
 
 name = "latitudesh-mcp-server"
-# Manual override (re-apply after `speakeasy run`): point at the hand-written
-# OAuth wrapper, not the generated entrypoint.
-main = "src/cloudflare-worker/oauth-entry.ts"
+main = "src/cloudflare-worker/cloudflare-worker.ts"
 compatibility_date = "2025-07-15"
 
 # Enable node compatibility for MCP SDK
 compatibility_flags = ["nodejs_compat"]
-
-# Custom domain (Workers Custom Domain — auto-manages DNS + TLS on latitude.sh).
-routes = [
-  { pattern = "mcp.latitude.sh", custom_domain = true }
-]
 
 # Durable Object binding for MCP Agent
 [[durable_objects.bindings]]
 name = "LATITUDESH_MCP"
 class_name = "LatitudeshMCP"
 
-# KV for workers-oauth-provider (tokens/grants/clients) + login-bridge state.
-[[kv_namespaces]]
-binding = "OAUTH_KV"
-id = "2c85f823a5c648558928e37c92553661"
-
 # Durable Object migration
 [[migrations]]
 tag = "v1"
-new_sqlite_classes = ["LatitudeshMCP"]
+new_classes = ["LatitudeshMCP"]
 
 # Static assets configuration
 [assets]

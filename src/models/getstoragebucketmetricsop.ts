@@ -66,11 +66,17 @@ export const GetStorageBucketMetricsPeriod$zodSchema: z.ZodType<
  */
 export type Storage = {
   consumed?: number | undefined;
+  current?: number | undefined;
   unit?: GetStorageBucketMetricsUnit | undefined;
 };
 
 export const Storage$zodSchema: z.ZodType<Storage> = z.object({
-  consumed: z.int().optional().describe("Amount of storage consumed"),
+  consumed: z.int().optional().describe(
+    "Billed storage usage for the current period",
+  ),
+  current: z.int().optional().describe(
+    "Latest recorded storage usage (last datapoint)",
+  ),
   unit: GetStorageBucketMetricsUnit$zodSchema.optional().describe(
     "Unit of measurement for storage",
   ),

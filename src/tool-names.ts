@@ -198,11 +198,11 @@ export const toolNames: Array<{ name: string; description: string }>= [
   },
   {
     "name": "public-networks-get-public-networks",
-    "description": "List networks\n\nList the customer networks owned by the team"
+    "description": "List networks\n\n**Preview.** Available at locations where the `public_network` feature is enabled.\n\nList the customer networks owned by the team"
   },
   {
     "name": "public-networks-create-public-network",
-    "description": "Create a network\n\nProvision a customer network: an IPv4 block of the chosen size plus a paired IPv6 /64. The network is allocated synchronously and returned in the response; billing is settled in the background."
+    "description": "Create a network\n\n**Preview.** Available at locations where the `public_network` feature is enabled.\n\nProvision a customer network: an IPv4 block of the chosen size plus a paired IPv6 /64. The network is allocated synchronously and returned in the response; billing is settled in the background."
   },
   {
     "name": "public-networks-get-public-network",
@@ -210,7 +210,7 @@ export const toolNames: Array<{ name: string; description: string }>= [
   },
   {
     "name": "public-networks-destroy-public-network",
-    "description": "Delete a network\n\nDelete a customer network. Only allowed while the network has no IPs in use."
+    "description": "Delete a network\n\n**Preview.** Available at locations where the `public_network` feature is enabled.\n\nDelete a customer network. Only allowed while the network has no IPs in use."
   },
   {
     "name": "projects-list",
@@ -550,11 +550,11 @@ export const toolNames: Array<{ name: string; description: string }>= [
   },
   {
     "name": "marketplace-apps-list-marketplace-apps",
-    "description": "List marketplace apps\n\nLists the marketplace apps available to deploy on Virtual Machines. Only published apps are returned. Requires the `marketplace_apps` feature to be enabled for the team."
+    "description": "List marketplace apps\n\nLists the marketplace apps available to deploy on Virtual Machines. Only published apps are returned."
   },
   {
     "name": "marketplace-apps-get-marketplace-app",
-    "description": "Retrieve a marketplace app\n\nRetrieve a single marketplace app by ID or slug. Only published apps are visible. Requires the `marketplace_apps` feature to be enabled for the team."
+    "description": "Retrieve a marketplace app\n\nRetrieve a single marketplace app by ID or slug. Only published apps are visible."
   },
   {
     "name": "virtual-machines-list",
@@ -691,5 +691,9 @@ export const toolNames: Array<{ name: string; description: string }>= [
   {
     "name": "vpn-sessions-delete",
     "description": "Delete VPN session\n\nDeletes an existing VPN Session.\n"
+  },
+  {
+    "name": "managed-databases-show-managed-database-metrics",
+    "description": "Show managed database metrics"
   }
 ];

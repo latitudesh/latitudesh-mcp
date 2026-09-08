@@ -167,44 +167,18 @@ export const VirtualMachinePlansSpecs$zodSchema: z.ZodType<
   vram_per_gpu: z.int().nullable().optional().describe("VRAM per GPU in GB"),
 });
 
-export type VirtualMachinePlansUSD = {
-  hour?: number | undefined;
-  month?: number | undefined;
-  year?: number | undefined;
-};
-
-export const VirtualMachinePlansUSD$zodSchema: z.ZodType<
-  VirtualMachinePlansUSD
-> = z.object({
-  hour: z.number().optional(),
-  month: z.number().optional(),
-  year: z.number().optional(),
-});
-
-export type VirtualMachinePlansBRL = {
-  hour?: number | undefined;
-  month?: number | undefined;
-  year?: number | undefined;
-};
-
-export const VirtualMachinePlansBRL$zodSchema: z.ZodType<
-  VirtualMachinePlansBRL
-> = z.object({
-  hour: z.number().optional(),
-  month: z.number().optional(),
-  year: z.number().optional(),
-});
-
 export type VirtualMachinePlansPricing = {
-  USD?: VirtualMachinePlansUSD | undefined;
-  BRL?: VirtualMachinePlansBRL | undefined;
+  hour?: number | undefined;
+  month?: number | undefined;
+  year?: number | undefined;
 };
 
 export const VirtualMachinePlansPricing$zodSchema: z.ZodType<
   VirtualMachinePlansPricing
 > = z.object({
-  BRL: z.lazy(() => VirtualMachinePlansBRL$zodSchema).optional(),
-  USD: z.lazy(() => VirtualMachinePlansUSD$zodSchema).optional(),
+  hour: z.number().optional(),
+  month: z.number().optional(),
+  year: z.number().optional(),
 });
 
 export type VirtualMachinePlansLocations = {
@@ -226,7 +200,7 @@ export const VirtualMachinePlansLocations$zodSchema: z.ZodType<
 export type VirtualMachinePlansRegion = {
   name?: string | undefined;
   available?: Array<string> | undefined;
-  pricing?: VirtualMachinePlansPricing | undefined;
+  pricing?: { [k: string]: VirtualMachinePlansPricing } | undefined;
   locations?: VirtualMachinePlansLocations | undefined;
   stock_level?: VirtualMachinePlansRegionStockLevel | undefined;
 };
@@ -237,7 +211,12 @@ export const VirtualMachinePlansRegion$zodSchema: z.ZodType<
   available: z.array(z.string()).optional(),
   locations: z.lazy(() => VirtualMachinePlansLocations$zodSchema).optional(),
   name: z.string().optional(),
-  pricing: z.lazy(() => VirtualMachinePlansPricing$zodSchema).optional(),
+  pricing: z.record(
+    z.string(),
+    z.lazy(() => VirtualMachinePlansPricing$zodSchema),
+  ).optional().describe(
+    "Prices keyed by ISO 4217 currency code (e.g. USD, BRL).",
+  ),
   stock_level: VirtualMachinePlansRegionStockLevel$zodSchema.optional()
     .describe("The stock level in this region"),
 });

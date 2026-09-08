@@ -49,11 +49,11 @@ export type TeamAttributes = {
   slug?: string | undefined;
   description?: string | null | undefined;
   address?: string | null | undefined;
-  currency?: string | undefined;
+  currency?: string | null | undefined;
   created_at?: string | undefined;
   updated_at?: string | undefined;
   status?: string | null | undefined;
-  enforce_mfa?: boolean | undefined;
+  enforce_mfa?: boolean | null | undefined;
   customer_billing_id?: string | null | undefined;
   referred_code?: string | null | undefined;
   users?: Array<UserInclude> | undefined;
@@ -68,10 +68,10 @@ export const TeamAttributes$zodSchema: z.ZodType<TeamAttributes> = z.object({
   address: z.string().nullable().optional(),
   billing: z.lazy(() => TeamBilling$zodSchema).optional(),
   created_at: z.string().optional(),
-  currency: z.string().optional(),
+  currency: z.string().nullable().optional(),
   customer_billing_id: z.string().nullable().optional(),
   description: z.string().nullable().optional(),
-  enforce_mfa: z.boolean().optional(),
+  enforce_mfa: z.boolean().nullable().optional(),
   feature_flags: z.array(z.string()).optional(),
   limits: z.lazy(() => TeamLimits$zodSchema).optional(),
   name: z.string().optional(),

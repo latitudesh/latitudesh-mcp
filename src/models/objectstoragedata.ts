@@ -153,6 +153,6 @@ export type ObjectStorageData = {
 export const ObjectStorageData$zodSchema: z.ZodType<ObjectStorageData> = z
   .object({
     attributes: z.lazy(() => ObjectStorageDataAttributes$zodSchema).optional(),
-    id: z.string().optional().describe("Object storage ID with bucket_ prefix"),
+    id: z.string().optional().describe("Object storage ID with bkt_ prefix"),
     type: ObjectStorageDataType$zodSchema.optional(),
   });

@@ -11,51 +11,6 @@ import {
 } from "./serverregionresourcedata.js";
 import { TeamInclude, TeamInclude$zodSchema } from "./teaminclude.js";
 
-/**
- * `on` - The server is powered ON
- *
- * @remarks
- * `off` - The server is powered OFF
- * `unknown` - The server power status is unknown
- * `disk_erasing` - The server is in reinstalling state `disk_erasing`
- * `deploying` - The server is deploying or reinstalling
- * `failed_deployment` - The server has failed deployment or reinstall
- * `rescue_mode` - The server is in rescue mode
- */
-export const ServerDataStatus = {
-  On: "on",
-  Off: "off",
-  Unknown: "unknown",
-  DiskErasing: "disk_erasing",
-  Deploying: "deploying",
-  FailedDeployment: "failed_deployment",
-  RescueMode: "rescue_mode",
-} as const;
-/**
- * `on` - The server is powered ON
- *
- * @remarks
- * `off` - The server is powered OFF
- * `unknown` - The server power status is unknown
- * `disk_erasing` - The server is in reinstalling state `disk_erasing`
- * `deploying` - The server is deploying or reinstalling
- * `failed_deployment` - The server has failed deployment or reinstall
- * `rescue_mode` - The server is in rescue mode
- */
-export type ServerDataStatus = ClosedEnum<typeof ServerDataStatus>;
-
-export const ServerDataStatus$zodSchema = z.enum([
-  "on",
-  "off",
-  "unknown",
-  "disk_erasing",
-  "deploying",
-  "failed_deployment",
-  "rescue_mode",
-]).describe(
-  "`on` - The server is powered ON\n`off` - The server is powered OFF\n`unknown` - The server power status is unknown\n`disk_erasing` - The server is in reinstalling state `disk_erasing`\n`deploying` - The server is deploying or reinstalling\n`failed_deployment` - The server has failed deployment or reinstall\n`rescue_mode` - The server is in rescue mode\n",
-);
-
 export const IpmiStatus = {
   Unavailable: "Unavailable",
   Intermittent: "Intermittent",
@@ -99,7 +54,7 @@ export const ServerDataTag$zodSchema: z.ZodType<ServerDataTag> = z.object({
 });
 
 /**
- * **Preview** (`public_network` feature flag). The public network this server is attached onto, or null. Fetch full details from GET /public_networks/{id}.
+ * **Preview.** Available to teams with public networks enabled. The public network this server is attached onto, or null. Fetch full details from GET /public_networks/{id}.
  */
 export type ServerDataPublicNetwork = {
   id?: string | undefined;
@@ -114,7 +69,7 @@ export const ServerDataPublicNetwork$zodSchema: z.ZodType<
   ipv4: z.string().nullable().optional(),
   ipv6: z.string().nullable().optional(),
 }).describe(
-  "**Preview** (`public_network` feature flag). The public network this server is attached onto, or null. Fetch full details from GET /public_networks/{id}.",
+  "**Preview.** Available to teams with public networks enabled. The public network this server is attached onto, or null. Fetch full details from GET /public_networks/{id}.",
 );
 
 export type ServerDataPlan = {
@@ -137,13 +92,19 @@ export type ServerDataFeatures = {
   raid?: boolean | undefined;
   ssh_keys?: boolean | undefined;
   user_data?: boolean | undefined;
+  accelerate?: boolean | undefined;
+  rescue?: boolean | undefined;
+  workflow?: boolean | undefined;
 };
 
 export const ServerDataFeatures$zodSchema: z.ZodType<ServerDataFeatures> = z
   .object({
+    accelerate: z.boolean().optional(),
     raid: z.boolean().optional(),
+    rescue: z.boolean().optional(),
     ssh_keys: z.boolean().optional(),
     user_data: z.boolean().optional(),
+    workflow: z.boolean().optional(),
   });
 
 export type ServerDataDistro = {
@@ -212,18 +173,67 @@ export const Interface$zodSchema: z.ZodType<Interface> = z.object({
   role: ServerDataRole$zodSchema.optional(),
 });
 
+export type ServerDataSshKey = {
+  id?: number | undefined;
+  name?: string | undefined;
+  fingerprint?: string | undefined;
+  public_key?: string | undefined;
+  created_at?: string | undefined;
+  updated_at?: string | undefined;
+  user_id?: string | undefined;
+  group_id?: number | null | undefined;
+};
+
+export const ServerDataSshKey$zodSchema: z.ZodType<ServerDataSshKey> = z.object(
+  {
+    created_at: z.iso.datetime({ offset: true }).optional(),
+    fingerprint: z.string().optional(),
+    group_id: z.int().nullable().optional(),
+    id: z.int().optional(),
+    name: z.string().optional(),
+    public_key: z.string().optional(),
+    updated_at: z.iso.datetime({ offset: true }).optional(),
+    user_id: z.string().optional(),
+  },
+);
+
+/**
+ * Latest provisioning credentials, lazy loaded. Request it with `extra_fields[servers]=credentials`. Empty when the latest provisioning has no valid credentials.
+ */
+export type ServerDataCredentials = {
+  username?: string | null | undefined;
+  password?: string | null | undefined;
+  ssh_keys?: Array<ServerDataSshKey> | null | undefined;
+  expires_at?: string | null | undefined;
+};
+
+export const ServerDataCredentials$zodSchema: z.ZodType<ServerDataCredentials> =
+  z.object({
+    expires_at: z.iso.datetime({ offset: true }).nullable().optional(),
+    password: z.string().nullable().optional(),
+    ssh_keys: z.array(z.lazy(() => ServerDataSshKey$zodSchema)).nullable()
+      .optional(),
+    username: z.string().nullable().optional(),
+  }).describe(
+    "Latest provisioning credentials, lazy loaded. Request it with `extra_fields[servers]=credentials`. Empty when the latest provisioning has no valid credentials.",
+  );
+
 export type ServerDataAttributes = {
   tags?: Array<ServerDataTag> | undefined;
   hostname?: string | undefined;
   label?: string | undefined;
   price?: number | null | undefined;
-  status?: ServerDataStatus | undefined;
+  status?: string | undefined;
   ipmi_status?: IpmiStatus | null | undefined;
   role?: string | undefined;
   public_network_eligible?: boolean | undefined;
+  bgp_eligible?: boolean | undefined;
+  bgp_deployed?: boolean | undefined;
   public_network?: ServerDataPublicNetwork | null | undefined;
   site?: string | undefined;
   locked?: boolean | undefined;
+  legacy_network?: boolean | null | undefined;
+  features?: Array<string> | null | undefined;
   rescue_allowed?: boolean | undefined;
   primary_ipv4?: string | null | undefined;
   primary_ipv6?: string | null | undefined;
@@ -234,17 +244,34 @@ export type ServerDataAttributes = {
   region?: ServerRegionResourceData | undefined;
   specs?: ServerDataSpecs | undefined;
   interfaces?: Array<Interface> | undefined;
+  credentials?: ServerDataCredentials | null | undefined;
   project?: ProjectInclude | undefined;
   team?: TeamInclude | undefined;
 };
 
 export const ServerDataAttributes$zodSchema: z.ZodType<ServerDataAttributes> = z
   .object({
+    bgp_deployed: z.boolean().optional().describe(
+      "Whether the server was deployed with the BGP option.",
+    ),
+    bgp_eligible: z.boolean().optional().describe(
+      "Whether the server can announce a BGP Elastic IP. Lazy loaded; request it with `extra_fields[servers]=bgp_eligible`.",
+    ),
     created_at: z.string().nullable().optional(),
+    credentials: z.lazy(() => ServerDataCredentials$zodSchema).nullable()
+      .optional().describe(
+        "Latest provisioning credentials, lazy loaded. Request it with `extra_fields[servers]=credentials`. Empty when the latest provisioning has no valid credentials.",
+      ),
+    features: z.array(z.string()).nullable().optional().describe(
+      "Feature slugs supported by the server hardware (e.g. `direct_remote_access`).",
+    ),
     hostname: z.string().optional(),
     interfaces: z.array(z.lazy(() => Interface$zodSchema)).optional(),
     ipmi_status: IpmiStatus$zodSchema.nullable().optional(),
     label: z.string().optional().describe("The server label"),
+    legacy_network: z.boolean().nullable().optional().describe(
+      "Whether the server is attached to a legacy network.",
+    ),
     locked: z.boolean().optional(),
     operating_system: z.lazy(() => ServerDataOperatingSystem$zodSchema)
       .optional(),
@@ -255,7 +282,7 @@ export const ServerDataAttributes$zodSchema: z.ZodType<ServerDataAttributes> = z
     project: ProjectInclude$zodSchema.optional(),
     public_network: z.lazy(() => ServerDataPublicNetwork$zodSchema).nullable()
       .optional().describe(
-        "**Preview** (`public_network` feature flag). The public network this server is attached onto, or null. Fetch full details from GET /public_networks/{id}.",
+        "**Preview.** Available to teams with public networks enabled. The public network this server is attached onto, or null. Fetch full details from GET /public_networks/{id}.",
       ),
     public_network_eligible: z.boolean().optional().describe(
       "Whether the server is eligible to attach a public network (carries the bond-vpc-enabled tag).",
@@ -266,8 +293,8 @@ export const ServerDataAttributes$zodSchema: z.ZodType<ServerDataAttributes> = z
     scheduled_deletion_at: z.string().nullable().optional(),
     site: z.string().optional(),
     specs: z.lazy(() => ServerDataSpecs$zodSchema).optional(),
-    status: ServerDataStatus$zodSchema.optional().describe(
-      "`on` - The server is powered ON\n`off` - The server is powered OFF\n`unknown` - The server power status is unknown\n`disk_erasing` - The server is in reinstalling state `disk_erasing`\n`deploying` - The server is deploying or reinstalling\n`failed_deployment` - The server has failed deployment or reinstall\n`rescue_mode` - The server is in rescue mode\n",
+    status: z.string().optional().describe(
+      "`on` - The server is powered ON\n`off` - The server is powered OFF\n`unknown` - The server power status is unknown\n`disk_erasing` - The server is in reinstalling state `disk_erasing`\n`deploying` - The server is deploying or reinstalling\n`failed_deployment` - The server has failed deployment or reinstall\n`rescue_mode` - The server is in rescue mode\n`entering_rescue_mode` - The server is entering rescue mode\n`exiting_rescue_mode` - The server is exiting rescue mode\n\nWhile a server is provisioning, the provisioning state slug is returned verbatim,\nso values outside this list (e.g. `queued`, `starting_deploy`, `commissioning`)\nare possible. Treat this field as an open set, not a closed enum.\n",
     ),
     tags: z.array(z.lazy(() => ServerDataTag$zodSchema)).optional(),
     team: TeamInclude$zodSchema.optional(),

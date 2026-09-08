@@ -38,43 +38,30 @@ export const StoragePlanStorageClass$zodSchema = z.enum([
   "high_performance",
 ]);
 
-export type StoragePlanDataUSD = { month?: number | undefined };
-
-export const StoragePlanDataUSD$zodSchema: z.ZodType<StoragePlanDataUSD> = z
-  .object({
-    month: z.number().optional(),
-  });
-
-export type StoragePlanDataBRL = { month?: number | undefined };
-
-export const StoragePlanDataBRL$zodSchema: z.ZodType<StoragePlanDataBRL> = z
-  .object({
-    month: z.number().optional(),
-  });
-
-export type StoragePlanDataPricing = {
-  USD?: StoragePlanDataUSD | undefined;
-  BRL?: StoragePlanDataBRL | undefined;
-};
+export type StoragePlanDataPricing = { month?: number | undefined };
 
 export const StoragePlanDataPricing$zodSchema: z.ZodType<
   StoragePlanDataPricing
 > = z.object({
-  BRL: z.lazy(() => StoragePlanDataBRL$zodSchema).optional(),
-  USD: z.lazy(() => StoragePlanDataUSD$zodSchema).optional(),
+  month: z.number().optional(),
 });
 
 export type StoragePlanDataRegion = {
   name?: string | undefined;
   locations?: Array<string> | undefined;
-  pricing?: StoragePlanDataPricing | undefined;
+  pricing?: { [k: string]: StoragePlanDataPricing } | undefined;
 };
 
 export const StoragePlanDataRegion$zodSchema: z.ZodType<StoragePlanDataRegion> =
   z.object({
     locations: z.array(z.string()).optional(),
     name: z.string().optional(),
-    pricing: z.lazy(() => StoragePlanDataPricing$zodSchema).optional(),
+    pricing: z.record(
+      z.string(),
+      z.lazy(() => StoragePlanDataPricing$zodSchema),
+    ).optional().describe(
+      "Prices keyed by ISO 4217 currency code (e.g. USD, BRL).",
+    ),
   });
 
 export type StoragePlanDataAttributes = {
