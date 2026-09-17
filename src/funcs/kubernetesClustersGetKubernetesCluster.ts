@@ -30,6 +30,8 @@ import { Result } from "../types/fp.js";
  *
  * @remarks
  * Retrieves detailed information about a Kubernetes cluster including its status, control plane, worker node details, and individual node information.
+ *
+ * @deprecated method: This will be removed in a future release, please migrate away from it as soon as possible.
  */
 export function kubernetesClustersGetKubernetesCluster(
   client$: LatitudeshCore,

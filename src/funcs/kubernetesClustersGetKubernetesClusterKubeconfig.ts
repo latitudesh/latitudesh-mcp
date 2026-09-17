@@ -32,6 +32,8 @@ import { Result } from "../types/fp.js";
  * Retrieves the kubeconfig file for a Kubernetes cluster. The kubeconfig is only available once the cluster is fully provisioned.
  *
  * **Note:** Only users with the `owner`, `administrator`, or `collaborator` role can access cluster credentials. Users with the `billing` role cannot perform this action.
+ *
+ * @deprecated method: This will be removed in a future release, please migrate away from it as soon as possible.
  */
 export function kubernetesClustersGetKubernetesClusterKubeconfig(
   client$: LatitudeshCore,

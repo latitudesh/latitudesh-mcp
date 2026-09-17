@@ -25,7 +25,7 @@ export type VirtualMachineNetworkAttachmentResourceAttributes = {
 export const VirtualMachineNetworkAttachmentResourceAttributes$zodSchema:
   z.ZodType<VirtualMachineNetworkAttachmentResourceAttributes> = z.object({
     pending_restart: z.boolean().optional().describe(
-      "True if the attachment requires a VM restart to take effect",
+      "Deprecated, always false. Attaching and detaching restart the VM automatically, so an attachment never waits on a manual restart.",
     ),
     vid: z.int().optional().describe("The 802.1Q VLAN ID"),
     virtual_network_id: z.string().optional().describe(

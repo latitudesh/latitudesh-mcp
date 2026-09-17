@@ -25,7 +25,7 @@ export const CreateFirewallAssignmentAttributes2$zodSchema: z.ZodType<
   CreateFirewallAssignmentAttributes2
 > = z.object({
   server_id: z.string().optional().describe(
-    "The server ID to assign. Provide exactly one of server_id or virtual_machine_id.",
+    "The server ID to assign. Provide exactly one of server_id or virtual_machine_id. A server can be assigned to at most one firewall.",
   ),
   virtual_machine_id: z.string().optional().describe(
     "The virtual machine ID to assign. Provide exactly one of server_id or virtual_machine_id. A virtual machine can be assigned to at most one firewall.",

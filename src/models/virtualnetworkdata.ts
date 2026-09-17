@@ -69,6 +69,7 @@ export type VirtualNetworkDataAttributes = {
   created_at?: string | null | undefined;
   assignments_count?: number | undefined;
   tags?: Array<VirtualNetworkDataTag> | undefined;
+  storage?: boolean | undefined;
 };
 
 export const VirtualNetworkDataAttributes$zodSchema: z.ZodType<
@@ -84,6 +85,9 @@ export const VirtualNetworkDataAttributes$zodSchema: z.ZodType<
   name: z.string().optional().describe("Name of the virtual network"),
   project: ProjectInclude$zodSchema.optional(),
   region: z.lazy(() => VirtualNetworkDataRegion$zodSchema).optional(),
+  storage: z.boolean().optional().describe(
+    "Whether this is an auto-provisioned storage service VLAN",
+  ),
   tags: z.array(z.lazy(() => VirtualNetworkDataTag$zodSchema)).optional()
     .describe("Tags associated with the virtual network"),
   vid: z.int().optional().describe("vlan ID of the virtual network"),

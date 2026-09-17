@@ -29,6 +29,8 @@ import { Result } from "../types/fp.js";
  * Delete a network
  *
  * @remarks
+ * **Preview.** Available at locations where the `public_network` feature is enabled.
+ *
  * Delete a customer network. Only allowed while the network has no IPs in use.
  */
 export function publicNetworksDestroyPublicNetwork(

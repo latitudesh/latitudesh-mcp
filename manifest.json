@@ -1,7 +1,7 @@
 {
   "manifest_version": "0.3",
   "name": "latitudesh",
-  "version": "0.3.2",
+  "version": "0.3.3",
   "description": "",
   "long_description": "Latitude.sh API: The Latitude.sh API is a RESTful API to manage your Latitude.sh account. It allows you to perform the same actions as the Latitude.sh dashboard.",
   "author": {
@@ -103,7 +103,7 @@
     },
     {
       "name": "firewalls-get-all-firewall-assignments",
-      "description": "List firewall assignments\n\nReturns a list of all servers and virtual machines assigned to one or more firewalls."
+      "description": "List firewall assignments\n\nReturns a list of all servers and virtual machines assigned to a firewall."
     },
     {
       "name": "firewalls-list",
@@ -226,6 +226,58 @@
       "description": "Get Kubernetes Cluster Kubeconfig\n\nRetrieves the kubeconfig file for a Kubernetes cluster. The kubeconfig is only available once the cluster is fully provisioned.\n\n**Note:** Only users with the `owner`, `administrator`, or `collaborator` role can access cluster credentials. Users with the `billing` role cannot perform this action.\n"
     },
     {
+      "name": "lks-list-lks-clusters",
+      "description": "List LKS clusters\n\nLists every LKS cluster of a project. The response is not paginated; `meta.total` is the number of clusters returned.\n"
+    },
+    {
+      "name": "lks-create-lks-cluster",
+      "description": "Create an LKS cluster\n\nCreates an LKS cluster. The cluster is the control plane only — worker capacity is added separately through node pools (`POST /lks/clusters/{cluster_id}/nodepools`).\n\n`site` must be one of the slugs returned by `GET /lks/sites`, and `kubernetes_version` must be a patch listed by `GET /lks/available_versions` with `available_for_creation: true`.\n\nThe cluster is returned immediately with `status: \"provisioning\"`. Poll `GET /lks/clusters/{id}` until `status` is `ready`, then fetch the kubeconfig.\n"
+    },
+    {
+      "name": "lks-get-lks-cluster",
+      "description": "Get an LKS cluster\n\nRetrieves a single LKS cluster.\n\n`status` is an open enum sourced from the platform controller — `provisioning`, `ready`, `updating`, `scaling`, `upgrading`, `paused`, `deleting` and `deleted` are the values in use today, and new ones may appear without notice. `reason` and `message` carry the machine-readable and human-readable detail behind the current `status`.\n"
+    },
+    {
+      "name": "lks-delete-lks-cluster",
+      "description": "Delete an LKS cluster\n\nMarks the cluster for deletion. The call returns as soon as the tombstone is written; the platform then tears the cluster and its node pools down asynchronously. A cluster that is already deleted, or that is paused, rejects the request.\n"
+    },
+    {
+      "name": "lks-update-lks-cluster",
+      "description": "Update an LKS cluster\n\nRenames a cluster, edits its description, or upgrades the control plane. At least one of `name`, `description` or `kubernetes_version` must be provided.\n\nSetting a newer `kubernetes_version` consents to a control-plane upgrade; the value must be a patch listed by `GET /lks/available_versions` with `available_for_upgrade: true` and must not be lower than the current one. Node pools are upgraded separately and must never run a patch newer than the control plane.\n\nThe cluster must be idle: a cluster that is provisioning, updating, scaling, upgrading, paused or deleting rejects the request with 409.\n"
+    },
+    {
+      "name": "lks-get-lks-cluster-kubeconfig",
+      "description": "Get the cluster kubeconfig\n\nReturns the kubeconfig for the cluster. It only exists once the control plane is up, so this endpoint answers 409 `NOT_READY` while the cluster is still provisioning — poll `GET /lks/clusters/{id}` until `kubeconfig_url` is set.\n"
+    },
+    {
+      "name": "lks-list-lks-node-pools",
+      "description": "List node pools\n\nLists every node pool of an LKS cluster. The response is not paginated; `meta.total` is the number of node pools returned.\n"
+    },
+    {
+      "name": "lks-create-lks-node-pool",
+      "description": "Create a node pool\n\nAdds a node pool to an LKS cluster. The platform provisions `count` servers of `plan` from stock, so both fields are required.\n\n`kubernetes_version` defaults to the control-plane patch and may never be newer than it. `max_pods_per_node` is set once, here — it cannot be changed later.\n"
+    },
+    {
+      "name": "lks-get-lks-node-pool",
+      "description": "Get a node pool\n\nRetrieves a single node pool of an LKS cluster. `ready_nodes` reports how many of the pool's `count` nodes have joined the cluster.\n"
+    },
+    {
+      "name": "lks-delete-lks-node-pool",
+      "description": "Delete a node pool\n\nMarks the node pool for deletion. The call returns as soon as the tombstone is written; the platform then drains and releases the nodes asynchronously.\n"
+    },
+    {
+      "name": "lks-update-lks-node-pool",
+      "description": "Update a node pool\n\nScales, renames, upgrades or re-labels a node pool. At least one attribute must be provided.\n\n`labels` and `taints` are declarative replacements, not merges: omit the field to leave it untouched, send the whole map/list to replace it, or send `{}` / `[]` to clear it.\n\nA newer `kubernetes_version` rolls a node-recreating upgrade; it must not be lower than the pool's current patch nor newer than the control-plane patch. `max_pods_per_node` is immutable — a PATCH that carries it is rejected with 422 even if the value is unchanged.\n\nThe node pool must be idle: one that is provisioning, updating, scaling, upgrading, paused or deleting rejects the request with 409.\n"
+    },
+    {
+      "name": "lks-list-lks-available-versions",
+      "description": "List available Kubernetes versions\n\nLists the Kubernetes patches the platform offers, with their lifecycle flags. Use a version with `available_for_creation: true` when creating a cluster or a node pool, and one with `available_for_upgrade: true` when upgrading. Exactly one entry has `default: true`.\n"
+    },
+    {
+      "name": "lks-list-lks-sites",
+      "description": "List sites available for LKS\n\nLists the sites that can host an LKS cluster, one entry per site. Pass an entry's `id` (the site slug) as `site` when creating a cluster. `country` is null when the underlying site has no region assigned.\n"
+    },
+    {
       "name": "plans-list",
       "description": "List plans\n\nLists all plans. Availability by region is included in `attributes.regions.locations.available[*]` node for a given plan.\n"
     },
@@ -246,6 +298,10 @@
       "description": "List storage plans"
     },
     {
+      "name": "plans-get-lks-plans",
+      "description": "List LKS plans\n\nLists bare metal plans available to LKS with per-site capacity for a node pool.\n`attributes.regions.locations.in_stock_count` gives the number of servers a node pool can get, keyed by site slug.\n"
+    },
+    {
       "name": "plans-get-managed-database-plans",
       "description": "List managed database plans"
     },
@@ -255,11 +311,11 @@
     },
     {
       "name": "public-networks-get-public-networks",
-      "description": "List networks\n\nList the customer networks owned by the team"
+      "description": "List networks\n\n**Preview.** Available at locations where the `public_network` feature is enabled.\n\nList the customer networks owned by the team"
     },
     {
       "name": "public-networks-create-public-network",
-      "description": "Create a network\n\nProvision a customer network: an IPv4 block of the chosen size plus a paired IPv6 /64. The network is allocated synchronously and returned in the response; billing is settled in the background."
+      "description": "Create a network\n\n**Preview.** Available at locations where the `public_network` feature is enabled.\n\nProvision a customer network: an IPv4 block of the chosen size plus a paired IPv6 /64. The network is allocated synchronously and returned in the response; billing is settled in the background."
     },
     {
       "name": "public-networks-get-public-network",
@@ -267,7 +323,7 @@
     },
     {
       "name": "public-networks-destroy-public-network",
-      "description": "Delete a network\n\nDelete a customer network. Only allowed while the network has no IPs in use."
+      "description": "Delete a network\n\n**Preview.** Available at locations where the `public_network` feature is enabled.\n\nDelete a customer network. Only allowed while the network has no IPs in use."
     },
     {
       "name": "projects-list",
@@ -534,28 +590,32 @@
       "description": "Update filesystem\n\nAllow you to upgrade the size of a filesystem."
     },
     {
-      "name": "block-storage-get-storage-volumes",
+      "name": "block-storage-list-volumes",
       "description": "List volumes\n\nLists all the volumes from a team."
     },
     {
-      "name": "block-storage-post-storage-volumes",
+      "name": "block-storage-create-volume",
       "description": "Create volume\n\nAllows you to add persistent storage to a project. These volumes can be used to store data across your servers."
     },
     {
-      "name": "block-storage-get-storage-volume",
+      "name": "block-storage-retrieve-volume",
       "description": "Retrieve volume\n\nShows details of a specific volume."
     },
     {
-      "name": "block-storage-delete-storage-volumes",
+      "name": "block-storage-delete-volume",
       "description": "Delete volume\n\nAllows you to remove a volume from a project."
     },
     {
-      "name": "block-storage-post-storage-volumes-mount",
-      "description": "Mount volume\n\nMounts a volume by adding the client to an allowed list"
+      "name": "block-storage-mount-volume",
+      "description": "Mount volume (deprecated)\n\nMounts a volume by adding the client to an allowed list"
     },
     {
-      "name": "block-storage-post-storage-volumes-map",
-      "description": "Map volume to server\n\nMaps a high performance volume to a server over NVMe-TCP."
+      "name": "block-storage-map-volume",
+      "description": "Map volume\n\nMaps a high performance volume to a server over NVMe-TCP."
+    },
+    {
+      "name": "block-storage-unmap-volume",
+      "description": "Unmap volume\n\nUnmaps a high performance volume from the server it is currently mapped to."
     },
     {
       "name": "tags-list",
@@ -607,11 +667,11 @@
     },
     {
       "name": "marketplace-apps-list-marketplace-apps",
-      "description": "List marketplace apps\n\nLists the marketplace apps available to deploy on Virtual Machines. Only published apps are returned. Requires the `marketplace_apps` feature to be enabled for the team."
+      "description": "List marketplace apps\n\nLists the marketplace apps available to deploy on Virtual Machines. Only published apps are returned."
     },
     {
       "name": "marketplace-apps-get-marketplace-app",
-      "description": "Retrieve a marketplace app\n\nRetrieve a single marketplace app by ID or slug. Only published apps are visible. Requires the `marketplace_apps` feature to be enabled for the team."
+      "description": "Retrieve a marketplace app\n\nRetrieve a single marketplace app by ID or slug. Only published apps are visible."
     },
     {
       "name": "virtual-machines-list",
@@ -748,6 +808,34 @@
     {
       "name": "vpn-sessions-delete",
       "description": "Delete VPN session\n\nDeletes an existing VPN Session.\n"
+    },
+    {
+      "name": "managed-databases-show-managed-database-metrics",
+      "description": "Show managed database metrics"
+    },
+    {
+      "name": "managed-databases-list-managed-databases",
+      "description": "List managed databases"
+    },
+    {
+      "name": "managed-databases-create-managed-database",
+      "description": "Create a managed database"
+    },
+    {
+      "name": "managed-databases-show-managed-database",
+      "description": "Show a managed database"
+    },
+    {
+      "name": "managed-databases-destroy-managed-database",
+      "description": "Destroy a managed database"
+    },
+    {
+      "name": "managed-databases-update-managed-database",
+      "description": "Update a managed database"
+    },
+    {
+      "name": "managed-databases-list-managed-database-backups",
+      "description": "List managed database backups"
     }
   ]
 }

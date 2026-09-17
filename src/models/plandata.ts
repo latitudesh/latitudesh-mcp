@@ -57,33 +57,33 @@ export const PlanDataStockLevel$zodSchema = z.enum([
   "high",
 ]);
 
-export type Cpu = {
+export type PlanDataCpu = {
   type?: string | undefined;
   clock?: number | undefined;
   cores?: number | undefined;
   count?: number | undefined;
 };
 
-export const Cpu$zodSchema: z.ZodType<Cpu> = z.object({
+export const PlanDataCpu$zodSchema: z.ZodType<PlanDataCpu> = z.object({
   clock: z.number().optional(),
   cores: z.number().optional(),
   count: z.number().optional(),
   type: z.string().optional(),
 });
 
-export type Memory = { total?: number | undefined };
+export type PlanDataMemory = { total?: number | undefined };
 
-export const Memory$zodSchema: z.ZodType<Memory> = z.object({
+export const PlanDataMemory$zodSchema: z.ZodType<PlanDataMemory> = z.object({
   total: z.number().optional(),
 });
 
-export type Drive = {
+export type PlanDataDrive = {
   count?: number | undefined;
   size?: string | undefined;
   type?: DriveType | undefined;
 };
 
-export const Drive$zodSchema: z.ZodType<Drive> = z.object({
+export const PlanDataDrive$zodSchema: z.ZodType<PlanDataDrive> = z.object({
   count: z.number().optional(),
   size: z.string().optional(),
   type: DriveType$zodSchema.optional(),
@@ -99,14 +99,14 @@ export const PlanDataNic$zodSchema: z.ZodType<PlanDataNic> = z.object({
   type: z.string().optional(),
 });
 
-export type Gpu = {
+export type PlanDataGpu = {
   count?: number | undefined;
   type?: string | undefined;
   vram_per_gpu?: number | null | undefined;
   interconnect?: string | null | undefined;
 };
 
-export const Gpu$zodSchema: z.ZodType<Gpu> = z.object({
+export const PlanDataGpu$zodSchema: z.ZodType<PlanDataGpu> = z.object({
   count: z.number().optional(),
   interconnect: z.string().nullable().optional().describe(
     "GPU interconnection type (e.g., NVLink, PCIe)",
@@ -116,18 +116,18 @@ export const Gpu$zodSchema: z.ZodType<Gpu> = z.object({
 });
 
 export type PlanDataSpecs = {
-  cpu?: Cpu | undefined;
-  memory?: Memory | undefined;
-  drives?: Array<Drive> | undefined;
+  cpu?: PlanDataCpu | undefined;
+  memory?: PlanDataMemory | undefined;
+  drives?: Array<PlanDataDrive> | undefined;
   nics?: Array<PlanDataNic> | undefined;
-  gpu?: Gpu | undefined;
+  gpu?: PlanDataGpu | undefined;
 };
 
 export const PlanDataSpecs$zodSchema: z.ZodType<PlanDataSpecs> = z.object({
-  cpu: z.lazy(() => Cpu$zodSchema).optional(),
-  drives: z.array(z.lazy(() => Drive$zodSchema)).optional(),
-  gpu: z.lazy(() => Gpu$zodSchema).optional(),
-  memory: z.lazy(() => Memory$zodSchema).optional(),
+  cpu: z.lazy(() => PlanDataCpu$zodSchema).optional(),
+  drives: z.array(z.lazy(() => PlanDataDrive$zodSchema)).optional(),
+  gpu: z.lazy(() => PlanDataGpu$zodSchema).optional(),
+  memory: z.lazy(() => PlanDataMemory$zodSchema).optional(),
   nics: z.array(z.lazy(() => PlanDataNic$zodSchema)).optional(),
 });
 
@@ -142,38 +142,16 @@ export const PlanDataLocations$zodSchema: z.ZodType<PlanDataLocations> = z
     in_stock: z.array(z.string()).optional(),
   });
 
-export type PlanDataUSD = {
-  hour?: number | null | undefined;
-  month?: number | null | undefined;
-  year?: number | null | undefined;
-};
-
-export const PlanDataUSD$zodSchema: z.ZodType<PlanDataUSD> = z.object({
-  hour: z.number().nullable().optional(),
-  month: z.number().nullable().optional(),
-  year: z.number().nullable().optional(),
-});
-
-export type PlanDataBRL = {
-  hour?: number | null | undefined;
-  month?: number | null | undefined;
-  year?: number | null | undefined;
-};
-
-export const PlanDataBRL$zodSchema: z.ZodType<PlanDataBRL> = z.object({
-  hour: z.number().nullable().optional(),
-  month: z.number().nullable().optional(),
-  year: z.number().nullable().optional(),
-});
-
 export type PlanDataPricing = {
-  USD?: PlanDataUSD | undefined;
-  BRL?: PlanDataBRL | undefined;
+  hour?: number | null | undefined;
+  month?: number | null | undefined;
+  year?: number | null | undefined;
 };
 
 export const PlanDataPricing$zodSchema: z.ZodType<PlanDataPricing> = z.object({
-  BRL: z.lazy(() => PlanDataBRL$zodSchema).optional(),
-  USD: z.lazy(() => PlanDataUSD$zodSchema).optional(),
+  hour: z.number().nullable().optional(),
+  month: z.number().nullable().optional(),
+  year: z.number().nullable().optional(),
 });
 
 export type PlanDataRegion = {
@@ -181,14 +159,17 @@ export type PlanDataRegion = {
   deploys_instantly?: Array<string> | undefined;
   locations?: PlanDataLocations | undefined;
   stock_level?: PlanDataStockLevel | undefined;
-  pricing?: PlanDataPricing | undefined;
+  pricing?: { [k: string]: PlanDataPricing } | undefined;
 };
 
 export const PlanDataRegion$zodSchema: z.ZodType<PlanDataRegion> = z.object({
   deploys_instantly: z.array(z.string()).optional(),
   locations: z.lazy(() => PlanDataLocations$zodSchema).optional(),
   name: z.string().optional(),
-  pricing: z.lazy(() => PlanDataPricing$zodSchema).optional(),
+  pricing: z.record(z.string(), z.lazy(() => PlanDataPricing$zodSchema))
+    .optional().describe(
+      "Prices keyed by ISO 4217 currency code (e.g. USD, BRL).",
+    ),
   stock_level: PlanDataStockLevel$zodSchema.optional(),
 });
 

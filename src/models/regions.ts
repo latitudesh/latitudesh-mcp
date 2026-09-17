@@ -4,6 +4,7 @@
 
 import * as z from "zod";
 import { ClosedEnum } from "../types/enums.js";
+import { Country, Country$zodSchema } from "./country.js";
 import { PaginationMeta, PaginationMeta$zodSchema } from "./paginationmeta.js";
 
 export const RegionsType = {
@@ -15,21 +16,11 @@ export const RegionsType$zodSchema = z.enum([
   "regions",
 ]);
 
-export type RegionsCountry = {
-  slug?: string | undefined;
-  name?: string | undefined;
-};
-
-export const RegionsCountry$zodSchema: z.ZodType<RegionsCountry> = z.object({
-  name: z.string().optional(),
-  slug: z.string().optional(),
-});
-
 export type RegionsAttributes = {
   slug?: string | undefined;
   name?: string | undefined;
   facility?: string | null | undefined;
-  country?: RegionsCountry | undefined;
+  country?: Country | undefined;
   type?: string | null | undefined;
   features?: Array<string> | undefined;
   network_group?: string | null | undefined;
@@ -37,7 +28,7 @@ export type RegionsAttributes = {
 
 export const RegionsAttributes$zodSchema: z.ZodType<RegionsAttributes> = z
   .object({
-    country: z.lazy(() => RegionsCountry$zodSchema).optional(),
+    country: Country$zodSchema.optional(),
     facility: z.string().nullable().optional(),
     features: z.array(z.string()).optional().describe(
       "Location capabilities available at this location (e.g. `public_network`, `elastic_ip_bgp`).",
