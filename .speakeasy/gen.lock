@@ -5,7 +5,7 @@ management:
   docVersion: "2023-06-01"
   speakeasyVersion: 1.797.0
   generationVersion: 2.937.18
-  releaseVersion: 0.3.3
+  releaseVersion: 0.4.0
   configChecksum: bbbbe405c4c23de9dc0b2e6956ba5f65
   repoURL: https://github.com/latitudesh/latitudesh-mcp.git
   installationURL: https://github.com/latitudesh/latitudesh-mcp
