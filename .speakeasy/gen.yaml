@@ -35,7 +35,7 @@ mcp-typescript:
   additionalDependencies:
     dependencies:
       '@cloudflare/workers-oauth-provider': 0.8.1
-      agents: 0.23.0
+      agents: 0.19.0
     devDependencies:
       '@cloudflare/workers-types': ^5.20260917.1
     peerDependencies: {}
