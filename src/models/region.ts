@@ -4,6 +4,7 @@
 
 import * as z from "zod";
 import { ClosedEnum } from "../types/enums.js";
+import { RegionCountry, RegionCountry$zodSchema } from "./regioncountry.js";
 
 export const RegionType = {
   Regions: "regions",
@@ -13,16 +14,6 @@ export type RegionType = ClosedEnum<typeof RegionType>;
 export const RegionType$zodSchema = z.enum([
   "regions",
 ]);
-
-export type RegionCountry = {
-  slug?: string | undefined;
-  name?: string | undefined;
-};
-
-export const RegionCountry$zodSchema: z.ZodType<RegionCountry> = z.object({
-  name: z.string().optional(),
-  slug: z.string().optional(),
-});
 
 export type RegionAttributes = {
   slug?: string | undefined;
@@ -36,7 +27,7 @@ export type RegionAttributes = {
 
 export const RegionAttributes$zodSchema: z.ZodType<RegionAttributes> = z.object(
   {
-    country: z.lazy(() => RegionCountry$zodSchema).optional(),
+    country: RegionCountry$zodSchema.optional(),
     facility: z.string().nullable().optional(),
     features: z.array(z.string()).optional().describe(
       "Location capabilities available at this location (e.g. `public_network`, `elastic_ip_bgp`).",

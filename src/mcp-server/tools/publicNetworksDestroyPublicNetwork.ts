@@ -16,6 +16,8 @@ export const tool$publicNetworksDestroyPublicNetwork: ToolDefinition<
   name: "public-networks-destroy-public-network",
   description: `Delete a network
 
+**Preview.** Available at locations where the \`public_network\` feature is enabled.
+
 Delete a customer network. Only allowed while the network has no IPs in use.`,
   annotations: {
     "title": "",

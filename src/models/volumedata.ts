@@ -23,12 +23,49 @@ export const Initiator$zodSchema: z.ZodType<Initiator> = z.object({
 });
 
 /**
+ * Storage network the mapped server joins to reach the volume over NVMe-TCP. Null until the network has been provisioned for the volume.
+ */
+export type StorageNetwork = {
+  vid?: number | null | undefined;
+  host_cidr?: string | null | undefined;
+  gateway?: string | null | undefined;
+  routes?: Array<string> | null | undefined;
+  block_gateway?: string | null | undefined;
+  block_port?: number | null | undefined;
+};
+
+export const StorageNetwork$zodSchema: z.ZodType<StorageNetwork> = z.object({
+  block_gateway: z.string().nullable().optional().describe(
+    "NVMe-oF/TCP discovery portal address.",
+  ),
+  block_port: z.int().nullable().optional().describe(
+    "NVMe-oF/TCP discovery portal port.",
+  ),
+  gateway: z.string().nullable().optional().describe(
+    "Gateway of the storage network, used for the routes below.",
+  ),
+  host_cidr: z.string().nullable().optional().describe(
+    "Storage IP of the mapped server, in CIDR notation. Null until the mapping status is \"mapped\".",
+  ),
+  routes: z.array(z.string()).nullable().optional().describe(
+    "Storage infrastructure prefixes to route via the gateway.",
+  ),
+  vid: z.int().nullable().optional().describe(
+    "VLAN ID of the storage VLAN to tag on the server bond.",
+  ),
+}).describe(
+  "Storage network the mapped server joins to reach the volume over NVMe-TCP. Null until the network has been provisioned for the volume.",
+);
+
+/**
  * NVMe-TCP block mapping of a high performance volume. Null for volumes that are not mapped to a server.
  */
 export type Block = {
+  status?: string | null | undefined;
   nqn?: string | null | undefined;
   nsid?: number | null | undefined;
   server_id?: string | null | undefined;
+  storage_network?: StorageNetwork | null | undefined;
 };
 
 export const Block$zodSchema: z.ZodType<Block> = z.object({
@@ -41,6 +78,13 @@ export const Block$zodSchema: z.ZodType<Block> = z.object({
   server_id: z.string().nullable().optional().describe(
     "ID of the server the volume is mapped to.",
   ),
+  status: z.string().nullable().optional().describe(
+    "Mapping lifecycle state: \"mapping\" while the mapping is being applied, \"mapped\" once the server can access the volume, \"unmapping\" while the mapping is being removed, or \"failed\". Mapping and unmapping are asynchronous, so poll the volume until this reaches a terminal state. The block object becomes null once the volume is fully unmapped.",
+  ),
+  storage_network: z.lazy(() => StorageNetwork$zodSchema).nullable().optional()
+    .describe(
+      "Storage network the mapped server joins to reach the volume over NVMe-TCP. Null until the network has been provisioned for the volume.",
+    ),
 }).describe(
   "NVMe-TCP block mapping of a high performance volume. Null for volumes that are not mapped to a server.",
 );
@@ -77,7 +121,7 @@ export type VolumeDataAttributes = {
   name?: string | undefined;
   size_in_gb?: number | undefined;
   created_at?: string | null | undefined;
-  namespace_id?: string | null | undefined;
+  namespace_id?: number | null | undefined;
   connector_id?: string | null | undefined;
   initiators?: Array<Initiator> | null | undefined;
   block?: Block | null | undefined;
@@ -105,7 +149,7 @@ export const VolumeDataAttributes$zodSchema: z.ZodType<VolumeDataAttributes> = z
       "Keyring secret used to connect to the volume. Returned only for dashboard-origin requests; null until the volume is provisioned.",
     ),
     name: z.string().optional(),
-    namespace_id: z.string().nullable().optional(),
+    namespace_id: z.int().nullable().optional(),
     project: ProjectInclude$zodSchema.optional(),
     region: z.lazy(() => VolumeDataRegion$zodSchema).nullable().optional(),
     size_in_gb: z.int().optional(),

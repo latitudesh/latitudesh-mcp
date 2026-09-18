@@ -234,7 +234,7 @@ export const VirtualMachineAttributesAttributes$zodSchema: z.ZodType<
     "The operating system installed on the virtual machine",
   ),
   pending_restart: z.boolean().optional().describe(
-    "Opt-in extra field. Request via `extra_fields[virtual_machines]=pending_restart`.",
+    "Deprecated, always false. Opt-in extra field, requested via `extra_fields[virtual_machines]=pending_restart`. Attaching and detaching restart the VM automatically.",
   ),
   plan: z.lazy(() => VirtualMachineAttributesPlan$zodSchema).optional(),
   primary_ipv4: z.string().nullable().optional(),

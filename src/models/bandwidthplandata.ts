@@ -14,42 +14,40 @@ export const BandwidthPlanDataType$zodSchema = z.enum([
   "bandwidth_plan",
 ]);
 
-export type BandwidthPlanDataUsd = {
+export type Usd = {
   monthly?: number | undefined;
   hourly?: number | undefined;
   yearly?: number | null | undefined;
 };
 
-export const BandwidthPlanDataUsd$zodSchema: z.ZodType<BandwidthPlanDataUsd> = z
-  .object({
-    hourly: z.int().optional(),
-    monthly: z.int().optional(),
-    yearly: z.int().nullable().optional(),
-  });
+export const Usd$zodSchema: z.ZodType<Usd> = z.object({
+  hourly: z.int().optional(),
+  monthly: z.int().optional(),
+  yearly: z.int().nullable().optional(),
+});
 
-export type BandwidthPlanDataBrl = {
+export type Brl = {
   monthly?: number | undefined;
   hourly?: number | undefined;
   yearly?: number | null | undefined;
 };
 
-export const BandwidthPlanDataBrl$zodSchema: z.ZodType<BandwidthPlanDataBrl> = z
-  .object({
-    hourly: z.int().optional(),
-    monthly: z.int().optional(),
-    yearly: z.int().nullable().optional(),
-  });
+export const Brl$zodSchema: z.ZodType<Brl> = z.object({
+  hourly: z.int().optional(),
+  monthly: z.int().optional(),
+  yearly: z.int().nullable().optional(),
+});
 
 export type BandwidthPlanDataPricing = {
-  usd?: BandwidthPlanDataUsd | undefined;
-  brl?: BandwidthPlanDataBrl | undefined;
+  usd?: Usd | undefined;
+  brl?: Brl | undefined;
 };
 
 export const BandwidthPlanDataPricing$zodSchema: z.ZodType<
   BandwidthPlanDataPricing
 > = z.object({
-  brl: z.lazy(() => BandwidthPlanDataBrl$zodSchema).optional(),
-  usd: z.lazy(() => BandwidthPlanDataUsd$zodSchema).optional(),
+  brl: z.lazy(() => Brl$zodSchema).optional(),
+  usd: z.lazy(() => Usd$zodSchema).optional(),
 });
 
 export type BandwidthPlanDataAttributes = {

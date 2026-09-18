@@ -16,6 +16,6 @@ export const GetStoragePlansRequest$zodSchema: z.ZodType<
     "Filter by storage class (standard or high_performance)",
   ).optional(),
   filterStorageType: z.string().describe(
-    "Filter by storage type (filesystem or object)",
+    "Filter by storage type (filesystem, object, or volume)",
   ).optional(),
 });

@@ -16,7 +16,7 @@ export const tool$firewallsGetAllFirewallAssignments: ToolDefinition<
   name: "firewalls-get-all-firewall-assignments",
   description: `List firewall assignments
 
-Returns a list of all servers and virtual machines assigned to one or more firewalls.`,
+Returns a list of all servers and virtual machines assigned to a firewall.`,
   annotations: {
     "title": "",
     "destructiveHint": false,

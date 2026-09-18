@@ -4,6 +4,14 @@
 
 import * as z from "zod";
 import { ClosedEnum } from "../types/enums.js";
+import {
+  StoragePlanStorageClass,
+  StoragePlanStorageClass$zodSchema,
+} from "./storageplanstorageclass.js";
+import {
+  StoragePlanStorageType,
+  StoragePlanStorageType$zodSchema,
+} from "./storageplanstoragetype.js";
 
 export const StoragePlanDataType = {
   StoragePlans: "storage_plans",
@@ -14,67 +22,30 @@ export const StoragePlanDataType$zodSchema = z.enum([
   "storage_plans",
 ]);
 
-export const StoragePlanStorageType = {
-  Filesystem: "filesystem",
-  Object: "object",
-} as const;
-export type StoragePlanStorageType = ClosedEnum<typeof StoragePlanStorageType>;
-
-export const StoragePlanStorageType$zodSchema = z.enum([
-  "filesystem",
-  "object",
-]);
-
-export const StoragePlanStorageClass = {
-  Standard: "standard",
-  HighPerformance: "high_performance",
-} as const;
-export type StoragePlanStorageClass = ClosedEnum<
-  typeof StoragePlanStorageClass
->;
-
-export const StoragePlanStorageClass$zodSchema = z.enum([
-  "standard",
-  "high_performance",
-]);
-
-export type StoragePlanDataUSD = { month?: number | undefined };
-
-export const StoragePlanDataUSD$zodSchema: z.ZodType<StoragePlanDataUSD> = z
-  .object({
-    month: z.number().optional(),
-  });
-
-export type StoragePlanDataBRL = { month?: number | undefined };
-
-export const StoragePlanDataBRL$zodSchema: z.ZodType<StoragePlanDataBRL> = z
-  .object({
-    month: z.number().optional(),
-  });
-
-export type StoragePlanDataPricing = {
-  USD?: StoragePlanDataUSD | undefined;
-  BRL?: StoragePlanDataBRL | undefined;
-};
+export type StoragePlanDataPricing = { month?: number | undefined };
 
 export const StoragePlanDataPricing$zodSchema: z.ZodType<
   StoragePlanDataPricing
 > = z.object({
-  BRL: z.lazy(() => StoragePlanDataBRL$zodSchema).optional(),
-  USD: z.lazy(() => StoragePlanDataUSD$zodSchema).optional(),
+  month: z.number().optional(),
 });
 
 export type StoragePlanDataRegion = {
   name?: string | undefined;
   locations?: Array<string> | undefined;
-  pricing?: StoragePlanDataPricing | undefined;
+  pricing?: { [k: string]: StoragePlanDataPricing } | undefined;
 };
 
 export const StoragePlanDataRegion$zodSchema: z.ZodType<StoragePlanDataRegion> =
   z.object({
     locations: z.array(z.string()).optional(),
     name: z.string().optional(),
-    pricing: z.lazy(() => StoragePlanDataPricing$zodSchema).optional(),
+    pricing: z.record(
+      z.string(),
+      z.lazy(() => StoragePlanDataPricing$zodSchema),
+    ).optional().describe(
+      "Prices keyed by ISO 4217 currency code (e.g. USD, BRL).",
+    ),
   });
 
 export type StoragePlanDataAttributes = {

@@ -4,6 +4,11 @@
 
 import * as z from "zod";
 import { ClosedEnum } from "../types/enums.js";
+import { ErrorObject, ErrorObject$zodSchema } from "./errorobject.js";
+import {
+  VirtualNetworkAssignment,
+  VirtualNetworkAssignment$zodSchema,
+} from "./virtualnetworkassignment.js";
 
 export const AssignServerVirtualNetworkType2 = {
   VirtualNetworkAssignment: "virtual_network_assignment",
@@ -50,3 +55,14 @@ export const AssignServerVirtualNetworkRequest$zodSchema: z.ZodType<
 > = z.object({
   data: z.lazy(() => AssignServerVirtualNetworkData2$zodSchema).optional(),
 });
+
+export type AssignServerVirtualNetworkResponse =
+  | VirtualNetworkAssignment
+  | ErrorObject;
+
+export const AssignServerVirtualNetworkResponse$zodSchema: z.ZodType<
+  AssignServerVirtualNetworkResponse
+> = z.union([
+  VirtualNetworkAssignment$zodSchema,
+  ErrorObject$zodSchema,
+]);

@@ -30,6 +30,8 @@ import { Result } from "../types/fp.js";
  * - `minor`: The minor version number (e.g., `1.35`)
  *
  * The API returns the latest 5 supported minor versions. When upgrading clusters, you can only upgrade one minor version at a time (e.g., from 1.34 to 1.35).
+ *
+ * @deprecated method: This will be removed in a future release, please migrate away from it as soon as possible.
  */
 export function kubernetesClustersListAvailableVersions(
   client$: LatitudeshCore,

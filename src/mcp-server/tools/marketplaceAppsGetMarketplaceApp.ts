@@ -16,7 +16,7 @@ export const tool$marketplaceAppsGetMarketplaceApp: ToolDefinition<
   name: "marketplace-apps-get-marketplace-app",
   description: `Retrieve a marketplace app
 
-Retrieve a single marketplace app by ID or slug. Only published apps are visible. Requires the \`marketplace_apps\` feature to be enabled for the team.`,
+Retrieve a single marketplace app by ID or slug. Only published apps are visible.`,
   annotations: {
     "title": "",
     "destructiveHint": false,

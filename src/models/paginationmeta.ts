@@ -4,19 +4,20 @@
 
 import * as z from "zod";
 
-export type Total = { count?: number | undefined };
+export type PaginationMetaTotal = { count?: number | undefined };
 
-export const Total$zodSchema: z.ZodType<Total> = z.object({
-  count: z.int().optional().describe(
-    "Total number of records, returned when `stats[total]=count` is requested",
-  ),
-});
+export const PaginationMetaTotal$zodSchema: z.ZodType<PaginationMetaTotal> = z
+  .object({
+    count: z.int().optional().describe(
+      "Total number of records, returned when `stats[total]=count` is requested",
+    ),
+  });
 
-export type PaginationMetaStats = { total?: Total | undefined };
+export type PaginationMetaStats = { total?: PaginationMetaTotal | undefined };
 
 export const PaginationMetaStats$zodSchema: z.ZodType<PaginationMetaStats> = z
   .object({
-    total: z.lazy(() => Total$zodSchema).optional(),
+    total: z.lazy(() => PaginationMetaTotal$zodSchema).optional(),
   });
 
 export type PaginationMeta = { stats?: PaginationMetaStats | undefined };

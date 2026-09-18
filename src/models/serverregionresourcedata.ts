@@ -10,6 +10,7 @@ export type ServerRegionResourceDataSite = {
   slug?: string | undefined;
   facility?: string | undefined;
   rack_id?: string | undefined;
+  rack_name?: string | null | undefined;
 };
 
 export const ServerRegionResourceDataSite$zodSchema: z.ZodType<
@@ -19,6 +20,7 @@ export const ServerRegionResourceDataSite$zodSchema: z.ZodType<
   id: z.string().optional(),
   name: z.string().optional(),
   rack_id: z.string().optional(),
+  rack_name: z.string().nullable().optional(),
   slug: z.string().optional(),
 });
 
