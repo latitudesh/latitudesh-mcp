@@ -1,19 +1,19 @@
 lockVersion: 2.0.0
 id: 14ad660b-1b20-4e74-9900-f561baa97606
 management:
-  docChecksum: aab94916d1991ccc06556848bfacdf17
+  docChecksum: 551a552a30ad3527fbbd67c1a9d7b6bc
   docVersion: "2023-06-01"
-  speakeasyVersion: 1.797.0
-  generationVersion: 2.937.18
-  releaseVersion: 0.4.0
-  configChecksum: bbbbe405c4c23de9dc0b2e6956ba5f65
+  speakeasyVersion: 1.799.0
+  generationVersion: 2.941.0
+  releaseVersion: 0.4.1
+  configChecksum: 89e1ad148dd7214d88bbbdb751378647
   repoURL: https://github.com/latitudesh/latitudesh-mcp.git
   installationURL: https://github.com/latitudesh/latitudesh-mcp
   published: true
 persistentEdits:
-  generation_id: 3195c9e6-2c0d-470e-a086-3763519e3d22
-  pristine_commit_hash: b725f545dcf3011dcd6648a1411d1821027167e5
-  pristine_tree_hash: 79e1033581b4a668692915793509b615a5895764
+  generation_id: 1a4b9672-3a45-4028-babd-bfab05a02902
+  pristine_commit_hash: e98828fd232ee50c87d344898652b6b6d1ae738b
+  pristine_tree_hash: 1b4ded70b3a8d541b1eeb8166aee55fceb60fb69
 features:
   mcp-typescript:
     additionalDependencies: 0.1.0
@@ -51,12 +51,12 @@ trackedFiles:
     pristine_git_object: 4f9e60a9462fc4def738d60c3aaadf8232ef185f
   manifest.json:
     id: ca642a226869
-    last_write_checksum: sha1:02906b69c1c914f07f7408995c332fdb9ffaa3ff
-    pristine_git_object: 8b8a6483d4ab5da28ee3103e74b3d1e1248a3c07
+    last_write_checksum: sha1:10500e530b9845a65a34f30dac3abff493209d2a
+    pristine_git_object: 2615dd8278c2f47baaaa97dcc317520d07b8eb19
   package.json:
     id: 7030d0b2f71b
-    last_write_checksum: sha1:4d8ee8cc0dfe21284fc024eb2528f795d88912d6
-    pristine_git_object: 393fb78227c4cbcacca7bcfe20e92cc78021008b
+    last_write_checksum: sha1:4c94c260faf0d8e77317ff6f430a02a5ea3083cd
+    pristine_git_object: 38c1016a1560349b9c0dc10db12d343226e11524
   src/cloudflare-worker/cloudflare-worker.ts:
     id: b90556be8673
     last_write_checksum: sha1:039c1eb8357f3d4d9127d6100c042b5e8200dbd8
@@ -855,16 +855,16 @@ trackedFiles:
     pristine_git_object: 9c36bf01332084f735909a71036c3544cc4c7e3a
   src/landing-page.ts:
     id: ef64a6ee46d7
-    last_write_checksum: sha1:a59d160229511bbc2ae7e81663fd6c7e65654cbb
-    pristine_git_object: 9b012874117d4d1bd748f14ab986cdf0b0062398
+    last_write_checksum: sha1:1e873d7b246190cff3c98819bc52545678dd1d62
+    pristine_git_object: 1ccce01673d70437230f2ae5ebba248717c94248
   src/lib/base64.ts:
     id: "598522066688"
     last_write_checksum: sha1:e9f04a037018040361043104960982f7c22db52d
     pristine_git_object: d4bd8b341290e7a828a171d840bd0b0fff7c7cd7
   src/lib/config.ts:
     id: 320761608fb3
-    last_write_checksum: sha1:22a32f4f381e9a7d7724a4e77be50d630014c953
-    pristine_git_object: 8dae37cba206cf1ff103305d90badb318d9ee006
+    last_write_checksum: sha1:b2a19a6b189eab33411b3466ca4f7f9382b0d3ad
+    pristine_git_object: 24a70d04c60bf1b372226c99e1f4e2bbe25f7a69
   src/lib/encodings.ts:
     id: 3bd8ead98afd
     last_write_checksum: sha1:9b859366c917d31f7ee533176f71631872fb05fa
@@ -951,8 +951,8 @@ trackedFiles:
     pristine_git_object: 2afe103bd836d7aa109f97154f7d78595d8e2642
   src/mcp-server/mcp-server.ts:
     id: aabbc4ab07c1
-    last_write_checksum: sha1:624864d138f32351582491eded1bc1bf303cb6ea
-    pristine_git_object: 3d62e520ffd73de93de455bfe1debc57175a7993
+    last_write_checksum: sha1:626b61a61de5891c2487d597ab992c38ef72b1ca
+    pristine_git_object: 5f5ba9a370e2aac68f46447c490035bec9597c95
   src/mcp-server/prompts.ts:
     id: 26f3d73cbf31
     last_write_checksum: sha1:0b128f67546d289549b2d6668fc554f9747a3566
@@ -967,8 +967,8 @@ trackedFiles:
     pristine_git_object: c25696d4c4f70e081fa5d87ad6891874c509a577
   src/mcp-server/server.ts:
     id: 2784dd48e82a
-    last_write_checksum: sha1:8b387826a47be39300f253afdf92a9a32cf61c21
-    pristine_git_object: 5cd3c7e0f733406005ac47c125fe8c2a22ade7ce
+    last_write_checksum: sha1:bb7af51fc3375bd022bf93716fc58146ed987e36
+    pristine_git_object: e692498f2ddf2034f3d07fd94bc0d5c290c9f3dc
   src/mcp-server/shared.ts:
     id: 074e80d4be1e
     last_write_checksum: sha1:19c9034032819a14f15c430de4350c8aba99d725
@@ -1895,16 +1895,16 @@ trackedFiles:
     pristine_git_object: a77fccd734ee89caa89bf8fd68e27501fd749633
   src/models/createserverop.ts:
     id: 52dbb9fec5e5
-    last_write_checksum: sha1:7d68809b152d9e924ce950203d55007e6252e9fe
-    pristine_git_object: d9b8a8c766b8077d4178a8c462a01f62a86ba8d9
+    last_write_checksum: sha1:de3a9d29089d65b2562e6580cf56929a364baf8e
+    pristine_git_object: 2fe9fe0e35188b359c5d0230316332f9d0ded10a
   src/models/createserveroutofbandop.ts:
     id: f99c6a4d02ae
     last_write_checksum: sha1:a7639f550afadd1ca92e7faedee9048f67922b7f
     pristine_git_object: bde2e3f3322a3373fc54293afba6586b6d051d19
   src/models/createserverreinstallop.ts:
     id: 19482e1d43de
-    last_write_checksum: sha1:8f54e020052a0a96700670600732ed0ceed801d9
-    pristine_git_object: 22ca87f7c23b3ffde35946ecdfe526ed0047253f
+    last_write_checksum: sha1:4977a8dc7bbdcfcd70ec515f12260b1856f8cca6
+    pristine_git_object: 7f159797d504e37daf0d45a322100767cde27084
   src/models/createtagop.ts:
     id: 41344019e606
     last_write_checksum: sha1:d1453e617b6e2f9c9a0136c0c08e90980fa69493
@@ -1935,8 +1935,8 @@ trackedFiles:
     pristine_git_object: 301fd229fa7d75d155520461ffb773a09793b546
   src/models/createvirtualnetworkop.ts:
     id: 7ad5490839c3
-    last_write_checksum: sha1:1fc0cc42659e06edc1b10eef22e0148ca5910547
-    pristine_git_object: d3ac8cf81f5ae7906b7e1084bb532a9e00b9531e
+    last_write_checksum: sha1:07cabf9fcc3c2b5f9511ab7dec0bf21bbb72d04a
+    pristine_git_object: d08f0b47df547ad658b6d85e8f374c9c1156085b
   src/models/createvolumeop.ts:
     id: a82e2ed8fbb5
     last_write_checksum: sha1:81af2d2de6d03f930065379cee84a77540bd055f
@@ -2387,8 +2387,8 @@ trackedFiles:
     pristine_git_object: e900c94957ad277e3579561cef69fe15cd9ce588
   src/models/getvpnsessionsop.ts:
     id: ea9b2f802647
-    last_write_checksum: sha1:f4c8cb99d24ddfeba750ff2525cd8af6641183f6
-    pristine_git_object: e3302851a64f600db7537b8e276191ed0786897d
+    last_write_checksum: sha1:62c784102e8ebff0d5b61b8311517f4715487666
+    pristine_git_object: e092224877c73c6ee928adc57b57463679a698f9
   src/models/indexvirtualmachineop.ts:
     id: bccdbd07b9af
     last_write_checksum: sha1:4db55af038fb4e5414e9e31a6fdccb743b3b1c5a
@@ -2583,8 +2583,8 @@ trackedFiles:
     pristine_git_object: 535e1ae9ac89c42c1ae04a57c67cebeaade443e8
   src/models/manageddatabasepayload.ts:
     id: 1f80438e8276
-    last_write_checksum: sha1:221be955a4b1959742c6b95916f058d09d6d5c14
-    pristine_git_object: cb83e6e010cc4ef72e2ab9813d30f284b52db12e
+    last_write_checksum: sha1:515ae8da87f74893cb0e9e9f8c195df16ea1d8f9
+    pristine_git_object: b5ed2c276f9166f0fc14c9b9b1888be29e0fc1be
   src/models/manageddatabaseplanattributes.ts:
     id: c27b0eb69fb5
     last_write_checksum: sha1:da8f33a42dc76ca78b8b5d0eb807b648f3af75f4
@@ -2723,8 +2723,8 @@ trackedFiles:
     pristine_git_object: 9a8303b847de98b4c041fa528ef33e24b3f6ad05
   src/models/postvpnsessionop.ts:
     id: 115a44201870
-    last_write_checksum: sha1:0c276de25b4b46f63c2d06ce866fc7d47f97828b
-    pristine_git_object: ab15a86641aefa0e4a6772c3af47c5ce7d396bf9
+    last_write_checksum: sha1:6afb0b7b91e90b54f5c5202a3318ad27ac506dc4
+    pristine_git_object: 7ad6afce8b28e54c6043bb74e1ea3ce5da7c49af
   src/models/project.ts:
     id: 6d341934d773
     last_write_checksum: sha1:6d985ad6507fb894ed5550ce404e3121fa7c6d20
@@ -2983,8 +2983,8 @@ trackedFiles:
     pristine_git_object: 45fab5f7de44960a3952ec241ad7eea50de59331
   src/models/updateserverdeployconfigop.ts:
     id: aab03ae4810b
-    last_write_checksum: sha1:36396f517b21b4d51f1d15b29aa98d873b962b4b
-    pristine_git_object: 30129301ddb5436dd2f920fe487e71a34aeee7ea
+    last_write_checksum: sha1:364ccb7d257118df443b5dfa2db9cd8f1a9c7bb3
+    pristine_git_object: 96cd897b9eccc82ae55e3da03f571f1a382668b9
   src/models/updateserverop.ts:
     id: a089ab9bcfe5
     last_write_checksum: sha1:df98fb1bb44bee790f7ee0f19c649cd27a446601
@@ -3968,8 +3968,8 @@ examples:
   create-server:
     Created:
       requestBody:
-        application/json: {"data": {"type": "servers", "attributes": {"project": "proj_lxWpD699qm6rk", "plan": "c2-small-x86", "site": "ASH", "operating_system": "ubuntu_22_04_x64_lts", "hostname": "BRC1"}}}
-        application/vnd.api+json: {"data": {"type": "servers", "attributes": {"project": "proj_lxWpD699qm6rk", "plan": "c2-small-x86", "site": "ASH", "operating_system": "ubuntu_22_04_x64_lts", "hostname": "BRC1"}}}
+        application/json: {"data": {"type": "servers", "attributes": {"project": "proj_lxWpD699qm6rk", "plan": "m4-metal-xlarge", "site": "ASH", "operating_system": "almalinux-10", "hostname": "BRC1"}}}
+        application/vnd.api+json: {"data": {"type": "servers", "attributes": {"project": "proj_lxWpD699qm6rk", "plan": "m4-metal-xlarge", "site": "ASH", "operating_system": "almalinux-10", "hostname": "BRC1"}}}
       responses:
         "201":
           application/vnd.api+json: {"data": {"id": "sv_W6Q2D9xGqKLpr", "type": "servers", "attributes": {"hostname": "BRC1", "label": "846419NODEME", "status": "off", "role": "Bare Metal", "primary_ipv4": "171.189.35.253", "primary_ipv6": "7d69:748d:26cc:796a:1248:b6be:a658:96a4", "plan": {"id": "plan_8NkvdyMKdeLpx", "name": "c2.small.x86", "slug": "c2-small-x86", "billing": "hourly"}, "specs": {"cpu": "Xeon E-2186G CPU @ 3.80GHz (6 cores)", "disk": "500 GB SSD", "ram": "32 GB", "nic": ""}, "interfaces": [{"role": "ipmi", "name": "IPMI", "mac_address": "00:11:22:33:44:55", "description": "IPMI Interface"}, {"role": "internal", "name": "PXE", "mac_address": "66:77:88:99:aa:bb", "description": "PXE Interface"}, {"role": "unknown", "name": "PO1", "mac_address": null, "description": "LAG interface (no associated MAC record)"}]}}, "meta": {}}
@@ -4011,8 +4011,8 @@ examples:
         path:
           server_id: "sv_lkg1DeYLDvZE5"
       requestBody:
-        application/json: {"data": {"type": "deploy_config", "attributes": {"hostname": "my-hostname", "operating_system": "ubuntu_20_04_x64_lts", "raid": "raid-1", "user_data": "ud_5LA73qkjdaJ2o", "ssh_keys": ["ssh_m5xyZOnNOWM0l"]}}}
-        application/vnd.api+json: {"data": {"type": "deploy_config", "attributes": {"hostname": "my-hostname", "operating_system": "ubuntu_20_04_x64_lts", "raid": "raid-1", "user_data": "ud_5LA73qkjdaJ2o", "ssh_keys": ["ssh_m5xyZOnNOWM0l"]}}}
+        application/json: {"data": {"type": "deploy_config", "attributes": {"hostname": "my-hostname", "operating_system": "centos-9-stream", "raid": "raid-1", "user_data": "ud_5LA73qkjdaJ2o", "ssh_keys": ["ssh_m5xyZOnNOWM0l"]}}}
+        application/vnd.api+json: {"data": {"type": "deploy_config", "attributes": {"hostname": "my-hostname", "operating_system": "centos-9-stream", "raid": "raid-1", "user_data": "ud_5LA73qkjdaJ2o", "ssh_keys": ["ssh_m5xyZOnNOWM0l"]}}}
       responses:
         "200":
           application/vnd.api+json: {"data": {"id": "sv_lkg1DeYLDvZE5", "type": "deploy_config", "attributes": {"operating_system": "ubuntu_20_04_x64_lts", "hostname": "my-hostname", "raid": "raid-1", "user_data": "ud_5LA73qkjdaJ2o", "ssh_keys": ["ssh_m5xyZOnNOWM0l"], "ipxe_url": null, "ipxe": null}}, "meta": {}}
@@ -4497,8 +4497,8 @@ examples:
   create-virtual-network:
     Created:
       requestBody:
-        application/json: {"data": {"type": "virtual_network", "attributes": {"description": "São Paulo VLAN", "site": "MIA", "project": "ergonomic-steel-bag"}}}
-        application/vnd.api+json: {"data": {"type": "virtual_network", "attributes": {"description": "São Paulo VLAN", "site": "MIA", "project": "ergonomic-steel-bag"}}}
+        application/json: {"data": {"type": "virtual_network", "attributes": {"description": "São Paulo VLAN", "site": "LAX2", "project": "ergonomic-steel-bag"}}}
+        application/vnd.api+json: {"data": {"type": "virtual_network", "attributes": {"description": "São Paulo VLAN", "site": "LAX2", "project": "ergonomic-steel-bag"}}}
       responses:
         "201":
           application/vnd.api+json: {"data": {"id": "vlan_3YjJOLQjdvZ87", "type": "virtual_networks", "attributes": {"vid": 2000, "name": "MIA-2000", "description": "São Paulo VLAN", "created_at": "2026-01-14T15:57:17+00:00", "tags": []}}, "meta": {}}
@@ -6016,7 +6016,7 @@ examples:
         "200":
           application/vnd.api+json: {"scheduled_backup": {}, "backups": [{"id": "<id>", "phase": "<value>", "created_at": "1714645600779"}]}
 examplesVersion: 1.0.2
-releaseNotes: "## Mcp-typescript SDK Changes:\n* `Latitudesh.Plans.list()`:  `response.data[].attributes.regions[].pricing` **Changed** (Breaking ⚠️)\n* `Latitudesh.privateNetworks.deleteAssignment()`:  `response.status[422]` **Added** (Breaking ⚠️)\n* `Latitudesh.privateNetworks.assign()`:  `response.status[422]` **Added** (Breaking ⚠️)\n* `Latitudesh.Teams.update()`:  `response.data.attributes` **Changed** (Breaking ⚠️)\n* `Latitudesh.Teams.create()`:  `response.data.attributes` **Changed** (Breaking ⚠️)\n* `Latitudesh.Teams.get()`:  `response.data[].attributes` **Changed** (Breaking ⚠️)\n* `Latitudesh.Servers.unlock()`:  `response.data.attributes` **Changed** (Breaking ⚠️)\n* `Latitudesh.Servers.lock()`:  `response.data.attributes` **Changed** (Breaking ⚠️)\n* `Latitudesh.Servers.updateDeployConfig()`: \n  *  `request.RequestBody` **Changed** (Breaking ⚠️)\n  *  `response` **Changed** (Breaking ⚠️)\n* `Latitudesh.Servers.getDeployConfig()`:  `response` **Changed** (Breaking ⚠️)\n* `Latitudesh.Servers.update()`:  `response.data.attributes` **Changed** (Breaking ⚠️)\n* `Latitudesh.Servers.get()`:  `response.data.attributes` **Changed** (Breaking ⚠️)\n* `Latitudesh.Servers.create()`: \n  *  `request.data.attributes` **Changed**\n  *  `response.data.attributes` **Changed** (Breaking ⚠️)\n* `Latitudesh.Servers.list()`: \n  *  `request` **Changed**\n  *  `response.data[].attributes` **Changed** (Breaking ⚠️)\n* `Latitudesh.Object Storage.get-storage-usage()`:  `response.data[].attributes` **Changed** (Breaking ⚠️)\n* `Latitudesh.plans.vm.list()`:  `response.data[].attributes.regions[].pricing` **Changed** (Breaking ⚠️)\n* `Latitudesh.Plans.listStorage()`:  `response.data[].attributes` **Changed** (Breaking ⚠️)\n* `Latitudesh.Plans.get()`:  `response.data.attributes.regions[].pricing` **Changed** (Breaking ⚠️)\n* `Latitudesh.Block Storage.retrieve-volume()`: **Added**\n* `Latitudesh.Block Storage.mount-volume()`: **Added**\n* `Latitudesh.Block Storage.unmap-volume()`: **Added**\n* `Latitudesh.Managed Databases.show-managed-database-metrics()`: **Added**\n* `Latitudesh.Managed Databases.list-managed-databases()`: **Added**\n* `Latitudesh.Managed Databases.create-managed-database()`: **Added**\n* `Latitudesh.Managed Databases.show-managed-database()`: **Added**\n* `Latitudesh.Managed Databases.destroy-managed-database()`: **Added**\n* `Latitudesh.Managed Databases.update-managed-database()`: **Added**\n* `Latitudesh.Managed Databases.list-managed-database-backups()`: **Added**\n* `Latitudesh.Block Storage.get-storage-volumes()`: **Removed** (Breaking ⚠️)\n* `Latitudesh.Block Storage.post-storage-volumes()`: **Removed** (Breaking ⚠️)\n* `Latitudesh.Block Storage.get-storage-volume()`: **Removed** (Breaking ⚠️)\n* `Latitudesh.Block Storage.delete-storage-volumes()`: **Removed** (Breaking ⚠️)\n* `Latitudesh.Block Storage.post-storage-volumes-mount()`: **Removed** (Breaking ⚠️)\n* `Latitudesh.Block Storage.post-storage-volumes-map()`: **Removed** (Breaking ⚠️)\n* `Latitudesh.Kubernetes Clusters.list-kubernetes-clusters()`: **Deprecated**\n* `Latitudesh.Kubernetes Clusters.create-kubernetes-cluster()`: **Deprecated**\n* `Latitudesh.Kubernetes Clusters.listAvailableVersions()`: **Deprecated**\n* `Latitudesh.Kubernetes Clusters.get-kubernetes-cluster()`: **Deprecated**\n* `Latitudesh.Kubernetes Clusters.delete-kubernetes-cluster()`: **Deprecated**\n* `Latitudesh.Kubernetes Clusters.update-kubernetes-cluster()`: **Deprecated**\n* `Latitudesh.Kubernetes Clusters.get-kubernetes-cluster-kubeconfig()`: **Deprecated**\n* `Latitudesh.Block Storage.map-volume()`: **Added**\n* `Latitudesh.Block Storage.delete-volume()`: **Added**\n* `Latitudesh.LKS.list-lks-clusters()`: **Added**\n* `Latitudesh.Block Storage.create-volume()`: **Added**\n* `Latitudesh.Block Storage.list-volumes()`: **Added**\n* `Latitudesh.Object Storage.get-storage-bucket-metrics()`:  `response.data.attributes.storage.current` **Added**\n* `Latitudesh.Plans.get-lks-plans()`: **Added**\n* `Latitudesh.LKS.list-lks-sites()`: **Added**\n* `Latitudesh.LKS.list-lks-available-versions()`: **Added**\n* `Latitudesh.LKS.update-lks-node-pool()`: **Added**\n* `Latitudesh.LKS.delete-lks-node-pool()`: **Added**\n* `Latitudesh.LKS.get-lks-node-pool()`: **Added**\n* `Latitudesh.LKS.create-lks-node-pool()`: **Added**\n* `Latitudesh.LKS.list-lks-node-pools()`: **Added**\n* `Latitudesh.LKS.get-lks-cluster-kubeconfig()`: **Added**\n* `Latitudesh.LKS.update-lks-cluster()`: **Added**\n* `Latitudesh.LKS.delete-lks-cluster()`: **Added**\n* `Latitudesh.privateNetworks.list()`:  `response.data[].attributes.storage` **Added**\n* `Latitudesh.privateNetworks.create()`:  `response.data.attributes.storage` **Added**\n* `Latitudesh.privateNetworks.get()`:  `response.data.attributes.storage` **Added**\n* `Latitudesh.privateNetworks.update()`:  `response.data.attributes.storage` **Added**\n* `Latitudesh.LKS.get-lks-cluster()`: **Added**\n* `Latitudesh.LKS.create-lks-cluster()`: **Added**\n"
+releaseNotes: "## Mcp-typescript SDK Changes:\n* `Latitudesh.Servers.create()`: \n  *  `request.data.attributes` **Changed** (Breaking ⚠️)\n* `Latitudesh.Servers.updateDeployConfig()`: \n  *  `request.RequestBody.data.attributes.operating_system` **Changed** (Breaking ⚠️)\n* `Latitudesh.Servers.reinstall()`: \n  *  `request.RequestBody.data.attributes.operating_system` **Changed** (Breaking ⚠️)\n* `Latitudesh.privateNetworks.create()`: \n  *  `request.data.attributes.site` **Changed** (Breaking ⚠️)\n* `Latitudesh.vpnSessions.list()`: \n  *  `request.filter[location]` **Changed** (Breaking ⚠️)\n* `Latitudesh.vpnSessions.create()`: \n  *  `request.data.attributes.site` **Changed** (Breaking ⚠️)\n* `Latitudesh.Managed Databases.create-managed-database()`: \n  *  `request.data.attributes.replica_regions` **Added**\n"
 generatedFiles:
   - .dxtignore
   - .gitattributes
