@@ -20,21 +20,25 @@ export const CreateServerReinstallType2$zodSchema = z.enum([
  * The OS selected for the reinstall process
  */
 export const CreateServerReinstallOperatingSystem2 = {
-  Centos74X64: "centos_7_4_x64",
-  Centos8X64: "centos_8_x64",
-  Debian10: "debian_10",
-  Debian11: "debian_11",
+  Almalinux10: "almalinux-10",
+  Almalinux9: "almalinux-9",
+  Centos9Stream: "centos-9-stream",
   Debian12: "debian_12",
+  Debian13: "debian_13",
+  Fedora44: "fedora-44",
   Ipxe: "ipxe",
-  Rhel8: "rhel8",
-  Rockylinux8: "rockylinux_8",
-  Ubuntu22MlInABox: "ubuntu22_ml_in_a_box",
+  Opensuse15: "opensuse-15",
+  Oraclelinux10: "oraclelinux-10",
+  Oraclelinux9: "oraclelinux-9",
+  Proxmox9: "proxmox-9",
+  ProxmoxBackupServer4: "proxmox-backup-server-4",
+  Rocky10: "rocky-10",
+  Rocky9: "rocky-9",
   Ubuntu24MlInABox: "ubuntu24_ml_in_a_box",
-  Ubuntu2004X64Lts: "ubuntu_20_04_x64_lts",
-  Ubuntu2204X64Lts: "ubuntu_22_04_x64_lts",
+  Ubuntu24MlInABoxSxm: "ubuntu24_ml_in_a_box_sxm",
+  Ubuntu26MlInABox: "ubuntu26_ml_in_a_box",
   Ubuntu2404X64Lts: "ubuntu_24_04_x64_lts",
-  Windows2022Std: "windows_2022_std",
-  WindowsServer2019StdV1: "windows_server_2019_std_v1",
+  Ubuntu2604X64Lts: "ubuntu_26_04_x64_lts",
 } as const;
 /**
  * The OS selected for the reinstall process
@@ -44,21 +48,25 @@ export type CreateServerReinstallOperatingSystem2 = ClosedEnum<
 >;
 
 export const CreateServerReinstallOperatingSystem2$zodSchema = z.enum([
-  "centos_7_4_x64",
-  "centos_8_x64",
-  "debian_10",
-  "debian_11",
+  "almalinux-10",
+  "almalinux-9",
+  "centos-9-stream",
   "debian_12",
+  "debian_13",
+  "fedora-44",
   "ipxe",
-  "rhel8",
-  "rockylinux_8",
-  "ubuntu22_ml_in_a_box",
+  "opensuse-15",
+  "oraclelinux-10",
+  "oraclelinux-9",
+  "proxmox-9",
+  "proxmox-backup-server-4",
+  "rocky-10",
+  "rocky-9",
   "ubuntu24_ml_in_a_box",
-  "ubuntu_20_04_x64_lts",
-  "ubuntu_22_04_x64_lts",
+  "ubuntu24_ml_in_a_box_sxm",
+  "ubuntu26_ml_in_a_box",
   "ubuntu_24_04_x64_lts",
-  "windows_2022_std",
-  "windows_server_2019_std_v1",
+  "ubuntu_26_04_x64_lts",
 ]).describe("The OS selected for the reinstall process");
 
 /**

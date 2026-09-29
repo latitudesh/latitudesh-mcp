@@ -63,6 +63,7 @@ export type ManagedDatabasePayloadAttributes = {
   pooler?: { [k: string]: any } | undefined;
   backup?: { [k: string]: any } | undefined;
   recovery?: ManagedDatabasePayloadRecovery | undefined;
+  replica_regions?: Array<string> | undefined;
 };
 
 export const ManagedDatabasePayloadAttributes$zodSchema: z.ZodType<
@@ -89,6 +90,9 @@ export const ManagedDatabasePayloadAttributes$zodSchema: z.ZodType<
       "Restore from a source database backup at create (postgres only)",
     ),
   region: z.string().describe("Target region"),
+  replica_regions: z.array(z.string()).optional().describe(
+    "Optional. Reserved for cross-region read replicas (postgres only): accepted and validated, but replica provisioning is not yet active.",
+  ),
 });
 
 export type ManagedDatabasePayloadData = {
