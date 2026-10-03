@@ -1,19 +1,19 @@
 lockVersion: 2.0.0
 id: 14ad660b-1b20-4e74-9900-f561baa97606
 management:
-  docChecksum: 551a552a30ad3527fbbd67c1a9d7b6bc
+  docChecksum: fa1abfa41ad7b3f23a1b86d71df566d8
   docVersion: "2023-06-01"
-  speakeasyVersion: 1.799.0
-  generationVersion: 2.941.0
-  releaseVersion: 0.4.1
-  configChecksum: 89e1ad148dd7214d88bbbdb751378647
+  speakeasyVersion: 1.800.1
+  generationVersion: 2.943.0
+  releaseVersion: 0.4.2
+  configChecksum: f20c427769ef9e2f36726785ec64fd98
   repoURL: https://github.com/latitudesh/latitudesh-mcp.git
   installationURL: https://github.com/latitudesh/latitudesh-mcp
   published: true
 persistentEdits:
-  generation_id: 1a4b9672-3a45-4028-babd-bfab05a02902
-  pristine_commit_hash: e98828fd232ee50c87d344898652b6b6d1ae738b
-  pristine_tree_hash: 1b4ded70b3a8d541b1eeb8166aee55fceb60fb69
+  generation_id: d0736355-85da-4968-b021-2637d69844d4
+  pristine_commit_hash: 83653c4cfad853ddd99d8e3683cf9ecbee231a88
+  pristine_tree_hash: 2eef5d64b7cbbf0e59fcd7bbef9289a2e3b57277
 features:
   mcp-typescript:
     additionalDependencies: 0.1.0
@@ -31,7 +31,7 @@ features:
     responseFormat: 0.1.1
     retries: 0.1.2
     sdkHooks: 0.3.0
-    unions: 0.2.1
+    unions: 0.2.3
 trackedFiles:
   .dxtignore:
     id: 0ee1c4f92736
@@ -51,12 +51,12 @@ trackedFiles:
     pristine_git_object: 4f9e60a9462fc4def738d60c3aaadf8232ef185f
   manifest.json:
     id: ca642a226869
-    last_write_checksum: sha1:10500e530b9845a65a34f30dac3abff493209d2a
-    pristine_git_object: 2615dd8278c2f47baaaa97dcc317520d07b8eb19
+    last_write_checksum: sha1:c3c35be4be7e69d9a9b33fc41ee953ea538111eb
+    pristine_git_object: c0f6680c38464ee490ce9b54d558e0dccd934872
   package.json:
     id: 7030d0b2f71b
-    last_write_checksum: sha1:4c94c260faf0d8e77317ff6f430a02a5ea3083cd
-    pristine_git_object: 38c1016a1560349b9c0dc10db12d343226e11524
+    last_write_checksum: sha1:b3983fd904377e59b6d92c67c36ecf3c129c9ad3
+    pristine_git_object: f3683d1cc04155b034ab6b4f940b59e879d19eaf
   src/cloudflare-worker/cloudflare-worker.ts:
     id: b90556be8673
     last_write_checksum: sha1:039c1eb8357f3d4d9127d6100c042b5e8200dbd8
@@ -855,16 +855,16 @@ trackedFiles:
     pristine_git_object: 9c36bf01332084f735909a71036c3544cc4c7e3a
   src/landing-page.ts:
     id: ef64a6ee46d7
-    last_write_checksum: sha1:1e873d7b246190cff3c98819bc52545678dd1d62
-    pristine_git_object: 1ccce01673d70437230f2ae5ebba248717c94248
+    last_write_checksum: sha1:5a591d0e0bb70fc69fb0d648972c84e319b43c23
+    pristine_git_object: ce7b3752f93ff01fedd3d063c1e126645b03eac2
   src/lib/base64.ts:
     id: "598522066688"
     last_write_checksum: sha1:e9f04a037018040361043104960982f7c22db52d
     pristine_git_object: d4bd8b341290e7a828a171d840bd0b0fff7c7cd7
   src/lib/config.ts:
     id: 320761608fb3
-    last_write_checksum: sha1:b2a19a6b189eab33411b3466ca4f7f9382b0d3ad
-    pristine_git_object: 24a70d04c60bf1b372226c99e1f4e2bbe25f7a69
+    last_write_checksum: sha1:94fd371c698ef55f6eabb82a421d67278110be39
+    pristine_git_object: f4dcebba6608dcc065571c0c8f0a7b7bfe404e13
   src/lib/encodings.ts:
     id: 3bd8ead98afd
     last_write_checksum: sha1:9b859366c917d31f7ee533176f71631872fb05fa
@@ -951,8 +951,8 @@ trackedFiles:
     pristine_git_object: 2afe103bd836d7aa109f97154f7d78595d8e2642
   src/mcp-server/mcp-server.ts:
     id: aabbc4ab07c1
-    last_write_checksum: sha1:626b61a61de5891c2487d597ab992c38ef72b1ca
-    pristine_git_object: 5f5ba9a370e2aac68f46447c490035bec9597c95
+    last_write_checksum: sha1:ab87539b98e3565ff5326c4cc308b2d5d649f19c
+    pristine_git_object: b128807e21ee19e7dc4ae799d97b51463f6bdaec
   src/mcp-server/prompts.ts:
     id: 26f3d73cbf31
     last_write_checksum: sha1:0b128f67546d289549b2d6668fc554f9747a3566
@@ -967,8 +967,8 @@ trackedFiles:
     pristine_git_object: c25696d4c4f70e081fa5d87ad6891874c509a577
   src/mcp-server/server.ts:
     id: 2784dd48e82a
-    last_write_checksum: sha1:bb7af51fc3375bd022bf93716fc58146ed987e36
-    pristine_git_object: e692498f2ddf2034f3d07fd94bc0d5c290c9f3dc
+    last_write_checksum: sha1:2b6ecc683e46a4c80bff51ac5fd09674d9656afd
+    pristine_git_object: 1751be78c49fee7aecec262258bc3bccd74059e8
   src/mcp-server/shared.ts:
     id: 074e80d4be1e
     last_write_checksum: sha1:19c9034032819a14f15c430de4350c8aba99d725
@@ -3131,8 +3131,8 @@ trackedFiles:
     pristine_git_object: ef07683af1fb5abd3a32e4033144a2c31ea0f397
   src/models/volumedata.ts:
     id: 0729bab3943c
-    last_write_checksum: sha1:405c689b32d217c44652049bdadb56fb4bcfd4ee
-    pristine_git_object: 0cda74bdb35188016b267b605f2cf1c3fc6c21f0
+    last_write_checksum: sha1:2c1445635e8c676ef7dce01181ac59c2d59dceb3
+    pristine_git_object: 9c6cbde2d76bda7f98cfdbf6047eacb9f65184cf
   src/models/vpnsessiondatawithpassword.ts:
     id: 73954605ff35
     last_write_checksum: sha1:c3ab7a1c67c826964680e67f8f3879196f85e58d
@@ -6016,7 +6016,13 @@ examples:
         "200":
           application/vnd.api+json: {"scheduled_backup": {}, "backups": [{"id": "<id>", "phase": "<value>", "created_at": "1714645600779"}]}
 examplesVersion: 1.0.2
-releaseNotes: "## Mcp-typescript SDK Changes:\n* `Latitudesh.Servers.create()`: \n  *  `request.data.attributes` **Changed** (Breaking ⚠️)\n* `Latitudesh.Servers.updateDeployConfig()`: \n  *  `request.RequestBody.data.attributes.operating_system` **Changed** (Breaking ⚠️)\n* `Latitudesh.Servers.reinstall()`: \n  *  `request.RequestBody.data.attributes.operating_system` **Changed** (Breaking ⚠️)\n* `Latitudesh.privateNetworks.create()`: \n  *  `request.data.attributes.site` **Changed** (Breaking ⚠️)\n* `Latitudesh.vpnSessions.list()`: \n  *  `request.filter[location]` **Changed** (Breaking ⚠️)\n* `Latitudesh.vpnSessions.create()`: \n  *  `request.data.attributes.site` **Changed** (Breaking ⚠️)\n* `Latitudesh.Managed Databases.create-managed-database()`: \n  *  `request.data.attributes.replica_regions` **Added**\n"
+releaseNotes: |
+  ## Mcp-typescript SDK Changes:
+  * `Latitudesh.Block Storage.list-volumes()`:  `response.data[].attributes.nguid` **Added**
+  * `Latitudesh.Block Storage.create-volume()`:  `response.data.attributes.nguid` **Added**
+  * `Latitudesh.Block Storage.retrieve-volume()`:  `response.data.attributes.nguid` **Added**
+  * `Latitudesh.Block Storage.map-volume()`:  `response.data.attributes.nguid` **Added**
+  * `Latitudesh.Block Storage.unmap-volume()`:  `response.data.attributes.nguid` **Added**
 generatedFiles:
   - .dxtignore
   - .gitattributes
