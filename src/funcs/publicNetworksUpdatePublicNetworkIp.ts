@@ -3,7 +3,7 @@
  */
 
 import { LatitudeshCore } from "../core.js";
-import { encodeFormQuery } from "../lib/encodings.js";
+import { encodeJSON, encodeSimple } from "../lib/encodings.js";
 import { compactMap } from "../lib/primitives.js";
 import { safeParse } from "../lib/schemas.js";
 import { RequestOptions } from "../lib/sdks.js";
@@ -19,21 +19,23 @@ import {
 } from "../models/errors/httpclienterrors.js";
 import { SDKValidationError } from "../models/errors/sdkvalidationerror.js";
 import {
-  ListFilesystemsRequest,
-  ListFilesystemsRequest$zodSchema,
-} from "../models/listfilesystemsop.js";
+  UpdatePublicNetworkIpRequest,
+  UpdatePublicNetworkIpRequest$zodSchema,
+} from "../models/updatepublicnetworkipop.js";
 import { APICall, APIPromise } from "../types/async.js";
 import { Result } from "../types/fp.js";
 
 /**
- * List filesystems
+ * Update a network IP
  *
  * @remarks
- * Lists all the filesystems from a team.
+ * **Preview.** Available at locations where the `public_network` feature is enabled.
+ *
+ * Reserve an available address of a network for your own use, so servers are never attached to the network with it, or release an address you reserved.
  */
-export function filesystemStorageListFilesystems(
+export function publicNetworksUpdatePublicNetworkIp(
   client$: LatitudeshCore,
-  request?: ListFilesystemsRequest | undefined,
+  request: UpdatePublicNetworkIpRequest,
   options?: RequestOptions,
 ): APIPromise<
   Result<
@@ -56,7 +58,7 @@ export function filesystemStorageListFilesystems(
 
 async function $do(
   client$: LatitudeshCore,
-  request?: ListFilesystemsRequest | undefined,
+  request: UpdatePublicNetworkIpRequest,
   options?: RequestOptions,
 ): Promise<
   [
@@ -75,20 +77,29 @@ async function $do(
 > {
   const parsed$ = safeParse(
     request,
-    (value$) => ListFilesystemsRequest$zodSchema.optional().parse(value$),
+    (value$) => UpdatePublicNetworkIpRequest$zodSchema.parse(value$),
     "Input validation failed",
   );
   if (!parsed$.ok) {
     return [parsed$, { status: "invalid" }];
   }
   const payload$ = parsed$.value;
-  const body$ = null;
-  const path$ = pathToFunc("/storage/filesystems")();
-  const query$ = encodeFormQuery({
-    "filter[project]": payload$?.filterProject,
+  const body$ = encodeJSON("body", payload$.update_public_network_ip, {
+    explode: true,
   });
 
+  const pathParams$ = {
+    id: encodeSimple("id", payload$.id, {
+      explode: false,
+      charEncoding: "percent",
+    }),
+  };
+  const path$ = pathToFunc("/public_networks/{id}/ips")(
+    pathParams$,
+  );
+
   const headers$ = new Headers(compactMap({
+    "Content-Type": "application/json",
     Accept: "application/vnd.api+json",
   }));
   const securityInput = await extractSecurity(client$._options.security);
@@ -97,7 +108,7 @@ async function $do(
   const context = {
     options: client$._options,
     baseURL: options?.serverURL ?? client$._baseURL ?? "",
-    operationID: "list-filesystems",
+    operationID: "update-public-network-ip",
     oAuth2Scopes: null,
     resolvedSecurity: requestSecurity,
     securitySource: client$._options.security,
@@ -115,11 +126,10 @@ async function $do(
 
   const requestRes = client$._createRequest(context, {
     security: requestSecurity,
-    method: "GET",
+    method: "PATCH",
     baseURL: options?.serverURL,
     path: path$,
     headers: headers$,
-    query: query$,
     body: body$,
     userAgent: client$._options.userAgent,
     timeoutMs: options?.timeoutMs || client$._options.timeoutMs

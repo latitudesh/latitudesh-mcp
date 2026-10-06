@@ -30,7 +30,7 @@ export const RegionAttributes$zodSchema: z.ZodType<RegionAttributes> = z.object(
     country: RegionCountry$zodSchema.optional(),
     facility: z.string().nullable().optional(),
     features: z.array(z.string()).optional().describe(
-      "Location capabilities available at this location (e.g. `public_network`, `elastic_ip_bgp`).",
+      "Location capabilities available at this location (e.g. `public_network`, `elastic_ip_bgp`, `object_storage`, `object_storage_high_performance`, `file_storage`, `block_storage`, `lks`).",
     ),
     name: z.string().optional(),
     network_group: z.string().nullable().optional().describe(

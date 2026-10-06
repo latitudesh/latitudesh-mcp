@@ -19,9 +19,9 @@ import {
 } from "../models/errors/httpclienterrors.js";
 import { SDKValidationError } from "../models/errors/sdkvalidationerror.js";
 import {
-  PatchStorageFilesystemsRequest,
-  PatchStorageFilesystemsRequest$zodSchema,
-} from "../models/patchstoragefilesystemsop.js";
+  UpdateFilesystemRequest,
+  UpdateFilesystemRequest$zodSchema,
+} from "../models/updatefilesystemop.js";
 import { APICall, APIPromise } from "../types/async.js";
 import { Result } from "../types/fp.js";
 
@@ -33,7 +33,7 @@ import { Result } from "../types/fp.js";
  */
 export function filesystemStorageUpdateFilesystem(
   client$: LatitudeshCore,
-  request: PatchStorageFilesystemsRequest,
+  request: UpdateFilesystemRequest,
   options?: RequestOptions,
 ): APIPromise<
   Result<
@@ -56,7 +56,7 @@ export function filesystemStorageUpdateFilesystem(
 
 async function $do(
   client$: LatitudeshCore,
-  request: PatchStorageFilesystemsRequest,
+  request: UpdateFilesystemRequest,
   options?: RequestOptions,
 ): Promise<
   [
@@ -75,7 +75,7 @@ async function $do(
 > {
   const parsed$ = safeParse(
     request,
-    (value$) => PatchStorageFilesystemsRequest$zodSchema.parse(value$),
+    (value$) => UpdateFilesystemRequest$zodSchema.parse(value$),
     "Input validation failed",
   );
   if (!parsed$.ok) {
@@ -104,7 +104,7 @@ async function $do(
   const context = {
     options: client$._options,
     baseURL: options?.serverURL ?? client$._baseURL ?? "",
-    operationID: "patch-storage-filesystems",
+    operationID: "update-filesystem",
     oAuth2Scopes: null,
     resolvedSecurity: requestSecurity,
     securitySource: client$._options.security,

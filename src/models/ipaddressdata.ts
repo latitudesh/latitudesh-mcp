@@ -80,13 +80,15 @@ export const IpAddressDataRegion$zodSchema: z.ZodType<IpAddressDataRegion> = z
 /**
  * Server assignment information. Returns an empty object when the IP is not assigned to an active server (e.g., when the server is decommissioning or deleted). The hostname is null when the assigned server has no hostname set.
  */
-export type Assignment = {
+export type IpAddressDataAssignment = {
   server_id?: string | undefined;
   hostname?: string | null | undefined;
   assigned_at?: string | null | undefined;
 };
 
-export const Assignment$zodSchema: z.ZodType<Assignment> = z.object({
+export const IpAddressDataAssignment$zodSchema: z.ZodType<
+  IpAddressDataAssignment
+> = z.object({
   assigned_at: z.string().nullable().optional(),
   hostname: z.string().nullable().optional(),
   server_id: z.string().optional(),
@@ -124,7 +126,7 @@ export type IpAddressDataAttributes = {
   project?: IpAddressDataProject | undefined;
   region?: IpAddressDataRegion | undefined;
   available?: boolean | undefined;
-  assignment?: Assignment | undefined;
+  assignment?: IpAddressDataAssignment | undefined;
   elastic?: Elastic | undefined;
   created_at?: string | null | undefined;
 };
@@ -134,9 +136,10 @@ export const IpAddressDataAttributes$zodSchema: z.ZodType<
 > = z.object({
   additional: z.boolean().optional(),
   address: z.string().optional(),
-  assignment: z.lazy(() => Assignment$zodSchema).optional().describe(
-    "Server assignment information. Returns an empty object when the IP is not assigned to an active server (e.g., when the server is decommissioning or deleted). The hostname is null when the assigned server has no hostname set.",
-  ),
+  assignment: z.lazy(() => IpAddressDataAssignment$zodSchema).optional()
+    .describe(
+      "Server assignment information. Returns an empty object when the IP is not assigned to an active server (e.g., when the server is decommissioning or deleted). The hostname is null when the assigned server has no hostname set.",
+    ),
   available: z.boolean().optional(),
   cidr: z.string().nullable().optional(),
   created_at: z.iso.datetime({ offset: true }).nullable().optional(),

@@ -5,12 +5,14 @@
 import * as z from "zod";
 import { ClosedEnum } from "../types/enums.js";
 
-export const PublicNetworkDataType = {
+export const PublicNetworkDataTypePublicNetworks = {
   PublicNetworks: "public_networks",
 } as const;
-export type PublicNetworkDataType = ClosedEnum<typeof PublicNetworkDataType>;
+export type PublicNetworkDataTypePublicNetworks = ClosedEnum<
+  typeof PublicNetworkDataTypePublicNetworks
+>;
 
-export const PublicNetworkDataType$zodSchema = z.enum([
+export const PublicNetworkDataTypePublicNetworks$zodSchema = z.enum([
   "public_networks",
 ]);
 
@@ -36,6 +38,78 @@ export const PublicNetworkDataSize$zodSchema = z.union([
 ]).describe(
   "IPv4 prefix length. Determines how many servers the public network can host.",
 );
+
+/**
+ * gateway: reserved for the network gateway; server: a server on the network; elastic_ip: an elastic IP; reserved: held in IPAM but not by a server, including addresses you reserved; available: free to use
+ */
+export const PublicNetworkDataRole = {
+  Gateway: "gateway",
+  Server: "server",
+  ElasticIp: "elastic_ip",
+  Reserved: "reserved",
+  Available: "available",
+} as const;
+/**
+ * gateway: reserved for the network gateway; server: a server on the network; elastic_ip: an elastic IP; reserved: held in IPAM but not by a server, including addresses you reserved; available: free to use
+ */
+export type PublicNetworkDataRole = ClosedEnum<typeof PublicNetworkDataRole>;
+
+export const PublicNetworkDataRole$zodSchema = z.enum([
+  "gateway",
+  "server",
+  "elastic_ip",
+  "reserved",
+  "available",
+]).describe(
+  "gateway: reserved for the network gateway; server: a server on the network; elastic_ip: an elastic IP; reserved: held in IPAM but not by a server, including addresses you reserved; available: free to use",
+);
+
+export const AssignmentType = {
+  Server: "server",
+  ElasticIp: "elastic_ip",
+} as const;
+export type AssignmentType = ClosedEnum<typeof AssignmentType>;
+
+export const AssignmentType$zodSchema = z.enum([
+  "server",
+  "elastic_ip",
+]);
+
+/**
+ * The resource holding the address, when it is a server or an elastic IP
+ */
+export type PublicNetworkDataAssignment = {
+  type?: AssignmentType | undefined;
+  id?: string | undefined;
+  hostname?: string | null | undefined;
+};
+
+export const PublicNetworkDataAssignment$zodSchema: z.ZodType<
+  PublicNetworkDataAssignment
+> = z.object({
+  hostname: z.string().nullable().optional().describe("Servers only"),
+  id: z.string().optional(),
+  type: AssignmentType$zodSchema.optional(),
+}).describe(
+  "The resource holding the address, when it is a server or an elastic IP",
+);
+
+export type Ip = {
+  address?: string | undefined;
+  role?: PublicNetworkDataRole | undefined;
+  assignment?: PublicNetworkDataAssignment | null | undefined;
+};
+
+export const Ip$zodSchema: z.ZodType<Ip> = z.object({
+  address: z.string().optional(),
+  assignment: z.lazy(() => PublicNetworkDataAssignment$zodSchema).nullable()
+    .optional().describe(
+      "The resource holding the address, when it is a server or an elastic IP",
+    ),
+  role: PublicNetworkDataRole$zodSchema.optional().describe(
+    "gateway: reserved for the network gateway; server: a server on the network; elastic_ip: an elastic IP; reserved: held in IPAM but not by a server, including addresses you reserved; available: free to use",
+  ),
+});
 
 export type PublicNetworkDataProject = {
   id?: string | undefined;
@@ -87,6 +161,7 @@ export type PublicNetworkDataAttributes = {
   capacity?: number | undefined;
   ips_used?: number | undefined;
   ips_free?: number | undefined;
+  ips?: Array<Ip> | undefined;
   created_at?: string | undefined;
   project?: PublicNetworkDataProject | null | undefined;
   region?: PublicNetworkDataRegion | null | undefined;
@@ -100,6 +175,9 @@ export const PublicNetworkDataAttributes$zodSchema: z.ZodType<
   ),
   capacity: z.int().optional().describe("Servers this public network can host"),
   created_at: z.iso.datetime({ offset: true }).optional(),
+  ips: z.array(z.lazy(() => Ip$zodSchema)).optional().describe(
+    "Every host address of the IPv4 network and what holds it. Only returned when retrieving a single public network.",
+  ),
   ips_free: z.int().optional(),
   ips_used: z.int().optional(),
   ipv4: z.string().optional().describe(
@@ -118,7 +196,7 @@ export const PublicNetworkDataAttributes$zodSchema: z.ZodType<
 
 export type PublicNetworkData = {
   id?: string | undefined;
-  type?: PublicNetworkDataType | undefined;
+  type?: PublicNetworkDataTypePublicNetworks | undefined;
   attributes?: PublicNetworkDataAttributes | undefined;
 };
 
@@ -126,5 +204,5 @@ export const PublicNetworkData$zodSchema: z.ZodType<PublicNetworkData> = z
   .object({
     attributes: z.lazy(() => PublicNetworkDataAttributes$zodSchema).optional(),
     id: z.string().optional(),
-    type: PublicNetworkDataType$zodSchema.optional(),
+    type: PublicNetworkDataTypePublicNetworks$zodSchema.optional(),
   });

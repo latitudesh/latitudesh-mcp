@@ -1,19 +1,19 @@
 lockVersion: 2.0.0
 id: 14ad660b-1b20-4e74-9900-f561baa97606
 management:
-  docChecksum: 551a552a30ad3527fbbd67c1a9d7b6bc
+  docChecksum: 144c3617e471ed5a8823b4cdf13ec6ff
   docVersion: "2023-06-01"
-  speakeasyVersion: 1.799.0
-  generationVersion: 2.941.0
-  releaseVersion: 0.4.1
-  configChecksum: 89e1ad148dd7214d88bbbdb751378647
+  speakeasyVersion: 1.800.1
+  generationVersion: 2.943.0
+  releaseVersion: 0.4.2
+  configChecksum: f20c427769ef9e2f36726785ec64fd98
   repoURL: https://github.com/latitudesh/latitudesh-mcp.git
   installationURL: https://github.com/latitudesh/latitudesh-mcp
   published: true
 persistentEdits:
-  generation_id: 1a4b9672-3a45-4028-babd-bfab05a02902
-  pristine_commit_hash: e98828fd232ee50c87d344898652b6b6d1ae738b
-  pristine_tree_hash: 1b4ded70b3a8d541b1eeb8166aee55fceb60fb69
+  generation_id: 5da53c18-bcb7-4b1c-b45b-39d778c96d10
+  pristine_commit_hash: 65f996d83ef9fdc813b934e0d6326afefb6a2880
+  pristine_tree_hash: a7b2f4e4c18ee003f3423fbb6061bf30adcb1c74
 features:
   mcp-typescript:
     additionalDependencies: 0.1.0
@@ -31,7 +31,7 @@ features:
     responseFormat: 0.1.1
     retries: 0.1.2
     sdkHooks: 0.3.0
-    unions: 0.2.1
+    unions: 0.2.3
 trackedFiles:
   .dxtignore:
     id: 0ee1c4f92736
@@ -51,12 +51,12 @@ trackedFiles:
     pristine_git_object: 4f9e60a9462fc4def738d60c3aaadf8232ef185f
   manifest.json:
     id: ca642a226869
-    last_write_checksum: sha1:10500e530b9845a65a34f30dac3abff493209d2a
-    pristine_git_object: 2615dd8278c2f47baaaa97dcc317520d07b8eb19
+    last_write_checksum: sha1:6b8b812753762a8b9af9daaf86ec13926410fb26
+    pristine_git_object: 923171f12520cc722f381346d1b928ce5a875605
   package.json:
     id: 7030d0b2f71b
-    last_write_checksum: sha1:4c94c260faf0d8e77317ff6f430a02a5ea3083cd
-    pristine_git_object: 38c1016a1560349b9c0dc10db12d343226e11524
+    last_write_checksum: sha1:b3983fd904377e59b6d92c67c36ecf3c129c9ad3
+    pristine_git_object: f3683d1cc04155b034ab6b4f940b59e879d19eaf
   src/cloudflare-worker/cloudflare-worker.ts:
     id: b90556be8673
     last_write_checksum: sha1:039c1eb8357f3d4d9127d6100c042b5e8200dbd8
@@ -133,6 +133,10 @@ trackedFiles:
     id: a32834c6c982
     last_write_checksum: sha1:276ff95ac59bf68e188fa22e898ad644451b3095
     pristine_git_object: 4fd40addf231547a4fafb233fb0d9847edaac993
+  src/funcs/blockStorageUpdateVolume.ts:
+    id: c712dc16bc44
+    last_write_checksum: sha1:143534a89f339aaaf5e7eaf750d2d6b4cea611ca
+    pristine_git_object: 18ffb164d4de0adc407d6be65726da947b7ddc1b
   src/funcs/elasticIpsCreateElasticIp.ts:
     id: 4da44e329a88
     last_write_checksum: sha1:f734408cb51ac6a1c75b2e61197ad64e08abad39
@@ -175,20 +179,20 @@ trackedFiles:
     pristine_git_object: 34c282af2d178bd632863752913fae1373b711b1
   src/funcs/filesystemStorageCreateFilesystem.ts:
     id: 87005f30f81c
-    last_write_checksum: sha1:0b74e6c0c7ea6f05fe75c67bda2610feba7d3c2e
-    pristine_git_object: 49e2516162936faec56fae2e474e77cd3ea9bfb4
+    last_write_checksum: sha1:bcf44878b89936c7ca0cda9888879b46a585849e
+    pristine_git_object: 6ca0e9b5826d8df5caac8e02ba2fa0f61241fe08
   src/funcs/filesystemStorageDeleteFilesystem.ts:
     id: a2e1f8a65105
-    last_write_checksum: sha1:485df75a3f7526cb403a452c87bf9a5198700cdf
-    pristine_git_object: f0c08d4fa30946bf7a44501671985540e33026f8
+    last_write_checksum: sha1:58b8ed8ff09c04132e29c42b74f4e07f01843d02
+    pristine_git_object: eac300b979dde925229ef2ba1f6afe5cf0af2cd5
   src/funcs/filesystemStorageListFilesystems.ts:
     id: 1c80a05cfa76
-    last_write_checksum: sha1:234c5ee9e9b8c3a6d5f968401246cc398a0f06ff
-    pristine_git_object: 57d1ecb0cd1e66aad3e790b4cdecff4766e0609e
+    last_write_checksum: sha1:4e19dc18f4200715d62ea5daffb8b7e4fd36e93a
+    pristine_git_object: 5937ecea0863075f7e1256b4134958cb9a64e665
   src/funcs/filesystemStorageUpdateFilesystem.ts:
     id: 73fe7b23dacd
-    last_write_checksum: sha1:5f7301bf982457391d6a24a46f1bb27b66f7baeb
-    pristine_git_object: dd89a80a243e0be8bdd86fee2618c3cc3fff9e2e
+    last_write_checksum: sha1:a97eef5dfce2ecdbad08009b1d4c8058239bb2c3
+    pristine_git_object: e432d0efc26ad4cb60e3eaf43155c43abcdb1e82
   src/funcs/firewallsAssignmentsCreate.ts:
     id: 47ed141b6de0
     last_write_checksum: sha1:ea5d558c4695c571fcfe82146c7689f2d72cfe39
@@ -513,6 +517,10 @@ trackedFiles:
     id: f9081f267e29
     last_write_checksum: sha1:96d225d53f65473fa3f5fbf045dcf67b88611395
     pristine_git_object: dcab1de75291acb929b9876689363a41bf416991
+  src/funcs/publicNetworksUpdatePublicNetworkIp.ts:
+    id: 0ee6ec3b717b
+    last_write_checksum: sha1:7763e3428d1deb585b546e070e671618f37d2e61
+    pristine_git_object: 797500448f87051887cc90f562d0258a077bc7d3
   src/funcs/regionsFetch.ts:
     id: 91a0f0b44264
     last_write_checksum: sha1:6ea2d5a0f0b719e8a2ec133997f7dc71689e15d4
@@ -855,16 +863,16 @@ trackedFiles:
     pristine_git_object: 9c36bf01332084f735909a71036c3544cc4c7e3a
   src/landing-page.ts:
     id: ef64a6ee46d7
-    last_write_checksum: sha1:1e873d7b246190cff3c98819bc52545678dd1d62
-    pristine_git_object: 1ccce01673d70437230f2ae5ebba248717c94248
+    last_write_checksum: sha1:5a591d0e0bb70fc69fb0d648972c84e319b43c23
+    pristine_git_object: ce7b3752f93ff01fedd3d063c1e126645b03eac2
   src/lib/base64.ts:
     id: "598522066688"
     last_write_checksum: sha1:e9f04a037018040361043104960982f7c22db52d
     pristine_git_object: d4bd8b341290e7a828a171d840bd0b0fff7c7cd7
   src/lib/config.ts:
     id: 320761608fb3
-    last_write_checksum: sha1:b2a19a6b189eab33411b3466ca4f7f9382b0d3ad
-    pristine_git_object: 24a70d04c60bf1b372226c99e1f4e2bbe25f7a69
+    last_write_checksum: sha1:94fd371c698ef55f6eabb82a421d67278110be39
+    pristine_git_object: f4dcebba6608dcc065571c0c8f0a7b7bfe404e13
   src/lib/encodings.ts:
     id: 3bd8ead98afd
     last_write_checksum: sha1:9b859366c917d31f7ee533176f71631872fb05fa
@@ -951,8 +959,8 @@ trackedFiles:
     pristine_git_object: 2afe103bd836d7aa109f97154f7d78595d8e2642
   src/mcp-server/mcp-server.ts:
     id: aabbc4ab07c1
-    last_write_checksum: sha1:626b61a61de5891c2487d597ab992c38ef72b1ca
-    pristine_git_object: 5f5ba9a370e2aac68f46447c490035bec9597c95
+    last_write_checksum: sha1:ab87539b98e3565ff5326c4cc308b2d5d649f19c
+    pristine_git_object: b128807e21ee19e7dc4ae799d97b51463f6bdaec
   src/mcp-server/prompts.ts:
     id: 26f3d73cbf31
     last_write_checksum: sha1:0b128f67546d289549b2d6668fc554f9747a3566
@@ -967,8 +975,8 @@ trackedFiles:
     pristine_git_object: c25696d4c4f70e081fa5d87ad6891874c509a577
   src/mcp-server/server.ts:
     id: 2784dd48e82a
-    last_write_checksum: sha1:bb7af51fc3375bd022bf93716fc58146ed987e36
-    pristine_git_object: e692498f2ddf2034f3d07fd94bc0d5c290c9f3dc
+    last_write_checksum: sha1:3546c10922cd4d37d0e68ea2cb4cf4017822aa1a
+    pristine_git_object: 100428cff95cd06784d4f75ce716caba0d1997da
   src/mcp-server/shared.ts:
     id: 074e80d4be1e
     last_write_checksum: sha1:19c9034032819a14f15c430de4350c8aba99d725
@@ -1045,6 +1053,10 @@ trackedFiles:
     id: 258c78ef490c
     last_write_checksum: sha1:fc8b2ed9c1bef78c7e70222ad4449c7d4960282e
     pristine_git_object: b5881f824cc42fbe790908b5ec3cd15f606a75ae
+  src/mcp-server/tools/blockStorageUpdateVolume.ts:
+    id: e56f450d6c46
+    last_write_checksum: sha1:88a051691a1196d0f71f8e389af383b737420c3a
+    pristine_git_object: c5056ae2570ba479f4adb045a8381cb9b279a70e
   src/mcp-server/tools/elasticIpsCreateElasticIp.ts:
     id: 9c8dacae84de
     last_write_checksum: sha1:0d3fb85d4fcaab8e981d85333f36850b03e591ee
@@ -1087,20 +1099,20 @@ trackedFiles:
     pristine_git_object: c6d39d8c734ffb785859129be8d8972a734d6456
   src/mcp-server/tools/filesystemStorageCreateFilesystem.ts:
     id: d6c1966697b8
-    last_write_checksum: sha1:9793cce97a64c139c9f4a58fad1b0dd5993a7b84
-    pristine_git_object: 4eb08541f149eed5227fef1091a87f27f67bd57a
+    last_write_checksum: sha1:e46b1aa4b46dd390797c23d8e2aa6534311c7d65
+    pristine_git_object: 83a7f468e9b9e0c25f6ff7baf179e64734bbdb08
   src/mcp-server/tools/filesystemStorageDeleteFilesystem.ts:
     id: af5fffab8aef
-    last_write_checksum: sha1:3d42568d9eb79949bd69c7eb8fdaafe3c01a986f
-    pristine_git_object: 382bfefdff395925b091b8060f81d2f725c32353
+    last_write_checksum: sha1:bc36a9669610abe734ea61e192371009abbe4fb0
+    pristine_git_object: 3f7eaca1cb759649d966fddc182a8096991d1304
   src/mcp-server/tools/filesystemStorageListFilesystems.ts:
     id: 68a0d14efc38
-    last_write_checksum: sha1:77ed0a1396f8fbbaa2497f8445b758825d7c82e8
-    pristine_git_object: f2a7418fe6d2f68674eea0d772467db55574f935
+    last_write_checksum: sha1:0284917f52989e37e2204946dcca1a66d19f205d
+    pristine_git_object: 15fa3f67c83861f9870d4dc6abe6b1c167320c6d
   src/mcp-server/tools/filesystemStorageUpdateFilesystem.ts:
     id: 474d1112db11
-    last_write_checksum: sha1:fbe65bab8be4b12fb02385b7aef5186d719be942
-    pristine_git_object: 4360a979f5e77fc69f4f9ffef00d6447fe5600aa
+    last_write_checksum: sha1:036f076190bf0967256a7bb6804349f08122ebd1
+    pristine_git_object: 82cb927de2ff572d2d37d9280827e0cd14580c4c
   src/mcp-server/tools/firewallsAssignmentsCreate.ts:
     id: 64b0bb5eb79f
     last_write_checksum: sha1:e95ba87673684ddcf0065e86a42e3f58dd3d9b19
@@ -1425,6 +1437,10 @@ trackedFiles:
     id: 57ec2f432276
     last_write_checksum: sha1:2a2b9953202546a5b986df9d9750a8a12fef878c
     pristine_git_object: babf6959cb587eee210efef1d10839d4ace19f6c
+  src/mcp-server/tools/publicNetworksUpdatePublicNetworkIp.ts:
+    id: bf4a33df2466
+    last_write_checksum: sha1:e0a8ce6f77db7ecebc527bd0c4f954a6204f4e20
+    pristine_git_object: 42d4af80083120fe698978a3ed4fbf2b09ac42fa
   src/mcp-server/tools/regionsFetch.ts:
     id: 3d3cb05fe3e1
     last_write_checksum: sha1:62579a464915239931b7d61fc157b319df96673c
@@ -1841,6 +1857,10 @@ trackedFiles:
     id: d7f69b9e4bea
     last_write_checksum: sha1:94dd01602b37142eaf5c4d5f70f701c86e27a4df
     pristine_git_object: d293023ec5f2990b17e6b5b61a5fa8effdf618e1
+  src/models/createfilesystemop.ts:
+    id: 45dd230e9c88
+    last_write_checksum: sha1:b185e081140e13500bf28a6eda64e56653cb34c8
+    pristine_git_object: 0a1218dfe393aa796a002b44a4513bae0d5d5042
   src/models/createfirewallassignmentop.ts:
     id: 2bc2267aa64b
     last_write_checksum: sha1:c16dc7ecb8ad62a2f576bf6bc901bef4b79cb373
@@ -1965,6 +1985,10 @@ trackedFiles:
     id: 25ccfaa0a383
     last_write_checksum: sha1:0ed9c212c4eba20a9af71cf6e8113d172da47bd2
     pristine_git_object: 4667c6bf5f8cc185406ca24b134837a537a58b83
+  src/models/deletefilesystemop.ts:
+    id: bb098d7bb83f
+    last_write_checksum: sha1:2e86de482a817e09525376322d8d695d1fbcae78
+    pristine_git_object: 749276794cdc0b14238b6771a4afca851b3b4f94
   src/models/deletefirewallassignmentop.ts:
     id: 174c494f5eb9
     last_write_checksum: sha1:bf0e85b6e5bcf248cf035f3e06172fd399c00840
@@ -2013,10 +2037,6 @@ trackedFiles:
     id: 12fe343089f4
     last_write_checksum: sha1:1f453b76d1bc5362ebf32a979cd06f25c5738af1
     pristine_git_object: 5eb55c51e1fa4feceab059f01db0796b8fc54f74
-  src/models/deletestoragefilesystemsop.ts:
-    id: 3427b2c2ab6f
-    last_write_checksum: sha1:3d5cc95624fe1d661010c864a1ba39ab4a59ba4f
-    pristine_git_object: 8c37e867fd7e4aed4cd8416fd68167f204ea9dc3
   src/models/deleteuserdataop.ts:
     id: 38cf1c6e199b
     last_write_checksum: sha1:c2151045e3f7947bfa8462c489c8e77f1b0437b0
@@ -2115,8 +2135,8 @@ trackedFiles:
     pristine_git_object: f87aa87a4393eb5d676b025767b82e9e183eeb3e
   src/models/filesystemdata.ts:
     id: afb06a8082e1
-    last_write_checksum: sha1:3aaaa2a30d7355d73698185d2a5c5d3161399820
-    pristine_git_object: 08c05d90b492ed8340170656d5e27a3ad49ec70d
+    last_write_checksum: sha1:872b62dab21ddaff0b97b3df5c40a0493d61cbd8
+    pristine_git_object: a7ce031b954d4fdfbda1e213c0803ec12f27638a
   src/models/filesystems.ts:
     id: 315ed3ff0a53
     last_write_checksum: sha1:69317860d7ef68b00c43e152cfcb7b949dd92daf
@@ -2325,10 +2345,6 @@ trackedFiles:
     id: ff4277e94b92
     last_write_checksum: sha1:030e213cf5733ed20a5779ca1c43308b10568aa5
     pristine_git_object: 86f538fa79fc856ad14ad1f2e5f641550ab3b845
-  src/models/getstoragefilesystemsop.ts:
-    id: 92ece6653a48
-    last_write_checksum: sha1:42cdff2e7bcdaa0b6f60a699e42d81d1b48ede99
-    pristine_git_object: 72170a6cba7c3192f0d0c29c33b288378f039806
   src/models/getstorageplansop.ts:
     id: e79efcc24891
     last_write_checksum: sha1:1a653e0a2bdf48cdb2a2b7ffa64b7fd4a077c895
@@ -2399,8 +2415,8 @@ trackedFiles:
     pristine_git_object: 5fc06ee05ab47fd92cf9ab1993ab6ec6802cc6fb
   src/models/ipaddressdata.ts:
     id: a765fc69a374
-    last_write_checksum: sha1:edc8a8a420e988dd38b252b0d31a3a1cf6b4f705
-    pristine_git_object: 1b857dd8e61954bdddc16d021aa6b0d71d94bad6
+    last_write_checksum: sha1:b0008918c1f3af2f7315eb497085b0595375adec
+    pristine_git_object: 57b4458238b121a1d052ba17487686afb9852ce2
   src/models/ipaddresses.ts:
     id: 2f142835b4b2
     last_write_checksum: sha1:575a1032997c26ef16530fe06a500a7dabcec8fb
@@ -2461,6 +2477,10 @@ trackedFiles:
     id: 80ab4a580ee5
     last_write_checksum: sha1:f25476af9eb6fa1ac08b37396f02798dedf96032
     pristine_git_object: 3d108fa2b97ff5020c0bed4ae72340f8fe9677cb
+  src/models/listfilesystemsop.ts:
+    id: 5fe2344ad2b9
+    last_write_checksum: sha1:45e6f47167a4c144ca7312831c83e55dc3219498
+    pristine_git_object: 184f913331074ae38768a6f802a78b8df69d67c2
   src/models/listfirewallsop.ts:
     id: 286506cd6f27
     last_write_checksum: sha1:d7e755a5d6721787e7504250b2568e9fa7d44a02
@@ -2583,8 +2603,8 @@ trackedFiles:
     pristine_git_object: 535e1ae9ac89c42c1ae04a57c67cebeaade443e8
   src/models/manageddatabasepayload.ts:
     id: 1f80438e8276
-    last_write_checksum: sha1:515ae8da87f74893cb0e9e9f8c195df16ea1d8f9
-    pristine_git_object: b5ed2c276f9166f0fc14c9b9b1888be29e0fc1be
+    last_write_checksum: sha1:8fbe14f70a80ff42f73c623b2b2201dae1f42af7
+    pristine_git_object: 9ccf91feeb313033de6ced0242beaf86893d7db4
   src/models/manageddatabaseplanattributes.ts:
     id: c27b0eb69fb5
     last_write_checksum: sha1:da8f33a42dc76ca78b8b5d0eb807b648f3af75f4
@@ -2657,10 +2677,6 @@ trackedFiles:
     id: 48abde608bc2
     last_write_checksum: sha1:59a2fb5c493778f31705942e2a37199e66518318
     pristine_git_object: d82960a0ab370d485c74945ae8bbd1d034d8e5e4
-  src/models/patchstoragefilesystemsop.ts:
-    id: 85fe804236bd
-    last_write_checksum: sha1:7aa18108fe92068ea69c98567428071e2b2acde4
-    pristine_git_object: 600d1dc25acc7a0305bc5de8ef769b23bade5adf
   src/models/patchuserdataop.ts:
     id: dfea3f20c242
     last_write_checksum: sha1:afcc8c73e122adf34a8bf9d1785f12c501385c6d
@@ -2705,10 +2721,6 @@ trackedFiles:
     id: c592acc005be
     last_write_checksum: sha1:a8e70e5ffaee84e9ce74c9b2ad63993e7174c2a7
     pristine_git_object: ef768135777cdc15b36d72397de3321785124abd
-  src/models/poststoragefilesystemsop.ts:
-    id: 4652d2c64686
-    last_write_checksum: sha1:7a9592c6c206948dbfffa903402a7c6276d8e05d
-    pristine_git_object: 40215ca0e1aa0db423197e656655066620e40dac
   src/models/postteammembersop.ts:
     id: 25f70111ec2e
     last_write_checksum: sha1:caf0660078997f5c5a1abfd859ae94f22f66e8f9
@@ -2743,8 +2755,8 @@ trackedFiles:
     pristine_git_object: 6e425d7c4ed9a2743e216d7ba2e5b40a404cd26b
   src/models/publicnetworkdata.ts:
     id: 50bfbc313eb3
-    last_write_checksum: sha1:1e67ab47fc73ee4a48b0d960c42c027cbbf5b20c
-    pristine_git_object: 23b2f1691eb026421f7665311a33b78a456f180d
+    last_write_checksum: sha1:c8e33b42a5f58cf3e2b8a42bd3f8113f7f117df6
+    pristine_git_object: 7dd6f3adb73a6f960496e46e89d3f0012839d963
   src/models/publicnetworks.ts:
     id: 44a05d735865
     last_write_checksum: sha1:f5a6fe7ba00187924e6dbbd71f57bc902cb4855f
@@ -2767,8 +2779,8 @@ trackedFiles:
     pristine_git_object: 3f8e13b9a0c4936875071d841b30040d2e26993c
   src/models/region.ts:
     id: a4227107386f
-    last_write_checksum: sha1:d89853a85770dcae1f0c0c8a853704b23fb6a616
-    pristine_git_object: 9fac6f3c5a675a2401a7b496e3bc45baf8539663
+    last_write_checksum: sha1:bc50493a2635919f8114ccf7c339e137b3a1ce4c
+    pristine_git_object: 296974326906c7bb33fd47dead41e1c606683bef
   src/models/regioncountry.ts:
     id: 761307d5119e
     last_write_checksum: sha1:cf45a12ea3b2602cf2fa23f65a815dc48ba634f8
@@ -2779,8 +2791,8 @@ trackedFiles:
     pristine_git_object: 62a3e32f3613eb34510432560a1b163d62ac24b0
   src/models/regions.ts:
     id: 54788e5fc978
-    last_write_checksum: sha1:e3ac6f7bfe02b6e5c21a120f9cd724546a2e3c6f
-    pristine_git_object: c6316afaa4c23ee51b915644d44aea257fff7f99
+    last_write_checksum: sha1:068dc073b78e8fc09b6026a251ca06e60ff75aa1
+    pristine_git_object: 21c7804629a25c915b0f3e6307b919b806df0d82
   src/models/retrievevolumeop.ts:
     id: 1f5d6bc2b4b0
     last_write_checksum: sha1:fd092a91a34b5ce0138b8b73fec0f21ad1b6a585
@@ -2941,6 +2953,10 @@ trackedFiles:
     id: f77f43669de4
     last_write_checksum: sha1:465055b166849b61359f039557df1e604a1a853c
     pristine_git_object: 4ae01fcfe37a6ae8ed78a4042e4fc984df012cdd
+  src/models/updatefilesystemop.ts:
+    id: 774d482e6858
+    last_write_checksum: sha1:0c5c384aa1ed2322c67dc3858b2794a746a66435
+    pristine_git_object: b6edba4795a686ac318d71e96aed1d6aa7d80488
   src/models/updatefirewallop.ts:
     id: 130d02dec796
     last_write_checksum: sha1:e1c0d6a4d079f55a35c03a41ff23d91d0b9e8af5
@@ -2981,6 +2997,14 @@ trackedFiles:
     id: 64682606e987
     last_write_checksum: sha1:7da7033cd9018efc90e0a43c7b56aa0dfa8a056e
     pristine_git_object: 45fab5f7de44960a3952ec241ad7eea50de59331
+  src/models/updatepublicnetworkip.ts:
+    id: 665aa280d39f
+    last_write_checksum: sha1:eea8eebe6de5c87218afeb48b51192a4b1d91666
+    pristine_git_object: 0b051dac275409911d55cc07f5d43d04466d0651
+  src/models/updatepublicnetworkipop.ts:
+    id: 86da93ac5e0d
+    last_write_checksum: sha1:0ff422ace90dea2883bb1ef388fb5bbb5735881f
+    pristine_git_object: 1ca9f5f4635f7b75d347d87d651694c7fd4b8034
   src/models/updateserverdeployconfigop.ts:
     id: aab03ae4810b
     last_write_checksum: sha1:364ccb7d257118df443b5dfa2db9cd8f1a9c7bb3
@@ -3001,6 +3025,10 @@ trackedFiles:
     id: cbfdf7a6db19
     last_write_checksum: sha1:3581babadfaa2c073b06ccfa8b31cfc4d3e15694
     pristine_git_object: b5e33eecbc7db383e410d9cb8c859e53d8967a5a
+  src/models/updatevolumeop.ts:
+    id: acddbee02333
+    last_write_checksum: sha1:6e044274192b787d74ab4e7a322e46618658ad16
+    pristine_git_object: fc3ddee346e9fae85bbc340b8f48f94c66730192
   src/models/user.ts:
     id: 30400d1cf3c2
     last_write_checksum: sha1:a6d17c84ae6aa2e3a8bab53d3dbe2c7ca0ef85be
@@ -3131,8 +3159,8 @@ trackedFiles:
     pristine_git_object: ef07683af1fb5abd3a32e4033144a2c31ea0f397
   src/models/volumedata.ts:
     id: 0729bab3943c
-    last_write_checksum: sha1:405c689b32d217c44652049bdadb56fb4bcfd4ee
-    pristine_git_object: 0cda74bdb35188016b267b605f2cf1c3fc6c21f0
+    last_write_checksum: sha1:2c1445635e8c676ef7dce01181ac59c2d59dceb3
+    pristine_git_object: 9c6cbde2d76bda7f98cfdbf6047eacb9f65184cf
   src/models/vpnsessiondatawithpassword.ts:
     id: 73954605ff35
     last_write_checksum: sha1:c3ab7a1c67c826964680e67f8f3879196f85e58d
@@ -3143,8 +3171,8 @@ trackedFiles:
     pristine_git_object: 325dfa21a8b2f5a5a1c64762fd2e487bb857e4b4
   src/tool-names.ts:
     id: a9977280f9eb
-    last_write_checksum: sha1:0a52372ca9a4d29d4d50ac7be4cf6c26ecea8914
-    pristine_git_object: 64bf9372c385a43908a1d5ed8e94d903886b2c3d
+    last_write_checksum: sha1:90148f60212822d369e5ecae345394a8d1dc7085
+    pristine_git_object: 09dd6045924c1f72fa2d7249b3cf09a707d62b51
   src/types/async.ts:
     id: fac8da972f86
     last_write_checksum: sha1:675d04bb4b4081dc3482f18de98674f9b446e7b4
@@ -6015,8 +6043,71 @@ examples:
       responses:
         "200":
           application/vnd.api+json: {"scheduled_backup": {}, "backups": [{"id": "<id>", "phase": "<value>", "created_at": "1714645600779"}]}
+  update-public-network-ip:
+    speakeasy-default-update-public-network-ip:
+      parameters:
+        path:
+          id: "<id>"
+      requestBody:
+        application/json: {"data": {"type": "public_networks"}}
+        application/vnd.api+json: {"data": {"type": "public_networks"}}
+      responses:
+        "200":
+          application/vnd.api+json: {}
+        "404":
+          application/vnd.api+json: {}
+  list-filesystems:
+    Success:
+      parameters:
+        query:
+          filter[project]: "small-rubber-shirt"
+      responses:
+        "200":
+          application/vnd.api+json: {"data": [{"id": "fs_6059EqYkOQj8p", "type": "filesystems", "attributes": {"name": "Intelligent Bronze Bench", "size_in_gb": 1500, "created_at": "2026-01-14T15:57:07.743Z", "project": {"id": "proj_695BdKNeOevVo", "name": "Synergistic Bronze Wallet", "slug": "synergistic-bronze-wallet", "description": "Mediocre Bronze Computer", "billing_type": "Normal", "billing_method": "Normal", "bandwidth_alert": false, "environment": null, "billing": {"subscription_id": null, "type": "Normal", "method": "Normal"}, "stats": {"databases": 0, "ip_addresses": 0, "prefixes": 0, "servers": 0, "storages": 1, "virtual_machines": 0, "vlans": 0}}, "team": {"id": "team_lV9Xe2AAK5CbMgGbpPYLskLRXyV", "name": "601 Team", "slug": "601-team", "description": "601 Team", "address": "20590 Deckow Divide, Lake Boris, NC 87947", "currency": {"id": "cur_AW6Q2D9lqKLpr", "code": "BRL", "name": "Brazilian Real", "currency_id": null}, "status": "verified"}}}, {"id": "fs_6VE1Wd37dXnZJ", "type": "filesystems", "attributes": {"name": "Gorgeous Rubber Bench", "size_in_gb": 1500, "created_at": "2026-01-14T15:57:07.758Z", "project": {"id": "proj_yQrJdNm5O30gv", "name": "Heavy Duty Copper Clock", "slug": "heavy-duty-copper-clock", "description": "Small Aluminum Shoes", "billing_type": "Normal", "billing_method": "Normal", "bandwidth_alert": false, "environment": null, "billing": {"subscription_id": null, "type": "Normal", "method": "Normal"}, "stats": {"databases": 0, "ip_addresses": 0, "prefixes": 0, "servers": 0, "storages": 1, "virtual_machines": 0, "vlans": 0}}, "team": {"id": "team_lV9Xe2AAK5CbMgGbpPYLskLRXyV", "name": "601 Team", "slug": "601-team", "description": "601 Team", "address": "20590 Deckow Divide, Lake Boris, NC 87947", "currency": {"id": "cur_AW6Q2D9lqKLpr", "code": "BRL", "name": "Brazilian Real", "currency_id": null}, "status": "verified"}}}]}
+  create-filesystem:
+    Created:
+      requestBody:
+        application/json: {"data": {"type": "filesystems", "attributes": {"project": "proj_lkg1De6ROvZE5", "name": "my-data", "region": "NYC", "size_in_gb": 1500, "protocols": ["nfs3"]}}}
+        application/vnd.api+json: {"data": {"type": "filesystems", "attributes": {"project": "proj_lkg1De6ROvZE5", "name": "my-data", "region": "NYC", "size_in_gb": 1500, "protocols": ["nfs3"]}}}
+      responses:
+        "201":
+          application/vnd.api+json: {"data": {"id": "fs_AW6Q2D9lqKLpr", "type": "filesystems", "attributes": {"name": "my-data", "size_in_gb": 1500, "created_at": "2026-01-14T15:57:07.000Z", "project": {"id": "proj_lkg1De6ROvZE5", "name": "Small Leather Plate", "slug": "small-leather-plate", "description": "Awesome Marble Table", "billing_type": "Normal", "billing_method": "Normal", "bandwidth_alert": false, "environment": null, "billing": {"subscription_id": null, "type": "Normal", "method": "Normal"}, "stats": {"databases": 0, "ip_addresses": 0, "prefixes": 0, "servers": 0, "storages": 1, "virtual_machines": 0, "vlans": 0}}, "team": {"id": "team_13ljzVvQY2c2YN4lnMexSm79WgA", "name": "592 Team", "slug": "592-team", "description": "592 Team", "address": "247 Russ Station, New Freddy, OK 97400-4162", "currency": {"id": "cur_AW6Q2D9lqKLpr", "code": "BRL", "name": "Brazilian Real", "currency_id": null}, "status": "verified"}}}}
+    Storage creation frozen:
+      requestBody:
+        application/json: {"data": {"type": "filesystems", "attributes": {"project": "<value>", "name": "<value>", "region": "<value>", "size_in_gb": 1500, "protocols": ["nfs4"]}}}
+        application/vnd.api+json: {"data": {"type": "filesystems", "attributes": {"project": "<value>", "name": "<value>", "region": "<value>", "size_in_gb": 1500, "protocols": ["nfs4"]}}}
+      responses:
+        "503":
+          application/vnd.api+json: {"errors": [{"code": "STORAGE_CREATION_FROZEN", "status": "503", "title": "Storage creation frozen", "detail": "New filesystem creation is temporarily unavailable.", "meta": {}}]}
+  delete-filesystem:
+    speakeasy-default-delete-filesystem:
+      parameters:
+        path:
+          filesystem_id: "<id>"
+  update-filesystem:
+    Success:
+      parameters:
+        path:
+          filesystem_id: "fs_7vYAZqGBdMQ94"
+      requestBody:
+        application/json: {"data": {"id": "fs_7vYAZqGBdMQ94", "type": "filesystems", "attributes": {"size_in_gb": 1501}}}
+        application/vnd.api+json: {"data": {"id": "fs_7vYAZqGBdMQ94", "type": "filesystems", "attributes": {"size_in_gb": 1501}}}
+      responses:
+        "200":
+          application/vnd.api+json: {"data": {"id": "fs_7vYAZqGBdMQ94", "type": "filesystems", "attributes": {"name": "Lightweight Aluminum Computer", "size_in_gb": 1501, "created_at": "2026-01-14T15:57:08.000Z", "project": {"id": "proj_1R3zq2VvqWxyn", "name": "Enormous Iron Plate", "slug": "enormous-iron-plate", "description": "Durable Wooden Shoes", "billing_type": "Normal", "billing_method": "Normal", "bandwidth_alert": false, "environment": null, "billing": {"subscription_id": null, "type": "Normal", "method": "Normal"}, "stats": {"databases": 0, "ip_addresses": 0, "prefixes": 0, "servers": 0, "storages": 1, "virtual_machines": 0, "vlans": 0}}, "team": {"id": "team_6RZQo811RrT97mgazl8wf1Ryxxo", "name": "606 Team", "slug": "606-team", "description": "606 Team", "address": "Apt. 122 58068 Bibi Prairie, Ardithport, NH 77015-2685", "currency": {"id": "cur_AW6Q2D9lqKLpr", "code": "BRL", "name": "Brazilian Real", "currency_id": null}, "status": "verified"}}}}
+  update-volume:
+    speakeasy-default-update-volume:
+      parameters:
+        path:
+          id: "<id>"
+      requestBody:
+        application/json: {"data": {"type": "volumes", "attributes": {"size_in_gb": 873925}}}
+        application/vnd.api+json: {"data": {"type": "volumes", "attributes": {"size_in_gb": 873925}}}
+      responses:
+        "200":
+          application/vnd.api+json: {}
 examplesVersion: 1.0.2
-releaseNotes: "## Mcp-typescript SDK Changes:\n* `Latitudesh.Servers.create()`: \n  *  `request.data.attributes` **Changed** (Breaking ⚠️)\n* `Latitudesh.Servers.updateDeployConfig()`: \n  *  `request.RequestBody.data.attributes.operating_system` **Changed** (Breaking ⚠️)\n* `Latitudesh.Servers.reinstall()`: \n  *  `request.RequestBody.data.attributes.operating_system` **Changed** (Breaking ⚠️)\n* `Latitudesh.privateNetworks.create()`: \n  *  `request.data.attributes.site` **Changed** (Breaking ⚠️)\n* `Latitudesh.vpnSessions.list()`: \n  *  `request.filter[location]` **Changed** (Breaking ⚠️)\n* `Latitudesh.vpnSessions.create()`: \n  *  `request.data.attributes.site` **Changed** (Breaking ⚠️)\n* `Latitudesh.Managed Databases.create-managed-database()`: \n  *  `request.data.attributes.replica_regions` **Added**\n"
+releaseNotes: "## Mcp-typescript SDK Changes:\n* `Latitudesh.Filesystem Storage.createFilesystem()`: \n  *  `request.data.attributes` **Changed** (Breaking ⚠️)\n  *  `response.data.attributes` **Changed**\n* `Latitudesh.Managed Databases.create-managed-database()`: \n  *  `request.data.attributes.name` **Changed** (Breaking ⚠️)\n* `Latitudesh.Kubernetes Clusters.list-kubernetes-clusters()`:  `response.status[403]` **Added** (Breaking ⚠️)\n* `Latitudesh.Kubernetes Clusters.listAvailableVersions()`:  `response.status[403]` **Added** (Breaking ⚠️)\n* `Latitudesh.Kubernetes Clusters.get-kubernetes-cluster()`:  `response.status[403]` **Added** (Breaking ⚠️)\n* `Latitudesh.Filesystem Storage.listFilesystems()`:  `response.data[].attributes` **Changed**\n* `Latitudesh.Public Networks.create-public-network()`:  `response.data.attributes.ips` **Added**\n* `Latitudesh.Public Networks.get-public-network()`:  `response.data.attributes.ips` **Added**\n* `Latitudesh.Public Networks.update-public-network-ip()`: **Added**\n* `Latitudesh.Public Networks.get-public-networks()`:  `response.data[].attributes.ips` **Added**\n* `Latitudesh.Filesystem Storage.updateFilesystem()`: \n  *  `request.RequestBody.data.id` **Changed**\n  *  `response.data.attributes` **Changed**\n* `Latitudesh.Block Storage.list-volumes()`:  `response.data[].attributes.nguid` **Added**\n* `Latitudesh.Block Storage.create-volume()`:  `response.data.attributes.nguid` **Added**\n* `Latitudesh.Block Storage.retrieve-volume()`:  `response.data.attributes.nguid` **Added**\n* `Latitudesh.Block Storage.map-volume()`:  `response.data.attributes.nguid` **Added**\n* `Latitudesh.Block Storage.unmap-volume()`:  `response.data.attributes.nguid` **Added**\n* `Latitudesh.Block Storage.update-volume()`: **Added**\n"
 generatedFiles:
   - .dxtignore
   - .gitattributes

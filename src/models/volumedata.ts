@@ -124,6 +124,7 @@ export type VolumeDataAttributes = {
   namespace_id?: number | null | undefined;
   connector_id?: string | null | undefined;
   initiators?: Array<Initiator> | null | undefined;
+  nguid?: string | null | undefined;
   block?: Block | null | undefined;
   keyring?: string | null | undefined;
   cluster_user?: string | null | undefined;
@@ -150,6 +151,9 @@ export const VolumeDataAttributes$zodSchema: z.ZodType<VolumeDataAttributes> = z
     ),
     name: z.string().optional(),
     namespace_id: z.int().nullable().optional(),
+    nguid: z.string().nullable().optional().describe(
+      "NVMe namespace globally unique identifier (NGUID) of the volume, exactly as reported by the storage cluster, in UUID form (e.g. \"b338cb51-7593-413d-8c87-2657af7ecae9\"). Without the dashes it matches the NGUID the mapped server reports for the NVMe device of the volume. Null when it has not been recorded for the volume.",
+    ),
     project: ProjectInclude$zodSchema.optional(),
     region: z.lazy(() => VolumeDataRegion$zodSchema).nullable().optional(),
     size_in_gb: z.int().optional(),
