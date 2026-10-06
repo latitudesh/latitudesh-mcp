@@ -27,6 +27,45 @@ export const FilesystemStorageClass$zodSchema = z.enum([
   "high_performance",
 ]);
 
+export const Protocol = {
+  Nfs3: "nfs3",
+  Nfs4: "nfs4",
+} as const;
+export type Protocol = ClosedEnum<typeof Protocol>;
+
+export const Protocol$zodSchema = z.enum([
+  "nfs3",
+  "nfs4",
+]);
+
+export type FilesystemDataSite = {
+  id?: string | undefined;
+  name?: string | undefined;
+  slug?: string | undefined;
+  facility?: string | undefined;
+};
+
+export const FilesystemDataSite$zodSchema: z.ZodType<FilesystemDataSite> = z
+  .object({
+    facility: z.string().optional(),
+    id: z.string().optional(),
+    name: z.string().optional(),
+    slug: z.string().optional(),
+  });
+
+export type FilesystemDataRegion = {
+  city?: string | null | undefined;
+  country?: string | null | undefined;
+  site?: FilesystemDataSite | null | undefined;
+};
+
+export const FilesystemDataRegion$zodSchema: z.ZodType<FilesystemDataRegion> = z
+  .object({
+    city: z.string().nullable().optional(),
+    country: z.string().nullable().optional(),
+    site: z.lazy(() => FilesystemDataSite$zodSchema).nullable().optional(),
+  });
+
 export type FilesystemDataAttributes = {
   name?: string | undefined;
   size_in_gb?: number | undefined;
@@ -35,6 +74,10 @@ export type FilesystemDataAttributes = {
   keyring?: string | null | undefined;
   cluster_user?: string | null | undefined;
   volume_path?: string | null | undefined;
+  nfs_mount_path?: string | null | undefined;
+  protocols?: Array<Protocol> | null | undefined;
+  file_endpoint?: string | null | undefined;
+  region?: FilesystemDataRegion | null | undefined;
   project?: ProjectInclude | undefined;
   team?: TeamInclude | undefined;
 };
@@ -46,11 +89,21 @@ export const FilesystemDataAttributes$zodSchema: z.ZodType<
     "Cluster user used to mount the filesystem. Returned only for dashboard-origin requests; null until the filesystem is provisioned.",
   ),
   created_at: z.iso.datetime({ offset: true }).nullable().optional(),
+  file_endpoint: z.string().nullable().optional().describe(
+    "Hostname of the NFS endpoint backing the filesystem. Null for filesystems that are not backed by high performance file storage.",
+  ),
   keyring: z.string().nullable().optional().describe(
     "Keyring secret used to mount the filesystem. Returned only for dashboard-origin requests; null until the filesystem is provisioned.",
   ),
   name: z.string().optional(),
+  nfs_mount_path: z.string().nullable().optional().describe(
+    "Path of the NFS view (NFSv3 and NFSv4) backing the filesystem. Null for filesystems that are not backed by high performance file storage.",
+  ),
   project: ProjectInclude$zodSchema.optional(),
+  protocols: z.array(Protocol$zodSchema).nullable().optional().describe(
+    "NFS protocol version(s) the filesystem was requested to be mounted with. Null for filesystems that are not backed by high performance file storage.",
+  ),
+  region: z.lazy(() => FilesystemDataRegion$zodSchema).nullable().optional(),
   size_in_gb: z.int().optional(),
   storage_class: FilesystemStorageClass$zodSchema.nullable().optional(),
   team: TeamInclude$zodSchema.optional(),

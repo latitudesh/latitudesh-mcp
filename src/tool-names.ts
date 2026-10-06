@@ -269,6 +269,10 @@ export const toolNames: Array<{ name: string; description: string }>= [
     "description": "Delete a network\n\n**Preview.** Available at locations where the `public_network` feature is enabled.\n\nDelete a customer network. Only allowed while the network has no IPs in use."
   },
   {
+    "name": "public-networks-update-public-network-ip",
+    "description": "Update a network IP\n\n**Preview.** Available at locations where the `public_network` feature is enabled.\n\nReserve an available address of a network for your own use, so servers are never attached to the network with it, or release an address you reserved."
+  },
+  {
     "name": "projects-list",
     "description": "List projects\n\nReturns a list of all projects for the current team\n"
   },
@@ -547,6 +551,10 @@ export const toolNames: Array<{ name: string; description: string }>= [
   {
     "name": "block-storage-delete-volume",
     "description": "Delete volume\n\nAllows you to remove a volume from a project."
+  },
+  {
+    "name": "block-storage-update-volume",
+    "description": "Update volume\n\nIncreases the size of a high performance volume. Shrinking is not supported. Billing is prorated to the new size."
   },
   {
     "name": "block-storage-mount-volume",

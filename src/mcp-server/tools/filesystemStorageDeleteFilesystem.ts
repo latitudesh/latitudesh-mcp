@@ -3,11 +3,11 @@
  */
 
 import { filesystemStorageDeleteFilesystem } from "../../funcs/filesystemStorageDeleteFilesystem.js";
-import { DeleteStorageFilesystemsRequest$zodSchema } from "../../models/deletestoragefilesystemsop.js";
+import { DeleteFilesystemRequest$zodSchema } from "../../models/deletefilesystemop.js";
 import { formatResult, ToolDefinition } from "../tools.js";
 
 const args = {
-  request: DeleteStorageFilesystemsRequest$zodSchema,
+  request: DeleteFilesystemRequest$zodSchema,
 };
 
 export const tool$filesystemStorageDeleteFilesystem: ToolDefinition<

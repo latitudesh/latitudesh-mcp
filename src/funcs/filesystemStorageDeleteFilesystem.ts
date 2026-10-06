@@ -10,9 +10,9 @@ import { RequestOptions } from "../lib/sdks.js";
 import { extractSecurity, resolveGlobalSecurity } from "../lib/security.js";
 import { pathToFunc } from "../lib/url.js";
 import {
-  DeleteStorageFilesystemsRequest,
-  DeleteStorageFilesystemsRequest$zodSchema,
-} from "../models/deletestoragefilesystemsop.js";
+  DeleteFilesystemRequest,
+  DeleteFilesystemRequest$zodSchema,
+} from "../models/deletefilesystemop.js";
 import { APIError } from "../models/errors/apierror.js";
 import {
   ConnectionError,
@@ -33,7 +33,7 @@ import { Result } from "../types/fp.js";
  */
 export function filesystemStorageDeleteFilesystem(
   client$: LatitudeshCore,
-  request: DeleteStorageFilesystemsRequest,
+  request: DeleteFilesystemRequest,
   options?: RequestOptions,
 ): APIPromise<
   Result<
@@ -56,7 +56,7 @@ export function filesystemStorageDeleteFilesystem(
 
 async function $do(
   client$: LatitudeshCore,
-  request: DeleteStorageFilesystemsRequest,
+  request: DeleteFilesystemRequest,
   options?: RequestOptions,
 ): Promise<
   [
@@ -75,7 +75,7 @@ async function $do(
 > {
   const parsed$ = safeParse(
     request,
-    (value$) => DeleteStorageFilesystemsRequest$zodSchema.parse(value$),
+    (value$) => DeleteFilesystemRequest$zodSchema.parse(value$),
     "Input validation failed",
   );
   if (!parsed$.ok) {
@@ -103,7 +103,7 @@ async function $do(
   const context = {
     options: client$._options,
     baseURL: options?.serverURL ?? client$._baseURL ?? "",
-    operationID: "delete-storage-filesystems",
+    operationID: "delete-filesystem",
     oAuth2Scopes: null,
     resolvedSecurity: requestSecurity,
     securitySource: client$._options.security,

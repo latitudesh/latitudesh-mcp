@@ -3,11 +3,11 @@
  */
 
 import { filesystemStorageCreateFilesystem } from "../../funcs/filesystemStorageCreateFilesystem.js";
-import { PostStorageFilesystemsRequest$zodSchema } from "../../models/poststoragefilesystemsop.js";
+import { CreateFilesystemRequest$zodSchema } from "../../models/createfilesystemop.js";
 import { formatResult, ToolDefinition } from "../tools.js";
 
 const args = {
-  request: PostStorageFilesystemsRequest$zodSchema,
+  request: CreateFilesystemRequest$zodSchema,
 };
 
 export const tool$filesystemStorageCreateFilesystem: ToolDefinition<

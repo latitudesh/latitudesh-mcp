@@ -53,7 +53,7 @@ export const ManagedDatabasePayloadRecovery$zodSchema: z.ZodType<
 }).describe("Restore from a source database backup at create (postgres only)");
 
 export type ManagedDatabasePayloadAttributes = {
-  name?: string | undefined;
+  name: string;
   project_id: string;
   region: string;
   plan: string;
@@ -76,7 +76,9 @@ export const ManagedDatabasePayloadAttributes$zodSchema: z.ZodType<
     "Billing cycle (postgres/clickhouse). Defaults to monthly when omitted.",
   ),
   engine: z.string().describe("Database engine"),
-  name: z.string().optional().describe("Display name (optional)"),
+  name: z.string().describe(
+    "Display name; used to derive the helm release name",
+  ),
   parameters: z.record(z.string(), z.any()).optional().describe(
     "Custom PostgreSQL parameters at create (postgres only)",
   ),

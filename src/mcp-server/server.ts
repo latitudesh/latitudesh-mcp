@@ -34,6 +34,7 @@ import { tool$blockStorageMapVolume } from "./tools/blockStorageMapVolume.js";
 import { tool$blockStorageMountVolume } from "./tools/blockStorageMountVolume.js";
 import { tool$blockStorageRetrieveVolume } from "./tools/blockStorageRetrieveVolume.js";
 import { tool$blockStorageUnmapVolume } from "./tools/blockStorageUnmapVolume.js";
+import { tool$blockStorageUpdateVolume } from "./tools/blockStorageUpdateVolume.js";
 import { tool$elasticIpsCreateElasticIp } from "./tools/elasticIpsCreateElasticIp.js";
 import { tool$elasticIpsCreateElasticIpBgpSession } from "./tools/elasticIpsCreateElasticIpBgpSession.js";
 import { tool$elasticIpsDeleteElasticIp } from "./tools/elasticIpsDeleteElasticIp.js";
@@ -129,6 +130,7 @@ import { tool$publicNetworksCreatePublicNetwork } from "./tools/publicNetworksCr
 import { tool$publicNetworksDestroyPublicNetwork } from "./tools/publicNetworksDestroyPublicNetwork.js";
 import { tool$publicNetworksGetPublicNetwork } from "./tools/publicNetworksGetPublicNetwork.js";
 import { tool$publicNetworksGetPublicNetworks } from "./tools/publicNetworksGetPublicNetworks.js";
+import { tool$publicNetworksUpdatePublicNetworkIp } from "./tools/publicNetworksUpdatePublicNetworkIp.js";
 import { tool$regionsFetch } from "./tools/regionsFetch.js";
 import { tool$regionsGet } from "./tools/regionsGet.js";
 import { tool$rolesGet } from "./tools/rolesGet.js";
@@ -227,7 +229,7 @@ export function createMCPServer(deps: {
 }) {
   const server = new McpServer({
     name: "Latitudesh",
-    version: "0.4.1",
+    version: "0.4.2",
   });
 
   const getClient = deps.getSDK || (() =>
@@ -340,6 +342,7 @@ export function createMCPServer(deps: {
   tool(tool$publicNetworksCreatePublicNetwork);
   tool(tool$publicNetworksGetPublicNetwork);
   tool(tool$publicNetworksDestroyPublicNetwork);
+  tool(tool$publicNetworksUpdatePublicNetworkIp);
   tool(tool$projectsList);
   tool(tool$projectsCreate);
   tool(tool$projectsGetProject);
@@ -410,6 +413,7 @@ export function createMCPServer(deps: {
   tool(tool$blockStorageCreateVolume);
   tool(tool$blockStorageRetrieveVolume);
   tool(tool$blockStorageDeleteVolume);
+  tool(tool$blockStorageUpdateVolume);
   tool(tool$blockStorageMountVolume);
   tool(tool$blockStorageMapVolume);
   tool(tool$blockStorageUnmapVolume);

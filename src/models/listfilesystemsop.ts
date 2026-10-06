@@ -4,12 +4,10 @@
 
 import * as z from "zod";
 
-export type GetStorageFilesystemsRequest = {
-  filterProject?: string | undefined;
-};
+export type ListFilesystemsRequest = { filterProject?: string | undefined };
 
-export const GetStorageFilesystemsRequest$zodSchema: z.ZodType<
-  GetStorageFilesystemsRequest
+export const ListFilesystemsRequest$zodSchema: z.ZodType<
+  ListFilesystemsRequest
 > = z.object({
   filterProject: z.string().describe("The project ID or Slug to filter by")
     .optional(),

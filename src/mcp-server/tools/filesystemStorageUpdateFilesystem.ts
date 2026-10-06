@@ -3,11 +3,11 @@
  */
 
 import { filesystemStorageUpdateFilesystem } from "../../funcs/filesystemStorageUpdateFilesystem.js";
-import { PatchStorageFilesystemsRequest$zodSchema } from "../../models/patchstoragefilesystemsop.js";
+import { UpdateFilesystemRequest$zodSchema } from "../../models/updatefilesystemop.js";
 import { formatResult, ToolDefinition } from "../tools.js";
 
 const args = {
-  request: PatchStorageFilesystemsRequest$zodSchema,
+  request: UpdateFilesystemRequest$zodSchema,
 };
 
 export const tool$filesystemStorageUpdateFilesystem: ToolDefinition<
