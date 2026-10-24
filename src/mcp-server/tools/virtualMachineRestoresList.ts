@@ -21,7 +21,7 @@ Lists every restore that belongs to the authenticated team.
   tool: async (client, ctx) => {
     const [result] = await virtualMachineRestoresList(
       client,
-      { fetchOptions: { signal: ctx.signal } },
+      { fetchOptions: { signal: ctx.mcpReq.signal } },
     ).$inspect();
 
     if (!result.ok) {

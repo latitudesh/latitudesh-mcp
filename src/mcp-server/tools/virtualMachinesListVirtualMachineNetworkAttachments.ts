@@ -30,7 +30,7 @@ Lists the secondary network attachments currently configured for a Virtual Machi
         await virtualMachinesListVirtualMachineNetworkAttachments(
           client,
           args.request,
-          { fetchOptions: { signal: ctx.signal } },
+          { fetchOptions: { signal: ctx.mcpReq.signal } },
         ).$inspect();
 
       if (!result.ok) {

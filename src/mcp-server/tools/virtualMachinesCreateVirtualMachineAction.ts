@@ -35,7 +35,7 @@ Performs a power action on a given virtual machine:
     const [result] = await virtualMachinesCreateVirtualMachineAction(
       client,
       args.request,
-      { fetchOptions: { signal: ctx.signal } },
+      { fetchOptions: { signal: ctx.mcpReq.signal } },
     ).$inspect();
 
     if (!result.ok) {

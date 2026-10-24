@@ -30,12 +30,14 @@ export const DeployConfigRole$zodSchema = z.enum([
 export const DeployConfigRaidLevel = {
   Raid0: "raid-0",
   Raid1: "raid-1",
+  Raid10: "raid-10",
 } as const;
 export type DeployConfigRaidLevel = ClosedEnum<typeof DeployConfigRaidLevel>;
 
 export const DeployConfigRaidLevel$zodSchema = z.enum([
   "raid-0",
   "raid-1",
+  "raid-10",
 ]);
 
 export const DeployConfigFilesystem = {

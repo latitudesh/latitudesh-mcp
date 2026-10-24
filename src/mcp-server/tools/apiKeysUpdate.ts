@@ -29,7 +29,7 @@ Use PATCH to update settings without rotating the token.
     const [result] = await apiKeysUpdate(
       client,
       args.request,
-      { fetchOptions: { signal: ctx.signal } },
+      { fetchOptions: { signal: ctx.mcpReq.signal } },
     ).$inspect();
 
     if (!result.ok) {

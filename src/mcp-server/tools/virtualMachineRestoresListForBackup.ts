@@ -30,7 +30,7 @@ Lists the restores created from the given backup, reached via the top-level back
     const [result] = await virtualMachineRestoresListForBackup(
       client,
       args.request,
-      { fetchOptions: { signal: ctx.signal } },
+      { fetchOptions: { signal: ctx.mcpReq.signal } },
     ).$inspect();
 
     if (!result.ok) {

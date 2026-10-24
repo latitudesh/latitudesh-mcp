@@ -30,7 +30,7 @@ Lists all Kubernetes clusters for a project.
     const [result] = await kubernetesClustersListKubernetesClusters(
       client,
       args.request,
-      { fetchOptions: { signal: ctx.signal } },
+      { fetchOptions: { signal: ctx.mcpReq.signal } },
     ).$inspect();
 
     if (!result.ok) {

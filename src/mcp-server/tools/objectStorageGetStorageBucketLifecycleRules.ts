@@ -29,7 +29,7 @@ Lists all lifecycle rules for a specific object storage bucket.`,
     const [result] = await objectStorageGetStorageBucketLifecycleRules(
       client,
       args.request,
-      { fetchOptions: { signal: ctx.signal } },
+      { fetchOptions: { signal: ctx.mcpReq.signal } },
     ).$inspect();
 
     if (!result.ok) {

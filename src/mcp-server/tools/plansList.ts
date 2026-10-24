@@ -28,7 +28,7 @@ Lists all plans. Availability by region is included in \`attributes.regions.loca
     const [result] = await plansList(
       client,
       args.request,
-      { fetchOptions: { signal: ctx.signal } },
+      { fetchOptions: { signal: ctx.mcpReq.signal } },
     ).$inspect();
 
     if (!result.ok) {

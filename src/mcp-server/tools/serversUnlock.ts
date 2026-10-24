@@ -27,7 +27,7 @@ Unlocks the server. A locked server cannot be deleted or modified and no actions
     const [result] = await serversUnlock(
       client,
       args.request,
-      { fetchOptions: { signal: ctx.signal } },
+      { fetchOptions: { signal: ctx.mcpReq.signal } },
     ).$inspect();
 
     if (!result.ok) {
