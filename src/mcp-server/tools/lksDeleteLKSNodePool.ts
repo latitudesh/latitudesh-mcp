@@ -28,7 +28,7 @@ Marks the node pool for deletion. The call returns as soon as the tombstone is w
     const [result] = await lksDeleteLKSNodePool(
       client,
       args.request,
-      { fetchOptions: { signal: ctx.signal } },
+      { fetchOptions: { signal: ctx.mcpReq.signal } },
     ).$inspect();
 
     if (!result.ok) {

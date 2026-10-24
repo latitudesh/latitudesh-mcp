@@ -27,7 +27,7 @@ Returns a single firewall by its ID.`,
     const [result] = await firewallsGet(
       client,
       args.request,
-      { fetchOptions: { signal: ctx.signal } },
+      { fetchOptions: { signal: ctx.mcpReq.signal } },
     ).$inspect();
 
     if (!result.ok) {

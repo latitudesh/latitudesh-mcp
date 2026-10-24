@@ -29,7 +29,7 @@ Lists IAM access keys associated with an object storage bucket. Secrets are neve
     const [result] = await objectStorageGetStorageBucketAccessKeys(
       client,
       args.request,
-      { fetchOptions: { signal: ctx.signal } },
+      { fetchOptions: { signal: ctx.mcpReq.signal } },
     ).$inspect();
 
     if (!result.ok) {

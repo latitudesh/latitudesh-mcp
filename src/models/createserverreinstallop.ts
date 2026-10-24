@@ -70,14 +70,15 @@ export const CreateServerReinstallOperatingSystem2$zodSchema = z.enum([
 ]).describe("The OS selected for the reinstall process");
 
 /**
- * RAID mode for the server. Set to 'raid-0' for RAID 0, 'raid-1' for RAID 1, or omit/null for no RAID configuration
+ * RAID mode for the server. Set to 'raid-0' for RAID 0, 'raid-1' for RAID 1, 'raid-10' for RAID 10 on the data disks (only at locations with the `raid_ten` feature), or omit/null for no RAID configuration
  */
 export const CreateServerReinstallRaid2 = {
   Raid0: "raid-0",
   Raid1: "raid-1",
+  Raid10: "raid-10",
 } as const;
 /**
- * RAID mode for the server. Set to 'raid-0' for RAID 0, 'raid-1' for RAID 1, or omit/null for no RAID configuration
+ * RAID mode for the server. Set to 'raid-0' for RAID 0, 'raid-1' for RAID 1, 'raid-10' for RAID 10 on the data disks (only at locations with the `raid_ten` feature), or omit/null for no RAID configuration
  */
 export type CreateServerReinstallRaid2 = ClosedEnum<
   typeof CreateServerReinstallRaid2
@@ -86,8 +87,9 @@ export type CreateServerReinstallRaid2 = ClosedEnum<
 export const CreateServerReinstallRaid2$zodSchema = z.enum([
   "raid-0",
   "raid-1",
+  "raid-10",
 ]).describe(
-  "RAID mode for the server. Set to 'raid-0' for RAID 0, 'raid-1' for RAID 1, or omit/null for no RAID configuration",
+  "RAID mode for the server. Set to 'raid-0' for RAID 0, 'raid-1' for RAID 1, 'raid-10' for RAID 10 on the data disks (only at locations with the `raid_ten` feature), or omit/null for no RAID configuration",
 );
 
 export const CreateServerReinstallRole2 = {
@@ -108,6 +110,7 @@ export const CreateServerReinstallRole2$zodSchema = z.enum([
 export const CreateServerReinstallRaidLevel2 = {
   Raid0: "raid-0",
   Raid1: "raid-1",
+  Raid10: "raid-10",
 } as const;
 export type CreateServerReinstallRaidLevel2 = ClosedEnum<
   typeof CreateServerReinstallRaidLevel2
@@ -116,6 +119,7 @@ export type CreateServerReinstallRaidLevel2 = ClosedEnum<
 export const CreateServerReinstallRaidLevel2$zodSchema = z.enum([
   "raid-0",
   "raid-1",
+  "raid-10",
 ]);
 
 export const CreateServerReinstallFilesystem2 = {
@@ -185,7 +189,7 @@ export const CreateServerReinstallAttributes2$zodSchema: z.ZodType<
     "ID of a customer public network to attach this server to during the reinstall. The public network must belong to the same project and be in the same location as the server, and must have at least one free IP address. Applies to this reinstall only; omit it to leave any existing public network unchanged.",
   ),
   raid: CreateServerReinstallRaid2$zodSchema.nullable().optional().describe(
-    "RAID mode for the server. Set to 'raid-0' for RAID 0, 'raid-1' for RAID 1, or omit/null for no RAID configuration",
+    "RAID mode for the server. Set to 'raid-0' for RAID 0, 'raid-1' for RAID 1, 'raid-10' for RAID 10 on the data disks (only at locations with the `raid_ten` feature), or omit/null for no RAID configuration",
   ),
   ssh_keys: z.array(z.string()).nullable().optional().describe(
     "SSH Key IDs to set upon reinstall",

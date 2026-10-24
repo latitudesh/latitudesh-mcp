@@ -210,12 +210,16 @@ export type VirtualMachineAttributesAttributes = {
   tags?: Array<VirtualMachineAttributesTag> | undefined;
   team?: TeamInclude | undefined;
   project?: ProjectInclude | undefined;
+  apply_network_on_boot?: boolean | undefined;
   pending_restart?: boolean | undefined;
 };
 
 export const VirtualMachineAttributesAttributes$zodSchema: z.ZodType<
   VirtualMachineAttributesAttributes
 > = z.object({
+  apply_network_on_boot: z.boolean().optional().describe(
+    "Whether the VM re-applies the platform network configuration on every boot. Set at creation; false for VMs created before this option was available. When false, configure networks attached to the VM inside the guest yourself, as described in [Private networks: configure the OS](https://www.latitude.sh/docs/networking/private-networks#step-3-configure-the-os).",
+  ),
   billing: z.string().nullable().optional(),
   created_at: z.string().optional(),
   credentials: z.lazy(() => VirtualMachineAttributesCredentials$zodSchema)

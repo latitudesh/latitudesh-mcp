@@ -29,7 +29,7 @@ Lists the restores created from the given backup.
       const [result] = await virtualMachineRestoresListForVirtualMachineBackup(
         client,
         args.request,
-        { fetchOptions: { signal: ctx.signal } },
+        { fetchOptions: { signal: ctx.mcpReq.signal } },
       ).$inspect();
 
       if (!result.ok) {

@@ -28,7 +28,7 @@ Lists every LKS cluster of a project. The response is not paginated; \`meta.tota
     const [result] = await lksListLKSClusters(
       client,
       args.request,
-      { fetchOptions: { signal: ctx.signal } },
+      { fetchOptions: { signal: ctx.mcpReq.signal } },
     ).$inspect();
 
     if (!result.ok) {

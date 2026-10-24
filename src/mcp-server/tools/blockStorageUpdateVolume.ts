@@ -27,7 +27,7 @@ Increases the size of a high performance volume. Shrinking is not supported. Bil
     const [result] = await blockStorageUpdateVolume(
       client,
       args.request,
-      { fetchOptions: { signal: ctx.signal } },
+      { fetchOptions: { signal: ctx.mcpReq.signal } },
     ).$inspect();
 
     if (!result.ok) {

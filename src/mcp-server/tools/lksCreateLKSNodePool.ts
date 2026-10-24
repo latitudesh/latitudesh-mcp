@@ -14,9 +14,12 @@ export const tool$lksCreateLKSNodePool: ToolDefinition<typeof args> = {
   name: "lks-create-lks-node-pool",
   description: `Create a node pool
 
-Adds a node pool to an LKS cluster. The platform provisions \`count\` servers of \`plan\` from stock, so both fields are required.
+Adds a node pool to an LKS cluster. \`mode\` decides where the pool's nodes come from:
 
-\`kubernetes_version\` defaults to the control-plane patch and may never be newer than it. \`max_pods_per_node\` is set once, here — it cannot be changed later.
+- \`on_demand\` (default): the platform provisions \`count\` servers of \`plan\` from stock, so both fields are required.
+- \`allocated\`: the pool is built from \`server_ids\`, bare metal servers already in the cluster project. Each server is reinstalled with the LKS node image, which erases its disks. \`plan\` and \`count\` are rejected: the pool uses the plan the servers share, and \`count\` is the number of servers. Each server that fails an eligibility check is reported as its own 422 error, pointing at its index in \`server_ids\` and listing every reason in \`meta.reasons\`. \`GET /lks/allocatable_servers\` shows which servers can join. Allocated node pools are available only in on-demand projects: a reserved project is refused with 422 \`RESERVED_PROJECT_NOT_SUPPORTED\`.
+
+\`kubernetes_version\` defaults to the control-plane patch and may never be newer than it. \`max_pods_per_node\` and \`mode\` are set once, here — they cannot be changed later.
 `,
   annotations: {
     "title": "",
@@ -30,7 +33,7 @@ Adds a node pool to an LKS cluster. The platform provisions \`count\` servers of
     const [result] = await lksCreateLKSNodePool(
       client,
       args.request,
-      { fetchOptions: { signal: ctx.signal } },
+      { fetchOptions: { signal: ctx.mcpReq.signal } },
     ).$inspect();
 
     if (!result.ok) {
