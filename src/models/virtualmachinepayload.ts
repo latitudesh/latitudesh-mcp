@@ -61,12 +61,16 @@ export type VirtualMachinePayloadAttributes = {
   user_data?: number | string | null | undefined;
   marketplace_app?: string | null | undefined;
   tags?: Array<string> | null | undefined;
+  apply_network_on_boot?: boolean | undefined;
   site?: string | null | undefined;
 };
 
 export const VirtualMachinePayloadAttributes$zodSchema: z.ZodType<
   VirtualMachinePayloadAttributes
 > = z.object({
+  apply_network_on_boot: z.boolean().default(true).describe(
+    "Re-apply the platform network configuration on every boot, so a virtual network attached to or detached from the VM is configured in the guest by the restart the attach or detach performs. Every boot, including a restart started inside the guest, rewrites cloud-init's own network file (for example `/etc/netplan/50-cloud-init.yaml`): keep custom network configuration in a separate file. Set at creation only; it cannot be changed later through the API. To stop the re-apply from inside the guest, create `/etc/cloud/cloud.cfg.d/99-disable-network-config.cfg` containing `network: {config: disabled}`; networks attached afterwards must then be configured by hand. Defaults to true.",
+  ),
   billing: VirtualMachinePayloadBilling$zodSchema.optional().describe(
     "Billing cycle for the VM. The supported set is validated per-project (on_demand vs reserved). Defaults to the project's default billing when omitted.",
   ),

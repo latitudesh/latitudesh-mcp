@@ -28,7 +28,7 @@ Returns a server that belongs to the team.
     const [result] = await serversGet(
       client,
       args.request,
-      { fetchOptions: { signal: ctx.signal } },
+      { fetchOptions: { signal: ctx.mcpReq.signal } },
     ).$inspect();
 
     if (!result.ok) {

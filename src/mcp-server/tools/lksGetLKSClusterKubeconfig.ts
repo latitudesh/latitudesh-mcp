@@ -28,7 +28,7 @@ Returns the kubeconfig for the cluster. It only exists once the control plane is
     const [result] = await lksGetLKSClusterKubeconfig(
       client,
       args.request,
-      { fetchOptions: { signal: ctx.signal } },
+      { fetchOptions: { signal: ctx.mcpReq.signal } },
     ).$inspect();
 
     if (!result.ok) {

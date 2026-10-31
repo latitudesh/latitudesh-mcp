@@ -18,7 +18,7 @@ export const tool$plansGetManagedDatabasePlans: ToolDefinition = {
   tool: async (client, ctx) => {
     const [result] = await plansGetManagedDatabasePlans(
       client,
-      { fetchOptions: { signal: ctx.signal } },
+      { fetchOptions: { signal: ctx.mcpReq.signal } },
     ).$inspect();
 
     if (!result.ok) {

@@ -27,7 +27,7 @@ Deletes a project and releases associated resources. Any Elastic IPs assigned to
     const [result] = await projectsDelete(
       client,
       args.request,
-      { fetchOptions: { signal: ctx.signal } },
+      { fetchOptions: { signal: ctx.mcpReq.signal } },
     ).$inspect();
 
     if (!result.ok) {

@@ -25,7 +25,7 @@ export const Initiator$zodSchema: z.ZodType<Initiator> = z.object({
 /**
  * Storage network the mapped server joins to reach the volume over NVMe-TCP. Null until the network has been provisioned for the volume.
  */
-export type StorageNetwork = {
+export type VolumeDataStorageNetwork = {
   vid?: number | null | undefined;
   host_cidr?: string | null | undefined;
   gateway?: string | null | undefined;
@@ -34,7 +34,9 @@ export type StorageNetwork = {
   block_port?: number | null | undefined;
 };
 
-export const StorageNetwork$zodSchema: z.ZodType<StorageNetwork> = z.object({
+export const VolumeDataStorageNetwork$zodSchema: z.ZodType<
+  VolumeDataStorageNetwork
+> = z.object({
   block_gateway: z.string().nullable().optional().describe(
     "NVMe-oF/TCP discovery portal address.",
   ),
@@ -65,7 +67,7 @@ export type Block = {
   nqn?: string | null | undefined;
   nsid?: number | null | undefined;
   server_id?: string | null | undefined;
-  storage_network?: StorageNetwork | null | undefined;
+  storage_network?: VolumeDataStorageNetwork | null | undefined;
 };
 
 export const Block$zodSchema: z.ZodType<Block> = z.object({
@@ -81,8 +83,8 @@ export const Block$zodSchema: z.ZodType<Block> = z.object({
   status: z.string().nullable().optional().describe(
     "Mapping lifecycle state: \"mapping\" while the mapping is being applied, \"mapped\" once the server can access the volume, \"unmapping\" while the mapping is being removed, or \"failed\". Mapping and unmapping are asynchronous, so poll the volume until this reaches a terminal state. The block object becomes null once the volume is fully unmapped.",
   ),
-  storage_network: z.lazy(() => StorageNetwork$zodSchema).nullable().optional()
-    .describe(
+  storage_network: z.lazy(() => VolumeDataStorageNetwork$zodSchema).nullable()
+    .optional().describe(
       "Storage network the mapped server joins to reach the volume over NVMe-TCP. Null until the network has been provisioned for the volume.",
     ),
 }).describe(

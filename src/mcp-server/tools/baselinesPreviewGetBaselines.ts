@@ -25,7 +25,7 @@ servers to be delivered with — plan, SSH keys, user data, disk layout and BIOS
   tool: async (client, ctx) => {
     const [result] = await baselinesPreviewGetBaselines(
       client,
-      { fetchOptions: { signal: ctx.signal } },
+      { fetchOptions: { signal: ctx.mcpReq.signal } },
     ).$inspect();
 
     if (!result.ok) {

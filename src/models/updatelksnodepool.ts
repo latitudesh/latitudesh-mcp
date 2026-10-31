@@ -19,11 +19,12 @@ export const UpdateLksNodePoolType$zodSchema = z.enum([
 ]);
 
 /**
- * At least one attribute must be provided. max_pods_per_node is set once, at creation, and is not updatable: a PATCH that carries it is rejected with 422.
+ * At least one attribute must be provided. max_pods_per_node and mode are set once, at creation, and are not updatable: a PATCH that carries either is rejected with 422.
  */
 export type UpdateLksNodePoolAttributes = {
   name?: string | undefined;
   count?: number | undefined;
+  server_ids?: Array<string> | undefined;
   kubernetes_version?: string | undefined;
   labels?: { [k: string]: string } | undefined;
   taints?: Array<LksNodePoolTaint> | undefined;
@@ -33,7 +34,9 @@ export type UpdateLksNodePoolAttributes = {
 export const UpdateLksNodePoolAttributes$zodSchema: z.ZodType<
   UpdateLksNodePoolAttributes
 > = z.object({
-  count: z.int().optional().describe("must be >= 1"),
+  count: z.int().optional().describe(
+    "must be >= 1. on_demand node pools only; rejected for allocated node pools",
+  ),
   description: z.string().optional(),
   kubernetes_version: z.string().optional().describe(
     "A newer patch rolls a node-recreating upgrade. Must not be lower than the current patch (422 DOWNGRADE_NOT_ALLOWED) nor newer than the control-plane patch (422 VERSION_SKEW)",
@@ -42,11 +45,14 @@ export const UpdateLksNodePoolAttributes$zodSchema: z.ZodType<
     "Declarative replace. Omit to leave labels unchanged; send the whole map to replace it (not a merge); send {} to clear all. Same validation as on create.",
   ),
   name: z.string().optional(),
+  server_ids: z.array(z.string()).optional().describe(
+    "Allocated node pools only. Declarative: send the whole set of servers the pool should have. Added servers are checked like on create and reinstalled to join; removed servers are drained and reinstalled with a clean OS. Cannot be combined with a kubernetes_version change.",
+  ),
   taints: z.array(LksNodePoolTaint$zodSchema).optional().describe(
     "Declarative replace. Omit to leave taints unchanged; send the whole list to replace it; send [] to clear all. Same validation as on create.",
   ),
 }).describe(
-  "At least one attribute must be provided. max_pods_per_node is set once, at creation, and is not updatable: a PATCH that carries it is rejected with 422.",
+  "At least one attribute must be provided. max_pods_per_node and mode are set once, at creation, and are not updatable: a PATCH that carries either is rejected with 422.",
 );
 
 export type UpdateLksNodePoolData = {
@@ -58,7 +64,7 @@ export const UpdateLksNodePoolData$zodSchema: z.ZodType<UpdateLksNodePoolData> =
   z.object({
     attributes: z.lazy(() => UpdateLksNodePoolAttributes$zodSchema).optional()
       .describe(
-        "At least one attribute must be provided. max_pods_per_node is set once, at creation, and is not updatable: a PATCH that carries it is rejected with 422.",
+        "At least one attribute must be provided. max_pods_per_node and mode are set once, at creation, and are not updatable: a PATCH that carries either is rejected with 422.",
       ),
     type: UpdateLksNodePoolType$zodSchema,
   });

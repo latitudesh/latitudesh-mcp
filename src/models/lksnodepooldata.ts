@@ -23,6 +23,7 @@ export type LksNodePoolDataAttributes = {
   type?: string | undefined;
   mode?: string | undefined;
   plan?: string | null | undefined;
+  server_ids?: Array<string> | null | undefined;
   description?: string | null | undefined;
   count?: number | null | undefined;
   max_pods_per_node?: number | null | undefined;
@@ -50,13 +51,20 @@ export const LksNodePoolDataAttributes$zodSchema: z.ZodType<
     "null when it was not set at creation — the platform default (110) applies",
   ),
   message: z.string().nullable().optional(),
-  mode: z.string().optional(),
+  mode: z.string().optional().describe(
+    "on_demand: nodes are servers provisioned from stock. allocated: nodes are servers already in the project, reinstalled to join the pool.",
+  ),
   name: z.string().nullable().optional(),
-  plan: z.string().nullable().optional(),
+  plan: z.string().nullable().optional().describe(
+    "null for allocated node pools",
+  ),
   platform_version: z.string().nullable().optional(),
   ready_nodes: z.int().nullable().optional(),
   reason: z.string().nullable().optional().describe(
-    "Machine-readable status reason (open enum)",
+    "Machine-readable status reason (open enum). Allocated pools also report AdoptingServers, ServerNotEligible, ServerQuarantined, ServerReturnBlocked and ReturningServers.",
+  ),
+  server_ids: z.array(z.string()).nullable().optional().describe(
+    "Servers backing an allocated node pool; null for on_demand node pools",
   ),
   status: z.string().nullable().optional(),
   taints: z.array(LksNodePoolTaint$zodSchema).optional(),

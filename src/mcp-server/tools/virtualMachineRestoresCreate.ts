@@ -28,7 +28,7 @@ Restores the backup referenced in the body into a new Virtual Machine. Optionall
     const [result] = await virtualMachineRestoresCreate(
       client,
       args.request,
-      { fetchOptions: { signal: ctx.signal } },
+      { fetchOptions: { signal: ctx.mcpReq.signal } },
     ).$inspect();
 
     if (!result.ok) {

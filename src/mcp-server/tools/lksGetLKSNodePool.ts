@@ -28,7 +28,7 @@ Retrieves a single node pool of an LKS cluster. \`ready_nodes\` reports how many
     const [result] = await lksGetLKSNodePool(
       client,
       args.request,
-      { fetchOptions: { signal: ctx.signal } },
+      { fetchOptions: { signal: ctx.mcpReq.signal } },
     ).$inspect();
 
     if (!result.ok) {
