@@ -27,7 +27,7 @@ Unmaps a high performance volume from the server it is currently mapped to.`,
     const [result] = await blockStorageUnmapVolume(
       client,
       args.request,
-      { fetchOptions: { signal: ctx.signal } },
+      { fetchOptions: { signal: ctx.mcpReq.signal } },
     ).$inspect();
 
     if (!result.ok) {

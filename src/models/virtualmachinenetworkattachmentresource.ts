@@ -19,11 +19,19 @@ export const VirtualMachineNetworkAttachmentResourceType$zodSchema = z.enum([
 export type VirtualMachineNetworkAttachmentResourceAttributes = {
   virtual_network_id?: string | undefined;
   vid?: number | undefined;
+  address?: string | null | undefined;
+  mac_address?: string | null | undefined;
   pending_restart?: boolean | undefined;
 };
 
 export const VirtualMachineNetworkAttachmentResourceAttributes$zodSchema:
   z.ZodType<VirtualMachineNetworkAttachmentResourceAttributes> = z.object({
+    address: z.string().nullable().optional().describe(
+      "The static IPv4 address with prefix given when the network was attached (e.g. 10.0.0.5/24). Null when the attachment has no static address.",
+    ),
+    mac_address: z.string().nullable().optional().describe(
+      "MAC address of the NIC inside the guest. Interface names differ between images, so use the MAC to find the interface. Null until the VM has restarted with the network attached.",
+    ),
     pending_restart: z.boolean().optional().describe(
       "Deprecated, always false. Attaching and detaching restart the VM automatically, so an attachment never waits on a manual restart.",
     ),

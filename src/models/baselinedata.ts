@@ -39,6 +39,27 @@ export const TargetType$zodSchema = z.enum([
   "Target of the baseline: all servers, a custom set (plan unknown), or specific platforms",
 );
 
+/**
+ * Expected RAID level with the default disk layout (data array on 4+ disk servers, the OS on 2-3 disk servers). Mutually exclusive with disk_layout
+ */
+export const Raid = {
+  Raid0: "raid-0",
+  Raid1: "raid-1",
+  Raid10: "raid-10",
+} as const;
+/**
+ * Expected RAID level with the default disk layout (data array on 4+ disk servers, the OS on 2-3 disk servers). Mutually exclusive with disk_layout
+ */
+export type Raid = ClosedEnum<typeof Raid>;
+
+export const Raid$zodSchema = z.enum([
+  "raid-0",
+  "raid-1",
+  "raid-10",
+]).describe(
+  "Expected RAID level with the default disk layout (data array on 4+ disk servers, the OS on 2-3 disk servers). Mutually exclusive with disk_layout",
+);
+
 export type Platform = {
   id?: string | undefined;
   slug?: string | undefined;
@@ -96,6 +117,7 @@ export type BaselineDataAttributes = {
   ssh_keys?: Array<BaselineDataSshKey> | undefined;
   user_data?: BaselineDataUserData | null | undefined;
   disk_layout?: Array<BaselineDiskLayoutGroup> | undefined;
+  raid?: Raid | null | undefined;
   bios?: Bios | undefined;
   created_at?: string | null | undefined;
 };
@@ -121,6 +143,9 @@ export const BaselineDataAttributes$zodSchema: z.ZodType<
   ),
   platforms: z.array(z.lazy(() => Platform$zodSchema)).optional().describe(
     "The plans this baseline applies to (only populated when target_type is \"platforms\")",
+  ),
+  raid: Raid$zodSchema.nullable().optional().describe(
+    "Expected RAID level with the default disk layout (data array on 4+ disk servers, the OS on 2-3 disk servers). Mutually exclusive with disk_layout",
   ),
   ssh_keys: z.array(z.lazy(() => BaselineDataSshKey$zodSchema)).optional()
     .describe("SSH keys the baseline expects on the server"),

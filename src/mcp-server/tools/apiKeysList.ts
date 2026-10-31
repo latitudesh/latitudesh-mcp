@@ -21,7 +21,7 @@ Returns a list of all API keys.
   tool: async (client, ctx) => {
     const [result] = await apiKeysList(
       client,
-      { fetchOptions: { signal: ctx.signal } },
+      { fetchOptions: { signal: ctx.mcpReq.signal } },
     ).$inspect();
 
     if (!result.ok) {

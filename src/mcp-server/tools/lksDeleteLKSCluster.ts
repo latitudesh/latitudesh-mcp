@@ -28,7 +28,7 @@ Marks the cluster for deletion. The call returns as soon as the tombstone is wri
     const [result] = await lksDeleteLKSCluster(
       client,
       args.request,
-      { fetchOptions: { signal: ctx.signal } },
+      { fetchOptions: { signal: ctx.mcpReq.signal } },
     ).$inspect();
 
     if (!result.ok) {

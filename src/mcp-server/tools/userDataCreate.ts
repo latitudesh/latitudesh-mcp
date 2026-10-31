@@ -28,7 +28,7 @@ Allows you to create User Data in a project, which can be used to perform custom
     const [result] = await userDataCreate(
       client,
       args.request,
-      { fetchOptions: { signal: ctx.signal } },
+      { fetchOptions: { signal: ctx.mcpReq.signal } },
     ).$inspect();
 
     if (!result.ok) {

@@ -28,7 +28,7 @@ Allow you update User Data in a project.
     const [result] = await userDataUpdateForProject(
       client,
       args.request,
-      { fetchOptions: { signal: ctx.signal } },
+      { fetchOptions: { signal: ctx.mcpReq.signal } },
     ).$inspect();
 
     if (!result.ok) {

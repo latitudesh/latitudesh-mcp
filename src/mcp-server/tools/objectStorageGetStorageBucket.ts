@@ -27,7 +27,7 @@ Shows details of a specific object storage.`,
     const [result] = await objectStorageGetStorageBucket(
       client,
       args.request,
-      { fetchOptions: { signal: ctx.signal } },
+      { fetchOptions: { signal: ctx.mcpReq.signal } },
     ).$inspect();
 
     if (!result.ok) {

@@ -27,7 +27,7 @@ Maps a high performance volume to a server over NVMe-TCP.`,
     const [result] = await blockStorageMapVolume(
       client,
       args.request,
-      { fetchOptions: { signal: ctx.signal } },
+      { fetchOptions: { signal: ctx.mcpReq.signal } },
     ).$inspect();
 
     if (!result.ok) {

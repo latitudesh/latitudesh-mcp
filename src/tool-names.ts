@@ -198,7 +198,7 @@ export const toolNames: Array<{ name: string; description: string }>= [
   },
   {
     "name": "lks-create-lks-node-pool",
-    "description": "Create a node pool\n\nAdds a node pool to an LKS cluster. The platform provisions `count` servers of `plan` from stock, so both fields are required.\n\n`kubernetes_version` defaults to the control-plane patch and may never be newer than it. `max_pods_per_node` is set once, here — it cannot be changed later.\n"
+    "description": "Create a node pool\n\nAdds a node pool to an LKS cluster. `mode` decides where the pool's nodes come from:\n\n- `on_demand` (default): the platform provisions `count` servers of `plan` from stock, so both fields are required.\n- `allocated`: the pool is built from `server_ids`, bare metal servers already in the cluster project. Each server is reinstalled with the LKS node image, which erases its disks. `plan` and `count` are rejected: the pool uses the plan the servers share, and `count` is the number of servers. Each server that fails an eligibility check is reported as its own 422 error, pointing at its index in `server_ids` and listing every reason in `meta.reasons`. `GET /lks/allocatable_servers` shows which servers can join. Allocated node pools are available only in on-demand projects: a reserved project is refused with 422 `RESERVED_PROJECT_NOT_SUPPORTED`.\n\n`kubernetes_version` defaults to the control-plane patch and may never be newer than it. `max_pods_per_node` and `mode` are set once, here — they cannot be changed later.\n"
   },
   {
     "name": "lks-get-lks-node-pool",
@@ -210,7 +210,11 @@ export const toolNames: Array<{ name: string; description: string }>= [
   },
   {
     "name": "lks-update-lks-node-pool",
-    "description": "Update a node pool\n\nScales, renames, upgrades or re-labels a node pool. At least one attribute must be provided.\n\n`labels` and `taints` are declarative replacements, not merges: omit the field to leave it untouched, send the whole map/list to replace it, or send `{}` / `[]` to clear it.\n\nA newer `kubernetes_version` rolls a node-recreating upgrade; it must not be lower than the pool's current patch nor newer than the control-plane patch. `max_pods_per_node` is immutable — a PATCH that carries it is rejected with 422 even if the value is unchanged.\n\nThe node pool must be idle: one that is provisioning, updating, scaling, upgrading, paused or deleting rejects the request with 409.\n"
+    "description": "Update a node pool\n\nScales, renames, upgrades, re-labels or changes the servers of a node pool. At least one attribute must be provided.\n\n`labels` and `taints` are declarative replacements, not merges: omit the field to leave it untouched, send the whole map/list to replace it, or send `{}` / `[]` to clear it.\n\nA newer `kubernetes_version` rolls a node-recreating upgrade; it must not be lower than the pool's current patch nor newer than the control-plane patch. `max_pods_per_node` and `mode` are immutable — a PATCH that carries either is rejected with 422 even if the value is unchanged.\n\nFor an allocated node pool, `server_ids` replaces `count`: send the whole set of servers the pool should have. Added servers are checked as on create and reinstalled to join; removed servers are drained and reinstalled with a clean OS, with no data, keys or user data restored. A server set change cannot be combined with a `kubernetes_version` change.\n\nThe node pool must be idle: one that is provisioning, updating, scaling, upgrading, paused or deleting rejects the request with 409.\n"
+  },
+  {
+    "name": "lks-list-lks-nodes",
+    "description": "List nodes\n\nLists the nodes of a node pool, with the status of each node and of the server it runs on. Each node's `id` is a stable node ID (format: `lksno_<hash>`); `name` is its Kubernetes node name, as shown by `kubectl get nodes`. The response is not paginated; `meta.total` is the number of nodes returned.\n"
   },
   {
     "name": "lks-list-lks-available-versions",
@@ -219,6 +223,10 @@ export const toolNames: Array<{ name: string; description: string }>= [
   {
     "name": "lks-list-lks-sites",
     "description": "List sites available for LKS\n\nLists the sites that can host an LKS cluster, one entry per site. Pass an entry's `id` (the site slug) as `site` when creating a cluster. `country` is null when the underlying site has no region assigned.\n"
+  },
+  {
+    "name": "lks-list-lks-allocatable-servers",
+    "description": "List servers that can join an allocated node pool\n\nLists a project's servers at a site, with whether each one can join an allocated node pool right now. Pass the `id` of an allocatable server in `server_ids` when creating or updating an allocated node pool.\n\nWhen `allocatable` is false, `reasons` lists why, using the same codes that node pool create and update return per server. `node_pool_id` and `cluster_id` identify the pool a server already belongs to.\n"
   },
   {
     "name": "plans-list",
@@ -537,6 +545,18 @@ export const toolNames: Array<{ name: string; description: string }>= [
     "description": "Update filesystem\n\nAllow you to upgrade the size of a filesystem."
   },
   {
+    "name": "filesystem-storage-get-filesystem-attachment",
+    "description": "Get filesystem attachment\n\nReturns whether a server is attached to the storage network the filesystem is served on. Poll it after attaching: once the status is \"attached\", configure the returned storage network on the server and mount the filesystem."
+  },
+  {
+    "name": "filesystem-storage-attach-filesystem",
+    "description": "Attach filesystem to server\n\nAttaches a running server to the private storage network the filesystem is served on, so it can mount the filesystem. The attach runs asynchronously and is idempotent."
+  },
+  {
+    "name": "filesystem-storage-detach-filesystem",
+    "description": "Detach filesystem from server\n\nDetaches a server from the storage network the filesystem is served on, removing its storage IP and VLAN. The network stays while a volume is still mapped to the server, since volumes use the same network. The detach runs asynchronously: poll GET .../attach for its status."
+  },
+  {
     "name": "block-storage-list-volumes",
     "description": "List volumes\n\nLists all the volumes from a team."
   },
@@ -658,11 +678,11 @@ export const toolNames: Array<{ name: string; description: string }>= [
   },
   {
     "name": "virtual-machines-create-network-attachment",
-    "description": "Attach a network to a VM\n\nAttaches a virtual network (VLAN) to a Virtual Machine. Work runs asynchronously and returns 202 Accepted.\n"
+    "description": "Attach a network to a VM\n\nAttaches a virtual network (VLAN) to a Virtual Machine. Work runs asynchronously and returns 202 Accepted. A running VM restarts so the new NIC reaches the guest; a VM that is not running picks it up when it next starts.\n\nAfter the restart, check the interface inside the guest (`ip -br addr`):\n\n- VMs created with `apply_network_on_boot` enabled (the default) configure the NIC on boot, with the attachment's `address` when one was given. Nothing else to do.\n- VMs created before that option existed, or with it disabled, leave the NIC without an address. Once the VM has restarted, read the attachment's `mac_address` and `address` from `GET /virtual_machines/{virtual_machine_id}/network_attachments` and configure the interface with that MAC address yourself, as described in [Private networks: configure the OS](https://www.latitude.sh/docs/networking/private-networks#step-3-configure-the-os). The NIC gets a new MAC address each time a network is attached, so update your configuration after detaching and attaching a network again.\n\nKeep network configuration of your own in a separate file. With `apply_network_on_boot`, every boot, including a restart started inside the guest, rewrites cloud-init's own network file (for example `/etc/netplan/50-cloud-init.yaml`), so changes made there are lost. To stop that on a VM, create `/etc/cloud/cloud.cfg.d/99-disable-network-config.cfg` containing `network: {config: disabled}`; cloud-init then leaves the network configuration alone on every boot, and networks attached afterwards must be configured by hand.\n\nSome virtual machines run on older infrastructure that doesn't support network attachments. On those VMs, attaching or detaching a network returns 422 `VIRTUAL_NETWORK_ATTACHMENT_UNSUPPORTED` and leaves the VM unchanged.\n"
   },
   {
     "name": "virtual-machines-destroy-network-attachment",
-    "description": "Detach a network from a VM\n\nDetaches a virtual network (VLAN) from a Virtual Machine. Work runs asynchronously and returns 202 Accepted.\n"
+    "description": "Detach a network from a VM\n\nDetaches a virtual network (VLAN) from a Virtual Machine. Work runs asynchronously and returns 202 Accepted. A running VM restarts so the NIC is removed from the guest; a VM that is not running loses it when it next starts.\n\nOn VMs created with `apply_network_on_boot` enabled, that boot also removes the NIC's configuration. If you configured the NIC yourself, remove that configuration before detaching, as described in [Private networks: configure the OS](https://www.latitude.sh/docs/networking/private-networks#step-3-configure-the-os).\n\nSome virtual machines run on older infrastructure that doesn't support network attachments. On those VMs, attaching or detaching a network returns 422 `VIRTUAL_NETWORK_ATTACHMENT_UNSUPPORTED` and leaves the VM unchanged.\n"
   },
   {
     "name": "virtual-machine-backups-list-for-virtual-machine",

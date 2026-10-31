@@ -30,7 +30,7 @@ Updates a Virtual Machine's display name (hostname).
     const [result] = await virtualMachinesUpdateVirtualMachine(
       client,
       args.request,
-      { fetchOptions: { signal: ctx.signal } },
+      { fetchOptions: { signal: ctx.mcpReq.signal } },
     ).$inspect();
 
     if (!result.ok) {
