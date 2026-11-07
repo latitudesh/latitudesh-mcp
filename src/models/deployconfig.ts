@@ -30,12 +30,14 @@ export const DeployConfigRole$zodSchema = z.enum([
 export const DeployConfigRaidLevel = {
   Raid0: "raid-0",
   Raid1: "raid-1",
+  Raid10: "raid-10",
 } as const;
 export type DeployConfigRaidLevel = ClosedEnum<typeof DeployConfigRaidLevel>;
 
 export const DeployConfigRaidLevel$zodSchema = z.enum([
   "raid-0",
   "raid-1",
+  "raid-10",
 ]);
 
 export const DeployConfigFilesystem = {
@@ -45,6 +47,17 @@ export type DeployConfigFilesystem = ClosedEnum<typeof DeployConfigFilesystem>;
 
 export const DeployConfigFilesystem$zodSchema = z.enum([
   "ext4",
+]);
+
+export const DeployConfigBios = {
+  Enabled: "enabled",
+  Disabled: "disabled",
+} as const;
+export type DeployConfigBios = ClosedEnum<typeof DeployConfigBios>;
+
+export const DeployConfigBios$zodSchema = z.enum([
+  "enabled",
+  "disabled",
 ]);
 
 export type DiskLayout = {
@@ -75,11 +88,16 @@ export type DeployConfigAttributes = {
   persistent_netboot?: boolean | null | undefined;
   public_network?: boolean | null | undefined;
   public_network_id?: string | null | undefined;
+  bios?: { [k: string]: DeployConfigBios } | null | undefined;
 };
 
 export const DeployConfigAttributes$zodSchema: z.ZodType<
   DeployConfigAttributes
 > = z.object({
+  bios: z.record(z.string(), DeployConfigBios$zodSchema).nullable().optional()
+    .describe(
+      "Custom BIOS settings applied on the last reinstall, reapplied on the next one unless it sends `bios`. Keys are BIOS setting names (e.g. `cpu_virtualization`), values are `enabled` or `disabled`.",
+    ),
   disk_layout: z.array(z.lazy(() => DiskLayout$zodSchema)).nullable()
     .optional(),
   hostname: z.string().optional(),

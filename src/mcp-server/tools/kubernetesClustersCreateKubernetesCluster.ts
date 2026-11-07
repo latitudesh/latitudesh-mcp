@@ -34,7 +34,7 @@ Cluster names must follow Kubernetes naming rules: lowercase alphanumeric charac
     const [result] = await kubernetesClustersCreateKubernetesCluster(
       client,
       args.request,
-      { fetchOptions: { signal: ctx.signal } },
+      { fetchOptions: { signal: ctx.mcpReq.signal } },
     ).$inspect();
 
     if (!result.ok) {

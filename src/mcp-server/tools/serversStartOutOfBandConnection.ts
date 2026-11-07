@@ -26,7 +26,7 @@ export const tool$serversStartOutOfBandConnection: ToolDefinition<typeof args> =
       const [result] = await serversStartOutOfBandConnection(
         client,
         args.request,
-        { fetchOptions: { signal: ctx.signal } },
+        { fetchOptions: { signal: ctx.mcpReq.signal } },
       ).$inspect();
 
       if (!result.ok) {

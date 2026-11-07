@@ -3,6 +3,8 @@
  */
 
 import * as z from "zod";
+import { ErrorObject, ErrorObject$zodSchema } from "./errorobject.js";
+import { Server, Server$zodSchema } from "./server.js";
 
 export type ServerLockRequest = { server_id: string };
 
@@ -10,3 +12,11 @@ export const ServerLockRequest$zodSchema: z.ZodType<ServerLockRequest> = z
   .object({
     server_id: z.string(),
   });
+
+export type ServerLockResponse = Server | ErrorObject;
+
+export const ServerLockResponse$zodSchema: z.ZodType<ServerLockResponse> = z
+  .union([
+    Server$zodSchema,
+    ErrorObject$zodSchema,
+  ]);

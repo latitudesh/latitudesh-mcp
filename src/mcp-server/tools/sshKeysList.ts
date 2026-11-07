@@ -28,7 +28,7 @@ List all SSH Keys in the project. These keys can be used to access servers after
     const [result] = await sshKeysList(
       client,
       args.request,
-      { fetchOptions: { signal: ctx.signal } },
+      { fetchOptions: { signal: ctx.mcpReq.signal } },
     ).$inspect();
 
     if (!result.ok) {

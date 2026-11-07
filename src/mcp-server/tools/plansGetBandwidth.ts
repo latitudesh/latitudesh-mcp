@@ -27,7 +27,7 @@ Lists all bandwidth plans.`,
     const [result] = await plansGetBandwidth(
       client,
       args.request,
-      { fetchOptions: { signal: ctx.signal } },
+      { fetchOptions: { signal: ctx.mcpReq.signal } },
     ).$inspect();
 
     if (!result.ok) {

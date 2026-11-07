@@ -3,12 +3,56 @@
  */
 
 import * as z from "zod";
+import { ClosedEnum } from "../types/enums.js";
 import { VolumeData, VolumeData$zodSchema } from "./volumedata.js";
 
-export type UnmapVolumeRequest = { id: string };
+export const UnmapVolumeType2 = {
+  Volumes: "volumes",
+} as const;
+export type UnmapVolumeType2 = ClosedEnum<typeof UnmapVolumeType2>;
+
+export const UnmapVolumeType2$zodSchema = z.enum([
+  "volumes",
+]);
+
+export type UnmapVolumeAttributes2 = { server_id?: string | undefined };
+
+export const UnmapVolumeAttributes2$zodSchema: z.ZodType<
+  UnmapVolumeAttributes2
+> = z.object({
+  server_id: z.string().optional().describe(
+    "ID of the server to unmap the volume from. Required when the volume is mapped to more than one server; when it is mapped to a single server, that server is unmapped if this is omitted.",
+  ),
+});
+
+export type UnmapVolumeData2 = {
+  type?: UnmapVolumeType2 | undefined;
+  attributes?: UnmapVolumeAttributes2 | undefined;
+};
+
+export const UnmapVolumeData2$zodSchema: z.ZodType<UnmapVolumeData2> = z.object(
+  {
+    attributes: z.lazy(() => UnmapVolumeAttributes2$zodSchema).optional(),
+    type: UnmapVolumeType2$zodSchema.optional(),
+  },
+);
+
+export type UnmapVolumeRequestBody2 = { data?: UnmapVolumeData2 | undefined };
+
+export const UnmapVolumeRequestBody2$zodSchema: z.ZodType<
+  UnmapVolumeRequestBody2
+> = z.object({
+  data: z.lazy(() => UnmapVolumeData2$zodSchema).optional(),
+});
+
+export type UnmapVolumeRequest = {
+  id: string;
+  RequestBody?: UnmapVolumeRequestBody2 | undefined;
+};
 
 export const UnmapVolumeRequest$zodSchema: z.ZodType<UnmapVolumeRequest> = z
   .object({
+    RequestBody: z.lazy(() => UnmapVolumeRequestBody2$zodSchema).optional(),
     id: z.string().describe("Volume ID"),
   });
 
