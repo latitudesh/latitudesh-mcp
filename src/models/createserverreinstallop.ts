@@ -70,14 +70,15 @@ export const CreateServerReinstallOperatingSystem2$zodSchema = z.enum([
 ]).describe("The OS selected for the reinstall process");
 
 /**
- * RAID mode for the server. Set to 'raid-0' for RAID 0, 'raid-1' for RAID 1, or omit/null for no RAID configuration
+ * RAID mode for the server. Set to 'raid-0' for RAID 0, 'raid-1' for RAID 1, 'raid-10' for RAID 10 on the data disks (only at locations with the `raid_ten` feature), or omit/null for no RAID configuration
  */
 export const CreateServerReinstallRaid2 = {
   Raid0: "raid-0",
   Raid1: "raid-1",
+  Raid10: "raid-10",
 } as const;
 /**
- * RAID mode for the server. Set to 'raid-0' for RAID 0, 'raid-1' for RAID 1, or omit/null for no RAID configuration
+ * RAID mode for the server. Set to 'raid-0' for RAID 0, 'raid-1' for RAID 1, 'raid-10' for RAID 10 on the data disks (only at locations with the `raid_ten` feature), or omit/null for no RAID configuration
  */
 export type CreateServerReinstallRaid2 = ClosedEnum<
   typeof CreateServerReinstallRaid2
@@ -86,8 +87,9 @@ export type CreateServerReinstallRaid2 = ClosedEnum<
 export const CreateServerReinstallRaid2$zodSchema = z.enum([
   "raid-0",
   "raid-1",
+  "raid-10",
 ]).describe(
-  "RAID mode for the server. Set to 'raid-0' for RAID 0, 'raid-1' for RAID 1, or omit/null for no RAID configuration",
+  "RAID mode for the server. Set to 'raid-0' for RAID 0, 'raid-1' for RAID 1, 'raid-10' for RAID 10 on the data disks (only at locations with the `raid_ten` feature), or omit/null for no RAID configuration",
 );
 
 export const CreateServerReinstallRole2 = {
@@ -108,6 +110,7 @@ export const CreateServerReinstallRole2$zodSchema = z.enum([
 export const CreateServerReinstallRaidLevel2 = {
   Raid0: "raid-0",
   Raid1: "raid-1",
+  Raid10: "raid-10",
 } as const;
 export type CreateServerReinstallRaidLevel2 = ClosedEnum<
   typeof CreateServerReinstallRaidLevel2
@@ -116,6 +119,7 @@ export type CreateServerReinstallRaidLevel2 = ClosedEnum<
 export const CreateServerReinstallRaidLevel2$zodSchema = z.enum([
   "raid-0",
   "raid-1",
+  "raid-10",
 ]);
 
 export const CreateServerReinstallFilesystem2 = {
@@ -129,6 +133,19 @@ export type CreateServerReinstallFilesystem2 = ClosedEnum<
 export const CreateServerReinstallFilesystem2$zodSchema = z.enum([
   "ext4",
   "xfs",
+]);
+
+export const CreateServerReinstallBios2 = {
+  Enabled: "enabled",
+  Disabled: "disabled",
+} as const;
+export type CreateServerReinstallBios2 = ClosedEnum<
+  typeof CreateServerReinstallBios2
+>;
+
+export const CreateServerReinstallBios2$zodSchema = z.enum([
+  "enabled",
+  "disabled",
 ]);
 
 export type CreateServerReinstallDiskLayout2 = {
@@ -160,11 +177,16 @@ export type CreateServerReinstallAttributes2 = {
   persistent_netboot?: boolean | undefined;
   public_network?: boolean | null | undefined;
   public_network_id?: string | null | undefined;
+  bios?: { [k: string]: CreateServerReinstallBios2 } | null | undefined;
 };
 
 export const CreateServerReinstallAttributes2$zodSchema: z.ZodType<
   CreateServerReinstallAttributes2
 > = z.object({
+  bios: z.record(z.string(), CreateServerReinstallBios2$zodSchema).nullable()
+    .optional().describe(
+      "**Preview.** Available to teams with custom BIOS settings enabled. Custom BIOS settings applied before the OS is installed. Keys are BIOS setting names (e.g. `cpu_virtualization`, `simultaneous_multithreading`, `iommu`, `sr_iov`); only the settings listed in the server specs `supported_bios_settings` are accepted. Values are `enabled` or `disabled`. The settings are kept and reapplied on later reinstalls that omit `bios`; send `null` or `{}` to stop applying them. The reinstall fails if the settings cannot be applied.",
+    ),
   disk_layout: z.array(z.lazy(() => CreateServerReinstallDiskLayout2$zodSchema))
     .nullable().optional(),
   hostname: z.string().optional().describe(
@@ -179,13 +201,13 @@ export const CreateServerReinstallAttributes2$zodSchema: z.ZodType<
     "Keep network boot enabled so the server iPXE-boots on every reboot instead of booting from disk. Only supported with the 'ipxe' operating system.",
   ),
   public_network: z.boolean().nullable().optional().describe(
-    "**Preview.** Available to teams with public networks enabled. Set to 'true' to attach the server onto the given 'public_network_id', or 'false' to detach an existing public network, during the reinstall. Requires 'public_network_id' when attaching.",
+    "**Preview.** Available to teams with public networks enabled. Set to true to attach the server onto the given public_network_id. Requires public_network_id; the server must be public-network eligible.",
   ),
   public_network_id: z.string().nullable().optional().describe(
-    "ID of a customer public network to attach this server to during the reinstall. The public network must belong to the same project and be in the same location as the server, and must have at least one free IP address. Applies to this reinstall only; omit it to leave any existing public network unchanged.",
+    "**Preview.** Available to teams with public networks enabled. ID of a customer public network to attach the server onto. Requires public_network: true. The public network must belong to the same project and location as the server and have a free address. A server already attached to another public network is detached from it first. Applies only to this reinstall; omitting it leaves an existing attachment.",
   ),
   raid: CreateServerReinstallRaid2$zodSchema.nullable().optional().describe(
-    "RAID mode for the server. Set to 'raid-0' for RAID 0, 'raid-1' for RAID 1, or omit/null for no RAID configuration",
+    "RAID mode for the server. Set to 'raid-0' for RAID 0, 'raid-1' for RAID 1, 'raid-10' for RAID 10 on the data disks (only at locations with the `raid_ten` feature), or omit/null for no RAID configuration",
   ),
   ssh_keys: z.array(z.string()).nullable().optional().describe(
     "SSH Key IDs to set upon reinstall",

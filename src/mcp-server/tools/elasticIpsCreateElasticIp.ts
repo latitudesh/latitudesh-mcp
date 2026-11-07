@@ -28,7 +28,7 @@ Creates a new Elastic IP and assigns it to the specified server. The IP is provi
     const [result] = await elasticIpsCreateElasticIp(
       client,
       args.request,
-      { fetchOptions: { signal: ctx.signal } },
+      { fetchOptions: { signal: ctx.mcpReq.signal } },
     ).$inspect();
 
     if (!result.ok) {

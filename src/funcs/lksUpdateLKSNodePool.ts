@@ -29,11 +29,15 @@ import { Result } from "../types/fp.js";
  * Update a node pool
  *
  * @remarks
- * Scales, renames, upgrades or re-labels a node pool. At least one attribute must be provided.
+ * Scales, renames, upgrades, re-labels or changes the servers of a node pool. At least one attribute must be provided.
  *
  * `labels` and `taints` are declarative replacements, not merges: omit the field to leave it untouched, send the whole map/list to replace it, or send `{}` / `[]` to clear it.
  *
- * A newer `kubernetes_version` rolls a node-recreating upgrade; it must not be lower than the pool's current patch nor newer than the control-plane patch. `max_pods_per_node` is immutable — a PATCH that carries it is rejected with 422 even if the value is unchanged.
+ * A newer `kubernetes_version` rolls a node-recreating upgrade; it must not be lower than the pool's current patch nor newer than the control-plane patch. `max_pods_per_node` and `mode` are immutable — a PATCH that carries either is rejected with 422 even if the value is unchanged.
+ *
+ * For an allocated node pool, `server_ids` replaces `count`: send the whole set of servers the pool should have. Added servers are checked as on create and reinstalled to join; removed servers are drained and reinstalled with a clean OS, with no data, keys or user data restored. A server set change cannot be combined with a `kubernetes_version` change.
+ *
+ * Raising `count` checks available stock of the pool's plan at the cluster's site for the added nodes only (new `count` minus current `count`). When stock is insufficient, the request is rejected with 422 `INSUFFICIENT_STOCK` and the node pool is left unchanged. Lowering `count` is not checked against stock.
  *
  * The node pool must be idle: one that is provisioning, updating, scaling, upgrading, paused or deleting rejects the request with 409.
  */

@@ -34,7 +34,7 @@ selected platforms — so a baseline that saves here can be dispatched verbatim.
       const [result] = await baselinesPreviewCreateBaseline(
         client,
         args.request,
-        { fetchOptions: { signal: ctx.signal } },
+        { fetchOptions: { signal: ctx.mcpReq.signal } },
       ).$inspect();
 
       if (!result.ok) {

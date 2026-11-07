@@ -30,7 +30,7 @@ Restores a backup into a new Virtual Machine. Optionally accepts a \`name\` for 
         await virtualMachineRestoresCreateForVirtualMachineBackup(
           client,
           args.request,
-          { fetchOptions: { signal: ctx.signal } },
+          { fetchOptions: { signal: ctx.mcpReq.signal } },
         ).$inspect();
 
       if (!result.ok) {

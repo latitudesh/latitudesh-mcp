@@ -30,7 +30,7 @@ Allow you create SSH Keys in a project. These keys can be used to access servers
     const [result] = await projectsSshKeysPostProjectSshKey(
       client,
       args.request,
-      { fetchOptions: { signal: ctx.signal } },
+      { fetchOptions: { signal: ctx.mcpReq.signal } },
     ).$inspect();
 
     if (!result.ok) {

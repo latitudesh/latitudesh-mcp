@@ -28,7 +28,7 @@ Moves an Elastic IP to a different server within the same project and site. The 
     const [result] = await elasticIpsUpdateElasticIp(
       client,
       args.request,
-      { fetchOptions: { signal: ctx.signal } },
+      { fetchOptions: { signal: ctx.mcpReq.signal } },
     ).$inspect();
 
     if (!result.ok) {

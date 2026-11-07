@@ -335,13 +335,15 @@ Latitude.sh API: The Latitude.sh API is a RESTful API to manage your Latitude.sh
 <!-- Start Installation [installation] -->
 ## Installation
 
+The MCP server requires Node.js 20.19.0 or later.
+
 Deployed at https://mcp.latitude.sh
 <details>
 <summary>Claude Desktop</summary>
 
-Install the MCP server as a Desktop Extension using the pre-built [`mcp-server.mcpb`](https://github.com/latitudesh/latitudesh-mcp/releases/download/v0.4.2/mcp-server.mcpb) file:
+Install the MCP server as a Desktop Extension using the pre-built [`mcp-server.mcpb`](https://github.com/latitudesh/latitudesh-mcp/releases/download/v0.5.0/mcp-server.mcpb) file:
 
-Simply drag and drop the [`mcp-server.mcpb`](https://github.com/latitudesh/latitudesh-mcp/releases/download/v0.4.2/mcp-server.mcpb) file onto Claude Desktop to install the extension.
+Simply drag and drop the [`mcp-server.mcpb`](https://github.com/latitudesh/latitudesh-mcp/releases/download/v0.5.0/mcp-server.mcpb) file onto Claude Desktop to install the extension.
 
 The MCP bundle package includes the MCP server and all necessary configuration. Once installed, the server will be available without additional setup.
 
@@ -353,7 +355,7 @@ The MCP bundle package includes the MCP server and all necessary configuration. 
 <details>
 <summary>Cursor</summary>
 
-[![Install MCP Server](https://cursor.com/deeplink/mcp-install-dark.svg)](cursor://anysphere.cursor-deeplink/mcp/install?name=Latitudesh&config=eyJjb21tYW5kIjoibnB4IiwiYXJncyI6WyIteSIsIm1jcC1yZW1vdGVAMC4xLjI1IiwiaHR0cHM6Ly9tY3AubGF0aXR1ZGUuc2gvc3NlIiwiLS1oZWFkZXIiLCJzZXJ2ZXItaW5kZXg6JHtTRVJWRVJfSU5ERVh9IiwiLS1oZWFkZXIiLCJsYXRpdHVkZS1hcGkta2V5OiR7TEFUSVRVREVfQVBJX0tFWX0iLCItLWhlYWRlciIsImJlYXJlcjoke0JFQVJFUn0iXX0=)
+[![Install MCP Server](https://cursor.com/deeplink/mcp-install-dark.svg)](cursor://anysphere.cursor-deeplink/mcp/install?name=Latitudesh&config=eyJjb21tYW5kIjoibnB4IiwiYXJncyI6WyIteSIsIm1jcC1yZW1vdGVAMC4xLjI1IiwiaHR0cHM6Ly9tY3AubGF0aXR1ZGUuc2gvbWNwIiwiLS1oZWFkZXIiLCJBdXRob3JpemF0aW9uOiR7QkVBUkVSfSJdfQ==)
 
 Or manually:
 
@@ -426,7 +428,7 @@ Refer to [Official Windsurf documentation](https://docs.windsurf.com/windsurf/ca
 <details>
 <summary>VS Code</summary>
 
-[![Install in VS Code](https://img.shields.io/badge/VS_Code-VS_Code?style=flat-square&label=Install%20Latitudesh%20MCP&color=0098FF)](vscode://ms-vscode.vscode-mcp/install?name=Latitudesh&config=eyJjb21tYW5kIjoibnB4IiwiYXJncyI6WyIteSIsIm1jcC1yZW1vdGVAMC4xLjI1IiwiaHR0cHM6Ly9tY3AubGF0aXR1ZGUuc2gvc3NlIiwiLS1oZWFkZXIiLCJzZXJ2ZXItaW5kZXg6JHtTRVJWRVJfSU5ERVh9IiwiLS1oZWFkZXIiLCJsYXRpdHVkZS1hcGkta2V5OiR7TEFUSVRVREVfQVBJX0tFWX0iLCItLWhlYWRlciIsImJlYXJlcjoke0JFQVJFUn0iXX0=)
+[![Install in VS Code](https://img.shields.io/badge/VS_Code-VS_Code?style=flat-square&label=Install%20Latitudesh%20MCP&color=0098FF)](vscode://ms-vscode.vscode-mcp/install?name=Latitudesh&config=eyJjb21tYW5kIjoibnB4IiwiYXJncyI6WyIteSIsIm1jcC1yZW1vdGVAMC4xLjI1IiwiaHR0cHM6Ly9tY3AubGF0aXR1ZGUuc2gvbWNwIiwiLS1oZWFkZXIiLCJBdXRob3JpemF0aW9uOiR7QkVBUkVSfSJdfQ==)
 
 Or manually:
 

@@ -94,12 +94,14 @@ export type ServerDataFeatures = {
   user_data?: boolean | undefined;
   accelerate?: boolean | undefined;
   rescue?: boolean | undefined;
+  arm64?: boolean | undefined;
   workflow?: boolean | undefined;
 };
 
 export const ServerDataFeatures$zodSchema: z.ZodType<ServerDataFeatures> = z
   .object({
     accelerate: z.boolean().optional(),
+    arm64: z.boolean().optional(),
     raid: z.boolean().optional(),
     rescue: z.boolean().optional(),
     ssh_keys: z.boolean().optional(),
@@ -294,7 +296,7 @@ export const ServerDataAttributes$zodSchema: z.ZodType<ServerDataAttributes> = z
     site: z.string().optional(),
     specs: z.lazy(() => ServerDataSpecs$zodSchema).optional(),
     status: z.string().optional().describe(
-      "`on` - The server is powered ON\n`off` - The server is powered OFF\n`unknown` - The server power status is unknown\n`disk_erasing` - The server is in reinstalling state `disk_erasing`\n`deploying` - The server is deploying or reinstalling\n`failed_deployment` - The server has failed deployment or reinstall\n`rescue_mode` - The server is in rescue mode\n`entering_rescue_mode` - The server is entering rescue mode\n`exiting_rescue_mode` - The server is exiting rescue mode\n\nWhile a server is provisioning, the provisioning state slug is returned verbatim,\nso values outside this list (e.g. `queued`, `starting_deploy`, `commissioning`)\nare possible. Treat this field as an open set, not a closed enum.\n",
+      "`on` - The server is powered ON\n`off` - The server is powered OFF\n`unknown` - The server power status is unknown\n`configuring_bios` - The server is applying custom BIOS settings at the start of a reinstall\n`disk_erasing` - The server is in reinstalling state `disk_erasing`\n`deploying` - The server is deploying or reinstalling\n`failed_deployment` - The server has failed deployment or reinstall\n`rescue_mode` - The server is in rescue mode\n`entering_rescue_mode` - The server is entering rescue mode\n`exiting_rescue_mode` - The server is exiting rescue mode\n\nWhile a server is provisioning, the provisioning state slug is returned verbatim,\nso values outside this list (e.g. `queued`, `starting_deploy`, `commissioning`)\nare possible. Treat this field as an open set, not a closed enum.\n",
     ),
     tags: z.array(z.lazy(() => ServerDataTag$zodSchema)).optional(),
     team: TeamInclude$zodSchema.optional(),

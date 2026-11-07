@@ -28,7 +28,7 @@ Returns a single Elastic IP by its ID.
     const [result] = await elasticIpsGetElasticIp(
       client,
       args.request,
-      { fetchOptions: { signal: ctx.signal } },
+      { fetchOptions: { signal: ctx.mcpReq.signal } },
     ).$inspect();
 
     if (!result.ok) {

@@ -51,7 +51,7 @@ Returns 202 Accepted when an update operation is triggered. Poll the GET endpoin
     const [result] = await kubernetesClustersUpdateKubernetesCluster(
       client,
       args.request,
-      { fetchOptions: { signal: ctx.signal } },
+      { fetchOptions: { signal: ctx.mcpReq.signal } },
     ).$inspect();
 
     if (!result.ok) {

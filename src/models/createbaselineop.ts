@@ -42,6 +42,27 @@ export const CreateBaselineTargetType2$zodSchema = z.enum([
 );
 
 /**
+ * RAID level for the default disk layout. With 4 or more disks (or a hardware RAID boot disk) the OS stays on the boot disk or a RAID 1 mirror and the remaining disks form the data array at /data at this level; with 2-3 disks the level applies to the OS across all disks. 'raid-10' is data-only, needs at least 4 data disks and is applied only at locations with the `raid_ten` feature. Mutually exclusive with disk_layout
+ */
+export const CreateBaselineRaid2 = {
+  Raid0: "raid-0",
+  Raid1: "raid-1",
+  Raid10: "raid-10",
+} as const;
+/**
+ * RAID level for the default disk layout. With 4 or more disks (or a hardware RAID boot disk) the OS stays on the boot disk or a RAID 1 mirror and the remaining disks form the data array at /data at this level; with 2-3 disks the level applies to the OS across all disks. 'raid-10' is data-only, needs at least 4 data disks and is applied only at locations with the `raid_ten` feature. Mutually exclusive with disk_layout
+ */
+export type CreateBaselineRaid2 = ClosedEnum<typeof CreateBaselineRaid2>;
+
+export const CreateBaselineRaid2$zodSchema = z.enum([
+  "raid-0",
+  "raid-1",
+  "raid-10",
+]).describe(
+  "RAID level for the default disk layout. With 4 or more disks (or a hardware RAID boot disk) the OS stays on the boot disk or a RAID 1 mirror and the remaining disks form the data array at /data at this level; with 2-3 disks the level applies to the OS across all disks. 'raid-10' is data-only, needs at least 4 data disks and is applied only at locations with the `raid_ten` feature. Mutually exclusive with disk_layout",
+);
+
+/**
  * Expected BIOS settings, keyed by setting id
  */
 export type CreateBaselineBios2 = {};
@@ -58,6 +79,7 @@ export type CreateBaselineAttributes2 = {
   ssh_key_ids?: Array<string> | undefined;
   user_data_id?: string | null | undefined;
   disk_layout?: Array<BaselineDiskLayoutGroup> | undefined;
+  raid?: CreateBaselineRaid2 | null | undefined;
   bios?: CreateBaselineBios2 | undefined;
 };
 
@@ -79,6 +101,9 @@ export const CreateBaselineAttributes2$zodSchema: z.ZodType<
   ),
   platforms: z.array(z.string()).optional().describe(
     "Slugs of the plans this baseline applies to. Required when target_type is \"platforms\"",
+  ),
+  raid: CreateBaselineRaid2$zodSchema.nullable().optional().describe(
+    "RAID level for the default disk layout. With 4 or more disks (or a hardware RAID boot disk) the OS stays on the boot disk or a RAID 1 mirror and the remaining disks form the data array at /data at this level; with 2-3 disks the level applies to the OS across all disks. 'raid-10' is data-only, needs at least 4 data disks and is applied only at locations with the `raid_ten` feature. Mutually exclusive with disk_layout",
   ),
   ssh_key_ids: z.array(z.string()).optional().describe(
     "SSH keys the baseline expects on the server",

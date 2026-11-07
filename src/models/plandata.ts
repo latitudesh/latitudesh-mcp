@@ -134,12 +134,16 @@ export const PlanDataSpecs$zodSchema: z.ZodType<PlanDataSpecs> = z.object({
 export type PlanDataLocations = {
   available?: Array<string> | undefined;
   in_stock?: Array<string> | undefined;
+  in_stock_count?: { [k: string]: number } | undefined;
 };
 
 export const PlanDataLocations$zodSchema: z.ZodType<PlanDataLocations> = z
   .object({
     available: z.array(z.string()).optional(),
     in_stock: z.array(z.string()).optional(),
+    in_stock_count: z.record(z.string(), z.int()).optional().describe(
+      "Servers in stock keyed by site slug. Only sites with stock are present.",
+    ),
   });
 
 export type PlanDataPricing = {

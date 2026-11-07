@@ -29,7 +29,7 @@ List the BGP sessions announcing an elastic IP`,
     const [result] = await elasticIpsListElasticIpBgpSessions(
       client,
       args.request,
-      { fetchOptions: { signal: ctx.signal } },
+      { fetchOptions: { signal: ctx.mcpReq.signal } },
     ).$inspect();
 
     if (!result.ok) {

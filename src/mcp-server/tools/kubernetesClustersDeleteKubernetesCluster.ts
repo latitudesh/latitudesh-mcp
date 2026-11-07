@@ -32,7 +32,7 @@ Deletes a Kubernetes cluster. This action is irreversible and will destroy all c
     const [result] = await kubernetesClustersDeleteKubernetesCluster(
       client,
       args.request,
-      { fetchOptions: { signal: ctx.signal } },
+      { fetchOptions: { signal: ctx.mcpReq.signal } },
     ).$inspect();
 
     if (!result.ok) {

@@ -27,7 +27,7 @@ export const tool$managedDatabasesShowManagedDatabaseMetrics: ToolDefinition<
     const [result] = await managedDatabasesShowManagedDatabaseMetrics(
       client,
       args.request,
-      { fetchOptions: { signal: ctx.signal } },
+      { fetchOptions: { signal: ctx.mcpReq.signal } },
     ).$inspect();
 
     if (!result.ok) {

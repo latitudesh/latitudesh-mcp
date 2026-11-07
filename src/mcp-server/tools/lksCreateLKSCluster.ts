@@ -32,7 +32,7 @@ The cluster is returned immediately with \`status: "provisioning"\`. Poll \`GET 
     const [result] = await lksCreateLKSCluster(
       client,
       args.request,
-      { fetchOptions: { signal: ctx.signal } },
+      { fetchOptions: { signal: ctx.mcpReq.signal } },
     ).$inspect();
 
     if (!result.ok) {
