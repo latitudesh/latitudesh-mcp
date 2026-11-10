@@ -42,7 +42,7 @@ const LOGIN_TTL_SECONDS = 600;
 const CALLBACK_PATH = "/authorize/callback";
 // Ties the callback to the browser that started the login, so an approval link
 // opened in someone else's browser can't complete it.
-const LOGIN_COOKIE = "__Host-lsh_mcp_login";
+const LOGIN_COOKIE_PREFIX = "__Host-lsh_mcp_login_";
 const MCP_BINDING = "LATITUDESH_MCP";
 
 interface Bindings {
@@ -56,6 +56,7 @@ interface LoginState {
   oauthReqInfo: AuthRequest;
   sessionId: string;
   secret: string;
+  browserNonce: string;
 }
 
 interface CliSession {
@@ -124,13 +125,15 @@ async function handleAuthorize(request: Request, env: Bindings): Promise<Respons
     return new Response("Invalid authorization request", { status: 400 });
   }
 
-  const callbackUrl = new URL(CALLBACK_PATH, request.url).toString();
-  const session = await createCliSession(callbackUrl);
   const loginId = crypto.randomUUID();
+  const callbackUrl = new URL(CALLBACK_PATH, request.url);
+  callbackUrl.searchParams.set("login", loginId);
+  const session = await createCliSession(callbackUrl.toString());
   const state: LoginState = {
     oauthReqInfo,
     sessionId: session.id,
     secret: session.secret,
+    browserNonce: crypto.randomUUID(),
   };
   await env.OAUTH_KV.put(`login:${loginId}`, JSON.stringify(state), {
     expirationTtl: LOGIN_TTL_SECONDS,
@@ -140,28 +143,33 @@ async function handleAuthorize(request: Request, env: Bindings): Promise<Respons
     status: 302,
     headers: {
       location: session.authorize_url,
-      "set-cookie": loginCookie(loginId, LOGIN_TTL_SECONDS),
+      "set-cookie": loginCookie(loginId, state.browserNonce, LOGIN_TTL_SECONDS),
     },
   });
 }
 
 async function handleCallback(request: Request, env: Bindings): Promise<Response> {
-  const loginId = readCookie(request, LOGIN_COOKIE);
-  const approvalCode = new URL(request.url).searchParams.get("approval_code");
+  const params = new URL(request.url).searchParams;
+  const loginId = params.get("login");
+  const approvalCode = params.get("approval_code");
   if (!loginId || !approvalCode) {
-    return messagePage("This login can't be completed in this browser. Start it again from your MCP client.", 400);
+    return messagePage("This login link is incomplete. Start it again from your MCP client.", 400);
   }
 
   const raw = await env.OAUTH_KV.get(`login:${loginId}`);
   if (!raw) return messagePage("This login expired. Start it again from your MCP client.", 410);
   const state = JSON.parse(raw) as LoginState;
 
+  if (readCookie(request, LOGIN_COOKIE_PREFIX + loginId) !== state.browserNonce) {
+    return messagePage("This login can't be completed in this browser. Start it again from your MCP client.", 400);
+  }
+
   const approved = await consumeCliSession(state.sessionId, state.secret, approvalCode);
-  await env.OAUTH_KV.delete(`login:${loginId}`);
   if (!approved) {
     return messagePage("This login could not be completed. Start it again from your MCP client.", 400);
   }
 
+  await env.OAUTH_KV.delete(`login:${loginId}`);
   const { redirectTo } = await env.OAUTH_PROVIDER.completeAuthorization({
     request: state.oauthReqInfo,
     userId: approved.userId,
@@ -173,12 +181,12 @@ async function handleCallback(request: Request, env: Bindings): Promise<Response
 
   return new Response(null, {
     status: 302,
-    headers: { location: redirectTo, "set-cookie": loginCookie("", 0) },
+    headers: { location: redirectTo, "set-cookie": loginCookie(loginId, "", 0) },
   });
 }
 
-function loginCookie(value: string, maxAge: number): string {
-  return `${LOGIN_COOKIE}=${value}; Path=/; Max-Age=${maxAge}; HttpOnly; Secure; SameSite=Lax`;
+function loginCookie(loginId: string, value: string, maxAge: number): string {
+  return `${LOGIN_COOKIE_PREFIX}${loginId}=${value}; Path=/; Max-Age=${maxAge}; HttpOnly; Secure; SameSite=Lax`;
 }
 
 function readCookie(request: Request, name: string): string | null {
