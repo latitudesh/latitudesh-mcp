@@ -11,8 +11,9 @@
  *   /direct/mcp     -> header passthrough (bearer: / latitude-api-key:); kept off
  *                      the "/mcp" prefix so the OAuth guard doesn't swallow it.
  *   /sse            -> header passthrough (legacy SSE)
- *   /authorize      -> bridges Claude's redirect flow to Latitude's cli_sessions
- *   /authorize/poll -> server-side poll of the cli_session; completes the grant
+ *   /authorize          -> bridges Claude's redirect flow to Latitude's cli_sessions
+ *   /authorize/callback -> the dashboard sends the browser here after approval;
+ *                          completes the grant
  *   /token,/register,/.well-known/*  -> served by workers-oauth-provider
  *
  * INTENTIONAL: /direct/mcp and /sse are retained (unadvertised) for automation /
@@ -38,6 +39,10 @@ export { LatitudeshMCP };
 
 const LATITUDE_API_BASE = "https://api.latitude.sh";
 const LOGIN_TTL_SECONDS = 600;
+const CALLBACK_PATH = "/authorize/callback";
+// Ties the callback to the browser that started the login, so an approval link
+// opened in someone else's browser can't complete it.
+const LOGIN_COOKIE = "__Host-lsh_mcp_login";
 const MCP_BINDING = "LATITUDESH_MCP";
 
 interface Bindings {
@@ -56,26 +61,19 @@ interface LoginState {
 interface CliSession {
   id: string;
   secret: string;
-  user_code: string;
   authorize_url: string;
-}
-
-function json(body: unknown, status = 200): Response {
-  return new Response(JSON.stringify(body), {
-    status,
-    headers: { "content-type": "application/json" },
-  });
 }
 
 // --- Latitude cli_sessions bridge -------------------------------------------
 
-async function createCliSession(): Promise<CliSession> {
+async function createCliSession(callbackUrl: string): Promise<CliSession> {
   const res = await fetch(`${LATITUDE_API_BASE}/auth/cli_sessions`, {
     method: "POST",
     headers: { "content-type": "application/json", accept: "application/json" },
     body: JSON.stringify({
       client_name: "Latitude MCP",
       client_version: "0.2.3",
+      callback_url: callbackUrl,
     }),
   });
   if (!res.ok) {
@@ -85,16 +83,20 @@ async function createCliSession(): Promise<CliSession> {
   return body.data;
 }
 
-// Returns the approved payload (with api_key) or null while still pending.
-async function pollCliSession(
+// Consumes an approved session; returns null unless it is approved and the
+// approval code matches.
+async function consumeCliSession(
   sessionId: string,
   secret: string,
+  approvalCode: string,
 ): Promise<{ apiKey: string; userId: string; email: string; teamSlug: string } | null> {
   const res = await fetch(`${LATITUDE_API_BASE}/auth/cli_sessions/${sessionId}`, {
-    headers: { "X-CLI-Secret": secret, accept: "application/json" },
+    headers: {
+      "X-CLI-Secret": secret,
+      "X-CLI-Approval-Code": approvalCode,
+      accept: "application/json",
+    },
   });
-  // 404 right after create = not yet propagated; 410 = already consumed.
-  // Both are transient/terminal but the browser keeps polling within the TTL.
   if (!res.ok) return null;
   const body = (await res.json()) as {
     data: {
@@ -122,7 +124,8 @@ async function handleAuthorize(request: Request, env: Bindings): Promise<Respons
     return new Response("Invalid authorization request", { status: 400 });
   }
 
-  const session = await createCliSession();
+  const callbackUrl = new URL(CALLBACK_PATH, request.url).toString();
+  const session = await createCliSession(callbackUrl);
   const loginId = crypto.randomUUID();
   const state: LoginState = {
     oauthReqInfo,
@@ -133,21 +136,31 @@ async function handleAuthorize(request: Request, env: Bindings): Promise<Respons
     expirationTtl: LOGIN_TTL_SECONDS,
   });
 
-  return new Response(renderAuthorizePage(session.authorize_url, session.user_code, loginId), {
-    headers: { "content-type": "text/html; charset=utf-8" },
+  return new Response(null, {
+    status: 302,
+    headers: {
+      location: session.authorize_url,
+      "set-cookie": loginCookie(loginId, LOGIN_TTL_SECONDS),
+    },
   });
 }
 
-async function handlePoll(request: Request, env: Bindings): Promise<Response> {
-  const loginId = new URL(request.url).searchParams.get("login");
-  if (!loginId) return json({ status: "error" }, 400);
+async function handleCallback(request: Request, env: Bindings): Promise<Response> {
+  const loginId = readCookie(request, LOGIN_COOKIE);
+  const approvalCode = new URL(request.url).searchParams.get("approval_code");
+  if (!loginId || !approvalCode) {
+    return messagePage("This login can't be completed in this browser. Start it again from your MCP client.", 400);
+  }
 
   const raw = await env.OAUTH_KV.get(`login:${loginId}`);
-  if (!raw) return json({ status: "expired" });
+  if (!raw) return messagePage("This login expired. Start it again from your MCP client.", 410);
   const state = JSON.parse(raw) as LoginState;
 
-  const approved = await pollCliSession(state.sessionId, state.secret);
-  if (!approved) return json({ status: "pending" });
+  const approved = await consumeCliSession(state.sessionId, state.secret, approvalCode);
+  await env.OAUTH_KV.delete(`login:${loginId}`);
+  if (!approved) {
+    return messagePage("This login could not be completed. Start it again from your MCP client.", 400);
+  }
 
   const { redirectTo } = await env.OAUTH_PROVIDER.completeAuthorization({
     request: state.oauthReqInfo,
@@ -158,66 +171,44 @@ async function handlePoll(request: Request, env: Bindings): Promise<Response> {
     props: { bearer: approved.apiKey, email: approved.email, teamSlug: approved.teamSlug },
   });
 
-  await env.OAUTH_KV.delete(`login:${loginId}`);
-  return json({ status: "approved", redirectTo });
+  return new Response(null, {
+    status: 302,
+    headers: { location: redirectTo, "set-cookie": loginCookie("", 0) },
+  });
 }
 
-function renderAuthorizePage(authorizeUrl: string, userCode: string, loginId: string): string {
-  const data = JSON.stringify({ authorizeUrl, loginId });
-  return `<!doctype html>
+function loginCookie(value: string, maxAge: number): string {
+  return `${LOGIN_COOKIE}=${value}; Path=/; Max-Age=${maxAge}; HttpOnly; Secure; SameSite=Lax`;
+}
+
+function readCookie(request: Request, name: string): string | null {
+  for (const part of (request.headers.get("cookie") ?? "").split(";")) {
+    const [key, ...rest] = part.trim().split("=");
+    if (key === name) return rest.join("=") || null;
+  }
+  return null;
+}
+
+function messagePage(message: string, status: number): Response {
+  return new Response(
+    `<!doctype html>
 <html lang="en">
 <head>
 <meta charset="utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
-<title>Authorize Latitude MCP</title>
+<title>Latitude MCP</title>
 <style>
   body { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif; background:#0f1115; color:#e6e8eb; display:flex; min-height:100vh; align-items:center; justify-content:center; margin:0; }
   .card { max-width:440px; padding:40px; text-align:center; }
-  h1 { font-size:20px; margin:0 0 8px; }
   p { color:#9aa0a6; line-height:1.5; }
-  .btn { display:inline-block; margin:24px 0 16px; padding:12px 24px; background:#3b82f6; color:#fff; text-decoration:none; border-radius:8px; font-weight:600; }
-  .code { font-family: ui-monospace, monospace; font-size:22px; letter-spacing:2px; background:#1a1d24; padding:8px 14px; border-radius:6px; display:inline-block; }
-  .status { margin-top:20px; font-size:14px; color:#9aa0a6; }
 </style>
 </head>
 <body>
-  <div class="card">
-    <h1>Authorize Latitude MCP</h1>
-    <p>Click below and approve in Latitude. Confirm this code matches:</p>
-    <div class="code">${userCode}</div>
-    <br />
-    <a class="btn" id="approve" href="${authorizeUrl}" target="_blank" rel="noopener">Approve in Latitude →</a>
-    <p class="status" id="status">Click “Approve in Latitude” to continue.</p>
-  </div>
-<script>
-  const cfg = ${data};
-  const statusEl = document.getElementById("status");
-  const approveBtn = document.getElementById("approve");
-  let popup = null;
-  // Open the approval in a controlled popup on the user's click (so it isn't
-  // blocked) instead of auto-spawning a second tab; we auto-close it on approval.
-  approveBtn.addEventListener("click", (e) => {
-    const w = window.open(cfg.authorizeUrl, "latitude_authorize", "popup,width=520,height=760");
-    if (w) { popup = w; e.preventDefault(); statusEl.textContent = "Waiting for approval…"; }
-    // If the popup is blocked, the link's default (new tab) takes over.
-  });
-  async function poll() {
-    try {
-      const r = await fetch("/authorize/poll?login=" + encodeURIComponent(cfg.loginId));
-      const j = await r.json();
-      if (j.status === "approved") {
-        statusEl.textContent = "Approved — redirecting…";
-        if (popup) { try { popup.close(); } catch (e) {} }
-        window.location = j.redirectTo; return;
-      }
-      if (j.status === "expired") { statusEl.textContent = "This login expired. Close this tab and try again."; return; }
-    } catch (e) {}
-    setTimeout(poll, 2000);
-  }
-  setTimeout(poll, 2000);
-</script>
+  <div class="card"><p>${message}</p></div>
 </body>
-</html>`;
+</html>`,
+    { status, headers: { "content-type": "text/html; charset=utf-8" } },
+  );
 }
 
 // --- Header-passthrough MCP (Cursor / Claude Code) --------------------------
@@ -235,7 +226,7 @@ const defaultHandler = {
     const url = new URL(request.url);
 
     if (url.pathname === "/authorize") return handleAuthorize(request, env);
-    if (url.pathname === "/authorize/poll") return handlePoll(request, env);
+    if (url.pathname === CALLBACK_PATH) return handleCallback(request, env);
 
     // Header passthrough (static Latitude API key in `bearer:`/`latitude-api-key:`).
     if (url.pathname === "/sse" || url.pathname.startsWith("/sse/")) {
