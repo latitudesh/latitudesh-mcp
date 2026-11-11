@@ -120,7 +120,12 @@ async function consumeCliSession(
 // --- OAuth /authorize handlers ----------------------------------------------
 
 async function handleAuthorize(request: Request, env: Bindings): Promise<Response> {
-  const oauthReqInfo = await env.OAUTH_PROVIDER.parseAuthRequest(request);
+  let oauthReqInfo: AuthRequest;
+  try {
+    oauthReqInfo = await env.OAUTH_PROVIDER.parseAuthRequest(request);
+  } catch {
+    return new Response("Invalid authorization request", { status: 400 });
+  }
   if (!oauthReqInfo.clientId) {
     return new Response("Invalid authorization request", { status: 400 });
   }
