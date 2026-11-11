@@ -287,4 +287,5 @@ export default new OAuthProvider({
   tokenEndpoint: "/token",
   clientRegistrationEndpoint: "/register",
   scopesSupported: ["mcp"],
+  allowPlainPKCE: false,
 });
