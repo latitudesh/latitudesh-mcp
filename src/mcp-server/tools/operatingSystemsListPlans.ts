@@ -28,7 +28,7 @@ Lists all operating systems available to deploy and reinstall.
     const [result] = await operatingSystemsListPlans(
       client,
       args.request,
-      { fetchOptions: { signal: ctx.signal } },
+      { fetchOptions: { signal: ctx.mcpReq.signal } },
     ).$inspect();
 
     if (!result.ok) {

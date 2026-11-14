@@ -67,7 +67,7 @@ export const GetIpsRequest$zodSchema: z.ZodType<GetIpsRequest> = z.object({
     "Filter by additional IPs (true) or management IPs (false)",
   ).optional(),
   filterAddress: z.string().describe(
-    "The address of IP to filter by starts_with",
+    "The address of IP to filter by starts_with. Private IPs are only listed when this filter is set",
   ).optional(),
   filterAvailable: z.boolean().describe(
     "Filter by unassigned IPs (true) or assigned IPs (false)",

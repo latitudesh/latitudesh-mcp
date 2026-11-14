@@ -13,8 +13,14 @@ export interface Env {
 export const envSchema: z.ZodType<Env> = z.object({
   LATITUDESH_BEARER: z.string().optional(),
 
-  LATITUDESH_DEBUG: z.coerce.boolean().optional(),
+  LATITUDESH_DEBUG: z.unknown().transform(parseEnvFlag).optional(),
 });
+
+function parseEnvFlag(value: unknown): boolean {
+  return ["true", "1", "yes", "on"].includes(
+    String(value).trim().toLowerCase(),
+  );
+}
 
 let envMemo: Env | undefined = undefined;
 /**

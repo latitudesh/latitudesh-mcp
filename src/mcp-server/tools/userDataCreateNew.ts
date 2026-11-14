@@ -28,7 +28,7 @@ Allows you to create User Data in a team, which can be used to perform custom se
     const [result] = await userDataCreateNew(
       client,
       args.request,
-      { fetchOptions: { signal: ctx.signal } },
+      { fetchOptions: { signal: ctx.mcpReq.signal } },
     ).$inspect();
 
     if (!result.ok) {

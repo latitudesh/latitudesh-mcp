@@ -3,9 +3,14 @@
  */
 
 import { lksListLKSAvailableVersions } from "../../funcs/lksListLKSAvailableVersions.js";
+import { ListLksAvailableVersionsRequest$zodSchema } from "../../models/listlksavailableversionsop.js";
 import { formatResult, ToolDefinition } from "../tools.js";
 
-export const tool$lksListLKSAvailableVersions: ToolDefinition = {
+const args = {
+  request: ListLksAvailableVersionsRequest$zodSchema.optional(),
+};
+
+export const tool$lksListLKSAvailableVersions: ToolDefinition<typeof args> = {
   name: "lks-list-lks-available-versions",
   description: `List available Kubernetes versions
 
@@ -18,10 +23,12 @@ Lists the Kubernetes patches the platform offers, with their lifecycle flags. Us
     "openWorldHint": false,
     "readOnlyHint": true,
   },
-  tool: async (client, ctx) => {
+  args,
+  tool: async (client, args, ctx) => {
     const [result] = await lksListLKSAvailableVersions(
       client,
-      { fetchOptions: { signal: ctx.signal } },
+      args.request,
+      { fetchOptions: { signal: ctx.mcpReq.signal } },
     ).$inspect();
 
     if (!result.ok) {

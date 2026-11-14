@@ -28,7 +28,7 @@ Delete virtual network
     const [result] = await virtualNetworksDelete(
       client,
       args.request,
-      { fetchOptions: { signal: ctx.signal } },
+      { fetchOptions: { signal: ctx.mcpReq.signal } },
     ).$inspect();
 
     if (!result.ok) {

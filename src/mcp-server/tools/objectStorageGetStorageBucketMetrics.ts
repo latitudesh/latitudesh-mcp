@@ -29,7 +29,7 @@ Retrieves usage metrics for a specific object storage bucket, including storage 
     const [result] = await objectStorageGetStorageBucketMetrics(
       client,
       args.request,
-      { fetchOptions: { signal: ctx.signal } },
+      { fetchOptions: { signal: ctx.mcpReq.signal } },
     ).$inspect();
 
     if (!result.ok) {

@@ -21,6 +21,26 @@ export const toolNames: Array<{ name: string; description: string }>= [
     "description": "Update API key settings\n\nUpdate API Key settings (name, read_only, allowed_ips) without rotating the token.\nUse PUT to rotate the token.\n"
   },
   {
+    "name": "inference-get-inference-models",
+    "description": "List available inference models\n\nLists the inference models available through the inference gateway. The id is the canonical model ID — send it verbatim as the \"model\" value in inference requests. Only enabled models are returned; availability is global unless a model is explicitly scoped by region.\n"
+  },
+  {
+    "name": "inference-get-inference-api-keys",
+    "description": "List inference API keys\n\nLists the project's active inference API keys. The full token is never returned here — only its last characters.\n"
+  },
+  {
+    "name": "inference-post-inference-api-key",
+    "description": "Create an inference API key\n\nCreates an inference API key for the project. The full token is returned ONLY in this response — store it securely.\nAll active keys for the project can authenticate at the inference control plane. Synchronization is asynchronous: sync_status confirms that the refresh receiver observed the key; it does not acknowledge every region.\n"
+  },
+  {
+    "name": "inference-delete-inference-api-key",
+    "description": "Revoke an inference API key\n\nRevokes the inference API key and immediately removes it from active listings while retaining its audit record.\nControl-plane removal is asynchronous. Other active keys remain valid. The key stops authorizing new requests after the control plane refreshes or its identity snapshot expires. Revoking an already revoked key succeeds.\n"
+  },
+  {
+    "name": "inference-get-inference-usage",
+    "description": "Get inference usage for a project\n\nReturns the project's inference requests, tokens and estimated cost for the window, per model and as a time series. The estimate uses current model prices.\n"
+  },
+  {
     "name": "baselines-preview-get-baselines",
     "description": "List baselines\n\n**Preview.** Available to teams with the `baselines_api` feature flag. The shape of this\nendpoint may change before general availability.\n\nList all baselines in the team. A baseline records the configuration you expect your\nservers to be delivered with — plan, SSH keys, user data, disk layout and BIOS settings.\n"
   },
@@ -198,7 +218,7 @@ export const toolNames: Array<{ name: string; description: string }>= [
   },
   {
     "name": "lks-create-lks-node-pool",
-    "description": "Create a node pool\n\nAdds a node pool to an LKS cluster. The platform provisions `count` servers of `plan` from stock, so both fields are required.\n\n`kubernetes_version` defaults to the control-plane patch and may never be newer than it. `max_pods_per_node` is set once, here — it cannot be changed later.\n"
+    "description": "Create a node pool\n\nAdds a node pool to an LKS cluster. `mode` decides where the pool's nodes come from:\n\n- `on_demand` (default): the platform provisions `count` servers of `plan` from stock, so both fields are required. Creation is rejected with 422 before any server is provisioned when the plan is not a bare metal plan, the cluster's site is not available for LKS, or the requested `count` exceeds available stock at that site.\n- `allocated`: the pool is built from `server_ids`, bare metal servers already in the cluster project. Each server is reinstalled with the LKS node image, which erases its disks. `plan` and `count` are rejected: the pool uses the plan the servers share, and `count` is the number of servers. Each server that fails an eligibility check is reported as its own 422 error, pointing at its index in `server_ids` and listing every reason in `meta.reasons`. `GET /lks/allocatable_servers` shows which servers can join. Allocated node pools are available only in on-demand projects: a reserved project is refused with 422 `RESERVED_PROJECT_NOT_SUPPORTED`.\n\n`kubernetes_version` defaults to the control-plane patch and may never be newer than it. `max_pods_per_node` and `mode` are set once, here — they cannot be changed later.\n"
   },
   {
     "name": "lks-get-lks-node-pool",
@@ -210,7 +230,11 @@ export const toolNames: Array<{ name: string; description: string }>= [
   },
   {
     "name": "lks-update-lks-node-pool",
-    "description": "Update a node pool\n\nScales, renames, upgrades or re-labels a node pool. At least one attribute must be provided.\n\n`labels` and `taints` are declarative replacements, not merges: omit the field to leave it untouched, send the whole map/list to replace it, or send `{}` / `[]` to clear it.\n\nA newer `kubernetes_version` rolls a node-recreating upgrade; it must not be lower than the pool's current patch nor newer than the control-plane patch. `max_pods_per_node` is immutable — a PATCH that carries it is rejected with 422 even if the value is unchanged.\n\nThe node pool must be idle: one that is provisioning, updating, scaling, upgrading, paused or deleting rejects the request with 409.\n"
+    "description": "Update a node pool\n\nScales, renames, upgrades, re-labels or changes the servers of a node pool. At least one attribute must be provided.\n\n`labels` and `taints` are declarative replacements, not merges: omit the field to leave it untouched, send the whole map/list to replace it, or send `{}` / `[]` to clear it.\n\nA newer `kubernetes_version` rolls a node-recreating upgrade; it must not be lower than the pool's current patch nor newer than the control-plane patch. `max_pods_per_node` and `mode` are immutable — a PATCH that carries either is rejected with 422 even if the value is unchanged.\n\nFor an allocated node pool, `server_ids` replaces `count`: send the whole set of servers the pool should have. Added servers are checked as on create and reinstalled to join; removed servers are drained and reinstalled with a clean OS, with no data, keys or user data restored. A server set change cannot be combined with a `kubernetes_version` change.\n\nRaising `count` checks available stock of the pool's plan at the cluster's site for the added nodes only (new `count` minus current `count`). When stock is insufficient, the request is rejected with 422 `INSUFFICIENT_STOCK` and the node pool is left unchanged. Lowering `count` is not checked against stock.\n\nThe node pool must be idle: one that is provisioning, updating, scaling, upgrading, paused or deleting rejects the request with 409.\n"
+  },
+  {
+    "name": "lks-list-lks-nodes",
+    "description": "List nodes\n\nLists the nodes of a node pool, with the status of each node and of the server it runs on. Each node's `id` is a stable node ID (format: `lksno_<hash>`); `name` is its Kubernetes node name, as shown by `kubectl get nodes`. The response is not paginated; `meta.total` is the number of nodes returned.\n"
   },
   {
     "name": "lks-list-lks-available-versions",
@@ -219,6 +243,10 @@ export const toolNames: Array<{ name: string; description: string }>= [
   {
     "name": "lks-list-lks-sites",
     "description": "List sites available for LKS\n\nLists the sites that can host an LKS cluster, one entry per site. Pass an entry's `id` (the site slug) as `site` when creating a cluster. `country` is null when the underlying site has no region assigned.\n"
+  },
+  {
+    "name": "lks-list-lks-allocatable-servers",
+    "description": "List servers that can join an allocated node pool\n\nLists a project's servers at a site, with whether each one can join an allocated node pool right now. Pass the `id` of an allocatable server in `server_ids` when creating or updating an allocated node pool.\n\nWhen `allocatable` is false, `reasons` lists why, using the same codes that node pool create and update return per server. `node_pool_id` and `cluster_id` identify the pool a server already belongs to.\n"
   },
   {
     "name": "plans-list",
@@ -433,6 +461,38 @@ export const toolNames: Array<{ name: string; description: string }>= [
     "description": "Update user data\n\nAllow you update User Data in a team.\n"
   },
   {
+    "name": "clusters-get-project-cluster-requirements",
+    "description": "Get cluster requirements\n\nShows your cluster's requirements for review: the requirements and what is expected of each, the node groups, the version to sign and who signed. Only available for projects that have a GPU cluster; any other project answers 404 PROJECT_NOT_A_CLUSTER. While the requirements are a draft, their content is empty."
+  },
+  {
+    "name": "clusters-update-project-cluster-requirements",
+    "description": "Change cluster requirements\n\nApplies one change to your requirements: add or remove a requirement or the checks of a block, or set what a requirement expects. Signed requirements need to be signed again. Only available for projects that have a GPU cluster; any other project answers 404 PROJECT_NOT_A_CLUSTER. Needs an owner, administrator or collaborator."
+  },
+  {
+    "name": "clusters-sign-project-cluster-requirements",
+    "description": "Sign cluster requirements\n\nSigns the requirements as you, for the requirements_version you were shown. A version that no longer matches the requirements is refused. Only available for projects that have a GPU cluster; any other project answers 404 PROJECT_NOT_A_CLUSTER. Needs an owner or administrator."
+  },
+  {
+    "name": "clusters-get-project-cluster-requirement-signoffs",
+    "description": "List cluster requirement sign-offs\n\nLists who signed the requirements and when, newest first. Only available for projects that have a GPU cluster; any other project answers 404 PROJECT_NOT_A_CLUSTER."
+  },
+  {
+    "name": "clusters-get-project-cluster-node-groups",
+    "description": "List cluster node groups\n\nLists your cluster's node groups. Only available for projects that have a GPU cluster; any other project answers 404 PROJECT_NOT_A_CLUSTER. While the requirements are a draft, the list is empty."
+  },
+  {
+    "name": "clusters-create-project-cluster-node-group",
+    "description": "Create a cluster node group\n\nAdds a node group to your cluster. Only available for projects that have a GPU cluster; any other project answers 404 PROJECT_NOT_A_CLUSTER. Signed requirements need to be signed again. Needs an owner, administrator or collaborator."
+  },
+  {
+    "name": "clusters-delete-project-cluster-node-group",
+    "description": "Delete a cluster node group\n\nRemoves one of your cluster's node groups. Only available for projects that have a GPU cluster; any other project answers 404 PROJECT_NOT_A_CLUSTER. Signed requirements need to be signed again. Needs an owner, administrator or collaborator."
+  },
+  {
+    "name": "clusters-update-project-cluster-node-group",
+    "description": "Update a cluster node group\n\nChanges the attributes sent of one of your cluster's node groups. Only available for projects that have a GPU cluster; any other project answers 404 PROJECT_NOT_A_CLUSTER. Signed requirements need to be signed again. Needs an owner, administrator or collaborator."
+  },
+  {
     "name": "regions-get",
     "description": "List regions\n\nLists all [available locations](https://latitude.sh/locations). For server availability by location, please see the [Plans API](/reference/get-plans).\n\n"
   },
@@ -447,6 +507,26 @@ export const toolNames: Array<{ name: string; description: string }>= [
   {
     "name": "roles-get",
     "description": "Retrieve role"
+  },
+  {
+    "name": "sandboxes-preview-get-sandboxes",
+    "description": "List sandboxes\n\n**Preview.** Available to teams with the `sandboxes_api` feature flag. The shape of this\nendpoint may change before general availability.\n\nList the sandboxes of a project, up to 100 per page.\n"
+  },
+  {
+    "name": "sandboxes-preview-create-sandbox",
+    "description": "Create sandbox\n\n**Preview.** Available to teams with the `sandboxes_api` feature flag. The shape of this\nendpoint may change before general availability.\n\nCreate a sandbox in a project.\n"
+  },
+  {
+    "name": "sandboxes-preview-get-sandbox",
+    "description": "Retrieve sandbox\n\n**Preview.** Available to teams with the `sandboxes_api` feature flag.\n\nRetrieve a single sandbox.\n"
+  },
+  {
+    "name": "sandboxes-preview-destroy-sandbox",
+    "description": "Delete sandbox\n\n**Preview.** Available to teams with the `sandboxes_api` feature flag.\n\nDelete a sandbox. Deletion completes in the background.\n"
+  },
+  {
+    "name": "sandboxes-preview-exec-sandbox",
+    "description": "Run a command in a sandbox\n\n**Preview.** Available to teams with the `sandboxes_api` feature flag. The shape of this\nendpoint may change before general availability.\n\nRun a command in a sandbox and wait for its output.\n"
   },
   {
     "name": "servers-list",
@@ -498,7 +578,7 @@ export const toolNames: Array<{ name: string; description: string }>= [
   },
   {
     "name": "servers-create-ipmi-session",
-    "description": "Create IPMI credentials\n\nGenerates IPMI credentials for a given server. Remote access creates a VPN connection to the internal network of your server so you can connect to its IPMI.\nYou will have to use a VPN client such as https://openvpn.net to connect. See `VPN Sessions` API to create a VPN connection.\n\nRelated guide: https://docs.latitude.sh/docs/ipmi\n"
+    "description": "Create IPMI credentials\n\nGenerates IPMI credentials for a given server. Open `ipmi_url` in a browser to reach the server's IPMI directly, and sign in with the returned username and password.\n\nRelated guide: https://docs.latitude.sh/docs/ipmi\n"
   },
   {
     "name": "servers-start-rescue-mode",
@@ -537,6 +617,18 @@ export const toolNames: Array<{ name: string; description: string }>= [
     "description": "Update filesystem\n\nAllow you to upgrade the size of a filesystem."
   },
   {
+    "name": "filesystem-storage-get-filesystem-attachment",
+    "description": "Get filesystem attachment\n\nReturns whether a server is attached to the storage network the filesystem is served on. Poll it after attaching: once the status is \"attached\", configure the returned storage network on the server and mount the filesystem."
+  },
+  {
+    "name": "filesystem-storage-attach-filesystem",
+    "description": "Attach filesystem to server\n\nAttaches a running server to the private storage network the filesystem is served on, so it can mount the filesystem. The attach runs asynchronously and is idempotent."
+  },
+  {
+    "name": "filesystem-storage-detach-filesystem",
+    "description": "Detach filesystem from server\n\nDetaches a server from the storage network the filesystem is served on, removing its storage IP and VLAN. The network stays while a volume is still mapped to the server, since volumes use the same network. The detach runs asynchronously: poll GET .../attach for its status."
+  },
+  {
     "name": "block-storage-list-volumes",
     "description": "List volumes\n\nLists all the volumes from a team."
   },
@@ -562,11 +654,11 @@ export const toolNames: Array<{ name: string; description: string }>= [
   },
   {
     "name": "block-storage-map-volume",
-    "description": "Map volume\n\nMaps a high performance volume to a server over NVMe-TCP."
+    "description": "Map volume\n\nMaps a high performance volume to a server over NVMe-TCP. Teams with multi-host mapping enabled can map a volume to several servers, once per server; otherwise a volume maps to one server. Every mapped server writes to the same NVMe namespace, so use a cluster-aware filesystem when more than one server mounts the volume."
   },
   {
     "name": "block-storage-unmap-volume",
-    "description": "Unmap volume\n\nUnmaps a high performance volume from the server it is currently mapped to."
+    "description": "Unmap volume\n\nUnmaps a high performance volume from one of the servers it is mapped to."
   },
   {
     "name": "tags-list",
@@ -658,11 +750,11 @@ export const toolNames: Array<{ name: string; description: string }>= [
   },
   {
     "name": "virtual-machines-create-network-attachment",
-    "description": "Attach a network to a VM\n\nAttaches a virtual network (VLAN) to a Virtual Machine. Work runs asynchronously and returns 202 Accepted.\n"
+    "description": "Attach a network to a VM\n\nAttaches a virtual network (VLAN) to a Virtual Machine. Work runs asynchronously and returns 202 Accepted. A running VM restarts so the new NIC reaches the guest; a VM that is not running picks it up when it next starts.\n\nAfter the restart, check the interface inside the guest (`ip -br addr`):\n\n- VMs created with `apply_network_on_boot` enabled (the default) configure the NIC on boot, with the attachment's `address` when one was given. Nothing else to do.\n- VMs created before that option existed, or with it disabled, leave the NIC without an address. Once the VM has restarted, read the attachment's `mac_address` and `address` from `GET /virtual_machines/{virtual_machine_id}/network_attachments` and configure the interface with that MAC address yourself, as described in [Private networks: configure the OS](https://www.latitude.sh/docs/networking/private-networks#step-3-configure-the-os). The NIC gets a new MAC address each time a network is attached, so update your configuration after detaching and attaching a network again.\n\nKeep network configuration of your own in a separate file. With `apply_network_on_boot`, every boot, including a restart started inside the guest, rewrites cloud-init's own network file (for example `/etc/netplan/50-cloud-init.yaml`), so changes made there are lost. To stop that on a VM, create `/etc/cloud/cloud.cfg.d/99-disable-network-config.cfg` containing `network: {config: disabled}`; cloud-init then leaves the network configuration alone on every boot, and networks attached afterwards must be configured by hand.\n\nSome virtual machines run on older infrastructure that doesn't support network attachments. On those VMs, attaching or detaching a network returns 422 `VIRTUAL_NETWORK_ATTACHMENT_UNSUPPORTED` and leaves the VM unchanged.\n"
   },
   {
     "name": "virtual-machines-destroy-network-attachment",
-    "description": "Detach a network from a VM\n\nDetaches a virtual network (VLAN) from a Virtual Machine. Work runs asynchronously and returns 202 Accepted.\n"
+    "description": "Detach a network from a VM\n\nDetaches a virtual network (VLAN) from a Virtual Machine. Work runs asynchronously and returns 202 Accepted. A running VM restarts so the NIC is removed from the guest; a VM that is not running loses it when it next starts.\n\nOn VMs created with `apply_network_on_boot` enabled, that boot also removes the NIC's configuration. If you configured the NIC yourself, remove that configuration before detaching, as described in [Private networks: configure the OS](https://www.latitude.sh/docs/networking/private-networks#step-3-configure-the-os).\n\nSome virtual machines run on older infrastructure that doesn't support network attachments. On those VMs, attaching or detaching a network returns 422 `VIRTUAL_NETWORK_ATTACHMENT_UNSUPPORTED` and leaves the VM unchanged.\n"
   },
   {
     "name": "virtual-machine-backups-list-for-virtual-machine",
@@ -743,22 +835,6 @@ export const toolNames: Array<{ name: string; description: string }>= [
   {
     "name": "virtual-networks-delete",
     "description": "Delete VLAN\n\nDelete virtual network\n"
-  },
-  {
-    "name": "vpn-sessions-list",
-    "description": "List VPN sessions"
-  },
-  {
-    "name": "vpn-sessions-create",
-    "description": "Create VPN session\n\nCreates a new VPN Session.\n`NOTE:` The VPN credentials are only listed ONCE upon creation. They can however be refreshed or deleted.\n"
-  },
-  {
-    "name": "vpn-sessions-refresh-password",
-    "description": "Refresh VPN session\n\nRefreshing an existing VPN Session will create new credentials for that session\n"
-  },
-  {
-    "name": "vpn-sessions-delete",
-    "description": "Delete VPN session\n\nDeletes an existing VPN Session.\n"
   },
   {
     "name": "managed-databases-show-managed-database-metrics",

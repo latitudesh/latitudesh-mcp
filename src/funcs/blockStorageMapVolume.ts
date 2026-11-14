@@ -29,7 +29,7 @@ import { Result } from "../types/fp.js";
  * Map volume
  *
  * @remarks
- * Maps a high performance volume to a server over NVMe-TCP.
+ * Maps a high performance volume to a server over NVMe-TCP. Teams with multi-host mapping enabled can map a volume to several servers, once per server; otherwise a volume maps to one server. Every mapped server writes to the same NVMe namespace, so use a cluster-aware filesystem when more than one server mounts the volume.
  */
 export function blockStorageMapVolume(
   client$: LatitudeshCore,

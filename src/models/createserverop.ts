@@ -191,22 +191,26 @@ export const CreateServerOperatingSystem2$zodSchema = z.union([
 ]).describe("The operating system slug for the new server");
 
 /**
- * RAID mode for the server. Set to 'raid-0' for RAID 0, 'raid-1' for RAID 1, or omit/null for no RAID configuration
+ * RAID mode for the server. Set to 'raid-0' for RAID 0, 'raid-1' for RAID 1, 'raid-10' for RAID 10 on the data disks (only at locations with the `raid_ten` feature), or omit/null for no RAID configuration
  */
-export const CreateServerRaid2 = {
+export const CreateServerCreateServerRaid = {
   Raid0: "raid-0",
   Raid1: "raid-1",
+  Raid10: "raid-10",
 } as const;
 /**
- * RAID mode for the server. Set to 'raid-0' for RAID 0, 'raid-1' for RAID 1, or omit/null for no RAID configuration
+ * RAID mode for the server. Set to 'raid-0' for RAID 0, 'raid-1' for RAID 1, 'raid-10' for RAID 10 on the data disks (only at locations with the `raid_ten` feature), or omit/null for no RAID configuration
  */
-export type CreateServerRaid2 = ClosedEnum<typeof CreateServerRaid2>;
+export type CreateServerCreateServerRaid = ClosedEnum<
+  typeof CreateServerCreateServerRaid
+>;
 
-export const CreateServerRaid2$zodSchema = z.enum([
+export const CreateServerCreateServerRaid$zodSchema = z.enum([
   "raid-0",
   "raid-1",
+  "raid-10",
 ]).describe(
-  "RAID mode for the server. Set to 'raid-0' for RAID 0, 'raid-1' for RAID 1, or omit/null for no RAID configuration",
+  "RAID mode for the server. Set to 'raid-0' for RAID 0, 'raid-1' for RAID 1, 'raid-10' for RAID 10 on the data disks (only at locations with the `raid_ten` feature), or omit/null for no RAID configuration",
 );
 
 export const CreateServerRole2 = {
@@ -225,12 +229,14 @@ export const CreateServerRole2$zodSchema = z.enum([
 export const CreateServerRaidLevel2 = {
   Raid0: "raid-0",
   Raid1: "raid-1",
+  Raid10: "raid-10",
 } as const;
 export type CreateServerRaidLevel2 = ClosedEnum<typeof CreateServerRaidLevel2>;
 
 export const CreateServerRaidLevel2$zodSchema = z.enum([
   "raid-0",
   "raid-1",
+  "raid-10",
 ]);
 
 export const CreateServerFilesystem2 = {
@@ -293,7 +299,7 @@ export type CreateServerAttributes2 = {
   hostname: string;
   ssh_keys?: Array<string> | null | undefined;
   user_data?: string | null | undefined;
-  raid?: CreateServerRaid2 | null | undefined;
+  raid?: CreateServerCreateServerRaid | null | undefined;
   disk_layout?: Array<CreateServerDiskLayout2> | null | undefined;
   ipxe?: string | null | undefined;
   public_network?: boolean | null | undefined;
@@ -334,8 +340,8 @@ export const CreateServerAttributes2$zodSchema: z.ZodType<
   public_network_id: z.string().nullable().optional().describe(
     "**Preview.** Available to teams with public networks enabled. ID of a customer public network to attach the server onto. Requires public_network: true. The public network must belong to the same project and location as the deployment and have a free address.",
   ),
-  raid: CreateServerRaid2$zodSchema.nullable().optional().describe(
-    "RAID mode for the server. Set to 'raid-0' for RAID 0, 'raid-1' for RAID 1, or omit/null for no RAID configuration",
+  raid: CreateServerCreateServerRaid$zodSchema.nullable().optional().describe(
+    "RAID mode for the server. Set to 'raid-0' for RAID 0, 'raid-1' for RAID 1, 'raid-10' for RAID 10 on the data disks (only at locations with the `raid_ten` feature), or omit/null for no RAID configuration",
   ),
   site: CreateServerSite2$zodSchema.describe(
     "The site slug to deploy the server",

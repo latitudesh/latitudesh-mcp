@@ -29,7 +29,7 @@ Allows you to remove an object storage from a project.`,
     const [result] = await objectStorageDeleteStorageBuckets(
       client,
       args.request,
-      { fetchOptions: { signal: ctx.signal } },
+      { fetchOptions: { signal: ctx.mcpReq.signal } },
     ).$inspect();
 
     if (!result.ok) {
