@@ -20,7 +20,7 @@ Lists the marketplace apps available to deploy on Virtual Machines. Only publish
   tool: async (client, ctx) => {
     const [result] = await marketplaceAppsListMarketplaceApps(
       client,
-      { fetchOptions: { signal: ctx.signal } },
+      { fetchOptions: { signal: ctx.mcpReq.signal } },
     ).$inspect();
 
     if (!result.ok) {

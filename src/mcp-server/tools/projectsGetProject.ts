@@ -28,7 +28,7 @@ Returns a single project belonging to the current team
     const [result] = await projectsGetProject(
       client,
       args.request,
-      { fetchOptions: { signal: ctx.signal } },
+      { fetchOptions: { signal: ctx.mcpReq.signal } },
     ).$inspect();
 
     if (!result.ok) {
