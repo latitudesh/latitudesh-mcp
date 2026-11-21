@@ -27,14 +27,15 @@ export const BaselineDiskLayoutGroupRole$zodSchema = z.enum([
 ]).describe("Purpose of the disk group");
 
 /**
- * RAID level for the group. Only valid for the 'os' and 'storage' roles
+ * RAID level for the group. Only valid for the 'os' and 'storage' roles; 'raid-10' is storage-only, needs at least 4 disks, and is applied only at locations with the `raid_ten` feature
  */
 export const BaselineDiskLayoutGroupRaidLevel = {
   Raid0: "raid-0",
   Raid1: "raid-1",
+  Raid10: "raid-10",
 } as const;
 /**
- * RAID level for the group. Only valid for the 'os' and 'storage' roles
+ * RAID level for the group. Only valid for the 'os' and 'storage' roles; 'raid-10' is storage-only, needs at least 4 disks, and is applied only at locations with the `raid_ten` feature
  */
 export type BaselineDiskLayoutGroupRaidLevel = ClosedEnum<
   typeof BaselineDiskLayoutGroupRaidLevel
@@ -43,8 +44,9 @@ export type BaselineDiskLayoutGroupRaidLevel = ClosedEnum<
 export const BaselineDiskLayoutGroupRaidLevel$zodSchema = z.enum([
   "raid-0",
   "raid-1",
+  "raid-10",
 ]).describe(
-  "RAID level for the group. Only valid for the 'os' and 'storage' roles",
+  "RAID level for the group. Only valid for the 'os' and 'storage' roles; 'raid-10' is storage-only, needs at least 4 disks, and is applied only at locations with the `raid_ten` feature",
 );
 
 /**
@@ -87,7 +89,7 @@ export const BaselineDiskLayoutGroup$zodSchema: z.ZodType<
   ),
   raid_level: BaselineDiskLayoutGroupRaidLevel$zodSchema.nullable().optional()
     .describe(
-      "RAID level for the group. Only valid for the 'os' and 'storage' roles",
+      "RAID level for the group. Only valid for the 'os' and 'storage' roles; 'raid-10' is storage-only, needs at least 4 disks, and is applied only at locations with the `raid_ten` feature",
     ),
   role: BaselineDiskLayoutGroupRole$zodSchema.optional().describe(
     "Purpose of the disk group",

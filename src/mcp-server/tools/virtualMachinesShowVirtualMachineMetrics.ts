@@ -29,7 +29,7 @@ Retrieve a time series for a single metric of a Virtual Machine.`,
     const [result] = await virtualMachinesShowVirtualMachineMetrics(
       client,
       args.request,
-      { fetchOptions: { signal: ctx.signal } },
+      { fetchOptions: { signal: ctx.mcpReq.signal } },
     ).$inspect();
 
     if (!result.ok) {

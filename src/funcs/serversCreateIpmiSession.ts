@@ -6,9 +6,8 @@ import { LatitudeshCore } from "../core.js";
 import { encodeSimple } from "../lib/encodings.js";
 import { compactMap } from "../lib/primitives.js";
 import { safeParse } from "../lib/schemas.js";
-import { RequestOptions } from "../lib/sdks.js";
+import { encodePath, RequestOptions } from "../lib/sdks.js";
 import { extractSecurity, resolveGlobalSecurity } from "../lib/security.js";
-import { pathToFunc } from "../lib/url.js";
 import {
   CreateIpmiSessionRequest,
   CreateIpmiSessionRequest$zodSchema,
@@ -29,8 +28,7 @@ import { Result } from "../types/fp.js";
  * Create IPMI credentials
  *
  * @remarks
- * Generates IPMI credentials for a given server. Remote access creates a VPN connection to the internal network of your server so you can connect to its IPMI.
- * You will have to use a VPN client such as https://openvpn.net to connect. See `VPN Sessions` API to create a VPN connection.
+ * Generates IPMI credentials for a given server. Open `ipmi_url` in a browser to reach the server's IPMI directly, and sign in with the returned username and password.
  *
  * Related guide: https://docs.latitude.sh/docs/ipmi
  */
@@ -93,9 +91,14 @@ async function $do(
       charEncoding: "percent",
     }),
   };
-  const path$ = pathToFunc("/servers/{server_id}/remote_access")(
+  const pathResult$ = encodePath(
+    "/servers/{server_id}/remote_access",
     pathParams$,
   );
+  if (!pathResult$.ok) {
+    return [pathResult$, { status: "invalid" }];
+  }
+  const path$ = pathResult$.value;
 
   const headers$ = new Headers(compactMap({
     Accept: "application/vnd.api+json",

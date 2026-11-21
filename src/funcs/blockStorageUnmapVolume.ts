@@ -3,12 +3,11 @@
  */
 
 import { LatitudeshCore } from "../core.js";
-import { encodeSimple } from "../lib/encodings.js";
+import { encodeJSON, encodeSimple } from "../lib/encodings.js";
 import { compactMap } from "../lib/primitives.js";
 import { safeParse } from "../lib/schemas.js";
-import { RequestOptions } from "../lib/sdks.js";
+import { encodePath, RequestOptions } from "../lib/sdks.js";
 import { extractSecurity, resolveGlobalSecurity } from "../lib/security.js";
-import { pathToFunc } from "../lib/url.js";
 import { APIError } from "../models/errors/apierror.js";
 import {
   ConnectionError,
@@ -29,7 +28,7 @@ import { Result } from "../types/fp.js";
  * Unmap volume
  *
  * @remarks
- * Unmaps a high performance volume from the server it is currently mapped to.
+ * Unmaps a high performance volume from one of the servers it is mapped to.
  */
 export function blockStorageUnmapVolume(
   client$: LatitudeshCore,
@@ -82,7 +81,7 @@ async function $do(
     return [parsed$, { status: "invalid" }];
   }
   const payload$ = parsed$.value;
-  const body$ = null;
+  const body$ = encodeJSON("body", payload$.RequestBody, { explode: true });
 
   const pathParams$ = {
     id: encodeSimple("id", payload$.id, {
@@ -90,11 +89,14 @@ async function $do(
       charEncoding: "percent",
     }),
   };
-  const path$ = pathToFunc("/storage/volumes/{id}/unmap")(
-    pathParams$,
-  );
+  const pathResult$ = encodePath("/storage/volumes/{id}/unmap", pathParams$);
+  if (!pathResult$.ok) {
+    return [pathResult$, { status: "invalid" }];
+  }
+  const path$ = pathResult$.value;
 
   const headers$ = new Headers(compactMap({
+    "Content-Type": "application/json",
     Accept: "application/vnd.api+json",
   }));
   const securityInput = await extractSecurity(client$._options.security);

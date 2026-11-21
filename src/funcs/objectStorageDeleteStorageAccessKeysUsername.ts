@@ -6,9 +6,8 @@ import { LatitudeshCore } from "../core.js";
 import { encodeFormQuery, encodeSimple } from "../lib/encodings.js";
 import { compactMap } from "../lib/primitives.js";
 import { safeParse } from "../lib/schemas.js";
-import { RequestOptions } from "../lib/sdks.js";
+import { encodePath, RequestOptions } from "../lib/sdks.js";
 import { extractSecurity, resolveGlobalSecurity } from "../lib/security.js";
-import { pathToFunc } from "../lib/url.js";
 import {
   DeleteStorageAccessKeysUsernameRequest,
   DeleteStorageAccessKeysUsernameRequest$zodSchema,
@@ -94,9 +93,14 @@ async function $do(
       charEncoding: "percent",
     }),
   };
-  const path$ = pathToFunc("/storage/access_keys/{username}/{storage_class}")(
+  const pathResult$ = encodePath(
+    "/storage/access_keys/{username}/{storage_class}",
     pathParams$,
   );
+  if (!pathResult$.ok) {
+    return [pathResult$, { status: "invalid" }];
+  }
+  const path$ = pathResult$.value;
   const query$ = encodeFormQuery({
     "project": payload$.project,
     "region": payload$.region,

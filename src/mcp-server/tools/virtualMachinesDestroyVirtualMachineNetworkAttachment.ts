@@ -15,7 +15,11 @@ export const tool$virtualMachinesDestroyVirtualMachineNetworkAttachment:
     name: "virtual-machines-destroy-network-attachment",
     description: `Detach a network from a VM
 
-Detaches a virtual network (VLAN) from a Virtual Machine. Work runs asynchronously and returns 202 Accepted.
+Detaches a virtual network (VLAN) from a Virtual Machine. Work runs asynchronously and returns 202 Accepted. A running VM restarts so the NIC is removed from the guest; a VM that is not running loses it when it next starts.
+
+On VMs created with \`apply_network_on_boot\` enabled, that boot also removes the NIC's configuration. If you configured the NIC yourself, remove that configuration before detaching, as described in [Private networks: configure the OS](https://www.latitude.sh/docs/networking/private-networks#step-3-configure-the-os).
+
+Some virtual machines run on older infrastructure that doesn't support network attachments. On those VMs, attaching or detaching a network returns 422 \`VIRTUAL_NETWORK_ATTACHMENT_UNSUPPORTED\` and leaves the VM unchanged.
 `,
     annotations: {
       "title": "",
@@ -30,7 +34,7 @@ Detaches a virtual network (VLAN) from a Virtual Machine. Work runs asynchronous
         await virtualMachinesDestroyVirtualMachineNetworkAttachment(
           client,
           args.request,
-          { fetchOptions: { signal: ctx.signal } },
+          { fetchOptions: { signal: ctx.mcpReq.signal } },
         ).$inspect();
 
       if (!result.ok) {

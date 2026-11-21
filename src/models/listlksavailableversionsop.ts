@@ -9,6 +9,18 @@ import {
   LksKubernetesVersions$zodSchema,
 } from "./lkskubernetesversions.js";
 
+export type ListLksAvailableVersionsRequest = {
+  filterSite?: string | undefined;
+};
+
+export const ListLksAvailableVersionsRequest$zodSchema: z.ZodType<
+  ListLksAvailableVersionsRequest
+> = z.object({
+  filterSite: z.string().describe(
+    "Site slug. Includes versions released there ahead of general availability",
+  ).optional(),
+});
+
 export type ListLksAvailableVersionsResponse =
   | LksKubernetesVersions
   | ErrorObject;
