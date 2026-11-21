@@ -27,7 +27,7 @@ Updates a firewall by its ID.`,
     const [result] = await firewallsUpdate(
       client,
       args.request,
-      { fetchOptions: { signal: ctx.signal } },
+      { fetchOptions: { signal: ctx.mcpReq.signal } },
     ).$inspect();
 
     if (!result.ok) {

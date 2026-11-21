@@ -27,7 +27,7 @@ Schedules the server to be removed at the end of the billing cycle.`,
     const [result] = await serversScheduleDeletion(
       client,
       args.request,
-      { fetchOptions: { signal: ctx.signal } },
+      { fetchOptions: { signal: ctx.mcpReq.signal } },
     ).$inspect();
 
     if (!result.ok) {

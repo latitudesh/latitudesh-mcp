@@ -6,9 +6,8 @@ import { LatitudeshCore } from "../core.js";
 import { encodeSimple } from "../lib/encodings.js";
 import { compactMap } from "../lib/primitives.js";
 import { safeParse } from "../lib/schemas.js";
-import { RequestOptions } from "../lib/sdks.js";
+import { encodePath, RequestOptions } from "../lib/sdks.js";
 import { extractSecurity, resolveGlobalSecurity } from "../lib/security.js";
-import { pathToFunc } from "../lib/url.js";
 import {
   DestroyVirtualMachineNetworkAttachmentRequest,
   DestroyVirtualMachineNetworkAttachmentRequest$zodSchema,
@@ -29,7 +28,11 @@ import { Result } from "../types/fp.js";
  * Detach a network from a VM
  *
  * @remarks
- * Detaches a virtual network (VLAN) from a Virtual Machine. Work runs asynchronously and returns 202 Accepted.
+ * Detaches a virtual network (VLAN) from a Virtual Machine. Work runs asynchronously and returns 202 Accepted. A running VM restarts so the NIC is removed from the guest; a VM that is not running loses it when it next starts.
+ *
+ * On VMs created with `apply_network_on_boot` enabled, that boot also removes the NIC's configuration. If you configured the NIC yourself, remove that configuration before detaching, as described in [Private networks: configure the OS](https://www.latitude.sh/docs/networking/private-networks#step-3-configure-the-os).
+ *
+ * Some virtual machines run on older infrastructure that doesn't support network attachments. On those VMs, attaching or detaching a network returns 422 `VIRTUAL_NETWORK_ATTACHMENT_UNSUPPORTED` and leaves the VM unchanged.
  */
 export function virtualMachinesDestroyVirtualMachineNetworkAttachment(
   client$: LatitudeshCore,
@@ -96,11 +99,14 @@ async function $do(
       { explode: false, charEncoding: "percent" },
     ),
   };
-  const path$ = pathToFunc(
+  const pathResult$ = encodePath(
     "/virtual_machines/{virtual_machine_id}/network_attachments/{id}",
-  )(
     pathParams$,
   );
+  if (!pathResult$.ok) {
+    return [pathResult$, { status: "invalid" }];
+  }
+  const path$ = pathResult$.value;
 
   const headers$ = new Headers(compactMap({
     Accept: "application/vnd.api+json",

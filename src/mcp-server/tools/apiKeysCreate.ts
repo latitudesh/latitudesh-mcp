@@ -28,7 +28,7 @@ Create a new API Key that is tied to the current user account. The created API k
     const [result] = await apiKeysCreate(
       client,
       args.request,
-      { fetchOptions: { signal: ctx.signal } },
+      { fetchOptions: { signal: ctx.mcpReq.signal } },
     ).$inspect();
 
     if (!result.ok) {

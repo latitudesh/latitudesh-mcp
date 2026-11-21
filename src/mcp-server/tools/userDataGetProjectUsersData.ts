@@ -28,7 +28,7 @@ List all Users Data in the project. These scripts can be used to configure serve
     const [result] = await userDataGetProjectUsersData(
       client,
       args.request,
-      { fetchOptions: { signal: ctx.signal } },
+      { fetchOptions: { signal: ctx.mcpReq.signal } },
     ).$inspect();
 
     if (!result.ok) {

@@ -39,7 +39,7 @@ export const GetEventsRequest$zodSchema: z.ZodType<GetEventsRequest> = z.object(
     filterProject: z.string().describe("The project ID to filter by")
       .optional(),
     filterTargetId: z.string().describe(
-      "The target id of the event to filter by",
+      "The target id of the event to filter by. An LKS cluster id also returns the events of the cluster node pools",
     ).optional(),
     filterTargetName: z.array(z.string()).describe(
       "The target type(s) of the event to filter by",

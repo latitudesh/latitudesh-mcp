@@ -29,7 +29,7 @@ Lists all the filesystems from a team.`,
     const [result] = await filesystemStorageListFilesystems(
       client,
       args.request,
-      { fetchOptions: { signal: ctx.signal } },
+      { fetchOptions: { signal: ctx.mcpReq.signal } },
     ).$inspect();
 
     if (!result.ok) {

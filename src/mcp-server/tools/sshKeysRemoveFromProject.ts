@@ -28,7 +28,7 @@ Allow you remove SSH Keys in a project. Remove a SSH Key from the project won't 
     const [result] = await sshKeysRemoveFromProject(
       client,
       args.request,
-      { fetchOptions: { signal: ctx.signal } },
+      { fetchOptions: { signal: ctx.mcpReq.signal } },
     ).$inspect();
 
     if (!result.ok) {

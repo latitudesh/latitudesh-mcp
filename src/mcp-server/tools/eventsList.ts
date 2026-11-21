@@ -28,7 +28,7 @@ Lists actions performed by users on your account.
     const [result] = await eventsList(
       client,
       args.request,
-      { fetchOptions: { signal: ctx.signal } },
+      { fetchOptions: { signal: ctx.mcpReq.signal } },
     ).$inspect();
 
     if (!result.ok) {
