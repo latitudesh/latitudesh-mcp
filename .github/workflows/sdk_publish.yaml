@@ -13,13 +13,20 @@ permissions:
       - .speakeasy/gen.lock
   workflow_dispatch: {}
 jobs:
+  # npm publishing uses Trusted Publishing (OIDC) via the `id-token: write`
+  # permission above, so no npm token is passed. The trusted publisher on
+  # npmjs.com is bound to this file name: renaming it breaks publishing.
+  #
+  # `.speakeasy/workflow.yaml` must keep `publish.npm.token: $npm_token`.
+  # Speakeasy only checks that the field is non-empty to mark the target as
+  # published; without it the "Publish MCP Typescript Server" job is skipped.
+  # The variable is never set, so `npm publish` authenticates through OIDC.
   publish:
     uses: speakeasy-api/sdk-generation-action/.github/workflows/sdk-publish.yaml@v15
     with:
       target: latitudesh
     secrets:
       github_access_token: ${{ secrets.GITHUB_TOKEN }}
-      npm_token: ${{ secrets.NPM_TOKEN }}
       speakeasy_api_key: ${{ secrets.SPEAKEASY_API_KEY }}
 
   # Deploy the remote MCP server (https://mcp.latitude.sh) to Cloudflare Workers
