@@ -27,7 +27,7 @@ Allows you to remove a volume from a project.`,
     const [result] = await blockStorageDeleteVolume(
       client,
       args.request,
-      { fetchOptions: { signal: ctx.signal } },
+      { fetchOptions: { signal: ctx.mcpReq.signal } },
     ).$inspect();
 
     if (!result.ok) {

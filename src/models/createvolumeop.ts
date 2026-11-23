@@ -4,6 +4,7 @@
 
 import * as z from "zod";
 import { ClosedEnum } from "../types/enums.js";
+import { ErrorObject, ErrorObject$zodSchema } from "./errorobject.js";
 import { VolumeData, VolumeData$zodSchema } from "./volumedata.js";
 
 export const CreateVolumeType2 = {
@@ -54,9 +55,18 @@ export const CreateVolumeRequest$zodSchema: z.ZodType<CreateVolumeRequest> = z
 /**
  * Created
  */
-export type CreateVolumeResponse = { data?: VolumeData | undefined };
+export type CreateVolumeResponseBody = { data?: VolumeData | undefined };
+
+export const CreateVolumeResponseBody$zodSchema: z.ZodType<
+  CreateVolumeResponseBody
+> = z.object({
+  data: VolumeData$zodSchema.optional(),
+}).describe("Created");
+
+export type CreateVolumeResponse = CreateVolumeResponseBody | ErrorObject;
 
 export const CreateVolumeResponse$zodSchema: z.ZodType<CreateVolumeResponse> = z
-  .object({
-    data: VolumeData$zodSchema.optional(),
-  }).describe("Created");
+  .union([
+    z.lazy(() => CreateVolumeResponseBody$zodSchema),
+    ErrorObject$zodSchema,
+  ]);

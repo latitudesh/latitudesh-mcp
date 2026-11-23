@@ -6,9 +6,8 @@ import { LatitudeshCore } from "../core.js";
 import { encodeJSON, encodeSimple } from "../lib/encodings.js";
 import { compactMap } from "../lib/primitives.js";
 import { safeParse } from "../lib/schemas.js";
-import { RequestOptions } from "../lib/sdks.js";
+import { encodePath, RequestOptions } from "../lib/sdks.js";
 import { extractSecurity, resolveGlobalSecurity } from "../lib/security.js";
-import { pathToFunc } from "../lib/url.js";
 import {
   CreateElasticIpBgpSessionRequest,
   CreateElasticIpBgpSessionRequest$zodSchema,
@@ -92,9 +91,14 @@ async function $do(
       charEncoding: "percent",
     }),
   };
-  const path$ = pathToFunc("/elastic_ips/{elastic_ip_id}/bgp_sessions")(
+  const pathResult$ = encodePath(
+    "/elastic_ips/{elastic_ip_id}/bgp_sessions",
     pathParams$,
   );
+  if (!pathResult$.ok) {
+    return [pathResult$, { status: "invalid" }];
+  }
+  const path$ = pathResult$.value;
 
   const headers$ = new Headers(compactMap({
     "Content-Type": "application/json",

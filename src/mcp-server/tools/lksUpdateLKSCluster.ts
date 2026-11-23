@@ -32,7 +32,7 @@ The cluster must be idle: a cluster that is provisioning, updating, scaling, upg
     const [result] = await lksUpdateLKSCluster(
       client,
       args.request,
-      { fetchOptions: { signal: ctx.signal } },
+      { fetchOptions: { signal: ctx.mcpReq.signal } },
     ).$inspect();
 
     if (!result.ok) {

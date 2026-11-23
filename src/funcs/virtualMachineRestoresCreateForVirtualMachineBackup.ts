@@ -6,9 +6,8 @@ import { LatitudeshCore } from "../core.js";
 import { encodeJSON, encodeSimple } from "../lib/encodings.js";
 import { compactMap } from "../lib/primitives.js";
 import { safeParse } from "../lib/schemas.js";
-import { RequestOptions } from "../lib/sdks.js";
+import { encodePath, RequestOptions } from "../lib/sdks.js";
 import { extractSecurity, resolveGlobalSecurity } from "../lib/security.js";
-import { pathToFunc } from "../lib/url.js";
 import {
   CreateVirtualMachineRestoreRequest,
   CreateVirtualMachineRestoreRequest$zodSchema,
@@ -97,11 +96,14 @@ async function $do(
       { explode: false, charEncoding: "percent" },
     ),
   };
-  const path$ = pathToFunc(
+  const pathResult$ = encodePath(
     "/virtual_machines/{virtual_machine_id}/backups/{backup_id}/restores",
-  )(
     pathParams$,
   );
+  if (!pathResult$.ok) {
+    return [pathResult$, { status: "invalid" }];
+  }
+  const path$ = pathResult$.value;
 
   const headers$ = new Headers(compactMap({
     "Content-Type": "application/json",

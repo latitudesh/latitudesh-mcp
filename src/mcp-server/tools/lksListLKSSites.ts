@@ -21,7 +21,7 @@ Lists the sites that can host an LKS cluster, one entry per site. Pass an entry'
   tool: async (client, ctx) => {
     const [result] = await lksListLKSSites(
       client,
-      { fetchOptions: { signal: ctx.signal } },
+      { fetchOptions: { signal: ctx.mcpReq.signal } },
     ).$inspect();
 
     if (!result.ok) {

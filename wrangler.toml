@@ -6,14 +6,14 @@ main = "src/cloudflare-worker/oauth-entry.ts"
 compatibility_date = "2025-07-15"
 
 # Enable node compatibility for MCP SDK
-compatibility_flags = ["nodejs_compat"]
+compatibility_flags = ["nodejs_compat", "enable_request_signal"]
 
 # Custom domain (Workers Custom Domain — auto-manages DNS + TLS on latitude.sh).
 routes = [
   { pattern = "mcp.latitude.sh", custom_domain = true }
 ]
 
-# Durable Object binding for MCP Agent
+# Durable Object hosting legacy SSE and Streamable HTTP sessions; existing namespaces and stored state are kept
 [[durable_objects.bindings]]
 name = "LATITUDESH_MCP"
 class_name = "LatitudeshMCP"
@@ -23,7 +23,6 @@ class_name = "LatitudeshMCP"
 binding = "OAUTH_KV"
 id = "2c85f823a5c648558928e37c92553661"
 
-# Durable Object migration
 [[migrations]]
 tag = "v1"
 new_sqlite_classes = ["LatitudeshMCP"]

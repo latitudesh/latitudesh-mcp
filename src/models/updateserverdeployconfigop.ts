@@ -66,14 +66,15 @@ export const UpdateServerDeployConfigOperatingSystem2$zodSchema = z.enum([
 ]);
 
 /**
- * RAID mode for the server. Set to 'raid-0' for RAID 0, 'raid-1' for RAID 1, or omit/null for no RAID configuration
+ * RAID mode for the server. Set to 'raid-0' for RAID 0, 'raid-1' for RAID 1, 'raid-10' for RAID 10 on the data disks (only at locations with the `raid_ten` feature), or omit/null for no RAID configuration
  */
 export const UpdateServerDeployConfigRaid2 = {
   Raid0: "raid-0",
   Raid1: "raid-1",
+  Raid10: "raid-10",
 } as const;
 /**
- * RAID mode for the server. Set to 'raid-0' for RAID 0, 'raid-1' for RAID 1, or omit/null for no RAID configuration
+ * RAID mode for the server. Set to 'raid-0' for RAID 0, 'raid-1' for RAID 1, 'raid-10' for RAID 10 on the data disks (only at locations with the `raid_ten` feature), or omit/null for no RAID configuration
  */
 export type UpdateServerDeployConfigRaid2 = ClosedEnum<
   typeof UpdateServerDeployConfigRaid2
@@ -82,8 +83,9 @@ export type UpdateServerDeployConfigRaid2 = ClosedEnum<
 export const UpdateServerDeployConfigRaid2$zodSchema = z.enum([
   "raid-0",
   "raid-1",
+  "raid-10",
 ]).describe(
-  "RAID mode for the server. Set to 'raid-0' for RAID 0, 'raid-1' for RAID 1, or omit/null for no RAID configuration",
+  "RAID mode for the server. Set to 'raid-0' for RAID 0, 'raid-1' for RAID 1, 'raid-10' for RAID 10 on the data disks (only at locations with the `raid_ten` feature), or omit/null for no RAID configuration",
 );
 
 export const UpdateServerDeployConfigRole2 = {
@@ -104,6 +106,7 @@ export const UpdateServerDeployConfigRole2$zodSchema = z.enum([
 export const UpdateServerDeployConfigRaidLevel2 = {
   Raid0: "raid-0",
   Raid1: "raid-1",
+  Raid10: "raid-10",
 } as const;
 export type UpdateServerDeployConfigRaidLevel2 = ClosedEnum<
   typeof UpdateServerDeployConfigRaidLevel2
@@ -112,6 +115,7 @@ export type UpdateServerDeployConfigRaidLevel2 = ClosedEnum<
 export const UpdateServerDeployConfigRaidLevel2$zodSchema = z.enum([
   "raid-0",
   "raid-1",
+  "raid-10",
 ]);
 
 export const UpdateServerDeployConfigFilesystem2 = {
@@ -187,7 +191,7 @@ export const UpdateServerDeployConfigAttributes2$zodSchema: z.ZodType<
     "ID of a customer public network to attach the server onto. Requires 'public_network' to be 'true'. The public network must belong to the same project and be in the same location as the server, and must have at least one free IP address. This public network configuration is saved to the deploy config and inherited by future reinstalls until changed. Available only when the public network feature is enabled for the server's location.",
   ),
   raid: UpdateServerDeployConfigRaid2$zodSchema.nullable().optional().describe(
-    "RAID mode for the server. Set to 'raid-0' for RAID 0, 'raid-1' for RAID 1, or omit/null for no RAID configuration",
+    "RAID mode for the server. Set to 'raid-0' for RAID 0, 'raid-1' for RAID 1, 'raid-10' for RAID 10 on the data disks (only at locations with the `raid_ten` feature), or omit/null for no RAID configuration",
   ),
   ssh_keys: z.array(z.string()).nullable().optional(),
   user_data: z.string().nullable().optional().describe(

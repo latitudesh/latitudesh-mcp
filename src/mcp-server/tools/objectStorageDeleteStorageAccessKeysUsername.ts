@@ -29,7 +29,7 @@ Permanently deletes an object storage access key and its associated provider-sid
     const [result] = await objectStorageDeleteStorageAccessKeysUsername(
       client,
       args.request,
-      { fetchOptions: { signal: ctx.signal } },
+      { fetchOptions: { signal: ctx.mcpReq.signal } },
     ).$inspect();
 
     if (!result.ok) {

@@ -27,7 +27,7 @@ The API returns the latest 5 supported minor versions. When upgrading clusters, 
   tool: async (client, ctx) => {
     const [result] = await kubernetesClustersListAvailableVersions(
       client,
-      { fetchOptions: { signal: ctx.signal } },
+      { fetchOptions: { signal: ctx.mcpReq.signal } },
     ).$inspect();
 
     if (!result.ok) {
