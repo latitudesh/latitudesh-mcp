@@ -23,10 +23,6 @@
 import { readFileSync, writeFileSync } from "node:fs";
 
 const KV_ID = "2c85f823a5c648558928e37c92553661";
-const OLD_DEEPLINK_B64 =
-  "eyJjb21tYW5kIjoibnB4IiwiYXJncyI6WyIteSIsIm1jcC1yZW1vdGVAMC4xLjI1IiwiaHR0cHM6Ly9tY3AubGF0aXR1ZGUuc2gvc3NlIiwiLS1oZWFkZXIiLCJzZXJ2ZXItaW5kZXg6JHtTRVJWRVJfSU5ERVh9IiwiLS1oZWFkZXIiLCJsYXRpdHVkZS1hcGkta2V5OiR7TEFUSVRVREVfQVBJX0tFWX0iLCItLWhlYWRlciIsImJlYXJlcjoke0JFQVJFUn0iXX0=";
-const NEW_DEEPLINK_B64 =
-  "eyJjb21tYW5kIjoibnB4IiwiYXJncyI6WyIteSIsIm1jcC1yZW1vdGVAMC4xLjI1IiwiaHR0cHM6Ly9tY3AubGF0aXR1ZGUuc2gvbWNwIl19";
 
 const VERIFY = process.argv.includes("--verify");
 
@@ -106,9 +102,9 @@ processFile("wrangler.toml", [
   {
     label: "custom-domain route",
     marker: "mcp.latitude.sh",
-    find: `compatibility_flags = ["nodejs_compat"]`,
+    find: `compatibility_flags = ["nodejs_compat", "enable_request_signal"]`,
     replace:
-      `compatibility_flags = ["nodejs_compat"]\n\n` +
+      `compatibility_flags = ["nodejs_compat", "enable_request_signal"]\n\n` +
       `# Custom domain (Workers Custom Domain — auto-manages DNS + TLS on latitude.sh).\n` +
       `routes = [\n  { pattern = "mcp.latitude.sh", custom_domain = true }\n]`,
   },
@@ -135,21 +131,22 @@ processFile("src/cloudflare-worker/cloudflare-worker.ts", [
     label: "logger info (not debug)",
     marker: `createConsoleLogger("info")`,
     find:
-      `      logger: createConsoleLogger("debug"),`,
+      `    logger: createConsoleLogger("debug"),`,
     replace:
-      `      // Override: "info" not "debug" (avoid verbose prod logging).\n` +
-      `      logger: createConsoleLogger("info"),`,
+      `    // Override: "info" not "debug" (avoid verbose prod logging).\n` +
+      `    logger: createConsoleLogger("info"),`,
   },
   {
     label: "auth via bearer / latitude-api-key headers",
     marker: `getHeader("bearer")`,
-    find: `      security: async () => ({ Bearer: getHeader("Authorization") }),`,
+    find: `    security: async () => ({ Bearer: getHeader("Authorization") }),`,
     replace:
-      `      // Override: clients send \`bearer\`/\`latitude-api-key\` headers (matching\n` +
-      `      // the landing page + express buildSDK). The generated "Authorization"\n` +
-      `      // lookup is always empty (lowercased keys + wrong header), so auth fails.\n` +
-      `      security: async () => ({ Bearer: getHeader("bearer") }),\n` +
-      `      latitude_api_key: getHeader("latitude-api-key") || undefined,`,
+      `    // Override: the Latitude API key arrives as \`bearer\` (set in props by the\n` +
+      `    // OAuth grant, or sent as a header on /direct/mcp and /sse), plus an\n` +
+      `    // optional \`latitude-api-key\`. The generated "Authorization" lookup\n` +
+      `    // never sees it, so every tool call would go out unauthenticated.\n` +
+      `    security: async () => ({ Bearer: getHeader("bearer") }),\n` +
+      `    latitude_api_key: getHeader("latitude-api-key") || undefined,`,
   },
 ]);
 
@@ -164,11 +161,11 @@ processFile("src/mcp-server/tools.ts", [
       `        tool.name,\n` +
       `        {\n` +
       `          description: tool.description,\n` +
-      `          inputSchema: tool.args,\n` +
+      `          inputSchema: mcpInputSchema(tool.args),\n` +
       `          annotations: tool.annotations,\n` +
       `        },\n` +
       `        async (args, ctx) => {\n` +
-      `          return tool.tool(getSDK(), args, ctx);\n` +
+      `          return tool.tool(getSDK(), args, mcpServerContext(ctx));\n` +
       `        },\n` +
       `      );\n` +
       `    } else {\n` +
@@ -179,7 +176,7 @@ processFile("src/mcp-server/tools.ts", [
       `          annotations: tool.annotations,\n` +
       `        },\n` +
       `        async (ctx) => {\n` +
-      `          return tool.tool(getSDK(), ctx);\n` +
+      `          return tool.tool(getSDK(), mcpServerContext(ctx));\n` +
       `        },\n` +
       `      );\n` +
       `    }`,
@@ -195,11 +192,11 @@ processFile("src/mcp-server/tools.ts", [
       `        {\n` +
       `          title: displayTitle,\n` +
       `          description: tool.description,\n` +
-      `          inputSchema: tool.args,\n` +
+      `          inputSchema: mcpInputSchema(tool.args),\n` +
       `          annotations,\n` +
       `        },\n` +
       `        async (args, ctx) => {\n` +
-      `          return tool.tool(getSDK(), args, ctx);\n` +
+      `          return tool.tool(getSDK(), args, mcpServerContext(ctx));\n` +
       `        },\n` +
       `      );\n` +
       `    } else {\n` +
@@ -211,7 +208,7 @@ processFile("src/mcp-server/tools.ts", [
       `          annotations,\n` +
       `        },\n` +
       `        async (ctx) => {\n` +
-      `          return tool.tool(getSDK(), ctx);\n` +
+      `          return tool.tool(getSDK(), mcpServerContext(ctx));\n` +
       `        },\n` +
       `      );\n` +
       `    }`,
@@ -221,60 +218,16 @@ processFile("src/mcp-server/tools.ts", [
 // --- src/landing-page.ts (OAuth-only client config) -------------------------
 processFile("src/landing-page.ts", [
   {
-    label: "mcp-remote + Codex config -> OAuth /mcp",
-    marker: `url = "\${o}/mcp"`,
+    label: "OAuth-only client config (no static headers)",
+    marker: "Override: OAuth-only",
     find:
-      `  const mcpConfig = {\n` +
-      `    "command": "npx",\n` +
-      `    "args": [\n` +
-      `      "-y",\n` +
-      `      "mcp-remote@0.1.25",\n` +
-      `      \`\${o}/sse\`,\n` +
-      `      "--header",\n` +
-      `      "server-index:\${SERVER_INDEX}",\n` +
-      `      "--header",\n` +
-      `      "latitude-api-key:\${LATITUDE_API_KEY}",\n` +
-      `      "--header",\n` +
-      `      "bearer:\${BEARER}",\n` +
-      `    ],\n` +
-      `    "env": {\n` +
-      `      "SERVER_INDEX": "YOUR_VALUE_HERE",\n` +
-      `      "LATITUDE_API_KEY": "YOUR_VALUE_HERE",\n` +
-      `      "BEARER": "YOUR_VALUE_HERE",\n` +
-      `    },\n` +
-      `  };\n` +
-      `  const codexConfig = \`[mcp_servers.Latitudesh]\n` +
-      `url = "\${o}/sse"\n` +
-      `http_headers = { "server-index" = "YOUR_SERVER_INDEX", "latitude-api-key" = "YOUR_LATITUDE_API_KEY", "bearer" = "YOUR_BEARER" }\`;`,
+      `  const headers: Array<{ name: string; env: string }> = runtime === "cloudflare"\n` +
+      `    ? [{ "name": "Authorization", "env": "BEARER" }]`,
     replace:
-      `  // Override: OAuth-only. mcp-remote points at /mcp and runs the browser auth\n` +
-      `  // flow on a 401 — no static headers/keys in client config.\n` +
-      `  const mcpConfig = {\n` +
-      `    "command": "npx",\n` +
-      `    "args": [\n` +
-      `      "-y",\n` +
-      `      "mcp-remote@0.1.25",\n` +
-      `      \`\${o}/mcp\`,\n` +
-      `    ],\n` +
-      `  };\n` +
-      `  const codexConfig = \`[mcp_servers.Latitudesh]\n` +
-      `url = "\${o}/mcp"\`;`,
-  },
-  {
-    label: "Cursor/VS Code deep links -> OAuth /mcp",
-    marker: NEW_DEEPLINK_B64,
-    find: OLD_DEEPLINK_B64,
-    replace: NEW_DEEPLINK_B64,
-    all: true,
-    count: 4,
-  },
-  {
-    label: "Claude Code / Gemini CLI snippets -> OAuth /mcp (http)",
-    marker: "--transport http Latitudesh",
-    find: `--transport sse Latitudesh https://mcp.latitude.sh/sse`,
-    replace: `--transport http Latitudesh https://mcp.latitude.sh/mcp`,
-    all: true,
-    count: 2,
+      `  // Override: OAuth-only on Cloudflare. Clients hit /mcp and run the browser\n` +
+      `  // auth flow on a 401 — no static headers/keys in client config.\n` +
+      `  const headers: Array<{ name: string; env: string }> = runtime === "cloudflare"\n` +
+      `    ? []`,
   },
 ]);
 
