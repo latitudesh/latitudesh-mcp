@@ -35,19 +35,49 @@ let failed = false;
 const occurrences = (content, needle) => content.split(needle).length - 1;
 
 /**
- * @param {string} content
- * @param {{label:string, find:string, replace:string, marker:string, all?:boolean, count?:number}} e
+ * An edit replaces the generated `find` with `replace`; `marker` proves it is
+ * applied. With `all`, every occurrence is replaced and the marker must occur
+ * exactly `count` times. An entry without `find` is a check only: `marker` is
+ * generated code an override relies on, and it must be present (`count` times
+ * when given) — the script never writes it.
+ *
+ * @typedef {{label:string, marker:string, find?:string, replace?:string, all?:boolean, count?:number}} Edit
  */
-function applyEdit(content, e) {
+
+/**
+ * @param {string} content
+ * @param {Edit} e
+ * @returns {"applied" | "applicable" | "missing"}
+ */
+function editState(content, e) {
   // For `all` edits the marker alone isn't enough: it must occur exactly
   // `count` times and every occurrence of the generated anchor must be gone,
   // or the override is only partially applied (e.g. a template change turned
   // one of the locations into something this script doesn't recognize).
   const found = occurrences(content, e.marker);
   const stale = e.all && content.includes(e.find);
-  const applied = e.all ? found === e.count && !stale : found > 0;
-  if (applied) {
-    console.log(`  ✓ ${VERIFY ? "present" : "already applied"}: ${e.label}`);
+  if (e.count !== undefined ? found === e.count && !stale : found > 0) return "applied";
+  return e.find !== undefined && content.includes(e.find) ? "applicable" : "missing";
+}
+
+/**
+ * @param {string} content
+ * @param {Edit} e
+ */
+function applyEdit(content, e) {
+  const found = occurrences(content, e.marker);
+  const stale = e.all && content.includes(e.find);
+  if (editState(content, e) === "applied") {
+    console.log(`  ✓ ${VERIFY || e.find === undefined ? "present" : "already applied"}: ${e.label}`);
+    return content;
+  }
+  if (e.find === undefined) {
+    console.error(
+      `  ✗ FAILED: ${e.label}\n` +
+        `    Expected ${e.count ?? "at least 1"} occurrence(s) of generated code this override relies on, found ${found}.\n` +
+        `    Speakeasy's template likely changed — update scripts/apply-cloudflare-overrides.mjs.`,
+    );
+    failed = true;
     return content;
   }
   if (VERIFY) {
@@ -85,9 +115,47 @@ function applyEdit(content, e) {
   return next;
 }
 
+/**
+ * @param {string} path
+ * @param {Edit[]} edits
+ */
 function processFile(path, edits) {
   console.log(`\n${path}`);
   let content = readFileSync(path, "utf8");
+  for (const e of edits) content = applyEdit(content, e);
+  if (!VERIFY) writeFileSync(path, content);
+}
+
+/**
+ * Like processFile, for a file with more than one supported template format.
+ * Uses the first format whose every edit is applied or still applicable; a file
+ * that matches no format completely fails loudly, listing what each format
+ * was missing.
+ *
+ * @param {string} path
+ * @param {Record<string, Edit[]>} formats
+ */
+function processFileFormats(path, formats) {
+  console.log(`\n${path}`);
+  let content = readFileSync(path, "utf8");
+  const match = Object.entries(formats).find(([, edits]) =>
+    edits.every((e) => editState(content, e) !== "missing"),
+  );
+  if (!match) {
+    const details = Object.entries(formats).map(([name, edits]) => {
+      const missing = edits.filter((e) => editState(content, e) === "missing").map((e) => e.label);
+      return `    ${name}: missing ${missing.join("; ")}`;
+    });
+    console.error(
+      `  ✗ FAILED: matches none of the supported template formats.\n` +
+        `${details.join("\n")}\n` +
+        `    Speakeasy's template likely changed — update scripts/apply-cloudflare-overrides.mjs.`,
+    );
+    failed = true;
+    return;
+  }
+  const [name, edits] = match;
+  console.log(`  (template format: ${name})`);
   for (const e of edits) content = applyEdit(content, e);
   if (!VERIFY) writeFileSync(path, content);
 }
@@ -106,9 +174,9 @@ processFile("wrangler.toml", [
   {
     label: "custom-domain route",
     marker: "mcp.latitude.sh",
-    find: `compatibility_flags = ["nodejs_compat"]`,
+    find: `compatibility_flags = ["nodejs_compat", "enable_request_signal"]`,
     replace:
-      `compatibility_flags = ["nodejs_compat"]\n\n` +
+      `compatibility_flags = ["nodejs_compat", "enable_request_signal"]\n\n` +
       `# Custom domain (Workers Custom Domain — auto-manages DNS + TLS on latitude.sh).\n` +
       `routes = [\n  { pattern = "mcp.latitude.sh", custom_domain = true }\n]`,
   },
@@ -135,21 +203,22 @@ processFile("src/cloudflare-worker/cloudflare-worker.ts", [
     label: "logger info (not debug)",
     marker: `createConsoleLogger("info")`,
     find:
-      `      logger: createConsoleLogger("debug"),`,
+      `    logger: createConsoleLogger("debug"),`,
     replace:
-      `      // Override: "info" not "debug" (avoid verbose prod logging).\n` +
-      `      logger: createConsoleLogger("info"),`,
+      `    // Override: "info" not "debug" (avoid verbose prod logging).\n` +
+      `    logger: createConsoleLogger("info"),`,
   },
   {
     label: "auth via bearer / latitude-api-key headers",
     marker: `getHeader("bearer")`,
-    find: `      security: async () => ({ Bearer: getHeader("Authorization") }),`,
+    find: `    security: async () => ({ Bearer: getHeader("Authorization") }),`,
     replace:
-      `      // Override: clients send \`bearer\`/\`latitude-api-key\` headers (matching\n` +
-      `      // the landing page + express buildSDK). The generated "Authorization"\n` +
-      `      // lookup is always empty (lowercased keys + wrong header), so auth fails.\n` +
-      `      security: async () => ({ Bearer: getHeader("bearer") }),\n` +
-      `      latitude_api_key: getHeader("latitude-api-key") || undefined,`,
+      `    // Override: the Latitude API key arrives as \`bearer\` (set in props by the\n` +
+      `    // OAuth grant, or sent as a header on /direct/mcp and /sse), plus an\n` +
+      `    // optional \`latitude-api-key\`. The generated "Authorization" lookup\n` +
+      `    // never sees it, so every tool call would go out unauthenticated.\n` +
+      `    security: async () => ({ Bearer: getHeader("bearer") }),\n` +
+      `    latitude_api_key: getHeader("latitude-api-key") || undefined,`,
   },
 ]);
 
@@ -164,11 +233,11 @@ processFile("src/mcp-server/tools.ts", [
       `        tool.name,\n` +
       `        {\n` +
       `          description: tool.description,\n` +
-      `          inputSchema: tool.args,\n` +
+      `          inputSchema: mcpInputSchema(tool.args),\n` +
       `          annotations: tool.annotations,\n` +
       `        },\n` +
       `        async (args, ctx) => {\n` +
-      `          return tool.tool(getSDK(), args, ctx);\n` +
+      `          return tool.tool(getSDK(), args, mcpServerContext(ctx));\n` +
       `        },\n` +
       `      );\n` +
       `    } else {\n` +
@@ -179,7 +248,7 @@ processFile("src/mcp-server/tools.ts", [
       `          annotations: tool.annotations,\n` +
       `        },\n` +
       `        async (ctx) => {\n` +
-      `          return tool.tool(getSDK(), ctx);\n` +
+      `          return tool.tool(getSDK(), mcpServerContext(ctx));\n` +
       `        },\n` +
       `      );\n` +
       `    }`,
@@ -195,11 +264,11 @@ processFile("src/mcp-server/tools.ts", [
       `        {\n` +
       `          title: displayTitle,\n` +
       `          description: tool.description,\n` +
-      `          inputSchema: tool.args,\n` +
+      `          inputSchema: mcpInputSchema(tool.args),\n` +
       `          annotations,\n` +
       `        },\n` +
       `        async (args, ctx) => {\n` +
-      `          return tool.tool(getSDK(), args, ctx);\n` +
+      `          return tool.tool(getSDK(), args, mcpServerContext(ctx));\n` +
       `        },\n` +
       `      );\n` +
       `    } else {\n` +
@@ -211,7 +280,7 @@ processFile("src/mcp-server/tools.ts", [
       `          annotations,\n` +
       `        },\n` +
       `        async (ctx) => {\n` +
-      `          return tool.tool(getSDK(), ctx);\n` +
+      `          return tool.tool(getSDK(), mcpServerContext(ctx));\n` +
       `        },\n` +
       `      );\n` +
       `    }`,
@@ -219,64 +288,109 @@ processFile("src/mcp-server/tools.ts", [
 ]);
 
 // --- src/landing-page.ts (OAuth-only client config) -------------------------
-processFile("src/landing-page.ts", [
-  {
-    label: "mcp-remote + Codex config -> OAuth /mcp",
-    marker: `url = "\${o}/mcp"`,
-    find:
-      `  const mcpConfig = {\n` +
-      `    "command": "npx",\n` +
-      `    "args": [\n` +
-      `      "-y",\n` +
-      `      "mcp-remote@0.1.25",\n` +
-      `      \`\${o}/sse\`,\n` +
-      `      "--header",\n` +
-      `      "server-index:\${SERVER_INDEX}",\n` +
-      `      "--header",\n` +
-      `      "latitude-api-key:\${LATITUDE_API_KEY}",\n` +
-      `      "--header",\n` +
-      `      "bearer:\${BEARER}",\n` +
-      `    ],\n` +
-      `    "env": {\n` +
-      `      "SERVER_INDEX": "YOUR_VALUE_HERE",\n` +
-      `      "LATITUDE_API_KEY": "YOUR_VALUE_HERE",\n` +
-      `      "BEARER": "YOUR_VALUE_HERE",\n` +
-      `    },\n` +
-      `  };\n` +
-      `  const codexConfig = \`[mcp_servers.Latitudesh]\n` +
-      `url = "\${o}/sse"\n` +
-      `http_headers = { "server-index" = "YOUR_SERVER_INDEX", "latitude-api-key" = "YOUR_LATITUDE_API_KEY", "bearer" = "YOUR_BEARER" }\`;`,
-    replace:
-      `  // Override: OAuth-only. mcp-remote points at /mcp and runs the browser auth\n` +
-      `  // flow on a 401 — no static headers/keys in client config.\n` +
-      `  const mcpConfig = {\n` +
-      `    "command": "npx",\n` +
-      `    "args": [\n` +
-      `      "-y",\n` +
-      `      "mcp-remote@0.1.25",\n` +
-      `      \`\${o}/mcp\`,\n` +
-      `    ],\n` +
-      `  };\n` +
-      `  const codexConfig = \`[mcp_servers.Latitudesh]\n` +
-      `url = "\${o}/mcp"\`;`,
-  },
-  {
-    label: "Cursor/VS Code deep links -> OAuth /mcp",
-    marker: NEW_DEEPLINK_B64,
-    find: OLD_DEEPLINK_B64,
-    replace: NEW_DEEPLINK_B64,
-    all: true,
-    count: 4,
-  },
-  {
-    label: "Claude Code / Gemini CLI snippets -> OAuth /mcp (http)",
-    marker: "--transport http Latitudesh",
-    find: `--transport sse Latitudesh https://mcp.latitude.sh/sse`,
-    replace: `--transport http Latitudesh https://mcp.latitude.sh/mcp`,
-    all: true,
-    count: 2,
-  },
-]);
+// Every client snippet must point at the OAuth /mcp endpoint with no static
+// headers/keys. Two template formats exist until the mcp-typescript 0.5.0 regen
+// is merged; drop the pre-0.5.0 entry after that.
+processFileFormats("src/landing-page.ts", {
+  // Each snippet is hard-coded, so each one is rewritten and checked.
+  "pre-0.5.0": [
+    {
+      label: "mcp-remote + Codex config -> OAuth /mcp",
+      marker: `url = "\${o}/mcp"`,
+      find:
+        `  const mcpConfig = {\n` +
+        `    "command": "npx",\n` +
+        `    "args": [\n` +
+        `      "-y",\n` +
+        `      "mcp-remote@0.1.25",\n` +
+        `      \`\${o}/sse\`,\n` +
+        `      "--header",\n` +
+        `      "server-index:\${SERVER_INDEX}",\n` +
+        `      "--header",\n` +
+        `      "latitude-api-key:\${LATITUDE_API_KEY}",\n` +
+        `      "--header",\n` +
+        `      "bearer:\${BEARER}",\n` +
+        `    ],\n` +
+        `    "env": {\n` +
+        `      "SERVER_INDEX": "YOUR_VALUE_HERE",\n` +
+        `      "LATITUDE_API_KEY": "YOUR_VALUE_HERE",\n` +
+        `      "BEARER": "YOUR_VALUE_HERE",\n` +
+        `    },\n` +
+        `  };\n` +
+        `  const codexConfig = \`[mcp_servers.Latitudesh]\n` +
+        `url = "\${o}/sse"\n` +
+        `http_headers = { "server-index" = "YOUR_SERVER_INDEX", "latitude-api-key" = "YOUR_LATITUDE_API_KEY", "bearer" = "YOUR_BEARER" }\`;`,
+      replace:
+        `  // Override: OAuth-only. mcp-remote points at /mcp and runs the browser auth\n` +
+        `  // flow on a 401 — no static headers/keys in client config.\n` +
+        `  const mcpConfig = {\n` +
+        `    "command": "npx",\n` +
+        `    "args": [\n` +
+        `      "-y",\n` +
+        `      "mcp-remote@0.1.25",\n` +
+        `      \`\${o}/mcp\`,\n` +
+        `    ],\n` +
+        `  };\n` +
+        `  const codexConfig = \`[mcp_servers.Latitudesh]\n` +
+        `url = "\${o}/mcp"\`;`,
+    },
+    {
+      label: "Cursor/VS Code deep links -> OAuth /mcp",
+      marker: NEW_DEEPLINK_B64,
+      find: OLD_DEEPLINK_B64,
+      replace: NEW_DEEPLINK_B64,
+      all: true,
+      count: 4,
+    },
+    {
+      label: "Claude Code / Gemini CLI snippets -> OAuth /mcp (http)",
+      marker: "--transport http Latitudesh",
+      find: `--transport sse Latitudesh https://mcp.latitude.sh/sse`,
+      replace: `--transport http Latitudesh https://mcp.latitude.sh/mcp`,
+      all: true,
+      count: 2,
+    },
+  ],
+  // Every snippet is built from one `headers` list and the page's transport, so
+  // a single edit empties the list; the checks below fail if a snippet stops
+  // being built that way or the Cloudflare page leaves the http transport.
+  "0.5.0": [
+    {
+      label: "OAuth-only client config (no static headers)",
+      marker:
+        `  const headers: Array<{ name: string; env: string }> = runtime === "cloudflare"\n` +
+        `    ? []`,
+      find:
+        `  const headers: Array<{ name: string; env: string }> = runtime === "cloudflare"\n` +
+        `    ? [{ "name": "Authorization", "env": "BEARER" }]`,
+      replace:
+        `  // Override: OAuth-only on Cloudflare. Clients hit /mcp and run the browser\n` +
+        `  // auth flow on a 401 — no static headers/keys in client config.\n` +
+        `  const headers: Array<{ name: string; env: string }> = runtime === "cloudflare"\n` +
+        `    ? []`,
+    },
+    {
+      label: "Cloudflare page uses the http transport (/mcp)",
+      marker: `landingPageHTML(origin, "http", "cloudflare")`,
+      count: 1,
+    },
+    {
+      label: "mcp-remote config built from headers",
+      marker: "...headers.flatMap(",
+      count: 1,
+    },
+    {
+      label: "Cursor/VS Code deep links built from headers",
+      marker: "config=${encodedConfig}",
+      count: 4,
+    },
+    {
+      label: "Claude Code / Gemini CLI snippets built from headers",
+      marker: "Latitudesh ${o}/${endpoint} ${cliHeaders}",
+      count: 2,
+    },
+  ],
+});
 
 if (failed) {
   console.error(
