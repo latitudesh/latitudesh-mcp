@@ -6,9 +6,8 @@ import { LatitudeshCore } from "../core.js";
 import { encodeJSON, encodeSimple } from "../lib/encodings.js";
 import { compactMap } from "../lib/primitives.js";
 import { safeParse } from "../lib/schemas.js";
-import { RequestOptions } from "../lib/sdks.js";
+import { encodePath, RequestOptions } from "../lib/sdks.js";
 import { extractSecurity, resolveGlobalSecurity } from "../lib/security.js";
-import { pathToFunc } from "../lib/url.js";
 import {
   CreateVirtualMachineNetworkAttachmentRequest,
   CreateVirtualMachineNetworkAttachmentRequest$zodSchema,
@@ -29,7 +28,16 @@ import { Result } from "../types/fp.js";
  * Attach a network to a VM
  *
  * @remarks
- * Attaches a virtual network (VLAN) to a Virtual Machine. Work runs asynchronously and returns 202 Accepted.
+ * Attaches a virtual network (VLAN) to a Virtual Machine. Work runs asynchronously and returns 202 Accepted. A running VM restarts so the new NIC reaches the guest; a VM that is not running picks it up when it next starts.
+ *
+ * After the restart, check the interface inside the guest (`ip -br addr`):
+ *
+ * - VMs created with `apply_network_on_boot` enabled (the default) configure the NIC on boot, with the attachment's `address` when one was given. Nothing else to do.
+ * - VMs created before that option existed, or with it disabled, leave the NIC without an address. Once the VM has restarted, read the attachment's `mac_address` and `address` from `GET /virtual_machines/{virtual_machine_id}/network_attachments` and configure the interface with that MAC address yourself, as described in [Private networks: configure the OS](https://www.latitude.sh/docs/networking/private-networks#step-3-configure-the-os). The NIC gets a new MAC address each time a network is attached, so update your configuration after detaching and attaching a network again.
+ *
+ * Keep network configuration of your own in a separate file. With `apply_network_on_boot`, every boot, including a restart started inside the guest, rewrites cloud-init's own network file (for example `/etc/netplan/50-cloud-init.yaml`), so changes made there are lost. To stop that on a VM, create `/etc/cloud/cloud.cfg.d/99-disable-network-config.cfg` containing `network: {config: disabled}`; cloud-init then leaves the network configuration alone on every boot, and networks attached afterwards must be configured by hand.
+ *
+ * Some virtual machines run on older infrastructure that doesn't support network attachments. On those VMs, attaching or detaching a network returns 422 `VIRTUAL_NETWORK_ATTACHMENT_UNSUPPORTED` and leaves the VM unchanged.
  */
 export function virtualMachinesCreateVirtualMachineNetworkAttachment(
   client$: LatitudeshCore,
@@ -96,11 +104,14 @@ async function $do(
       { explode: false, charEncoding: "percent" },
     ),
   };
-  const path$ = pathToFunc(
+  const pathResult$ = encodePath(
     "/virtual_machines/{virtual_machine_id}/network_attachments",
-  )(
     pathParams$,
   );
+  if (!pathResult$.ok) {
+    return [pathResult$, { status: "invalid" }];
+  }
+  const path$ = pathResult$.value;
 
   const headers$ = new Headers(compactMap({
     "Content-Type": "application/json",

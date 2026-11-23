@@ -6,9 +6,8 @@ import { LatitudeshCore } from "../core.js";
 import { encodeSimple } from "../lib/encodings.js";
 import { compactMap } from "../lib/primitives.js";
 import { safeParse } from "../lib/schemas.js";
-import { RequestOptions } from "../lib/sdks.js";
+import { encodePath, RequestOptions } from "../lib/sdks.js";
 import { extractSecurity, resolveGlobalSecurity } from "../lib/security.js";
-import { pathToFunc } from "../lib/url.js";
 import {
   DeleteKubernetesClusterRequest,
   DeleteKubernetesClusterRequest$zodSchema,
@@ -95,9 +94,14 @@ async function $do(
       { explode: false, charEncoding: "percent" },
     ),
   };
-  const path$ = pathToFunc("/kubernetes_clusters/{kubernetes_cluster_id}")(
+  const pathResult$ = encodePath(
+    "/kubernetes_clusters/{kubernetes_cluster_id}",
     pathParams$,
   );
+  if (!pathResult$.ok) {
+    return [pathResult$, { status: "invalid" }];
+  }
+  const path$ = pathResult$.value;
 
   const headers$ = new Headers(compactMap({
     Accept: "application/vnd.api+json",

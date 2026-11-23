@@ -6,9 +6,8 @@ import { LatitudeshCore } from "../core.js";
 import { encodeSimple } from "../lib/encodings.js";
 import { compactMap } from "../lib/primitives.js";
 import { safeParse } from "../lib/schemas.js";
-import { RequestOptions } from "../lib/sdks.js";
+import { encodePath, RequestOptions } from "../lib/sdks.js";
 import { extractSecurity, resolveGlobalSecurity } from "../lib/security.js";
-import { pathToFunc } from "../lib/url.js";
 import {
   CreateVirtualMachineBackupRequest,
   CreateVirtualMachineBackupRequest$zodSchema,
@@ -91,9 +90,14 @@ async function $do(
       { explode: false, charEncoding: "percent" },
     ),
   };
-  const path$ = pathToFunc("/virtual_machines/{virtual_machine_id}/backups")(
+  const pathResult$ = encodePath(
+    "/virtual_machines/{virtual_machine_id}/backups",
     pathParams$,
   );
+  if (!pathResult$.ok) {
+    return [pathResult$, { status: "invalid" }];
+  }
+  const path$ = pathResult$.value;
 
   const headers$ = new Headers(compactMap({
     Accept: "application/vnd.api+json",

@@ -29,7 +29,7 @@ Announce an elastic IP from a server over BGP`,
     const [result] = await elasticIpsCreateElasticIpBgpSession(
       client,
       args.request,
-      { fetchOptions: { signal: ctx.signal } },
+      { fetchOptions: { signal: ctx.mcpReq.signal } },
     ).$inspect();
 
     if (!result.ok) {

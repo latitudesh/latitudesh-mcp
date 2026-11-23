@@ -27,10 +27,31 @@ export const TypeBareMetal$zodSchema = z.enum([
   "bare_metal",
 ]);
 
+/**
+ * on_demand provisions new servers of `plan` from stock. allocated builds the pool from `server_ids`, servers already in the cluster project: each one is reinstalled with the LKS node image (erasing its disks) and, when it leaves the pool, reinstalled with a clean OS (no data, keys or user data are restored).
+ */
+export const CreateLksNodePoolMode = {
+  OnDemand: "on_demand",
+  Allocated: "allocated",
+} as const;
+/**
+ * on_demand provisions new servers of `plan` from stock. allocated builds the pool from `server_ids`, servers already in the cluster project: each one is reinstalled with the LKS node image (erasing its disks) and, when it leaves the pool, reinstalled with a clean OS (no data, keys or user data are restored).
+ */
+export type CreateLksNodePoolMode = ClosedEnum<typeof CreateLksNodePoolMode>;
+
+export const CreateLksNodePoolMode$zodSchema = z.enum([
+  "on_demand",
+  "allocated",
+]).describe(
+  "on_demand provisions new servers of `plan` from stock. allocated builds the pool from `server_ids`, servers already in the cluster project: each one is reinstalled with the LKS node image (erasing its disks) and, when it leaves the pool, reinstalled with a clean OS (no data, keys or user data are restored).",
+);
+
 export type CreateLksNodePoolAttributes = {
   type?: TypeBareMetal | undefined;
-  plan: string;
-  count: number;
+  mode?: CreateLksNodePoolMode | undefined;
+  plan?: string | undefined;
+  count?: number | undefined;
+  server_ids?: Array<string> | undefined;
   kubernetes_version?: string | undefined;
   max_pods_per_node?: number | undefined;
   name?: string | undefined;
@@ -42,7 +63,9 @@ export type CreateLksNodePoolAttributes = {
 export const CreateLksNodePoolAttributes$zodSchema: z.ZodType<
   CreateLksNodePoolAttributes
 > = z.object({
-  count: z.int().describe("Number of nodes; must be >= 1"),
+  count: z.int().optional().describe(
+    "Number of nodes; must be >= 1. Required in on_demand mode; rejected in allocated mode, where it is the number of server_ids",
+  ),
   description: z.string().optional(),
   kubernetes_version: z.string().optional().describe(
     "Patch; defaults to the cluster control-plane patch. Must not be newer than the control-plane patch (422 VERSION_SKEW)",
@@ -53,8 +76,16 @@ export const CreateLksNodePoolAttributes$zodSchema: z.ZodType<
   max_pods_per_node: z.int().optional().describe(
     "kubelet --max-pods for every node in the pool. Set once, at creation: it is immutable afterwards and a PATCH that carries it is rejected with 422. Omit to get the platform default (110).",
   ),
+  mode: CreateLksNodePoolMode$zodSchema.default("on_demand").describe(
+    "on_demand provisions new servers of `plan` from stock. allocated builds the pool from `server_ids`, servers already in the cluster project: each one is reinstalled with the LKS node image (erasing its disks) and, when it leaves the pool, reinstalled with a clean OS (no data, keys or user data are restored).",
+  ),
   name: z.string().optional().describe("Optional; generated when omitted"),
-  plan: z.string().describe("Plan the pool nodes are provisioned from"),
+  plan: z.string().optional().describe(
+    "Plan the pool nodes are provisioned from. Required in on_demand mode; rejected in allocated mode, where the plan is the one the servers already have",
+  ),
+  server_ids: z.array(z.string()).optional().describe(
+    "Required in allocated mode and rejected in on_demand mode. Servers must be bare metal, in the cluster project and location, share one plan, have been deployed with bgp_ready and not belong to another node pool. Each server that fails a check is reported as its own 422 error pointing at its index.",
+  ),
   taints: z.array(LksNodePoolTaint$zodSchema).optional().describe(
     "Kubernetes taints (max 50). Each (key, effect) pair must be unique. Key follows the same syntax and reserved-prefix rules as a label key.",
   ),

@@ -31,7 +31,7 @@ Delete a customer network. Only allowed while the network has no IPs in use.`,
     const [result] = await publicNetworksDestroyPublicNetwork(
       client,
       args.request,
-      { fetchOptions: { signal: ctx.signal } },
+      { fetchOptions: { signal: ctx.mcpReq.signal } },
     ).$inspect();
 
     if (!result.ok) {

@@ -28,7 +28,7 @@ Get User Data in the project. These scripts can be used to configure servers wit
     const [result] = await userDataRetrieve(
       client,
       args.request,
-      { fetchOptions: { signal: ctx.signal } },
+      { fetchOptions: { signal: ctx.mcpReq.signal } },
     ).$inspect();
 
     if (!result.ok) {

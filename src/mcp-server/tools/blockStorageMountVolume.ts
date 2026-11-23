@@ -27,7 +27,7 @@ Mounts a volume by adding the client to an allowed list`,
     const [result] = await blockStorageMountVolume(
       client,
       args.request,
-      { fetchOptions: { signal: ctx.signal } },
+      { fetchOptions: { signal: ctx.mcpReq.signal } },
     ).$inspect();
 
     if (!result.ok) {

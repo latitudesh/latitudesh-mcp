@@ -14,7 +14,7 @@ export const tool$blockStorageUnmapVolume: ToolDefinition<typeof args> = {
   name: "block-storage-unmap-volume",
   description: `Unmap volume
 
-Unmaps a high performance volume from the server it is currently mapped to.`,
+Unmaps a high performance volume from one of the servers it is mapped to.`,
   annotations: {
     "title": "",
     "destructiveHint": false,
@@ -27,7 +27,7 @@ Unmaps a high performance volume from the server it is currently mapped to.`,
     const [result] = await blockStorageUnmapVolume(
       client,
       args.request,
-      { fetchOptions: { signal: ctx.signal } },
+      { fetchOptions: { signal: ctx.mcpReq.signal } },
     ).$inspect();
 
     if (!result.ok) {

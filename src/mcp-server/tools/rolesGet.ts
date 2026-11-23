@@ -25,7 +25,7 @@ export const tool$rolesGet: ToolDefinition<typeof args> = {
     const [result] = await rolesGet(
       client,
       args.request,
-      { fetchOptions: { signal: ctx.signal } },
+      { fetchOptions: { signal: ctx.mcpReq.signal } },
     ).$inspect();
 
     if (!result.ok) {

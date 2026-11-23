@@ -6,9 +6,8 @@ import { LatitudeshCore } from "../core.js";
 import { encodeJSON, encodeSimple } from "../lib/encodings.js";
 import { compactMap } from "../lib/primitives.js";
 import { safeParse } from "../lib/schemas.js";
-import { RequestOptions } from "../lib/sdks.js";
+import { encodePath, RequestOptions } from "../lib/sdks.js";
 import { extractSecurity, resolveGlobalSecurity } from "../lib/security.js";
-import { pathToFunc } from "../lib/url.js";
 import {
   CreateServerActionRequest,
   CreateServerActionRequest$zodSchema,
@@ -93,9 +92,11 @@ async function $do(
       charEncoding: "percent",
     }),
   };
-  const path$ = pathToFunc("/servers/{server_id}/actions")(
-    pathParams$,
-  );
+  const pathResult$ = encodePath("/servers/{server_id}/actions", pathParams$);
+  if (!pathResult$.ok) {
+    return [pathResult$, { status: "invalid" }];
+  }
+  const path$ = pathResult$.value;
 
   const headers$ = new Headers(compactMap({
     "Content-Type": "application/json",

@@ -5,49 +5,52 @@
 import * as z from "zod";
 import { ClosedEnum } from "../types/enums.js";
 
-export const MountVolumeType = {
+export const MountVolumeType2 = {
   Volumes: "volumes",
 } as const;
-export type MountVolumeType = ClosedEnum<typeof MountVolumeType>;
+export type MountVolumeType2 = ClosedEnum<typeof MountVolumeType2>;
 
-export const MountVolumeType$zodSchema = z.enum([
+export const MountVolumeType2$zodSchema = z.enum([
   "volumes",
 ]);
 
-export type MountVolumeAttributes = { nqn: string };
+export type MountVolumeAttributes2 = { nqn: string };
 
-export const MountVolumeAttributes$zodSchema: z.ZodType<MountVolumeAttributes> =
-  z.object({
-    nqn: z.string().describe(
-      "NVMe Qualified Name (NQN) of the client/server that will access the volume. Format: nqn.YYYY-MM.domain:identifier (e.g., \"nqn.2024-01.com.example:server01\"). This uniquely identifies the NVMe client and must be configured on the client server.",
-    ),
-  });
-
-export type MountVolumeData = {
-  type: MountVolumeType;
-  attributes: MountVolumeAttributes;
-};
-
-export const MountVolumeData$zodSchema: z.ZodType<MountVolumeData> = z.object({
-  attributes: z.lazy(() => MountVolumeAttributes$zodSchema),
-  type: MountVolumeType$zodSchema,
+export const MountVolumeAttributes2$zodSchema: z.ZodType<
+  MountVolumeAttributes2
+> = z.object({
+  nqn: z.string().describe(
+    "NVMe Qualified Name (NQN) of the client/server that will access the volume. Format: nqn.YYYY-MM.domain:identifier (e.g., \"nqn.2024-01.com.example:server01\"). This uniquely identifies the NVMe client and must be configured on the client server.",
+  ),
 });
 
-export type MountVolumeRequestBody = { data: MountVolumeData };
+export type MountVolumeData2 = {
+  type: MountVolumeType2;
+  attributes: MountVolumeAttributes2;
+};
 
-export const MountVolumeRequestBody$zodSchema: z.ZodType<
-  MountVolumeRequestBody
+export const MountVolumeData2$zodSchema: z.ZodType<MountVolumeData2> = z.object(
+  {
+    attributes: z.lazy(() => MountVolumeAttributes2$zodSchema),
+    type: MountVolumeType2$zodSchema,
+  },
+);
+
+export type MountVolumeRequestBody2 = { data: MountVolumeData2 };
+
+export const MountVolumeRequestBody2$zodSchema: z.ZodType<
+  MountVolumeRequestBody2
 > = z.object({
-  data: z.lazy(() => MountVolumeData$zodSchema),
+  data: z.lazy(() => MountVolumeData2$zodSchema),
 });
 
 export type MountVolumeRequest = {
   id: string;
-  RequestBody: MountVolumeRequestBody;
+  RequestBody: MountVolumeRequestBody2;
 };
 
 export const MountVolumeRequest$zodSchema: z.ZodType<MountVolumeRequest> = z
   .object({
-    RequestBody: z.lazy(() => MountVolumeRequestBody$zodSchema),
+    RequestBody: z.lazy(() => MountVolumeRequestBody2$zodSchema),
     id: z.string().describe("Volume ID"),
   });

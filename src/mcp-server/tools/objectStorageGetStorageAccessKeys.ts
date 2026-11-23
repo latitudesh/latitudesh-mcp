@@ -29,7 +29,7 @@ Lists object storage access keys for a project, grouped by storage class. Secret
     const [result] = await objectStorageGetStorageAccessKeys(
       client,
       args.request,
-      { fetchOptions: { signal: ctx.signal } },
+      { fetchOptions: { signal: ctx.mcpReq.signal } },
     ).$inspect();
 
     if (!result.ok) {

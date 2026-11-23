@@ -6,9 +6,8 @@ import { LatitudeshCore } from "../core.js";
 import { encodeJSON, encodeSimple } from "../lib/encodings.js";
 import { compactMap } from "../lib/primitives.js";
 import { safeParse } from "../lib/schemas.js";
-import { RequestOptions } from "../lib/sdks.js";
+import { encodePath, RequestOptions } from "../lib/sdks.js";
 import { extractSecurity, resolveGlobalSecurity } from "../lib/security.js";
-import { pathToFunc } from "../lib/url.js";
 import { APIError } from "../models/errors/apierror.js";
 import {
   ConnectionError,
@@ -29,7 +28,7 @@ import { Result } from "../types/fp.js";
  * Map volume
  *
  * @remarks
- * Maps a high performance volume to a server over NVMe-TCP.
+ * Maps a high performance volume to a server over NVMe-TCP. Teams with multi-host mapping enabled can map a volume to several servers, once per server; otherwise a volume maps to one server. Every mapped server writes to the same NVMe namespace, so use a cluster-aware filesystem when more than one server mounts the volume.
  */
 export function blockStorageMapVolume(
   client$: LatitudeshCore,
@@ -90,9 +89,11 @@ async function $do(
       charEncoding: "percent",
     }),
   };
-  const path$ = pathToFunc("/storage/volumes/{id}/map")(
-    pathParams$,
-  );
+  const pathResult$ = encodePath("/storage/volumes/{id}/map", pathParams$);
+  if (!pathResult$.ok) {
+    return [pathResult$, { status: "invalid" }];
+  }
+  const path$ = pathResult$.value;
 
   const headers$ = new Headers(compactMap({
     "Content-Type": "application/json",
