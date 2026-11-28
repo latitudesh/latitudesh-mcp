@@ -50,8 +50,10 @@ export function landingPageHTML(
 ): string {
   const o = origin;
   const endpoint = transport === "sse" ? "sse" : "mcp";
+  // Override: OAuth-only on Cloudflare. Clients hit /mcp and run the browser
+  // auth flow on a 401 — no static headers/keys in client config.
   const headers: Array<{ name: string; env: string }> = runtime === "cloudflare"
-    ? [{ "name": "Authorization", "env": "BEARER" }]
+    ? []
     : transport === "sse"
     ? [{ "name": "bearer", "env": "BEARER" }]
     : [{ "name": "bearer", "env": "BEARER" }, {
