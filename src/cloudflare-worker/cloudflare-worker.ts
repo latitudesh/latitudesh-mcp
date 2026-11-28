@@ -25,19 +25,13 @@ function getSDK(headers: Headers | undefined) {
       group: (...args) => console.group(...args),
       groupEnd: (...args) => console.groupEnd(...args),
     },
-    // Override: the Latitude API key arrives as `bearer` (set in props by the
-    // OAuth grant, or sent as a header on /direct/mcp and /sse), plus an
-    // optional `latitude-api-key`. The generated "Authorization" lookup
-    // never sees it, so every tool call would go out unauthenticated.
-    security: async () => ({ Bearer: getHeader("bearer") }),
-    latitude_api_key: getHeader("latitude-api-key") || undefined,
+    security: async () => ({ Bearer: getHeader("Authorization") }),
   });
 }
 
 function createServer(getHeaders: () => Headers | undefined) {
   const { server } = createMCPServer({
-    // Override: "info" not "debug" (avoid verbose prod logging).
-    logger: createConsoleLogger("info"),
+    logger: createConsoleLogger("debug"),
     getSDK: () => getSDK(getHeaders()),
   });
   return server;

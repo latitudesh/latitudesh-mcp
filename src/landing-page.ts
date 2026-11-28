@@ -50,10 +50,8 @@ export function landingPageHTML(
 ): string {
   const o = origin;
   const endpoint = transport === "sse" ? "sse" : "mcp";
-  // Override: OAuth-only on Cloudflare. Clients hit /mcp and run the browser
-  // auth flow on a 401 — no static headers/keys in client config.
   const headers: Array<{ name: string; env: string }> = runtime === "cloudflare"
-    ? []
+    ? [{ "name": "Authorization", "env": "BEARER" }]
     : transport === "sse"
     ? [{ "name": "bearer", "env": "BEARER" }]
     : [{ "name": "bearer", "env": "BEARER" }, {
@@ -983,7 +981,7 @@ http_headers = { ${
         <h1>Instructions</h1>
         <p>One-click installation for Claude Desktop users</p>
         <div class="instruction-item">
-          <a href="https://github.com/latitudesh/latitudesh-mcp/releases/download/v0.5.0/mcp-server.mcpb" download="mcp-server.mcpb" class="action-button header-action" style="display: inline-flex; margin-bottom: 16px;">
+          <a href="https://github.com/latitudesh/latitudesh-mcp/releases/download/v0.5.1/mcp-server.mcpb" download="mcp-server.mcpb" class="action-button header-action" style="display: inline-flex; margin-bottom: 16px;">
             📥 Download MCP Bundle
           </a>
         </div>
