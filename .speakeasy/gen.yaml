@@ -32,7 +32,7 @@ generation:
     generateNewTests: true
     skipResponseBodyAssertions: false
 mcp-typescript:
-  version: 0.5.0
+  version: 0.5.1
   additionalDependencies:
     dependencies:
       '@cloudflare/workers-oauth-provider': 0.8.1

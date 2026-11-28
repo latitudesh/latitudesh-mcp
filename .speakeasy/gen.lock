@@ -3,17 +3,17 @@ id: 14ad660b-1b20-4e74-9900-f561baa97606
 management:
   docChecksum: 980de75405c09351fb17af0b79095540
   docVersion: "2023-06-01"
-  speakeasyVersion: 1.811.0
-  generationVersion: 2.968.1
-  releaseVersion: 0.5.0
-  configChecksum: 867499639703145f0b39d6f4d8ceb128
+  speakeasyVersion: 1.813.0
+  generationVersion: 2.969.4
+  releaseVersion: 0.5.1
+  configChecksum: ab77111104826fab8b463a931c174064
   repoURL: https://github.com/latitudesh/latitudesh-mcp.git
   installationURL: https://github.com/latitudesh/latitudesh-mcp
   published: true
 persistentEdits:
-  generation_id: 54fa1911-dac1-4ad9-bc79-366a4488d1f2
-  pristine_commit_hash: 414473bde009091374cd7204ba19f90140950b9a
-  pristine_tree_hash: 4ecf415a041f893e62a2d69bb98d520ea8256185
+  generation_id: 9ceadab2-5cc6-4b44-9be4-ae742afa850a
+  pristine_commit_hash: a8da2affd7f14086e5da3a854b950f7086c0431f
+  pristine_tree_hash: 647333c596bb41f454c98921c71e0f0b3ab7e835
 features:
   mcp-typescript:
     additionalDependencies: 0.1.0
@@ -51,12 +51,12 @@ trackedFiles:
     pristine_git_object: 4f9e60a9462fc4def738d60c3aaadf8232ef185f
   manifest.json:
     id: ca642a226869
-    last_write_checksum: sha1:a50969338f44f685573ad15ca3c05e77d3ea61ac
-    pristine_git_object: c1db4b73dcc730777602f0d53e07c0a345a18084
+    last_write_checksum: sha1:b54058175fb11e105a578f8b2fb9f8f3de1036b9
+    pristine_git_object: c32d899180660fc063e9add555248ee91c36cfa3
   package.json:
     id: 7030d0b2f71b
-    last_write_checksum: sha1:3c20f9f7bc81a63e12848cfffd1b065c2fcef107
-    pristine_git_object: a09acf55fde2b3e667f7554fa1982f38d2667f11
+    last_write_checksum: sha1:0800300b2183a3cf3a11933411d02b8f78719b67
+    pristine_git_object: 529733661d26e371885ff5bf2fc1092ec84f46c3
   src/cloudflare-worker/cloudflare-worker.ts:
     id: b90556be8673
     last_write_checksum: sha1:489c5822ed93c446c9cb6f9e27ff4acebb6a649c
@@ -939,16 +939,16 @@ trackedFiles:
     pristine_git_object: 9c36bf01332084f735909a71036c3544cc4c7e3a
   src/landing-page.ts:
     id: ef64a6ee46d7
-    last_write_checksum: sha1:371d41ef4fa7931582be624b37f7b3fd829a1aba
-    pristine_git_object: 7eada19be19082226f10070c9bb589e3ea77f257
+    last_write_checksum: sha1:a5301a8cf84308494e9212d7aa354bda4abf8305
+    pristine_git_object: 39931852e86e1c8191ea4d5c2410ddbf5c2ff37d
   src/lib/base64.ts:
     id: "598522066688"
     last_write_checksum: sha1:e9f04a037018040361043104960982f7c22db52d
     pristine_git_object: d4bd8b341290e7a828a171d840bd0b0fff7c7cd7
   src/lib/config.ts:
     id: 320761608fb3
-    last_write_checksum: sha1:b0b948314edf1bf64ed99bd8d4936159dafa2a6e
-    pristine_git_object: 1cf0ea00e2f749e8c689ce6645a0c09b2e3f5023
+    last_write_checksum: sha1:898859abd9762213a549998f307df0b930e21d92
+    pristine_git_object: c8f9e66342a3a3e32f4985e34441febfeaa74045
   src/lib/encodings.ts:
     id: 3bd8ead98afd
     last_write_checksum: sha1:9b859366c917d31f7ee533176f71631872fb05fa
@@ -1035,8 +1035,8 @@ trackedFiles:
     pristine_git_object: 2afe103bd836d7aa109f97154f7d78595d8e2642
   src/mcp-server/mcp-server.ts:
     id: aabbc4ab07c1
-    last_write_checksum: sha1:e39022de05b5a9abe737a429cdc9c1b4b5352c1e
-    pristine_git_object: d4af9d46cc8782e68b775591fe1d7aa7a6df84b6
+    last_write_checksum: sha1:2b438ca1d665437ff3e87743dd433f06ac7a735a
+    pristine_git_object: 15c4a031953fc2cf70b2edcdfb8d0b89ba1e7d6c
   src/mcp-server/prompts.ts:
     id: 26f3d73cbf31
     last_write_checksum: sha1:019b2a53dbb48a820a2df6b9d3984c4cc555efb4
@@ -1051,8 +1051,8 @@ trackedFiles:
     pristine_git_object: c25696d4c4f70e081fa5d87ad6891874c509a577
   src/mcp-server/server.ts:
     id: 2784dd48e82a
-    last_write_checksum: sha1:3c2da9235b9f4720d774885fe3bfacdd7508e24e
-    pristine_git_object: 662008fd5c42a5437ebb95c41671cfb303620016
+    last_write_checksum: sha1:d73d061c4e2a6b317f5b3bd8c8a90822733a3bbc
+    pristine_git_object: 19841a491935968107824ec63e92a65d5e540842
   src/mcp-server/shared.ts:
     id: 074e80d4be1e
     last_write_checksum: sha1:1832c294677c567750b516748fca219a05da582f
@@ -6738,7 +6738,6 @@ examples:
         application/json: {"data": {"type": "filesystems", "attributes": {"server_id": "sv_abcd1234"}}}
         application/vnd.api+json: {"data": {"type": "filesystems", "attributes": {"server_id": "sv_abcd1234"}}}
 examplesVersion: 1.0.2
-releaseNotes: "## Mcp-typescript SDK Changes:\n* `Latitudesh.Baselines (Preview).get-baselines()`:  `response.data[].attributes` **Changed** (Breaking ⚠️)\n* `Latitudesh.virtualMachineBackups.create()`:  `response.status[409]` **Added** (Breaking ⚠️)\n* `Latitudesh.virtualMachineBackups.createForVirtualMachine()`:  `response.status[409]` **Added** (Breaking ⚠️)\n* `Latitudesh.virtualMachines.destroy-virtual-machine-network-attachment()`:  `response.status[422]` **Added** (Breaking ⚠️)\n* `Latitudesh.Block Storage.create-volume()`:  `response` **Changed** (Breaking ⚠️)\n* `Latitudesh.Filesystem Storage.createFilesystem()`:  `response.status[422]` **Added** (Breaking ⚠️)\n* `Latitudesh.Servers.reinstall()`: \n  *  `request.RequestBody.data.attributes` **Changed**\n  *  `response.status[409]` **Added** (Breaking ⚠️)\n* `Latitudesh.Servers.lock()`:  `response` **Changed** (Breaking ⚠️)\n* `Latitudesh.Servers.updateDeployConfig()`: \n  *  `request.RequestBody.data.attributes` **Changed**\n  *  `response.data.attributes` **Changed** (Breaking ⚠️)\n* `Latitudesh.Servers.getDeployConfig()`:  `response.data.attributes` **Changed** (Breaking ⚠️)\n* `Latitudesh.Object Storage.post-storage-bucket-lifecycle-rules()`:  `response.status[409]` **Added** (Breaking ⚠️)\n* `Latitudesh.LKS.list-lks-available-versions()`: \n  *  `request` **Added**\n  *  `response.status[404]` **Added** (Breaking ⚠️)\n* `Latitudesh.Baselines (Preview).get-baseline()`:  `response.data.attributes` **Changed** (Breaking ⚠️)\n* `Latitudesh.Baselines (Preview).create-baseline()`: \n  *  `request.data.attributes` **Changed**\n  *  `response.data.attributes` **Changed** (Breaking ⚠️)\n* `Latitudesh.Sandboxes (Preview).get-sandboxes()`: **Added**\n* `Latitudesh.Servers.list()`:  `response.data[].attributes.operating_system.features.arm64` **Added**\n* `Latitudesh.Sandboxes (Preview).create-sandbox()`: **Added**\n* `Latitudesh.Sandboxes (Preview).get-sandbox()`: **Added**\n* `Latitudesh.Sandboxes (Preview).destroy-sandbox()`: **Added**\n* `Latitudesh.Sandboxes (Preview).exec-sandbox()`: **Added**\n* `Latitudesh.Filesystem Storage.get-filesystem-attachment()`: **Added**\n* `Latitudesh.Filesystem Storage.attach-filesystem()`: **Added**\n* `Latitudesh.Filesystem Storage.detach-filesystem()`: **Added**\n* `Latitudesh.vpnSessions.list()`: **Removed** (Breaking ⚠️)\n* `Latitudesh.vpnSessions.create()`: **Removed** (Breaking ⚠️)\n* `Latitudesh.vpnSessions.refreshPassword()`: **Removed** (Breaking ⚠️)\n* `Latitudesh.vpnSessions.delete()`: **Removed** (Breaking ⚠️)\n* `Latitudesh.Clusters.update-project-cluster-node-group()`: **Added**\n* `Latitudesh.Clusters.delete-project-cluster-node-group()`: **Added**\n* `Latitudesh.Clusters.create-project-cluster-node-group()`: **Added**\n* `Latitudesh.operatingSystems.listPlans()`:  `response.data[].attributes.features.arm64` **Added**\n* `Latitudesh.LKS.list-lks-node-pools()`:  `response.data[].attributes.server_ids` **Added**\n* `Latitudesh.LKS.create-lks-node-pool()`: \n  *  `request.create_lks_node_pool.data.attributes` **Changed**\n  *  `response.data.attributes.server_ids` **Added**\n* `Latitudesh.LKS.get-lks-node-pool()`:  `response.data.attributes.server_ids` **Added**\n* `Latitudesh.LKS.update-lks-node-pool()`: \n  *  `request.update_lks_node_pool.data.attributes.server_ids` **Added**\n  *  `response.data.attributes.server_ids` **Added**\n* `Latitudesh.Clusters.get-project-cluster-node-groups()`: **Added**\n* `Latitudesh.Plans.list()`:  `response.data[].attributes.regions[].locations.in_stock_count` **Added**\n* `Latitudesh.Plans.get()`:  `response.data.attributes.regions[].locations.in_stock_count` **Added**\n* `Latitudesh.Clusters.get-project-cluster-requirement-signoffs()`: **Added**\n* `Latitudesh.Inference.get-inference-models()`: **Added**\n* `Latitudesh.Servers.create()`: \n  *  `request.data.attributes` **Changed**\n  *  `response.data.attributes.operating_system.features.arm64` **Added**\n* `Latitudesh.Servers.get()`:  `response.data.attributes.operating_system.features.arm64` **Added**\n* `Latitudesh.Servers.update()`:  `response.data.attributes.operating_system.features.arm64` **Added**\n* `Latitudesh.Clusters.sign-project-cluster-requirements()`: **Added**\n* `Latitudesh.Clusters.update-project-cluster-requirements()`: **Added**\n* `Latitudesh.Clusters.get-project-cluster-requirements()`: **Added**\n* `Latitudesh.Servers.unlock()`:  `response.data.attributes.operating_system.features.arm64` **Added**\n* `Latitudesh.LKS.list-lks-allocatable-servers()`: **Added**\n* `Latitudesh.LKS.list-lks-nodes()`: **Added**\n* `Latitudesh.Block Storage.list-volumes()`:  `response.data[].attributes.block` **Changed**\n* `Latitudesh.Inference.get-inference-usage()`: **Added**\n* `Latitudesh.Block Storage.retrieve-volume()`:  `response.data.attributes.block` **Changed**\n* `Latitudesh.Block Storage.update-volume()`:  `response.data.attributes.block` **Changed**\n* `Latitudesh.Block Storage.map-volume()`:  `response.data.attributes.block` **Changed**\n* `Latitudesh.Block Storage.unmap-volume()`: \n  *  `request.RequestBody` **Added**\n  *  `response.data.attributes.block` **Changed**\n* `Latitudesh.virtualMachines.list()`:  `response.data[].attributes` **Changed**\n* `Latitudesh.virtualMachines.create()`: \n  *  `request.data.attributes.apply_network_on_boot` **Added**\n  *  `response.data.attributes` **Changed**\n* `Latitudesh.virtualMachines.get()`:  `response.data.attributes` **Changed**\n* `Latitudesh.virtualMachines.update-virtual-machine()`:  `response.data.attributes` **Changed**\n* `Latitudesh.virtualMachines.list-virtual-machine-network-attachments()`:  `response.data[].attributes` **Changed**\n* `Latitudesh.Inference.delete-inference-api-key()`: **Added**\n* `Latitudesh.Inference.post-inference-api-key()`: **Added**\n* `Latitudesh.Inference.get-inference-api-keys()`: **Added**\n"
 generatedFiles:
   - .dxtignore
   - .gitattributes
